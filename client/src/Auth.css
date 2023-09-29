@@ -10,7 +10,18 @@ body {
   font-family: sans-serif;
 }
 
+p {
+  font-family: 'MinecrafterAltRegular';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 64px;
+  position: fixed;
+}
+
 .form h1 {
+  font-family: 'MinecrafterAltRegular';
+  font-weight: normal;
+  font-style: normal;
   margin: 30px 100px;
   padding: 0;
   text-align: center;
@@ -49,6 +60,16 @@ body {
   border: 1px solid #fff;
   box-sizing: border-box;
 }
+
+.input-form button:hover {
+  padding: 10px;
+  width: 100%;
+  color: #4b7c4b;
+  font-size: 20px;
+  border: 1px solid #355c38;
+  box-sizing: border-box;
+}
+
 
 .bg {
   animation:slide 3s ease-in-out infinite alternate;
