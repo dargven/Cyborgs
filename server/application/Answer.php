@@ -7,8 +7,6 @@ class Answer{
         '9000' => 'unknown error',
         '1001' => 'Unknown user/password',
         '242' => 'params not set fully ',
-        '999' => 'Is it Triangle?',
-        '555' => 'Is it Polygon?'
     );
 
     static function response(array $data): array
