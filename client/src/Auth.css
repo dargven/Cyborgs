@@ -1,120 +1,120 @@
 
 html {
-  height:100%;
+    height: 100%;
 }
 
 body {
-  -webkit-background-size: cover;
-  background-size: cover;
-  background-attachment: fixed;
-  font-family: sans-serif;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: sans-serif;
 }
 
 p {
-  font-family: 'MinecrafterAltRegular';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 64px;
-  position: fixed;
+    font-family: 'MinecrafterAltRegular';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 64px;
+    position: fixed;
 }
 
 .form h1 {
-  font-family: 'MinecrafterAltRegular';
-  font-weight: normal;
-  font-style: normal;
-  margin: 30px 100px;
-  padding: 0;
-  text-align: center;
-  color: #fff;
-  font-size: 30px;
-  text-transform: uppercase;
+    font-family: 'MinecrafterAltRegular';
+    font-weight: normal;
+    font-style: normal;
+    margin: 30px 100px;
+    padding: 0;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    text-transform: uppercase;
 }
 
 .input-form {
-  margin: 15px 40px;
-  text-align: center;
+    margin: 15px 40px;
+    text-align: center;
 }
 
 .input-form input {
-  padding: 10px;
-  width: 100%;
-  color: #fff;
-  font-size: 20px;
-  background: none;
-  outline: none;
-  border: 1px solid #fff;
-  box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    color: #fff;
+    font-size: 20px;
+    background: none;
+    outline: none;
+    border: 1px solid #fff;
+    box-sizing: border-box;
 }
 
-.forget{
-  color: #fff;
+.forget {
+    color: #fff;
 }
 
 .input-form button {
-  padding: 10px;
-  width: 100%;
-  color: #fff;
-  font-size: 20px;
-  background: none;
-  outline: none;
-  border: 1px solid #fff;
-  box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    color: #fff;
+    font-size: 20px;
+    background: none;
+    outline: none;
+    border: 1px solid #fff;
+    box-sizing: border-box;
 }
 
 .input-form button:hover {
-  padding: 10px;
-  width: 100%;
-  color: #4b7c4b;
-  font-size: 20px;
-  border: 1px solid #355c38;
-  box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    color: #4b7c4b;
+    font-size: 20px;
+    border: 1px solid #355c38;
+    box-sizing: border-box;
 }
 
 
 .bg {
-  animation:slide 3s ease-in-out infinite alternate;
-  background-image: linear-gradient(-60deg, rgb(58, 139, 17) 50%, rgb(81, 22, 136) 50%);
-  bottom:0;
-  left:-50%;
-  opacity:.5;
-  position:fixed;
-  right:-50%;
-  top:0;
-  z-index:-1;
+    animation: slide 3s ease-in-out infinite alternate;
+    background-image: linear-gradient(-60deg, rgb(58, 139, 17) 50%, rgb(81, 22, 136) 50%);
+    bottom: 0;
+    left: -50%;
+    opacity: .5;
+    position: fixed;
+    right: -50%;
+    top: 0;
+    z-index: -1;
 }
 
 .bg2 {
-  animation-direction:alternate-reverse;
-  animation-duration:4s;
+    animation-direction: alternate-reverse;
+    animation-duration: 4s;
 }
 
 .bg3 {
-  animation-duration:5s;
+    animation-duration: 5s;
 }
 
 .content {
-  background-color:rgba(32, 9, 32, 0.8);
-  border-radius:.25em;
-  box-shadow:0 0 .25em rgba(0,0,25,.25);
-  box-sizing:border-box;
-  left:50%;
-  padding:3vmin;
-  position:fixed;
-  text-align:center;
-  top:50%;
-  transform:translate(-50%, -50%);
+    background-color: rgba(32, 9, 32, 0.8);
+    border-radius: .25em;
+    box-shadow: 0 0 .25em rgba(0, 0, 25, .25);
+    box-sizing: border-box;
+    left: 50%;
+    padding: 3vmin;
+    position: fixed;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 h1 {
-  font-family:monospace;
-  color: rgb(238, 238, 238);
+    font-family: monospace;
+    color: rgb(238, 238, 238);
 }
 
 @keyframes slide {
-  0% {
-    transform:translateX(-25%);
-  }
-  100% {
-    transform:translateX(25%);
-  }
+    0% {
+        transform: translateX(-25%);
+    }
+    100% {
+        transform: translateX(25%);
+    }
 }
