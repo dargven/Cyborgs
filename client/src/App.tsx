@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
-import {HOST} from './config';
-import {Server} from './modules';
+import { HOST } from './config';
+import { Server } from './modules';
 
-import LoginForm from './components/LoginForm';
+import Game from './components/Game/Game';
 
 export const ServerContext = React.createContext<Server>(null!);
 
@@ -12,11 +12,11 @@ const App: React.FC = () => {
 
     return (
         <ServerContext.Provider value={server}>
-            <div>
-                <LoginForm/>
+            <div style={{ width: '100vw', height: '100vh' }}>
+                <Game />
             </div>
         </ServerContext.Provider>
-    )
+    );
 }
 
 export default App;
