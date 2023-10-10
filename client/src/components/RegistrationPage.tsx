@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 
 import { ServerContext } from '../App';
+import Bg from './Bg';
 
 import '../Auth.css'
 
@@ -14,9 +15,7 @@ const RegistrationPage = () => {
 
     return (
     <div className="Auth">
-    <div className="bg"></div>
-    <div className="bg bg2"></div>
-    <div className="bg bg3"></div>
+    <Bg/>
 
     <div className="content">
         <h1>Регистрация</h1>
