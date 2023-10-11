@@ -1,22 +1,19 @@
 <?php
 class Answer{
-    static $CODES = array(
+    static array $CODES = array(
         '101' => 'param method not setted',
         '102' => 'method not found',
-        '242' => 'params not set fully ',
         '404' => 'not found',
-        '555' => 'Is it Polygon?',
-        '999' => 'Is it Triangle?',
-        '1001' => 'params login or password not set',
-        '1002' => 'error in auth user',
-        '9000' => 'unknown error'
+        '9000' => 'unknown error',
+        '1001' => 'Unknown user/password',
+        '242' => 'params not set fully ',
     );
 
-    static function response(array $data)
+    static function response(array $data): array
     {
-        if($data) {
-            if(count($data) === 2 && !$data[0]){
-                $code = $data[1];
+        if(!empty($data)){
+            if(!empty($data['error'])){
+                $code = $data['error'];
                 return [
                     'result' => 'error',
                     'error' => [
