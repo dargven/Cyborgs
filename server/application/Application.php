@@ -6,13 +6,15 @@ require_once 'modules/DB/DB.php';
  class Application
  {
      private $user;
+
      private $chat;
      private $game;
+     private $db;
 
      function __construct()
      {
-         $db = new DB();
-         $this->user = new User($db);
+         $this->db = new DB();
+         $this->user = new User($this->db);
      }
 
      function login(array $params)
@@ -23,6 +25,9 @@ require_once 'modules/DB/DB.php';
              return $this->user->login($login, $password);
          }
          return [false, 1001];
+     }
+     function DataBase(){
+         return ['value'=>$this->db->getUser(1)];
      }
 
  }
