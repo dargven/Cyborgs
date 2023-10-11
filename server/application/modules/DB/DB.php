@@ -6,7 +6,10 @@ class DB
     // $hashPassword=md5($login.’1234’);
     private array $UsersData = [
         1 => [
-            'login' => 'Vasya']
+            'login' => 'Vasya',
+            'hashPassword'=> '9577240a87581e939d679f36f3ffa36e', // Хэш от логина+пароль(md5('Vasya'.'1234')
+            'token'=> null
+]
     ];
     private $BulletData;
     private $SceneData;
