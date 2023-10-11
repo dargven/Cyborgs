@@ -1,40 +1,56 @@
-import { useContext } from 'react';
-
+import { useContext, useRef, useState } from 'react';
 import { ServerContext } from '../App';
-import Bg from "./Bg";
+import { Link, Navigate } from 'react-router-dom';
+import Bg from './Bg';
+
 
 import '../Auth.css'
 
 const LoginPage = () => {
+
     const server = useContext(ServerContext);
+    const loginRef = useRef<HTMLInputElement | null>(null);
+    const passwordRef = useRef<HTMLInputElement | null>(null);
+    const [loginSuccess, setLoginSuccess] = useState(false);
+
 
     const handleLogin = async () => {
-        const user = await server.login('Vasya', '1234');
-        console.log(user);
+        if(loginRef.current && passwordRef.current){
+            const user = await server.login(loginRef.current.value, passwordRef.current.value);
+            console.log(user);
+            if (user){
+              setLoginSuccess(true);
+            }
+        }
     };
 
     return (
-    <div className="Auth">
-    <Bg/>
-
     <div className="content">
         <h1>Вход</h1>
-    {[
-    { type: 'text', id: 'username', name: 'username', placeholder: 'Логин' },
-    { type: 'password', id: 'password', name: 'password', placeholder: 'Пароль' },
-    ].map((input, index) => (
-        <div className="input-form" key={index}>
-            <input type={input.type} id={input.id} name={input.name} className="input" placeholder={input.placeholder} />
+        <div className="input-form">
+          <input
+            type="text"
+            id="username"
+            name="username"
+            className="input"
+            placeholder="Логин"
+            ref={loginRef}            
+          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="input"
+            placeholder="Пароль"
+            ref={passwordRef}
+          />
+         <button onClick={() => handleLogin()}>
+            Войти
+         </button>
         </div>
-    ))} 
-        
-    <div className="input-form">
-        <button type="submit" onClick={handleLogin}>Войти</button>
+        {loginSuccess ? <Navigate to='/' replace={true}/> : null}
     </div>
- </div>
- 
-</div>
     )
-};
+}; 
 
 export default LoginPage;
