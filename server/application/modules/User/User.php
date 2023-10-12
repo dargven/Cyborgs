@@ -1,11 +1,12 @@
 <?php
 
-#[AllowDynamicProperties] class User {
+ class User {
+     private $id;
     function __construct($db){
         $this->db = $db;
     }
 
-    function login($login, $password): array
+    function login($login, $password): array // Дописать логин getuser
     {
         if($login === 'Vasya' && $password === '1234'){
             return [
@@ -13,7 +14,11 @@
                 'soname'=>'Petrov',
                 'id'=>12,
             ];
+
+            //$this->id = $id;
         }
         return array(false, 1002);
+    }
+    function logout($id){
     }
 }
