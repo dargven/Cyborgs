@@ -6,37 +6,23 @@ require_once 'modules/DB/DB.php';
 class Application
 {
     private $user;
-
     private $chat;
     private $game;
-    private $db;
 
     function __construct()
     {
-        $this->db = new DB();
-        $this->user = new User($this->db);
+        $db = new DB();
+        $this->user = new User($db);
     }
 
-    function login(array $params)
+    function login($params)
     {
         $login = $params['login'];
-        $password = $params['password'];
-        if ($login && $password) {
-            return $this->user->login($login, $password);
+        $hash = $params['hash'];
+        $rnd = $params['rnd'];
+        if ($login && $hash && $rnd) {
+            return $this->user->login($login, $hash, $rnd);
         }
         return [false, 1001];
     }
-
-    function checkToken($id, $params) 
-    {
-        $token = $params['token'];
-        $tokenS = $this->db->getUser($id, 'token');
-        return $token === $tokenS ? true : false;
-    }
-
-//    function DataBase()
-//    {
-//        return $this->db->getUser(id: 1, params: 'token');
-//    }
-
 }

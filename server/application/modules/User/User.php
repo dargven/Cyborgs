@@ -2,28 +2,23 @@
 
 class User
 {
-    private $id;
-
+    private $db;
     function __construct($db)
     {
         $this->db = $db;
     }
 
-    function login($login, $password): array // Дописать логин, здесь будет ипсользоваться getuser. Максим.
+    function login($login, $hash, $rnd)
     {
-        if ($login === 'Vasya' && $password === '1234') {
-            return [
-                'name' => 'Vasya',
-                'soname' => 'Petrov',
-                'id' => 12,
-            ];
-
-            //$this->id = $id;
+        $hashs = (md5($login . '1234') . $rnd);
+        if ($hash === $hashs) {
+            $token = md5($hash . rand());
+            return array(
+                'login' => $login,
+                'hash l+p' => $hash,
+                'token' => $token,
+            );
         }
         return array(false, 1002);
-    }
-
-    function logout($id) //Дописать. Арина.
-    {
     }
 }
