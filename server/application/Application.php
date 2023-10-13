@@ -27,6 +27,13 @@ class Application
         return [false, 1001];
     }
 
+    function checkToken($id, $params) 
+    {
+        $token = $params['token'];
+        $tokenS = $this->db->getUser($id, 'token');
+        return $token === $tokenS ? true : false;
+    }
+
 //    function DataBase()
 //    {
 //        return $this->db->getUser(id: 1, params: 'token');
