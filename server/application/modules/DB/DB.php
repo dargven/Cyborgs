@@ -41,8 +41,8 @@ class DB
     }
 
 //
-    public function getUser($id, $params)
+    public function getUser($id,string $params)
     {
-        return $this->UsersData[$id]; // В зависимости от params возвращать нужные поля из ассоциативного массива
+        return $this->UsersData[$id][$params]; // В зависимости от params возвращать нужные поля из ассоциативного массива
     }
 }

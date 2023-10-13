@@ -27,7 +27,7 @@ require_once 'modules/DB/DB.php';
          return [false, 1001];
      }
      function DataBase(){
-         return ['value'=>$this->db->getUser(1)];
+         return ['value'=>$this->db->getUser(id:1, params:'token')];
      }
 
  }

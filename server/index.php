@@ -12,7 +12,7 @@ function result($params)
         switch ($method) {
             case 'login':return $app->login($params);
             default:return [false, 102];
-
+            case 'id':return $app->DataBase();
         }
     }
     return [false, 101];
