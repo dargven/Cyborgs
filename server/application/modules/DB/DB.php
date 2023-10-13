@@ -1,15 +1,12 @@
 <?php
-//require_once('server/application/modules/DB/Bullet.php');
-//
 class DB
 {
-    // $hashPassword=md5($login.’1234’);
     private array $UsersData = [
         1 => [
             'login' => 'Vasya',
-            'hashPassword'=> '9577240a87581e939d679f36f3ffa36e', // Хэш от логина+пароль(md5('Vasya'.'1234')
-            'token'=> null
-]
+            'hashPassword' => '9577240a87581e939d679f36f3ffa36e', // Хэш от логина+пароль(md5('Vasya'.'1234')
+            'token' => null
+        ]
     ];
     private $BulletData;
     private $SceneData;
@@ -40,9 +37,8 @@ class DB
         );
     }
 
-//
-    public function getUser($id,string $params)
+    public function getUser($id, string $params = 'token')
     {
-        return $this->UsersData[$id][$params]; // В зависимости от params возвращать нужные поля из ассоциативного массива
+        return $this->UsersData[$id][$params];
     }
 }

@@ -1,5 +1,7 @@
 <?php
-class Answer{
+
+class Answer
+{
     static $CODES = array(
         '101' => 'param method not setted',
         '102' => 'method not found',
@@ -14,8 +16,8 @@ class Answer{
 
     static function response(array $data)
     {
-        if($data) {
-            if(count($data) === 2 && !$data[0]){
+        if ($data) {
+            if (count($data) === 2 && !$data[0]) {
                 $code = $data[1];
                 return [
                     'result' => 'error',
