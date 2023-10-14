@@ -1,6 +1,7 @@
 import { useContext, useRef, useState } from 'react';
 import { ServerContext } from '../App';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+
 import Bg from './Bg';
 
 
@@ -12,7 +13,6 @@ const LoginPage = () => {
     const loginRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const [loginSuccess, setLoginSuccess] = useState(false);
-
 
     const handleLogin = async () => {
         if(loginRef.current && passwordRef.current){
@@ -48,7 +48,7 @@ const LoginPage = () => {
             Войти
          </button>
         </div>
-        {loginSuccess ? <Navigate to='/' replace={true}/> : null}
+        {loginSuccess ? <Navigate to='/main' replace={true}/> : null}
     </div>
     )
 }; 

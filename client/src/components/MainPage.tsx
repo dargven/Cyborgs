@@ -8,7 +8,7 @@ const MainPage = () => {
     return (
     <div className="Main">
         <h1>Это основная страница</h1>
-    <Bg/>
+        <Bg/>
     </div>
     )
 };
