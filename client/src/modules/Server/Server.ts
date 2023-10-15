@@ -28,5 +28,21 @@ export default class Server {
     login(login: string, password: string): Promise<TUser | null> {
         return this.request<TUser>('login', {login, password});
     }
+
+    async register(username: string,email: string , password: string): Promise<TUser | null> {
+        try {
+            const response = await this.request<TUser>('register', { username, email, password });
+    
+            if (response !== null) {
+                return response;
+            } else {
+                console.error("null");
+                return null;
+            }
+        } catch (error) {
+            console.error("Ошибка при отправке запроса");
+            return null;
+        }
+    }
 }
-//Kirill
+
