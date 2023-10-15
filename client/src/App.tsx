@@ -12,9 +12,7 @@ const App: React.FC = () => {
 
     return (
         <ServerContext.Provider value={server}>
-            <div 
-            // style={{ width: '100vw', height: '100vh' }}
-            >
+            <div style={{ width: '100vw', height: '100vh' }}>
                 <Game />
             </div>
         </ServerContext.Provider>

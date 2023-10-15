@@ -1,11 +1,15 @@
-import { Stage } from "@pixi/react";
+import { Canvas } from "@react-three/fiber";
 import Scene from "./Scene";
 
-const Game = () => {
+const Game: React.FC = () => {
     return (
-        <Stage width={window.innerWidth} height={window.innerHeight} options={{ backgroundColor: 0xee0000 }} style={{ "position": "absolute" }}>
+        <Canvas camera={{ position: [0, 10, 0]}} >
 
-        </Stage>
+            <ambientLight />
+            <pointLight position={[0, 2, 0]} intensity={200} />
+            <axesHelper />
+            <Scene />
+        </Canvas>
     );
 }
 
