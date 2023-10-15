@@ -1,11 +1,7 @@
-import { Container, Stage } from "@pixi/react";
+import { useRef } from "react";
 
 const Scene = () => {
-    return (
-        <Container>
-            
-        </Container>
-    );
+    
 }
 
 export default Scene;
