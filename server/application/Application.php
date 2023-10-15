@@ -3,6 +3,7 @@ require_once 'modules/User/User.php';
 require_once 'modules/Game/Game.php';
 require_once 'modules/DB/DB.php';
 
+
 class Application
 {
     private $user;

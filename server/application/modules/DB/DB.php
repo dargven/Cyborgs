@@ -8,6 +8,7 @@ class DB
             'token' => null
         ]
     ];
+    
     private $BulletData;
     private $SceneData;
 
