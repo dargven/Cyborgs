@@ -8,11 +8,12 @@ class Application
     private $user;
     private $chat;
     private $game;
+    private $db;
 
     function __construct()
     {
-        $db = new DB();
-        $this->user = new User($db);
+        $this->db = new DB();
+        $this->user = new User($this->db);
     }
 
     function login($params)
@@ -24,5 +25,11 @@ class Application
             return $this->user->login($login, $hash, $rnd);
         }
         return [false, 1001];
+    }
+    function checkToken($id, $params)
+    {
+        $token = $params['token'];
+        $tokenS = $this->db->getUser($id, 'token');
+        return $token === $tokenS;
     }
 }

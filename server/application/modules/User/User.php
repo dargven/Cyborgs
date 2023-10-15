@@ -2,6 +2,7 @@
 
 class User
 {
+    private $id;
     private $db;
     function __construct($db)
     {
@@ -21,4 +22,7 @@ class User
         }
         return array(false, 1002);
     }
+}
+function logout($id) //Дописать. Арина.
+{
 }
