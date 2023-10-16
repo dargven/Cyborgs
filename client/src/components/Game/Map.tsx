@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Vector3 } from "three";
 import MakeSprite from "./MakeSprite";
-import { FL, WU, WD, WL, WR, LUC, RUC, LDC, RDC, COL } from "./assets/image";
+import { FL, WU, WD, WL, WR, LUC, RUC, LDC, RDC, COL, TEST } from "./assets/image";
 import { TMap } from "./Types";
 
 function Map({ scale }: TMap) {
