@@ -1,14 +1,15 @@
 import { useContext, useRef, useState } from 'react';
 import { ServerContext } from '../App';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import '../Auth.css';
 
 const RegistrationPage = () => {
     const server = useContext(ServerContext);
+    const nameRef = useRef<HTMLInputElement | null>(null);
     const loginRef = useRef<HTMLInputElement | null>(null);
+    const emailRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
-    const emailRef = useRef<HTMLInputElement | null>(null)
 
     const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
@@ -24,7 +25,7 @@ const RegistrationPage = () => {
                 if (response) {
                     setRegistrationSuccess(true);
                 } else {
-                    console.error("Ошибка при регистрации:");
+                    console.error("Ошибка при регистрации");
                 }
             } catch (error) {
                 console.error("Ошибка при отправке запроса:", error);
@@ -40,6 +41,14 @@ const RegistrationPage = () => {
                     type="text"
                     id="username"
                     name="username"
+                    className="input"
+                    placeholder="Имя"
+                    ref={nameRef}
+                />
+                <input
+                    type="text"
+                    id="login"
+                    name="login"
                     className="input"
                     placeholder="Логин"
                     ref={loginRef}
@@ -60,8 +69,9 @@ const RegistrationPage = () => {
                     placeholder="Пароль"
                     ref={passwordRef}
                 />
+
                 <button onClick={() => handleRegistration()}>Зарегистрироваться</button>
-            </div>
+        </div>
             {registrationSuccess ? <Navigate to='/main' replace={true} /> : null}
         </div>
     );

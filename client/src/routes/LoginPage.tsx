@@ -2,7 +2,7 @@ import { useContext, useRef, useState } from 'react';
 import { ServerContext } from '../App';
 import { Navigate } from 'react-router-dom';
 
-import Bg from './Bg';
+import Bg from '../components/Bg';
 
 
 import '../Auth.css'
@@ -21,6 +21,8 @@ const LoginPage = () => {
             if (user){
               setLoginSuccess(true);
             }
+            else
+              console.error("Ошибка авторизации");
         }
     };
 
@@ -30,8 +32,8 @@ const LoginPage = () => {
         <div className="input-form">
           <input
             type="text"
-            id="username"
-            name="username"
+            id="login"
+            name="login"
             className="input"
             placeholder="Логин"
             ref={loginRef}            

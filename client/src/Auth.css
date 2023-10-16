@@ -110,6 +110,36 @@ h1 {
   color: rgb(238, 238, 238);
 }
 
+.App-header {
+  overflow: hidden;
+  background-color: rgba(32, 9, 32, 0.8);;
+  color: white;
+  padding: 20px 10px;
+  box-shadow: 0px 2px 6px black;
+}
+
+.App-header button {
+  background-color: #86263e;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px solid #402e22;
+  margin: 2px;
+}
+
+.App-header button:hover {
+  background-color: #C38D9E;
+}
+
+.header-right {
+  float: right;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
 @keyframes slide {
   0% {
     transform:translateX(-25%);

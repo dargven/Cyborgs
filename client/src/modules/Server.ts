@@ -36,7 +36,6 @@ export default class Server {
             if (response !== null) {
                 return response;
             } else {
-                console.error("null");
                 return null;
             }
         } catch (error) {
