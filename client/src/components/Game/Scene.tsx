@@ -7,9 +7,6 @@ const Scene = () => {
     const sceneRef = useRef<Mesh>(null!);
     const scale = 1;
 
-    const { viewport } = useThree();
-    console.log(viewport)
-
     return (
         <group>
             {/* <gridHelper args={[20, 20, 0x222222, 0xdddddd]} /> */}

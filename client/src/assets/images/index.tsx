@@ -1,7 +1,5 @@
 import FL from './Walls/Floor.png';
 import WALL from './Walls/WALL.png';
-// import WL from './Walls/leftWall.png';
-// import WR from './Walls/rightWall.png';
 import LUC from './Walls/LUC.png';
 import RUC from './Walls/RUC.png';
 import LDC from './Walls/LDC.png';
