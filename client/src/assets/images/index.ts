@@ -6,5 +6,6 @@ import LDC from './Walls/LDC.png';
 import RDC from './Walls/RDC.png';
 import COL from './Walls/Collumn.png';
 import TEST from './test.png';
+import TROLLFACE from './Skins/trollface.png'
 
-export{ FL, WALL, LUC, RUC, LDC, RDC, COL, TEST };
+export{ FL, WALL, LUC, RUC, LDC, RDC, COL, TEST, TROLLFACE };

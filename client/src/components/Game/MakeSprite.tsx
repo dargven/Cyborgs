@@ -1,10 +1,14 @@
 import { TextureLoader, MeshBasicMaterial, PlaneGeometry, DoubleSide } from "three";
 import { TSprite } from "./Types";
 import MakeCollider from "./MakeCollider";
+import * as THREE from "three";
 
 const MakeSprite = ({ texture, position, scale=1, rotation=[Math.PI, 0, 0], isCollider=true, colliderSize=[1, 1, 0.1] }: TSprite) => {
     const textureLoader = new TextureLoader();
     const spriteTexture = textureLoader.load(texture);
+
+    spriteTexture.magFilter = THREE.NearestFilter;
+    spriteTexture.minFilter = THREE.NearestFilter;
 
     const planeGeometry = new PlaneGeometry(1, 1);
     const planeMaterial = new MeshBasicMaterial({ map: spriteTexture, transparent: true, side: DoubleSide});

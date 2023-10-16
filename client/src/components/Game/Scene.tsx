@@ -1,6 +1,6 @@
 import { useThree } from "@react-three/fiber";
 import { useRef } from "react";
-import { Mesh} from "three";
+import { Mesh } from "three";
 import Map from "./Map";
 
 const Scene = () => {
@@ -9,9 +9,8 @@ const Scene = () => {
 
     return (
         <group>
-            {/* <gridHelper args={[20, 20, 0x222222, 0xdddddd]} /> */}
             <mesh ref={sceneRef} position={[-5, 0, -2.5]} rotation={[Math.PI / 2, 0, 0]}>
-                <Map scale={scale}/>
+                <Map scale={scale} />
             </mesh>
         </group>
     );
