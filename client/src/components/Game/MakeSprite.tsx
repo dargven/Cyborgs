@@ -1,7 +1,7 @@
 import { TextureLoader, MeshBasicMaterial, PlaneGeometry, DoubleSide } from "three";
 import { TSprite } from "./Types";
 
-const MakeSprite = ({ texture, position, scale=1 }: TSprite) => {
+const MakeSprite = ({ texture, position, scale=1, rotation=[Math.PI, 0, 0] }: TSprite) => {
     const textureLoader = new TextureLoader();
     const spriteTexture = textureLoader.load(texture);
 
@@ -9,7 +9,7 @@ const MakeSprite = ({ texture, position, scale=1 }: TSprite) => {
     const planeMaterial = new MeshBasicMaterial({ map: spriteTexture, transparent: true, side: DoubleSide});
 
     return(
-        <mesh position={position} scale={[scale, scale, scale]} rotation={[Math.PI, 0, 0]}>
+        <mesh position={position} scale={[scale, scale, scale]} rotation={rotation}>
             <primitive object={planeGeometry} material={planeMaterial} />
             <meshBasicMaterial side={DoubleSide} map={spriteTexture} transparent />
         </mesh>

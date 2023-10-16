@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Vector3 } from "three";
 import MakeSprite from "./MakeSprite";
-import { FL, WU, WD, WL, WR, LUC, RUC, LDC, RDC, COL, TEST } from "./assets/image";
+import { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST } from "./assets/image";
 import { TMap } from "./Types";
 
 function Map({ scale }: TMap) {
     const map = [ //лучше поменять на цифры
-        ['LU', 'WU', 'WU', 'WU', 'WU', 'WU', 'WU', 'WU', 'WU', 'RU'],
+        ['LU', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'RU'],
         ['WL', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'WR'],
         ['WL', 'fl', 'COL', 'fl', 'fl', 'fl', 'fl', 'COL', 'fl', 'WR'],
         ['WL', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl'],
         ['WL', 'fl', 'COL', 'fl', 'fl', 'fl', 'fl', 'COL', 'fl', 'WR'],
         ['WL', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'WR'],
-        ['LD', 'WD', 'WD', 'WD', 'WD', 'WD', 'WD', 'WD', 'WD', 'RD'],
+        ['LD', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'RD'],
     ];
 
     const tileSize = 32;
@@ -31,17 +31,14 @@ function Map({ scale }: TMap) {
                     case 'fl':
                         tile = <MakeSprite texture={FL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
-                    case 'WU':
-                        tile = <MakeSprite texture={WU} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
-                        break;
-                    case 'WD':
-                        tile = <MakeSprite texture={WD} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                    case 'WA':
+                        tile = <MakeSprite texture={WALL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
                     case 'WL':
-                        tile = <MakeSprite texture={WL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={WALL} rotation={[0, 0, Math.PI/2]} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
                     case 'WR':
-                        tile = <MakeSprite texture={WR} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={WALL} rotation={[0, 0, Math.PI/2]} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
                     case 'LU':
                         tile = <MakeSprite texture={LUC} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
