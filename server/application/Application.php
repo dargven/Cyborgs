@@ -27,10 +27,23 @@ class Application
         }
         return [false, 1001];
     }
+
+
     function checkToken($id, $params)
     {
         $token = $params['token'];
         $tokenS = $this->db->getUser($id, 'token');
         return $token === $tokenS;
     }
+
+    function reg($params)
+    {
+        $login = $params['login'];
+        $password = $params['password'];
+        if (!empty($login) && !empty($password)) {
+            return $this->user->reg($login, $password);
+        }
+        return [false, 1001];
+    }
+
 }

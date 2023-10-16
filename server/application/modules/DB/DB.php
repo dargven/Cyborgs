@@ -4,7 +4,7 @@ class DB
     private array $UsersData = [
         1 => [
             'login' => 'Vasya',
-            'hashPassword' => '9577240a87581e939d679f36f3ffa36e', // Хэш от логина+пароль(md5('Vasya'.'1234')
+            'hashPassword' => 'c082282cad5d535061e6205f6e3576a4', // Хэш от логина+пароль(md5('Vasya'.'1234')
             'token' => null
         ]
     ];
@@ -14,7 +14,7 @@ class DB
 
     public function addUser($id, $login, $hashPassword, $token)
     {
-        $this->UsersData = array(
+        $this->UsersData += array(
             $id => [
                 'id' => $id,
                 'login' => $login,

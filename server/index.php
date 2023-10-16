@@ -4,6 +4,7 @@ header('Access-Control-Allow-Origin: *');
 require_once 'application/Answer.php';
 require_once 'application/Application.php';
 
+
 function result($params)
 {
     $method = $params['method'];
@@ -11,6 +12,7 @@ function result($params)
         $app = new Application();
         switch ($method) {
             case 'login':return $app->login($params);
+            case 'reg':return $app->reg($params);
             default:return [false, 102];
         }
     }
