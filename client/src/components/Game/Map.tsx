@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Vector3 } from "three";
 import MakeSprite from "./MakeSprite";
-import { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST } from "./assets/image";
+import { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST } from "../../assets/images";
 import { TMap } from "./Types";
 
 function Map({ scale }: TMap) {
@@ -29,7 +29,7 @@ function Map({ scale }: TMap) {
                 let tile;
                 switch (tileType) {
                     case 'fl':
-                        tile = <MakeSprite texture={FL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={FL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`} isCollider={false}/>
                         break;
                     case 'WA':
                         tile = <MakeSprite texture={WALL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
@@ -53,10 +53,10 @@ function Map({ scale }: TMap) {
                         tile = <MakeSprite texture={RDC} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
                     case 'COL':
-                        tile = <MakeSprite texture={COL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={COL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`} colliderSize={[0.5, 0.5, 0.1]}/>
                         break;
                     default:
-                        tile = <MakeSprite texture={FL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={FL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`} isCollider={false}/>
                 }
 
                 sprites.push(tile);

@@ -12,8 +12,8 @@ const Scene = () => {
 
     return (
         <group>
-            <gridHelper args={[20, 20, 0x222222, 0xdddddd]} />
-            <mesh ref={sceneRef} rotation={[Math.PI / 2, 0, 0]}>
+            {/* <gridHelper args={[20, 20, 0x222222, 0xdddddd]} /> */}
+            <mesh ref={sceneRef} position={[-5, 0, -2.5]} rotation={[Math.PI / 2, 0, 0]}>
                 <Map scale={scale}/>
             </mesh>
         </group>
