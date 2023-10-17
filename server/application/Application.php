@@ -1,14 +1,28 @@
 <?php
-require_once('server\application\modules\db\DB.php');
-require_once('server\application\modules\user\User.php');
-require_once('server\application\modules\chat\Chat.php');
-require_once('server\application\modules\game\Game.php');
+require_once 'modules/User/User.php';
+require_once 'modules/Game/Game.php';
+require_once 'modules/DB/DB.php';
 
-    class Application {
-        function __construct (){
-            $db = new DB();
-            $this -> user = new User($db);
-            $this -> chat = new Chat($db);
-            $this -> game = new Game($db);
-        }
-    }
+ class Application
+ {
+     private $user;
+     private $chat;
+     private $game;
+
+     function __construct()
+     {
+         $db = new DB();
+         $this->user = new User($db);
+     }
+
+     function login(array $params)
+     {
+         $login = $params['login'];
+         $password = $params['password'];
+         if ($login && $password) {
+             return $this->user->login($login, $password);
+         }
+         return [false, 1001];
+     }
+
+ }

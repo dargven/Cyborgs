@@ -115,6 +115,65 @@ p {
   font-size: 20px;
   border: 5px solid #691e6c;
   box-sizing: border-box;
+    height: 100%;
+}
+
+body {
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: sans-serif;
+}
+
+p {
+    font-family: 'MinecrafterAltRegular';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 64px;
+    position: fixed;
+}
+
+.form h1 {
+    font-family: 'MinecrafterAltRegular';
+    font-weight: normal;
+    font-style: normal;
+    margin: 30px 100px;
+    padding: 0;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    text-transform: uppercase;
+}
+
+.input-form {
+    margin: 15px 40px;
+    text-align: center;
+}
+
+.input-form input {
+    padding: 10px;
+    width: 100%;
+    color: #fff;
+    font-size: 20px;
+    background: none;
+    outline: none;
+    border: 1px solid #fff;
+    box-sizing: border-box;
+}
+
+.forget {
+    color: #fff;
+}
+
+.input-form button {
+    padding: 10px;
+    width: 100%;
+    color: #fff;
+    font-size: 20px;
+    background: none;
+    outline: none;
+    border: 1px solid #fff;
+    box-sizing: border-box;
 }
 .input-form button:hover {
   padding: 10px;
