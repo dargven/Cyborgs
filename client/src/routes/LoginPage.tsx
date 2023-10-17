@@ -25,10 +25,12 @@ const LoginPage = () => {
               console.error("Ошибка авторизации");
         }
     };
-
+    
     return (
     <div className="content">
-        <h1>Вход</h1>
+      <p>КИБОРГИ <br/> ТЕПЕРЬ В 2D</p>
+      
+        <h1 >Вход</h1>
         <div className="input-form">
           <input
             type="text"
