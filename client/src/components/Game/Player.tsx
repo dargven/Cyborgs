@@ -5,6 +5,7 @@ import { EControls } from "./Game";
 import { useRef, useState } from "react";
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import  Projectile  from "./Projectile"
 
 interface IPlayerProps {
     id?: number;
@@ -30,18 +31,18 @@ const Player = (props: IPlayerProps) => {
     const handleMovement = () => {
         if (isAlive) {
 
-            const postion = playerRef.current.position;
+            const position = playerRef.current.position;
             if (leftPressed) {
-                playerRef.current.position.set(postion.x - 0.025, postion.y, postion.z);
+                playerRef.current.position.set(position.x - 0.025, position.y, position.z);
             }
             if (rightPressed) {
-                playerRef.current.position.set(postion.x + 0.025, postion.y, postion.z);
+                playerRef.current.position.set(position.x + 0.025, position.y, position.z);
             }
             if (upPressed) {
-                playerRef.current.position.set(postion.x, postion.y, postion.z - 0.025);
+                playerRef.current.position.set(position.x, position.y, position.z - 0.025);
             }
             if (downPressed) {
-                playerRef.current.position.set(postion.x, postion.y, postion.z + 0.025);
+                playerRef.current.position.set(position.x, position.y, position.z + 0.025);
             }
             if (shootPressed) {
                 takeDamage(6);
@@ -66,6 +67,8 @@ const Player = (props: IPlayerProps) => {
             <group position={new Vector3(0, 0.1, -0.75)} rotation={[Math.PI / 2, -Math.PI, Math.PI]} scale={new Vector3(1, 0.25, 0)}>
                 <sprite material={new SpriteMaterial({ color: 0xff0000 })} ref={healthbarRef} />
             </group>
+
+            <Projectile />
 
             {isAlive ? <MakeSprite texture={TROLLFACE} position={new Vector3(0, 0.1, 0)} rotation={[Math.PI / 2, -Math.PI, Math.PI]} /> :
                 <MakeSprite texture={SADTROLLFACE} position={new Vector3(0, 0.1, 0)} rotation={[Math.PI / 2, -Math.PI, Math.PI]} isCollider={false} />}

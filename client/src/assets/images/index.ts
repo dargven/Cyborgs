@@ -8,5 +8,6 @@ import COL from './Walls/Collumn.png';
 import TEST from './test.png';
 import TROLLFACE from './Skins/trollface.png'
 import SADTROLLFACE from './Skins/sadtrollface.png'
+import PROJECTILE from './Bullets/Projectile.png'
 
-export { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST, TROLLFACE, SADTROLLFACE };
+export { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST, TROLLFACE, SADTROLLFACE, PROJECTILE };
