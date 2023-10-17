@@ -1,22 +1,37 @@
 import { Canvas } from "@react-three/fiber";
 import Scene from "./Scene";
 import Player from "./Player";
-import { KeyboardEvent } from "react";
+import { useMemo } from "react";
+import { KeyboardControlsEntry, KeyboardControls } from "@react-three/drei";
+
+export enum EControls {
+    up = 'up',
+    down = 'down',
+    left = 'left',
+    right = 'right',
+    shoot = 'shoot'
+}
 
 const Game: React.FC = () => {
 
-    const inputHandler = (event: KeyboardEvent<HTMLDivElement>) => {
-        console.log(event.key);
-    }
+    const inputMap = useMemo<KeyboardControlsEntry[]>(() => [
+        { name: EControls.up, keys: ['KeyW'] },
+        { name: EControls.down, keys: ['KeyS'] },
+        { name: EControls.left, keys: ['KeyA'] },
+        { name: EControls.right, keys: ['KeyD'] },
+        { name: EControls.shoot, keys: ['Space'] },
+    ], []);
 
     return (
-        <Canvas camera={{ position: [0, 10, 0] }} onKeyDownCapture={inputHandler}>
-            <Player />
-            <ambientLight intensity={0.1} />
-            <pointLight position={[10, 10, 10]} intensity={200} />
-            <axesHelper />
-            <Scene />
-        </Canvas>
+        <KeyboardControls map={inputMap}>
+            <Canvas camera={{ position: [0, 10, 0] }} >
+                <Player />
+                <ambientLight intensity={0.1} />
+                <pointLight position={[10, 10, 10]} intensity={200} />
+                <axesHelper />
+                <Scene />
+            </Canvas>
+        </KeyboardControls>
     );
 }
 
