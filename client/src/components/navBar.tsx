@@ -1,35 +1,15 @@
-import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-//import { AuthContext } from './AuthContext'; // Импортируйте свой контекст AuthContext
+import NavButton from './navButton';
 
-const NavBar = () => {
-    //const { loginSuccess, setLoginSuccess } = useContext(AuthContext);
-
+const NavBar = () => {  
     return (
         <header className="App-header">
-                <Link to="/user">
-                    <button className='header-right'>
-                        User
-                    </button>
-                </Link>
+            <NavButton to='/user' text='User' />
+            
+            <NavButton to='/registration' text='Registration' />
 
-                <Link to="/register">
-                    <button className='header-right'>
-                        Registration
-                    </button>
-                </Link>
+            <NavButton to='/login' text='Logout' /> 
 
-                <Link to="/login"> 
-                    <button className='header-right'>
-                        Logout
-                    </button>
-                </Link>
-
-                <Link to="/login">
-                    <button className='header-right'>
-                        Sign In
-                    </button>
-                </Link>
+            <NavButton to='/login' text='Sig In' />
         </header>
     );
 }
