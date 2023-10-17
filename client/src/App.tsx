@@ -1,22 +1,23 @@
-import React, {useEffect} from 'react';
+import React from 'react';
+import { BrowserRouter} from 'react-router-dom';
+import Server from './modules/Server';
+import { HOST } from './config';
+import RoutersH from './Hooks/useRoutes';
+import NavBar from './components/navBar';
 
-import {HOST} from './config';
-import {Server} from './modules';
-
-import LoginForm from './components/LoginForm';
-
-export const ServerContext = React.createContext<Server>(null!);
+export const ServerContext = React.createContext<Server>(new Server(HOST));
 
 const App: React.FC = () => {
-    const server = new Server(HOST);
 
-    return (
-        <ServerContext.Provider value={server}>
-            <div>
-                <LoginForm/>
-            </div>
-        </ServerContext.Provider>
-    )
-}
+  const server = new Server(HOST);
+  return (
+    <BrowserRouter>
+      <ServerContext.Provider value={server}>
+          <NavBar/>
+          <RoutersH />
+      </ServerContext.Provider>
+    </BrowserRouter>
+  );
+};
 
 export default App;
