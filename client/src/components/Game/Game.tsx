@@ -25,7 +25,7 @@ const Game: React.FC = () => {
     return (
         <KeyboardControls map={inputMap}>
             <Canvas camera={{ position: [0, 10, 0] }} >
-                <Player />
+                <Player isAlive={true} />
                 <ambientLight intensity={0.1} />
                 <pointLight position={[10, 10, 10]} intensity={200} />
                 <axesHelper />
