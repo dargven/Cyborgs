@@ -1,17 +1,17 @@
-import NavButton from './navButton';
+import NavButton from "./navButton";
 
-const NavBar = () => {  
-    return (
-        <header className="App-header">
-            <NavButton to='/user' text='User' />
-            
-            <NavButton to='/registration' text='Registration' />
+const NavBar = () => {
+  return (
+    <header className="App-header">
+      <NavButton to="/user" text="Профиль" />
 
-            <NavButton to='/login' text='Logout' /> 
+      <NavButton to="/registration" text="Регистрация" />
 
-            <NavButton to='/login' text='Sig In' />
-        </header>
-    );
-}
+      <NavButton to="/login" text="Выйти" />
+
+      <NavButton to="/login" text="Войти" />
+    </header>
+  );
+};
 
 export default NavBar;

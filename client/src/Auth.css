@@ -7,6 +7,8 @@ body {
   background-size: cover;
   background-attachment: fixed;
   background-image: url("Figma/Background.png");
+  overflow: auto;
+  max-zoom: 50%;
 }
 
 p {
@@ -20,6 +22,7 @@ p {
   transform: translate(-50%, -50%);
   white-space: nowrap;
   animation: glitch 5s infinite;
+  margin-bottom: 0;
 }
 
 .form h1 {
@@ -34,22 +37,24 @@ p {
 .input-form {
   margin: 15px 40px;
   text-align: center;
-
+  padding: 10px;
 }
 
 .input-form input {
   text-align: center;
-  padding: 10px;
   width: 70%;
   height: 45px;
   color: #ffffff;
   font-size: 20px;
   background: none;
   outline: none;
-  border: 1px solid rgb(0, 217, 255);
   border-radius: 20px;
   margin-bottom: 30px;
   box-sizing: border-box;
+}
+
+.input-form input:hover {
+  border: 5px solid rgb(0, 217, 255);
 }
 
 .forget {
@@ -69,24 +74,71 @@ p {
   margin-bottom: 10px;
   box-sizing: border-box;
 }
-
+.input-form1 {
+  margin: 15px 40px;
+  text-align: center;
+  padding: 10px;
+}
+.input-form1 button {
+  padding: 10px;
+  width: auto;
+  height: 54px;
+  color: #fff;
+  font-size: 20px;
+  background: linear-gradient(to right, #ff00bf, #008cff);
+  outline: none;
+  border: none;
+  border-radius: 11px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+.input-form1 input {
+  text-align: center;
+  width: 70%;
+  height: 45px;
+  color: #ffffff;
+  font-size: 20px;
+  background: none;
+  outline: none;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  box-sizing: border-box;
+}
+.input-form1 input:hover {
+  border: 5px solid rgb(0, 217, 255);
+}
+.input-form1 button:hover {
+  padding: 10px;
+  width: auto;
+  height: 54px;
+  color: #61dafb;
+  font-size: 20px;
+  border: 5px solid #691e6c;
+  box-sizing: border-box;
+}
 .input-form button:hover {
   padding: 10px;
   width: 134px;
   height: 54px;
-  color: #4b7c4b;
+  color: #61dafb;
   font-size: 20px;
-  border: 1px solid #355c38;
+  border: 5px solid #691e6c;
   box-sizing: border-box;
 }
-
-
+.reg-butonn {
+  padding: 10px;
+  width: aut;
+}
 .bg {
   animation: slide 3s ease-in-out infinite alternate;
-  background-image: linear-gradient(-60deg, rgb(58, 139, 17) 50%, rgb(81, 22, 136) 50%);
+  background-image: linear-gradient(
+    -60deg,
+    rgb(58, 139, 17) 50%,
+    rgb(81, 22, 136) 50%
+  );
   bottom: 0;
   left: -50%;
-  opacity: .5;
+  opacity: 0.5;
   position: fixed;
   right: -50%;
   top: 0;
@@ -106,27 +158,44 @@ h1 {
   font-family: "Zelek";
   color: rgb(0, 217, 255);
   text-shadow: 0px 5px 10px #00aeff;
-
 }
-
+.title {
+  font-family: "Zelek";
+  color: rgb(0, 255, 255);
+  font-size: 120px;
+  text-shadow: 0px 0px 3px #00aeff;
+  white-space: nowrap;
+  animation: glitch 5s infinite;
+  margin-bottom: 0;
+  margin: 0 auto;
+  position: fixed;
+  text-align: center;
+  left: 50%;
+}
 .content {
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 2em;
-  box-shadow: 0 0 0.25em rgba(0, 0, 25, .25);
+  box-shadow: 0 0 0.25em rgba(0, 0, 25, 0.25);
   box-sizing: border-box;
   left: 50%;
-  padding: 9vmin;
+  padding: 20px;
   position: fixed;
   text-align: center;
   top: 60%;
   transform: translate(-50%, -50%);
-  height: 534px;
-  width: 514px;
+  height: auto;
+  width: 100%;
+  min-width: 0px;
+  min-height: 0px;
+  max-width: 514px;
+  max-height: 534px;
+  align-items: center;
+  margin: 20px;
 }
 
 .App-header {
   overflow: hidden;
-  background-color: rgba(32, 9, 32, 0.8);;
+  background-color: rgba(32, 9, 32, 0.8);
   color: white;
   padding: 20px 10px;
   box-shadow: 0px 2px 6px black;
@@ -143,33 +212,39 @@ h1 {
 }
 
 .App-header button:hover {
-  background-color: #C38D9E;
+  background-color: #c38d9e;
 }
 
 .header-right {
   float: right;
+  padding: 10px;
+  width: auto;
+  height: 54px;
+  color: #fff;
+  font-size: 20px;
+  background: linear-gradient(#ffffff, #002aff, #ff0000);
+  outline: none;
+  border-radius: 11px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 5px solid rgb(0, 217, 255);
 }
-
+.header-right:hover {
+  color: #61dafb;
+  border: 5px solid #691e6c;
+}
 .App-link {
   color: #61dafb;
 }
 
-@keyframes slide {
-  0% {
-    transform: translateX(-25%);
-  }
-
-  100% {
-    transform: translateX(25%);
-  }
-}
 @font-face {
   font-family: Zelek;
   src: url(Figma/Docker.ttf);
 }
 @keyframes glitch {
   0% {
-    text-shadow: 0px 0px 10px #00aeff, 0px 0px 30px #00aeff, 0px 0px 30px #00aeff;
+    text-shadow: 0px 0px 10px #00aeff, 0px 0px 30px #00aeff,
+      0px 0px 30px #00aeff;
     color: rgb(0, 217, 255);
   }
   25% {
@@ -177,7 +252,8 @@ h1 {
     color: #00aeff;
   }
   50% {
-    text-shadow: 0px 0px 10px #00aeff, 0px 0px 30px #00aeff, 0px 0px 30px #00aeff;
+    text-shadow: 0px 0px 10px #00aeff, 0px 0px 30px #00aeff,
+      0px 0px 30px #00aeff;
     color: rgb(0, 217, 255);
   }
   75% {
@@ -185,7 +261,8 @@ h1 {
     color: #00aeff;
   }
   100% {
-    text-shadow: 0px 0px 10px #00aeff, 0px 0px 30px #00aeff, 0px 0px 30px #00aeff;
+    text-shadow: 0px 0px 10px #00aeff, 0px 0px 30px #00aeff,
+      0px 0px 30px #00aeff;
     color: rgb(0, 217, 255);
   }
 }
