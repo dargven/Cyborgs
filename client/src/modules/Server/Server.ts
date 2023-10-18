@@ -26,8 +26,9 @@ export default class Server {
     }
 
     login(login: string, password: string): Promise<TUser | null> {
-        const hash = md5(login + password)
-        return this.request<TUser>('login', {login, password});
+        const hash = md5(login + password);
+        const randomnumber = Math.ceil(283*Math.random()); 
+        return this.request<TUser>('login', {login, hash, randomnumber});
     }
 
     async register(username: string,email: string , password: string): Promise<TUser | null> {
