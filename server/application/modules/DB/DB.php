@@ -3,12 +3,12 @@
 class DB
 {
     private array $UsersData = [
-        1 => [
+        'Vasya' => [
             'login' => 'Vasya',
             'hashPassword' => 'c082282cad5d535061e6205f6e3576a4', // Хэш от логина+пароль(md5('Vasya'.'1234')
             'token' => null
         ],
-        2 => [
+        'Kirill' => [
             'login' => 'Kirill',
             'hashPassword' => 'asd123',
             'token' => null
@@ -18,16 +18,14 @@ class DB
     private $BulletData;
     private $SceneData;
 
-    public function addUser($id, $login, $hashPassword, $token)
+    public function addUser( $login, $hashPassword, $token)
     {
-        $this->UsersData[$id] = array(
+        $this->UsersData[$login] = array(
 
-            'id' => $id,
             'login' => $login,
             'hashPassword' => $hashPassword,
             'token' => $token
         );
-        var_dump($this->UsersData);
 
     }
 
@@ -52,14 +50,14 @@ class DB
 
     }
 
-    public function getUser($id)
+    public function getUser($login)
     {
-        return $this->UsersData;
+        return $this->UsersData[$login];
     }
 
-    public function setValue($id, string $value, $params = 'token'): void
+    public function setValue($login, string $value, $params = 'token'): void
     {
-        $this->UsersData[$id][$params] = $value;
+        $this->UsersData[$login][$params] = $value;
     }
 
 }

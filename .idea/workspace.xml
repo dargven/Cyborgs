@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0488c865-96c7-42e5-a404-68ef28103ba7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/modules/Server/Server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/Server/Server.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/application/Application.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/Application.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/application/modules/DB/DB.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/modules/DB/DB.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/application/modules/User/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/modules/User/User.php" afterDir="false" />
@@ -103,7 +100,8 @@
       <workItem from="1697032549855" duration="554000" />
       <workItem from="1697033803534" duration="5215000" />
       <workItem from="1697611715757" duration="216000" />
-      <workItem from="1697611942809" duration="1073000" />
+      <workItem from="1697611942809" duration="3905000" />
+      <workItem from="1697617903272" duration="604000" />
     </task>
     <servers />
   </component>
