@@ -68,7 +68,7 @@ const Player = (props: IPlayerProps) => {
                 <sprite material={new SpriteMaterial({ color: 0xff0000 })} ref={healthbarRef} />
             </group>
 
-            <Projectile />
+            <Projectile initialSpeed={20}/>
 
             {isAlive ? <MakeSprite texture={TROLLFACE} position={new Vector3(0, 0.1, 0)} rotation={[Math.PI / 2, -Math.PI, Math.PI]} /> :
                 <MakeSprite texture={SADTROLLFACE} position={new Vector3(0, 0.1, 0)} rotation={[Math.PI / 2, -Math.PI, Math.PI]} isCollider={false} />}
