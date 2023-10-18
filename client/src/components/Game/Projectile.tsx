@@ -5,25 +5,33 @@ import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 
 interface IProjectiileProps {
-	initialSpeed: number
+    initialSpeed?: number;
+    // direction: Vector3;
+    initialPosition: Vector3;
 }
 
 const Progectile = (props: IProjectiileProps) => {
-	const bulletRef = useRef<Mesh>(null!)
-	const [active, setActive] = useState<boolean>(false)
+    const bulletRef = useRef<Mesh>(null!);
+    const [isActive, setActive] = useState<boolean>(true);
 
-	useFrame((clock, delta) => {
-		if (active) {
-			const dx: string = delta.toExponential();
-			bulletRef.current.position.x -= +dx * props.initialSpeed;
-		}
-	  });
+    const [speed, setSpeed] = useState<number>(props.initialSpeed ? props.initialSpeed : 10);
 
-	return(
-		<mesh ref={bulletRef} onClick={() => setActive(!active)}>
-			<MakeSprite texture={PROJECTILE} position={new Vector3(-1, 0.1, 0)} rotation={[Math.PI / 2, -Math.PI, Math.PI]} />
-		</mesh>
-	)
+    useFrame((clock, delta) => {
+        if (isActive) {
+            bulletRef.current.position.x -= delta * speed;
+            setSpeed(speed => speed += 2);
+            if (speed >= 100) {
+                setActive(false);
+            }
+        }
+    });
+
+    return isActive ? (
+        <mesh ref={bulletRef}>
+            <MakeSprite texture={PROJECTILE} position={props.initialPosition} rotation={[Math.PI / 2, -Math.PI, Math.PI]} scale={0.5} />
+        </mesh>
+    ) : <></>;
+
 }
 
 export default Progectile;

@@ -1,9 +1,8 @@
 import { Canvas } from "@react-three/fiber";
 import Scene from "./Scene";
-import Player from "./Player";
+import { IPlayerProps } from "./Player";
 import { useMemo } from "react";
 import { KeyboardControlsEntry, KeyboardControls } from "@react-three/drei";
-import Robot from "./Robot";
 
 export enum EControls {
     up = 'up',
@@ -13,7 +12,12 @@ export enum EControls {
     shoot = 'shoot'
 }
 
-const Game: React.FC = () => {
+const playerProps: IPlayerProps = {
+    id: 1337,
+    isAlive: true
+}
+
+const Game = () => {
 
     const inputMap = useMemo<KeyboardControlsEntry[]>(() => [
         { name: EControls.up, keys: ['KeyW'] },
@@ -26,12 +30,7 @@ const Game: React.FC = () => {
     return (
         <KeyboardControls map={inputMap}>
             <Canvas camera={{ position: [0, 10, 0] }} >
-                <Robot />
-                <Player isAlive={true} />
-                <ambientLight intensity={0.1} />
-                <pointLight position={[10, 10, 10]} intensity={200} />
-                <axesHelper />
-                <Scene />
+                <Scene playerProps={playerProps} />
             </Canvas>
         </KeyboardControls>
     );
