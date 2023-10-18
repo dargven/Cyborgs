@@ -17,33 +17,46 @@ class Application
         $this->user = new User($this->db);
     }
 
-    function login($params)
-    {
-        $login = $params['login'];
-        $hash = $params['hash'];
-        $rnd = $params['rnd'];
-        if ($login && $hash && $rnd) {
-            return $this->user->login($login, $hash, $rnd);
-        }
-        return [false, 1001];
-    }
-
-
-    function checkToken($id, $params)
-    {
-        $token = $params['token'];
-        $tokenS = $this->db->getUser($id, 'token');
-        return $token === $tokenS;
-    }
-
     function reg($params)
     {
         $login = $params['login'];
         $password = $params['password'];
-        if (!empty($login) && !empty($password)) {
-            return $this->user->reg($login, $password);
+        $id = $params['id'];
+
+        if ($login && $password && $id) {
+            return $this->user->reg($id,$login, $password);
         }
         return [false, 1001];
     }
 
+    function login($params)
+    {
+        $login = $params['login'];
+        $hash = $params['hash'];
+        $id = $params['id'];
+        $rnd = $params['rnd'];
+        if ($login && $hash && $rnd && $id) {
+            return $this->user->login($id,$login, $hash, $rnd);
+        }
+        return [false, 1001];
+    }
+
+
+    function checkToken($params)
+    {
+        $token = $params['token'];
+        $id = $params['id'];
+        if($token && $id){
+            return $this->user->checkToken($token, $id);
+        }
+        return [false,242];
+    }
+
+    function unlogin($params){
+        $id = $params['id'];
+        if($id){
+            return $this->user->unlogin($id);
+        }
+        return [false,242];
+    }
 }

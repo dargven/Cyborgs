@@ -1,5 +1,5 @@
 import {TUser} from "./types";
-
+import md5 from 'md5-ts';
 export default class Server {
     HOST: string;
 
@@ -26,6 +26,7 @@ export default class Server {
     }
 
     login(login: string, password: string): Promise<TUser | null> {
+        const hash = md5(login + password)
         return this.request<TUser>('login', {login, password});
     }
 

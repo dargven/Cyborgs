@@ -2,110 +2,61 @@
 
 class User
 {
-    private int $id = 1;
-    private $db;
+    private DB $db;
+
     function __construct($db)
     {
-        $this->db =  new DB();
+        $this->db = new DB();
     }
 
-    function login($login, $hash, $rnd)
-    {//Настроить запрос из базы данных
-        $hashPassword = $this->db->getUser($this->id,'hashPassword');
-        $hashs = md5($hashPassword . $rnd);
+    function login($id,$login, $hash, $rnd)
+    {
+        $hashPassword = $this->db->getParamsUser($id, 'hashPassword');
+        $hashs = md5($hashPassword . $rnd); //$hashS при rnd=5
+        var_dump($hashs);         //9577240a87581e939d679f36f3ffa36e
         if ($hash === $hashs) {
-            $token = md5($hash . rand());
+            $token = $this->genToken();
+            $this->db->setValue($id,$token, 'token');
             return array(
-                'name' => 'Vasya',
-                'soname' => 'Petrov',
+                'login' => $login,
                 'token' => $token,
-            ); // Настроить вывод из базы данных по Id
+                'isAuth'=>'yes'
+
+            );
         }
         return array(false, 1002);
     }
 
-    public function reg($login, $password,  $hash=0)
+    public function reg($id,$login, $password, $hash = 0)
     {
-       $id = $this->id + 1;
-       $this->id += 1;
-       $token = md5(rand());
-       $hash = md5($login . $password);
-       $this->db->addUser($id, $login, $hash, $token);
-       $flag = true;
-       if($flag) {
-           return array(
-               'login' => $login,
-               'password' => $password,
-               'lasdf'=>'lasdf'
-           );
-       }
-       return [false,1001];
+        $hash = md5($login . $password);
+        $token = $this->genToken();
+        return array(
+            'login' => $login,
+            'password' => $password,
+            'token' => $token
+        );
     }
+
+    private function genToken(): string
+    {
+        return md5(microtime() . 'salt' . time());
+    }
+
+    function checkToken($token, $id){
+        $tokens= $this->db->getParamsUser($id,'token');
+        if($token===$tokens) {
+            return true;
+        }
+        return false;
+        }
+    public function unlogin($id){
+        $this->db->setValue($id,null, 'token');
+        return true;
+    }
+
 }
 
-//private function userExists($userId)
-//    {
-//        $sql = "SELECT id FROM users WHERE id = :userId";
-//        $stmt = $this->db->prepare($sql);
-//
-//        if (!$stmt) {
-//            return [false, 500];
-//        }
-//
-//        $stmt->execute(['userId' => $userId]);
-//
-//        if ($stmt->fetchColumn() !== false) {
-//            return true;
-//        } else {
-//            return [false, 404];
-//        }
-//    }
-//
-//    private function validateToken($userId, $token)
-//    {
-//        $sql = "SELECT token FROM users WHERE id = :userId";
-//        $stmt = $this->db->prepare($sql);
-//
-//        if (!$stmt) {
-//            return [false, 500];
-//        }
-//
-//        $stmt->execute(['userId' => $userId]);
-//        $userToken = $stmt->fetchColumn();
-//
-//        if ($userToken === $token) {
-//            return true;
-//        } else {
-//            return [false, 401];
-//        }
-//    }
-//
-//    private function invalidateToken($userId)
-//    {
-//        $sql = "UPDATE users SET token = NULL WHERE id = :userId";
-//        $stmt = $this->db->prepare($sql);
-//
-//        if (!$stmt) {
-//            return [false, 500];
-//        }
-//
-//        $stmt->execute(['userId' => $userId]);
-//        return true; //токен обнулен
-//    }
-//    public function logout($userId, $token)
-//{
-//        $userExists = $this->userExists($userId);
-//        $tokenValid = $this->validateToken($userId, $token);
-//
-//        if ($userExists && $tokenValid) {
-//            $tokenInvalidated = $this->invalidateToken($userId);
-//            if ($tokenInvalidated) {
-//                return null;
-//            } else {
-//                return [false, 500];
-//            }
-//        } elseif (!$userExists) {
-//            return [false, 404];
-//        } elseif (!$tokenValid) {
-//            return [false, 401];
-//        }
+
+
+
