@@ -1,7 +1,6 @@
 import { useContext, useRef, useState } from "react";
 import { ServerContext } from "../App";
 import { Navigate } from "react-router-dom";
-
 import "../Auth.css";
 
 const RegistrationPage = () => {

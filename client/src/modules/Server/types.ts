@@ -1,3 +1,5 @@
+export {};
+
 export type TError = {
     code: number,
     text: string,
@@ -8,3 +10,8 @@ export type TUser = {
     name: string,
     soname: string,
 };
+
+export type TnavButton = {
+    to: string;
+    text: string;
+}

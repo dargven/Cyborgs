@@ -1,4 +1,4 @@
-import {TUser} from "./types";
+import { TUser } from "./types";
 
 export default class Server {
     HOST: string;
@@ -17,7 +17,7 @@ export default class Server {
             if (answer.result === 'ok') {
                 return answer.data;
             }
-            // обработать ошибку(6 пункт)
+            // обработать ошибку
             //...
             return null;
         } catch (e) {
@@ -26,7 +26,21 @@ export default class Server {
     }
 
     login(login: string, password: string): Promise<TUser | null> {
-        return this.request<TUser>('login', {login, password});
+        return this.request<TUser>('login', { login, password });
+    }
+
+    async register(username: string,email: string , password: string): Promise<TUser | null> {
+        try {
+            const response = await this.request<TUser>('register', { username, email, password });
+    
+            if (response !== null) {
+                return response;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error("Ошибка при отправке запроса");
+            return null;
+        }
     }
 }
-//Kirill

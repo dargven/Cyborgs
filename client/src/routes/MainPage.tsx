@@ -1,7 +1,3 @@
-import { useContext } from 'react';
-import { ServerContext } from '../App';
-import Bg from '../components/Bg';
-
 import '../Auth.css'
 
 const MainPage = () => {

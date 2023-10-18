@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { TnavButton } from '../modules/Types';
+import { TnavButton } from '../modules/Server/types';
 
 function NavButton({ to, text }: TnavButton) {
   const navigate = useNavigate();

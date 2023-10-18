@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter} from 'react-router-dom';
-import Server from './modules/Server';
+import Server from './modules/Server/Server';
 import { HOST } from './config';
 import RoutersH from './Hooks/useRoutes';
 import NavBar from './components/navBar';
