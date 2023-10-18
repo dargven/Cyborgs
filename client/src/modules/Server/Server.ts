@@ -31,9 +31,11 @@ export default class Server {
         return this.request<TUser>('login', {login, hash, randomnumber});
     }
 
-    async register(username: string,email: string , password: string): Promise<TUser | null> {
+    async register(login: string,email: string , password: string): Promise<TUser | null> {
         try {
-            const response = await this.request<TUser>('register', { username, email, password });
+            const hash = md5(login + password);
+            const randomnumber = Math.ceil(283*Math.random()); 
+            const response = await this.request<TUser>('register', { login, email, hash, randomnumber });
     
             if (response !== null) {
                 return response;
@@ -45,6 +47,9 @@ export default class Server {
             console.error("Ошибка при отправке запроса");
             return null;
         }
+    }
+    async  logout(login:string):Promise<void> {
+        await out.progress("Выход из Аккаунта...", performLogout(login));
     }
 }
 
