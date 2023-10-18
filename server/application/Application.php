@@ -21,10 +21,9 @@ class Application
     {
         $login = $params['login'];
         $password = $params['password'];
-        $id = $params['id'];
 
-        if ($login && $password && $id) {
-            return $this->user->reg($id,$login, $password);
+        if ($login && $password ) {
+            return $this->user->reg($login, $password);
         }
         return [false, 1001];
     }
@@ -33,10 +32,9 @@ class Application
     {
         $login = $params['login'];
         $hash = $params['hash'];
-        $id = $params['id'];
         $rnd = $params['rnd'];
-        if ($login && $hash && $rnd && $id) {
-            return $this->user->login($id,$login, $hash, $rnd);
+        if ($login && $hash && $rnd) {
+            return $this->user->login($login, $hash, $rnd);
         }
         return [false, 1001];
     }
@@ -45,17 +43,17 @@ class Application
     function checkToken($params)
     {
         $token = $params['token'];
-        $id = $params['id'];
-        if($token && $id){
-            return $this->user->checkToken($token, $id);
+        $login = $params['login'];
+        if($token && $login){
+            return $this->user->checkToken($token, $login);
         }
         return [false,242];
     }
 
     function unlogin($params){
-        $id = $params['id'];
-        if($id){
-            return $this->user->unlogin($id);
+        $login = $params['login'];
+        if($login){
+            return $this->user->unlogin($login);
         }
         return [false,242];
     }
