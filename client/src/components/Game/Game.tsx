@@ -3,6 +3,7 @@ import Scene from "./Scene";
 import Player from "./Player";
 import { useMemo } from "react";
 import { KeyboardControlsEntry, KeyboardControls } from "@react-three/drei";
+import Robot from "./Robot";
 
 export enum EControls {
     up = 'up',
@@ -25,6 +26,7 @@ const Game: React.FC = () => {
     return (
         <KeyboardControls map={inputMap}>
             <Canvas camera={{ position: [0, 10, 0] }} >
+                <Robot />
                 <Player isAlive={true} />
                 <ambientLight intensity={0.1} />
                 <pointLight position={[10, 10, 10]} intensity={200} />

@@ -1,5 +1,5 @@
 import MakeSprite from "./MakeSprite";
-import { SADTROLLFACE, TROLLFACE } from "../../assets/images";
+import { SADTROLLFACE, TROLLFACE,HPBack } from "../../assets/images";
 import { Mesh, Vector3, Sprite, SpriteMaterial } from "three";
 import { EControls } from "./Game";
 import { useRef, useState } from "react";
@@ -65,7 +65,7 @@ const Player = (props: IPlayerProps) => {
     return (
         <mesh ref={playerRef} scale={0.5} position={props.position}>
             <group position={new Vector3(0, 0.1, -0.75)} rotation={[Math.PI / 2, -Math.PI, Math.PI]} scale={new Vector3(1, 0.25, 0)}>
-                <sprite material={new SpriteMaterial({ color: 0xff0000 })} ref={healthbarRef} />
+                <sprite material={new SpriteMaterial({ color: 0xff0000})} ref={healthbarRef} />
             </group>
 
             <Projectile initialSpeed={20}/>
