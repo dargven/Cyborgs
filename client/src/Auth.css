@@ -74,11 +74,13 @@ p {
   margin-bottom: 10px;
   box-sizing: border-box;
 }
+
 .input-form1 {
   margin: 15px 40px;
   text-align: center;
   padding: 10px;
 }
+
 .input-form1 button {
   padding: 10px;
   width: auto;
@@ -92,6 +94,7 @@ p {
   margin-bottom: 10px;
   box-sizing: border-box;
 }
+
 .input-form1 input {
   text-align: center;
   width: 70%;
@@ -104,9 +107,11 @@ p {
   margin-bottom: 30px;
   box-sizing: border-box;
 }
+
 .input-form1 input:hover {
   border: 5px solid rgb(0, 217, 255);
 }
+
 .input-form1 button:hover {
   padding: 10px;
   width: auto;
@@ -123,14 +128,6 @@ body {
     background-size: cover;
     background-attachment: fixed;
     font-family: sans-serif;
-}
-
-p {
-    font-family: 'MinecrafterAltRegular';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 64px;
-    position: fixed;
 }
 
 .form h1 {
@@ -165,16 +162,6 @@ p {
     color: #fff;
 }
 
-.input-form button {
-    padding: 10px;
-    width: 100%;
-    color: #fff;
-    font-size: 20px;
-    background: none;
-    outline: none;
-    border: 1px solid #fff;
-    box-sizing: border-box;
-}
 .input-form button:hover {
   padding: 10px;
   width: 134px;
@@ -184,40 +171,13 @@ p {
   border: 5px solid #691e6c;
   box-sizing: border-box;
 }
-.reg-butonn {
-  padding: 10px;
-  width: aut;
-}
-.bg {
-  animation: slide 3s ease-in-out infinite alternate;
-  background-image: linear-gradient(
-    -60deg,
-    rgb(58, 139, 17) 50%,
-    rgb(81, 22, 136) 50%
-  );
-  bottom: 0;
-  left: -50%;
-  opacity: 0.5;
-  position: fixed;
-  right: -50%;
-  top: 0;
-  z-index: -1;
-}
-
-.bg2 {
-  animation-direction: alternate-reverse;
-  animation-duration: 4s;
-}
-
-.bg3 {
-  animation-duration: 5s;
-}
 
 h1 {
   font-family: "Zelek";
   color: rgb(0, 217, 255);
   text-shadow: 0px 5px 10px #00aeff;
 }
+
 .title {
   font-family: "Zelek";
   color: rgb(0, 255, 255);
@@ -231,6 +191,7 @@ h1 {
   text-align: center;
   left: 50%;
 }
+
 .content {
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 2em;
@@ -281,17 +242,18 @@ h1 {
   height: 54px;
   color: #fff;
   font-size: 20px;
-  background: linear-gradient(#ffffff, #002aff, #ff0000);
   outline: none;
   border-radius: 11px;
   margin-bottom: 10px;
   box-sizing: border-box;
   border: 5px solid rgb(0, 217, 255);
 }
+
 .header-right:hover {
   color: #61dafb;
   border: 5px solid #691e6c;
 }
+
 .App-link {
   color: #61dafb;
 }

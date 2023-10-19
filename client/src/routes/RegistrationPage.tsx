@@ -5,21 +5,18 @@ import "../Auth.css";
 
 const RegistrationPage = () => {
   const server = useContext(ServerContext);
-  const nameRef = useRef<HTMLInputElement | null>(null);
   const loginRef = useRef<HTMLInputElement | null>(null);
-  const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const handleRegistration = async () => {
-    if (loginRef.current && emailRef.current && passwordRef.current) {
-      const username = loginRef.current.value;
+    if (loginRef.current && passwordRef.current) {
+      const login = loginRef.current.value;
       const password = passwordRef.current.value;
-      const email = emailRef.current.value;
 
       try {
-        const response = await server.register(username, email, password);
+        const response = await server.register(login, password);
 
         if (response) {
           setRegistrationSuccess(true);
@@ -44,27 +41,11 @@ const RegistrationPage = () => {
         <div className="input-form1">
           <input
             type="text"
-            id="username"
-            name="username"
-            className="input"
-            placeholder="Имя"
-            ref={nameRef}
-          />
-          <input
-            type="text"
             id="login"
             name="login"
             className="input"
             placeholder="Логин"
             ref={loginRef}
-          />
-          <input
-            type="text"
-            id="email"
-            name="email"
-            className="input"
-            placeholder="Почта"
-            ref={emailRef}
           />
           <input
             type="password"
@@ -74,7 +55,7 @@ const RegistrationPage = () => {
             placeholder="Пароль"
             ref={passwordRef}
           />
-          <button className="reg-butonn" onClick={() => handleRegistration()}>
+          <button  onClick={() => handleRegistration()}>
             Зарегистрироваться
           </button>
         </div>

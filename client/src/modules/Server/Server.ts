@@ -32,7 +32,7 @@ export default class Server {
         return this.request<TUser>('login', {login, hash, rnd});
     }
 
-    async register(login: string, email: string, password: string): Promise<TUser | null> {
+    async register(login: string, password: string): Promise<TUser | null> {
         try {
             const hash = md5(login + password);
             const response = await this.request<TUser>('register', {login, hash});
@@ -47,8 +47,4 @@ export default class Server {
             return null;
         }
     }
-
-    // async  logout(login:string):Promise<void> {
-    //     await out.progress("Выход из Аккаунта...", performLogout(login));
-    // }
 }
