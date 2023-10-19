@@ -3,7 +3,7 @@ header('Content-Type: Application/json; charset = utf-8');
 header('Access-Control-Allow-Origin: *');
 require_once 'application/Answer.php';
 require_once 'application/Application.php';
-
+//
 
 function result($params)
 {
