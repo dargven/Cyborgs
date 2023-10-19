@@ -34,10 +34,10 @@ class DB
         $users = $this->UsersData;
         foreach ($users as $user) {
             if ($login === $user['login']) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public function addBullets($bulletId, $Bullet)

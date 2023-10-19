@@ -13,7 +13,7 @@ class User
     {
         if($this->db->isItLogin($login)) {
             $hashPassword = $this->db->getParamsUser($login, 'hashPassword');
-            $hashs = md5($hashPassword . $rnd); //$hashS при rnd=5
+            $hashs = md5($hashPassword . $rnd);
             if ($hash === $hashs) {
                 $token = $this->genToken();
                 $this->db->setValue($login, $token, 'token');
@@ -26,12 +26,13 @@ class User
             }
             return array(false, 1002);
         }
+
         return array(false,1002);
     }
 
     public function reg($login, $hash)
     {
-        if ($this->db->isItLogin($login)) {
+        if (!$this->db->isItLogin($login)) {
             $token = $this->genToken();
             $this->db->addUser($login, $hash, $token);
             //Здесь ещё должна быть проверка на уникальность логина, но бессмыслено писать
