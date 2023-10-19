@@ -1,5 +1,7 @@
 <?php
-class Answer{
+
+class Answer
+{
     static $CODES = array(
         '101' => 'param method not setted',
         '102' => 'method not found',
@@ -9,13 +11,14 @@ class Answer{
         '999' => 'Is it Triangle?',
         '1001' => 'params login or password not set',
         '1002' => 'error in auth user',
+        '1003' => 'Is it unique login?',
         '9000' => 'unknown error'
     );
 
     static function response(array $data)
     {
-        if($data) {
-            if(count($data) === 2 && !$data[0]){
+        if ($data) {
+            if (count($data) === 2 && !$data[0]) {
                 $code = $data[1];
                 return [
                     'result' => 'error',
