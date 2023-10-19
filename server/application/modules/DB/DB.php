@@ -18,7 +18,7 @@ class DB
     private $BulletData;
     private $SceneData;
 
-    public function addUser( $login, $hashPassword, $token)
+    public function addUser($login, $hashPassword, $token)
     {
         $this->UsersData[$login] = array(
 
@@ -27,6 +27,17 @@ class DB
             'token' => $token
         );
 
+    }
+
+    public function isItLogin($login)
+    {
+        $users = $this->UsersData;
+        foreach ($users as $user) {
+            if ($login === $user['login']) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function addBullets($bulletId, $Bullet)

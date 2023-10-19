@@ -11,6 +11,7 @@ class Answer
         '999' => 'Is it Triangle?',
         '1001' => 'params login or password not set',
         '1002' => 'error in auth user',
+        '1003' => 'Is it unique login?',
         '9000' => 'unknown error'
     );
 

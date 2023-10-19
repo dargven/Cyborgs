@@ -4,10 +4,10 @@
 // export const HOST = `${DOMAIN}:${PORT}`;
 
 // dev2
-// const DOMAIN = 'http://localhost';
-// const PORT = 8888;
-// export const HOST = `${DOMAIN}:${PORT}`;
+const DOMAIN = 'http://localhost';
+const PORT = 8888;
+export const HOST = `${DOMAIN}:${PORT}`;
 
 //prod
-const DOMAIN = 'http://dargvetg.beget.tech';
-export const HOST = DOMAIN;
+// const DOMAIN = 'http://dargvetg.beget.tech';
+// export const HOST = DOMAIN;

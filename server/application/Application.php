@@ -20,10 +20,10 @@ class Application
     function reg($params)
     {
         $login = $params['login'];
-        $password = $params['password'];
+        $hash = $params['hash'];
 
-        if ($login && $password ) {
-            return $this->user->reg($login, $password);
+        if ($login && $hash) {
+            return $this->user->reg($login, $hash);
         }
         return [false, 1001];
     }
@@ -44,17 +44,18 @@ class Application
     {
         $token = $params['token'];
         $login = $params['login'];
-        if($token && $login){
+        if ($token && $login) {
             return $this->user->checkToken($token, $login);
         }
-        return [false,242];
+        return [false, 242];
     }
 
-    function unlogin($params){
+    function logout($params)
+    {
         $login = $params['login'];
-        if($login){
-            return $this->user->unlogin($login);
+        if ($login) {
+            return $this->user->logout($login);
         }
-        return [false,242];
+        return [false, 242];
     }
 }

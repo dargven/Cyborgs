@@ -12,7 +12,7 @@ function result($params)
         $app = new Application();
         switch ($method) {
             case 'login':return $app->login($params);
-            case 'reg':return $app->reg($params);
+            case 'register':return $app->reg($params);
             default:return [false, 102];
         }
     }

@@ -9,8 +9,8 @@ const LoginForm = () => {
 
     const handleLogin = async () => {
         const user = await server.login('Vasya', '1234');
-
         console.log(user);
+
     };
 
     return (
