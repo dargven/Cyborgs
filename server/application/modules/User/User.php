@@ -11,54 +11,43 @@ class User
 
     function login($login, $hash, $rnd)
     {
-        if($this->db->isItLogin($login)) {
-            $hashPassword = $this->db->getParamsUser($login, 'hashPassword');
-            $hashs = md5($hashPassword . $rnd);
+        $user = $this->db->getUserByLogin($login);
+        if ($user) {
+            $hashs = md5($user->password.$rnd);
             if ($hash === $hashs) {
                 $token = $this->genToken();
                 $this->db->setValue($login, $token, 'token');
                 return array(
-                    'login' => $login,
+                    'id' => $user->id,
+                    'name' => $user->name,
                     'token' => $token,
-                    'isAuth' => 'yes'
-
                 );
             }
             return array(false, 1002);
         }
+        return array(false, 1004);
+    }   
 
-        return array(false,1002);
-    }
-
-    public function reg($login, $hash)
+    public function register($login, $hash)
     {
-        if (!$this->db->isItLogin($login)) {
-            $token = $this->genToken();
-            $this->db->addUser($login, $hash, $token);
-            //Здесь ещё должна быть проверка на уникальность логина, но бессмыслено писать
-            //без базы данных
-            return array(
-                'login' => $login,
-                'token' => $token,
-                'result' => 'ok'
-            );
+        $user = $this->db->getUserByLogin($login);
+        if (!$user) {
+            $this->db->addUser($login, $hash);
+            return true;
         }
         return array (false, 1003);
     }
 
-    private function genToken(): string
+    private function genToken()
     {
-        return md5(microtime() . 'salt' . time());
+        return md5(microtime() . 'salt' . rand());
     }
 
     function checkToken($token, $login)
     {
         $tokens = $this->db->getParamsUser($login, 'token');
-        if ($token === $tokens) {
-            return true;
+        return ($token === $tokens);
         }
-        return false;
-    }
 
     public function logout($login)
     {

@@ -17,13 +17,13 @@ class Application
         $this->user = new User($this->db);
     }
 
-    function reg($params)
+    function register($params)
     {
         $login = $params['login'];
         $hash = $params['hash'];
 
         if ($login && $hash) {
-            return $this->user->reg($login, $hash);
+            return $this->user->register($login, $hash);
         }
         return [false, 1001];
     }

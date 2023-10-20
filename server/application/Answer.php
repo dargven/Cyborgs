@@ -12,6 +12,7 @@ class Answer
         '1001' => 'params login or password not set',
         '1002' => 'error in auth user',
         '1003' => 'Is it unique login?',
+        '1004' => '-',
         '9000' => 'unknown error'
     );
 

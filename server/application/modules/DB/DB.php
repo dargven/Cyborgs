@@ -18,7 +18,7 @@ class DB
     private $BulletData;
     private $SceneData;
 
-    public function addUser($login, $hashPassword, $token)
+    public function addUser($login, $hashPassword)
     {
         $this->UsersData[$login] = array(
 
