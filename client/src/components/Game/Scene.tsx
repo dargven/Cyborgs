@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
-import { Group, Mesh, TextureLoader } from "three";
+import { Group, Mesh, TextureLoader, Vector3 } from "three";
 import Map from "./Map";
 import Player, { IPlayerProps } from "./Player";
 import { EControls } from "./Game";
@@ -49,7 +49,7 @@ const Scene = (props: ISceneProps) => {
                 position.set(position.x, position.y - 0.025, position.z);
             }
             if (shootPressed) {
-                const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} />];
+                const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} direction={new Vector3()} />];
                 setBullets(arr.concat(bullets));
             }
         }
