@@ -18,8 +18,6 @@ const playerProps: IPlayerProps = {
 }
 
 const Game = () => {
-    const aspect = window.innerWidth/window.innerHeight;
-
     const inputMap = useMemo<KeyboardControlsEntry[]>(() => [
         { name: EControls.up, keys: ['KeyW'] },
         { name: EControls.down, keys: ['KeyS'] },
@@ -28,10 +26,13 @@ const Game = () => {
         { name: EControls.shoot, keys: ['Space'] },
     ], []);
 
+    const vSize = 20;
+    const aspect = window.innerWidth / window.innerHeight;
+
     return (
         <KeyboardControls map={inputMap}>
             <Canvas>
-                <OrthographicCamera makeDefault position={[0, 0, 0]} near={0} far={100} right={12.5 * aspect} left={-12.5 * aspect} top={15} bottom={-10} >
+                <OrthographicCamera makeDefault position={[0, 0, 0]} near={0} far={100} left={-vSize * aspect / 2} right={vSize * aspect / 2} top={vSize / 2} bottom={-vSize / 2} >
                     <Scene playerProps={playerProps} />
                 </OrthographicCamera>
             </Canvas>

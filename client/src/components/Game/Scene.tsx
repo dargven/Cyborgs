@@ -1,4 +1,4 @@
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import { Group, Mesh, TextureLoader, Vector3 } from "three";
 import Map from "./Map";
@@ -31,6 +31,7 @@ const Scene = (props: ISceneProps) => {
     const upPressed = useKeyboardControls((state) => state[EControls.up]);
     const downPressed = useKeyboardControls((state) => state[EControls.down]);
     const shootPressed = useKeyboardControls((state) => state[EControls.shoot]);
+    const { viewport, camera } = useThree();
 
     const handleMovement = () => {
         if (props.playerProps.isAlive) {
@@ -49,7 +50,12 @@ const Scene = (props: ISceneProps) => {
                 position.set(position.x, position.y - 0.025, position.z);
             }
             if (shootPressed) {
-                const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} direction={new Vector3()} />];
+                const direction = new Vector3();
+                console.log(camera.position);
+
+                // get direction from viewport and camera position
+
+                const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} direction={direction} />];
                 setBullets(arr.concat(bullets));
             }
         }
@@ -57,7 +63,7 @@ const Scene = (props: ISceneProps) => {
 
     useFrame(() => {
         handleMovement();
-    })
+    });
 
     return (
         <group>
