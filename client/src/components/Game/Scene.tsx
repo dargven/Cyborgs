@@ -1,12 +1,13 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
-import { Group, Mesh} from "three";
+import { Group, Mesh, TextureLoader } from "three";
 import Map from "./Map";
 import Player, { IPlayerProps } from "./Player";
 import { EControls } from "./Game";
 import { useKeyboardControls } from "@react-three/drei";
 import Projectile from "./Projectile"
 import Robot from "./Robot";
+import { PROJECTILE } from "../../assets/images";
 
 
 interface ISceneProps {
@@ -14,6 +15,10 @@ interface ISceneProps {
 }
 
 const Scene = (props: ISceneProps) => {
+
+    const textureLoader = new TextureLoader();
+    const TPROJECTILE = textureLoader.load(PROJECTILE);
+
     const scale = 1;
 
     const sceneRef = useRef<Mesh>(null!);
@@ -30,6 +35,7 @@ const Scene = (props: ISceneProps) => {
     const handleMovement = () => {
         if (props.playerProps.isAlive) {
             const position = playerRef.current.position;
+
             if (leftPressed) {
                 position.set(position.x - 0.025, position.y, position.z);
             }
@@ -37,13 +43,13 @@ const Scene = (props: ISceneProps) => {
                 position.set(position.x + 0.025, position.y, position.z);
             }
             if (upPressed) {
-                position.set(position.x, position.y, position.z - 0.025);
+                position.set(position.x, position.y + 0.025, position.z);
             }
             if (downPressed) {
-                position.set(position.x, position.y, position.z + 0.025);
+                position.set(position.x, position.y - 0.025, position.z);
             }
             if (shootPressed) {
-                const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} />];
+                const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} />];
                 setBullets(arr.concat(bullets));
             }
         }
@@ -60,12 +66,12 @@ const Scene = (props: ISceneProps) => {
             </group>
 
             <group>
-            {bullets}
+                {bullets}
             </group>
 
-            <Robot/>
+            <Robot />
 
-            <mesh ref={sceneRef} position={[-5, 0, -2.5]} rotation={[Math.PI / 2, 0, 0]}>
+            <mesh ref={sceneRef} position={[-5, 0, -2.5]} >
                 <Map scale={scale} />
             </mesh>
         </group>
