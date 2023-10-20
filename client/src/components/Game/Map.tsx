@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Vector3 } from "three";
 import MakeSprite from "./MakeSprite";
+
+import { TextureLoader} from "three";
 import { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST } from "../../assets/images";
+
 import { TMap } from "./Types";
 
 function Map({ scale }: TMap) {
@@ -19,6 +22,15 @@ function Map({ scale }: TMap) {
     const [mapSprites, setMapSprites] = useState<JSX.Element[]>([]);
     const allMap = [];
 
+    const textureLoader = new TextureLoader();
+    const TFL = textureLoader.load(FL);
+    const TWALL = textureLoader.load(WALL);
+    const TLUC = textureLoader.load(LUC);
+    const TRUC = textureLoader.load(RUC);
+    const TLDC = textureLoader.load(LDC);
+    const TRDC = textureLoader.load(RDC);
+    const TCOL = textureLoader.load(COL);
+
     useEffect(() => {
         const sprites = [];
 
@@ -29,34 +41,34 @@ function Map({ scale }: TMap) {
                 let tile;
                 switch (tileType) {
                     case 'fl':
-                        tile = <MakeSprite texture={FL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`} isCollider={false}/>
+                        tile = <MakeSprite texture={TFL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`} isCollider={false}/>
                         break;
                     case 'WA':
-                        tile = <MakeSprite texture={WALL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={TWALL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
                     case 'WL':
-                        tile = <MakeSprite texture={WALL} rotation={[0, 0, Math.PI/2]} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={TWALL} rotation={[0, 0, Math.PI/2]} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
                     case 'WR':
-                        tile = <MakeSprite texture={WALL} rotation={[0, 0, Math.PI/2]} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={TWALL} rotation={[0, 0, Math.PI/2]} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
                     case 'LU':
-                        tile = <MakeSprite texture={LUC} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={TLUC} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
                     case 'RU':
-                        tile = <MakeSprite texture={RUC} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={TRUC} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
                     case 'LD':
-                        tile = <MakeSprite texture={LDC} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={TLDC} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
                     case 'RD':
-                        tile = <MakeSprite texture={RDC} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
+                        tile = <MakeSprite texture={TRDC} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`}/>
                         break;
                     case 'COL':
-                        tile = <MakeSprite texture={COL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`} colliderSize={[0.5, 0.5, 0.1]}/>
+                        tile = <MakeSprite texture={TCOL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`} colliderSize={[0.5, 0.5, 0.1]}/>
                         break;
                     default:
-                        tile = <MakeSprite texture={FL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`} isCollider={false}/>
+                        tile = <MakeSprite texture={TFL} position={new Vector3(col, row, 0)} scale={scale} key={`${row}-${col}`} isCollider={false}/>
                 }
 
                 sprites.push(tile);

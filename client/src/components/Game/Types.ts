@@ -1,10 +1,10 @@
 import { BoxGeometryProps, Euler } from "@react-three/fiber";
-import { BoxGeometry, Vector3 } from "three";
+import { BoxGeometry, Texture, Vector3 } from "three";
 
 export{};
 
 export type TSprite = {
-    texture: string;
+    texture: Texture;
     position: Vector3;
     scale?: number;
     rotation?: Euler;

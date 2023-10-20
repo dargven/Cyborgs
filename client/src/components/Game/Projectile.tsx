@@ -1,5 +1,6 @@
 import { PROJECTILE } from "../../assets/images";
 import MakeSprite from "./MakeSprite";
+import { TextureLoader} from "three";
 import { Vector3, Mesh } from "three";
 import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
@@ -16,6 +17,9 @@ const Progectile = (props: IProjectiileProps) => {
 
     const [speed, setSpeed] = useState<number>(props.initialSpeed ? props.initialSpeed : 10);
 
+    const textureLoader = new TextureLoader();
+    const TPROJECTILE = textureLoader.load(PROJECTILE);
+
     useFrame((clock, delta) => {
         if (isActive) {
             bulletRef.current.position.x -= delta * speed;
@@ -28,7 +32,7 @@ const Progectile = (props: IProjectiileProps) => {
 
     return isActive ? (
         <mesh ref={bulletRef}>
-            <MakeSprite texture={PROJECTILE} position={props.initialPosition} rotation={[Math.PI / 2, -Math.PI, Math.PI]} scale={0.5} />
+            <MakeSprite texture={TPROJECTILE} position={props.initialPosition} rotation={[Math.PI / 2, -Math.PI, Math.PI]} scale={0.5} />
         </mesh>
     ) : <></>;
 
