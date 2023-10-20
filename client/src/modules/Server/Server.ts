@@ -1,15 +1,20 @@
-import {TUser} from "./types";
+import { TUser } from "./types";
 import md5 from 'md5-ts';
 
 export default class Server {
-    HOST: string;
+    private HOST: string;
+    private token: string | null;
 
     constructor(HOST: string) {
         this.HOST = HOST;
+        this.token = null;
     }
 
-    async request<T>(method: string, params: any): Promise<T | null> {
+    async request<T>(method: string, params: any = {}): Promise<T | null> {
         try {
+            if (this.token) {
+                params.token = this.token;
+            }
             const str = Object.keys(params)
                 .map(key => `${key}=${params[key]}`)
                 .join('&');
@@ -26,25 +31,26 @@ export default class Server {
         }
     }
 
-    login(login: string, password: string): Promise<TUser | null> {
-        const rnd = Math.ceil(283 * Math.random());
-        const hash = md5(md5(login + password) + rnd);
-        return this.request<TUser>('login', {login, hash, rnd});
+    async login(login: string, hash: string, rnd: number): Promise<TUser | null> {
+        const result = await this.request<TUser>(
+            'login', 
+            { login, hash, rnd }
+        );
+        if (result?.token) {
+            this.token = result.token;
+        }
+        return result;
     }
 
-    async register(login: string, password: string): Promise<TUser | null> {
-        try {
-            const hash = md5(login + password);
-            const response = await this.request<TUser>('register', {login, hash});
-            if (response !== null) {
-                return response;
-            } else {
-                console.error("null");
-                return null;
-            }
-        } catch (error) {
-            console.error("Ошибка при отправке запроса");
-            return null;
+    async logout(): Promise<boolean | null> {
+        const result = await this.request<boolean>('logout');
+        if (result) {
+            this.token = null;
         }
+        return result;
+    }
+
+    register(login: string, hash: string): Promise<TUser | null> {
+        return this.request<TUser>('register', { login, hash });
     }
 }
