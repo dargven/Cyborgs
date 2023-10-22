@@ -67,6 +67,8 @@ const Scene = (props: ISceneProps) => {
 
     return (
         <group>
+            <ambientLight intensity={1} />
+
             <group ref={playerRef}>
                 <Player isAlive={props.playerProps.isAlive} id={props.playerProps.id} />
             </group>
