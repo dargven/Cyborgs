@@ -32,14 +32,12 @@ const Game = () => {
     return (
         <KeyboardControls map={inputMap}>
             <Canvas>
-                <OrthographicCamera makeDefault position={[0, 0, 0]} near={0} far={100} left={-vSize * aspect / 2} right={vSize * aspect / 2} top={vSize / 2} bottom={-vSize / 2} >
+                <OrthographicCamera makeDefault position={[0, 0, 0]} near={-0.1} far={10} left={-vSize * aspect / 2} right={vSize * aspect / 2} top={vSize / 2} bottom={-vSize / 2}>
                     <Scene playerProps={playerProps} />
                 </OrthographicCamera>
             </Canvas>
         </KeyboardControls>
     );
 }
-
-
 
 export default Game;

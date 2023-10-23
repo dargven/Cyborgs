@@ -33,11 +33,11 @@ const Player = (props: IPlayerProps) => {
 
     return (
         <mesh ref={playerRef} scale={0.5} position={props.position}>
-            {/* <group position={new Vector3(0, 0.1, -0.75)} scale={new Vector3(1, 0.25, 0)}>
+            <group position={new Vector3(0, 1, 0.1)} scale={new Vector3(1, 0.25, 0)}>
                 <sprite material={new SpriteMaterial({ color: 0xff0000 })} ref={healthbarRef} />
-            </group> */}
+            </group>
 
-            <MakeSprite texture={isAlive ? TTROLLFACE : TSADTROLLFACE} position={new Vector3(0, 0.1, 0)} isCollider={isAlive} />
+            <MakeSprite texture={isAlive ? TTROLLFACE : TSADTROLLFACE} position={new Vector3(0, 0, 0.1)} isCollider={isAlive} />
 
         </mesh>
     );

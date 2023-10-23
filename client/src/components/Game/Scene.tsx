@@ -79,7 +79,7 @@ const Scene = (props: ISceneProps) => {
 
             <Robot />
 
-            <mesh ref={sceneRef} position={[-5, 0, -2.5]} >
+            <mesh ref={sceneRef}>
                 <Map scale={scale} />
             </mesh>
         </group>
