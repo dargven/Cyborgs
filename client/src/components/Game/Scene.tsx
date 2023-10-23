@@ -1,5 +1,5 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Group, Mesh, TextureLoader, Vector3 } from "three";
 import Map from "./Map";
 import Player, { IPlayerProps } from "./Player";
@@ -33,36 +33,41 @@ const Scene = (props: ISceneProps) => {
     const shootPressed = useKeyboardControls((state) => state[EControls.shoot]);
     const { viewport, camera } = useThree();
 
-    const handleMovement = () => {
-        if (props.playerProps.isAlive) {
-            const position = playerRef.current.position;
+    useEffect(() => {
+        const interval = setInterval(() => {
 
-            if (leftPressed) {
-                position.set(position.x - 0.025, position.y, position.z);
-            }
-            if (rightPressed) {
-                position.set(position.x + 0.025, position.y, position.z);
-            }
-            if (upPressed) {
-                position.set(position.x, position.y + 0.025, position.z);
-            }
-            if (downPressed) {
-                position.set(position.x, position.y - 0.025, position.z);
-            }
-            if (shootPressed) {
-                const direction = new Vector3();
-                console.log(camera.position);
+            if (props.playerProps.isAlive) {
+                const position = playerRef.current.position;
+    
+                if (leftPressed) {
+                    position.set(position.x - 0.025, position.y, position.z);
+                }
+                if (rightPressed) {
+                    position.set(position.x + 0.025, position.y, position.z);
+                }
+                if (upPressed) {
+                    position.set(position.x, position.y + 0.025, position.z);
+                }
+                if (downPressed) {
+                    position.set(position.x, position.y - 0.025, position.z);
+                }
+                if (shootPressed) {
+                    const direction = new Vector3(); 
+                    // в direction должен попадать вектор от игрока к курсору (во внутриигровых координатах)
+                    // вектор должен быть нормализован
+                    const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} direction={direction} />];
 
-                // get direction from viewport and camera position
-
-                const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} direction={direction} />];
-                setBullets(arr.concat(bullets));
+                    //потом придумаю как дергать пули и выкидывать их из массива
+                    setBullets(arr.concat(bullets));
+                    
+                    console.log(bullets.length);
+                }
             }
+        }, 50);
+
+        return () => {
+            clearInterval(interval);
         }
-    }
-
-    useFrame(() => {
-        handleMovement();
     });
 
     return (
