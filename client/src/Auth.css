@@ -108,6 +108,19 @@ p {
   box-sizing: border-box;
 }
 
+.input-form input {
+  text-align: center;
+  width: 70%;
+  height: 45px;
+  color: #ffffff;
+  font-size: 20px;
+  background: none;
+  outline: none;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  box-sizing: border-box;
+}
+
 .input-form1 input:hover {
   border: 5px solid rgb(0, 217, 255);
 }

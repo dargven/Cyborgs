@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter} from 'react-router-dom';
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import { HOST } from './config';
 import Server from './modules/Server/Server';
 import NavBar from './components/navBar';
