@@ -1,9 +1,10 @@
-import { type } from "os";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
+//Пропсы
 type TnavButton = {
   to: string;
   text: string;
-};
+}
 
 function NavButton({ to, text }: TnavButton) {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ function NavButton({ to, text }: TnavButton) {
   };
 
   return (
-    <button className="header-right" onClick={handleClick}>
+    <button className='header-right' onClick={handleClick}>
       {text}
     </button>
   );

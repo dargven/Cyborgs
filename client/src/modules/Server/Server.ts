@@ -1,5 +1,4 @@
 import { TUser } from "./types";
-import md5 from 'md5-ts';
 
 export default class Server {
     private HOST: string;
