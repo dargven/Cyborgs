@@ -16,17 +16,11 @@ const Progectile = (props: IProjectiileProps) => {
 
     const [speed, setSpeed] = useState<number>(props.initialSpeed ? props.initialSpeed : 10);
 
-    const bulletDirection = props.direction;
-    bulletDirection.normalize();
-
     useFrame((clock, delta) => {
         if (isActive) {
-            bulletRef.current.position.x += delta * speed * bulletDirection.x;
-            bulletRef.current.position.y += delta * speed * bulletDirection.y;
-            setSpeed(speed => speed += 8);
-            if (speed >= 100) {
-                setActive(false);
-            }
+            setSpeed(speed => speed += 4);
+            bulletRef.current.position.x += delta * speed * props.direction.x;
+            bulletRef.current.position.y += delta * speed * props.direction.y;
         }
     });
 

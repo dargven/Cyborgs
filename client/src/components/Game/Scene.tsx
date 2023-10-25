@@ -57,7 +57,9 @@ const Scene = (props: ISceneProps) => {
 
             if (props.playerProps.isAlive) {
                 const position = playerRef.current.position;
-    
+                const direction = new Vector3(pointer.x, pointer.y / aspect, 0); 
+                direction.normalize();
+                
                 if (leftPressed) {
                     position.set(position.x - 0.025, position.y, position.z);
                 }
@@ -71,16 +73,10 @@ const Scene = (props: ISceneProps) => {
                     position.set(position.x, position.y - 0.025, position.z);
                 }
                 if (shootPressed) {
-                    const direction = new Vector3(); 
-                    // в direction должен попадать вектор от игрока к курсору (во внутриигровых координатах)
-                    // вектор должен быть нормализован
-                    camera.position.lerp(direction.set(pointer.x, pointer.y, 0), 0);
                     const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} direction={direction} />];
 
                     //потом придумаю как дергать пули и выкидывать их из массива
                     setBullets(arr.concat(bullets));
-
-                    console.log(bullets.length);
                 }
             }
         }, 50);
