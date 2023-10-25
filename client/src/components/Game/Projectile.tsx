@@ -1,6 +1,5 @@
 import MakeSprite from "./MakeSprite";
-import { Texture } from "three";
-import { Vector3, Mesh } from "three";
+import { Vector3, Mesh, Texture } from "three";
 import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 

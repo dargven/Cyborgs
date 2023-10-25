@@ -35,7 +35,7 @@ const Scene = (props: ISceneProps) => {
     const upPressed = useKeyboardControls((state) => state[EControls.up]);
     const downPressed = useKeyboardControls((state) => state[EControls.down]);
     const shootPressed = useKeyboardControls((state) => state[EControls.shoot]);
-    const { viewport, camera } = useThree();
+    const { viewport, camera, pointer } = useThree();
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -59,11 +59,12 @@ const Scene = (props: ISceneProps) => {
                     const direction = new Vector3(); 
                     // в direction должен попадать вектор от игрока к курсору (во внутриигровых координатах)
                     // вектор должен быть нормализован
+                    camera.position.lerp(direction.set(pointer.x, pointer.y, 0), 0);
                     const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} direction={direction} />];
 
                     //потом придумаю как дергать пули и выкидывать их из массива
                     setBullets(arr.concat(bullets));
-                    
+
                     console.log(bullets.length);
                 }
             }
