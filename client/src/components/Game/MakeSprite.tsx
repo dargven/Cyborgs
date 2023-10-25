@@ -1,8 +1,18 @@
 import { MeshStandardMaterial, PlaneGeometry, DoubleSide } from "three";
-import { TSprite } from "./Types";
 import * as THREE from "three";
+import { Texture, Vector3 } from "three";
+import { Euler } from "@react-three/fiber"
 
-const MakeSprite = ({ texture, position, scale=1, isCollider=true, colliderSize=[1, 1, 0.1], rotation}: TSprite) => {
+interface IMakeSprite {
+    texture: Texture;
+    position: Vector3;
+    scale?: number;
+    rotation?: Euler;
+    isCollider?: boolean;
+    colliderSize?: number[];
+}
+
+const MakeSprite = ({ texture, position, scale=1, isCollider=true, colliderSize=[1, 1, 0.1], rotation}: IMakeSprite) => {
 
     texture.magFilter = THREE.NearestFilter;
     texture.minFilter = THREE.NearestFilter;

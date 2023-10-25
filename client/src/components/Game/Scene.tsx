@@ -16,10 +16,13 @@ import MakeCollider from "./MakeCollider";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
+    cameraProps: {
+        vSize: number;
+        aspect: number;
+    }
 }
 
 const Scene = (props: ISceneProps) => {
-
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load(PROJECTILE);
 
@@ -36,6 +39,18 @@ const Scene = (props: ISceneProps) => {
     const downPressed = useKeyboardControls((state) => state[EControls.down]);
     const shootPressed = useKeyboardControls((state) => state[EControls.shoot]);
     const { viewport, camera, pointer } = useThree();
+
+    const vSize = props.cameraProps.vSize;
+    const aspect = props.cameraProps.aspect;
+
+    useFrame(() => {
+        if(props.playerProps.isAlive) {
+            const playerPosition = playerRef.current.position;
+            camera.setViewOffset(-vSize, vSize, -playerPosition.x/aspect, -playerPosition.y, -vSize * aspect / 2, vSize * aspect / 2)
+            camera.updateProjectionMatrix();
+            // camera.clearViewOffset для удаления смещения
+        }
+    });
 
     useEffect(() => {
         const interval = setInterval(() => {

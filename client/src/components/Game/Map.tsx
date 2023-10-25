@@ -4,9 +4,11 @@ import MakeSprite from "./MakeSprite";
 import { TextureLoader} from "three";
 import { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST } from "../../assets/images";
 
-import { TMap } from "./Types";
+interface IMap {
+    scale?: number
+}
 
-function Map({ scale }: TMap) {
+function Map({ scale }: IMap) {
     const map = [ //лучше поменять на цифры
         ['LU', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'RU'],
         ['WL', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'fl', 'WR'],
