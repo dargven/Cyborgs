@@ -102,9 +102,6 @@ const Scene = (props: ISceneProps) => {
                 {bullets}
             </group>
       
-
-            <MakeCollider/>
-
             <Robot />
 
             <mesh ref={sceneRef}>

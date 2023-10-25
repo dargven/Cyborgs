@@ -2,17 +2,18 @@ import { MeshStandardMaterial, PlaneGeometry, DoubleSide } from "three";
 import * as THREE from "three";
 import { Texture, Vector3 } from "three";
 import { Euler } from "@react-three/fiber"
-
+import MakeCollider from "./MakeCollider";
 interface IMakeSprite {
     texture: Texture;
     position: Vector3;
     scale?: number;
     rotation?: Euler;
+    isSphere?: boolean;
     isCollider?: boolean;
     colliderSize?: number[];
 }
 
-const MakeSprite = ({ texture, position, scale=1, isCollider=true, colliderSize=[1, 1, 0.1], rotation}: IMakeSprite) => {
+const MakeSprite = ({ texture, position, scale=1, isSphere=false, isCollider=true,colliderSize=[1, 1, 0.1], rotation}: IMakeSprite) => {
 
     texture.magFilter = THREE.NearestFilter;
     texture.minFilter = THREE.NearestFilter;
@@ -23,7 +24,8 @@ const MakeSprite = ({ texture, position, scale=1, isCollider=true, colliderSize=
     return(
         <mesh position={position} scale={[scale, scale, scale]} rotation={rotation}>
             <meshBasicMaterial map={texture} transparent />
-            <primitive object={planeGeometry} material={planeMaterial} /> 
+            <primitive object={planeGeometry} material={planeMaterial} />
+            {isCollider && <MakeCollider isSphere={isSphere}/>} 
         </mesh>
     )
 }

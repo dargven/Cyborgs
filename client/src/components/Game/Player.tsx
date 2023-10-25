@@ -37,7 +37,7 @@ const Player = (props: IPlayerProps) => {
                 <sprite material={new SpriteMaterial({ color: 0xff0000 })} ref={healthbarRef} />
             </group>
 
-            <MakeSprite texture={isAlive ? TTROLLFACE : TSADTROLLFACE} position={new Vector3(0, 0, 0.1)} isCollider={isAlive} />
+            <MakeSprite texture={isAlive ? TTROLLFACE : TSADTROLLFACE} position={new Vector3(0, 0, 0.1)} isCollider={isAlive} isSphere={true} />
 
         </mesh>
     );
