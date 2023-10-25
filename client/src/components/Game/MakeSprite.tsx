@@ -13,7 +13,7 @@ interface IMakeSprite {
     colliderSize?: number[];
 }
 
-const MakeSprite = ({ texture, position, scale=1, isSphere=false, isCollider=true,colliderSize=[1, 1, 0.1], rotation}: IMakeSprite) => {
+const MakeSprite = ({ texture, position, scale=1, isSphere=false, isCollider=true, rotation}: IMakeSprite) => {
 
     texture.magFilter = THREE.NearestFilter;
     texture.minFilter = THREE.NearestFilter;
