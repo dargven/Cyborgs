@@ -1,6 +1,5 @@
 import { MeshStandardMaterial, PlaneGeometry, DoubleSide } from "three";
 import { TSprite } from "./Types";
-import MakeCollider from "./MakeCollider";
 import * as THREE from "three";
 
 const MakeSprite = ({ texture, position, scale=1, isCollider=true, colliderSize=[1, 1, 0.1], rotation}: TSprite) => {
@@ -14,8 +13,7 @@ const MakeSprite = ({ texture, position, scale=1, isCollider=true, colliderSize=
     return(
         <mesh position={position} scale={[scale, scale, scale]} rotation={rotation}>
             <meshBasicMaterial map={texture} transparent />
-            <primitive object={planeGeometry} material={planeMaterial} />
-            {isCollider ? <MakeCollider edgeWidth={10} size={colliderSize}/> : null}
+            <primitive object={planeGeometry} material={planeMaterial} /> 
         </mesh>
     )
 }

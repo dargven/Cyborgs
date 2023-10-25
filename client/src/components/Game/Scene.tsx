@@ -7,7 +7,11 @@ import { EControls } from "./Game";
 import { useKeyboardControls } from "@react-three/drei";
 import Projectile from "./Projectile"
 import Robot from "./Robot";
+import { Box,Sphere } from "@react-three/drei";
+import { RigidBody, CuboidCollider,Physics, BallCollider} from "@react-three/rapier";
+
 import { PROJECTILE } from "../../assets/images";
+import MakeCollider from "./MakeCollider";
 
 
 interface ISceneProps {
@@ -81,6 +85,9 @@ const Scene = (props: ISceneProps) => {
             <group>
                 {bullets}
             </group>
+      
+
+            <MakeCollider/>
 
             <Robot />
 
