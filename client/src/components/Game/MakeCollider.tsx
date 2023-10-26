@@ -10,12 +10,12 @@ const MakeCollider = (props: IMakeCollider) => {
         <>
             {props.isSphere ?
                 <RigidBody  >
-                    <BallCollider args={[1]} />
+                    <BallCollider args={[0.5]} />
                 </RigidBody>
                 :
-                <RigidBody type="fixed" >
-                    <CuboidCollider args={[1, 1, 1]} />
-                </RigidBody>
+                
+                    <CuboidCollider args={[0.5, 0.5, 0.5]} />
+                
             }
         </>
     );

@@ -26,7 +26,7 @@ const Progectile = (props: IProjectiileProps) => {
 
     return isActive ? (
         <mesh ref={bulletRef}>
-            <MakeSprite texture={props.texture} position={props.initialPosition} scale={0.5} />
+            <MakeSprite texture={props.texture} position={props.initialPosition} scale={0.5}  isSphere={true}/>
         </mesh>
     ) : <></>;
 
