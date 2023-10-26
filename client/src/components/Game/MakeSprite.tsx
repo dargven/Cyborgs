@@ -7,25 +7,28 @@ interface IMakeSprite {
     texture: Texture;
     position: Vector3;
     scale?: number;
-    rotation?: Euler;
+    rotation?: number;
     isSphere?: boolean;
     isCollider?: boolean;
     colliderSize?: number[];
 }
 
-const MakeSprite = ({ texture, position, scale=1, isSphere=false, isCollider=true, rotation}: IMakeSprite) => {
+const MakeSprite = ({ texture, position, scale = 1, isSphere = false, isCollider = true, rotation }: IMakeSprite) => {
 
     texture.magFilter = THREE.NearestFilter;
     texture.minFilter = THREE.NearestFilter;
 
-    const planeGeometry = new PlaneGeometry(1, 1);
-    const planeMaterial = new MeshStandardMaterial({ map: texture, transparent: true, side: DoubleSide});
+    // const planeGeometry = new PlaneGeometry(1, 1);
+    // const planeMaterial = new MeshStandardMaterial({ map: texture, transparent: true, side: DoubleSide });
 
-    return(
-        <mesh position={position} scale={[scale, scale, scale]} rotation={rotation}>
-            <meshBasicMaterial map={texture} transparent />
-            <primitive object={planeGeometry} material={planeMaterial} />
-            {isCollider && <MakeCollider isSphere={isSphere}/>} 
+    return (
+        <mesh position={position} scale={[scale, scale, scale]}>
+            {/* <meshStandardMaterial map={texture} transparent />
+            <primitive object={planeGeometry} material={planeMaterial} /> */}
+            <sprite>
+                <spriteMaterial map={texture} rotation={rotation} />
+            </sprite>
+            {isCollider && <MakeCollider isSphere={isSphere} />}
         </mesh>
     )
 }

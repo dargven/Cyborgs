@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import Scene from "./Scene";
 import { IPlayerProps } from "./Player";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { KeyboardControlsEntry, KeyboardControls, OrthographicCamera } from "@react-three/drei";
 
 export enum EControls {
@@ -33,7 +33,7 @@ const Game = () => {
         <KeyboardControls map={inputMap}>
             <Canvas>
                 <OrthographicCamera makeDefault position={[0, 0, 0]} near={-100} far={10} left={-vSize * aspect / 2} right={vSize * aspect / 2} top={vSize / 2} bottom={-vSize / 2}>
-                    <Scene playerProps={playerProps} cameraProps={{vSize, aspect}}/>
+                    <Scene playerProps={playerProps} cameraProps={{ vSize, aspect }} />
                 </OrthographicCamera>
             </Canvas>
         </KeyboardControls>

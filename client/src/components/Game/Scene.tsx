@@ -8,6 +8,7 @@ import { useKeyboardControls } from "@react-three/drei";
 import Projectile from "./Projectile"
 import Robot from "./Robot";
 import { PROJECTILE } from "../../assets/images";
+import { Physics } from "@react-three/rapier";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -23,8 +24,8 @@ const Scene = (props: ISceneProps) => {
 
     const scale = 1;
 
-    const sceneRef = useRef<Mesh>(null!);
-    const playerRef = useRef<Group>(null!);
+    // const sceneRef = useRef<Mesh>(null!);
+    const playerRef = useRef<Mesh>(null!);
 
     const [bullets, setBullets] = useState<JSX.Element[]>([]);
 
@@ -39,9 +40,9 @@ const Scene = (props: ISceneProps) => {
     const aspect = props.cameraProps.aspect;
 
     useFrame(() => {
-        if(props.playerProps.isAlive) {
+        if (props.playerProps.isAlive) {
             const playerPosition = playerRef.current.position;
-            camera.setViewOffset(-vSize, vSize, -playerPosition.x/aspect, -playerPosition.y, -vSize * aspect / 2, vSize * aspect / 2)
+            camera.setViewOffset(-vSize, vSize, -playerPosition.x / aspect, -playerPosition.y, -vSize * aspect / 2, vSize * aspect / 2)
             camera.updateProjectionMatrix();
             // camera.clearViewOffset для удаления смещения
         }
@@ -49,28 +50,25 @@ const Scene = (props: ISceneProps) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-
             if (props.playerProps.isAlive) {
                 const position = playerRef.current.position;
-                const direction = new Vector3(pointer.x, pointer.y / aspect, 0); 
+                const direction = new Vector3(pointer.x, pointer.y / aspect, 0);
                 direction.normalize();
-                
+
                 if (leftPressed) {
-                    position.set(position.x - 0.025, position.y, position.z);
+                    position.set(position.x - 0.1, position.y, position.z);
                 }
                 if (rightPressed) {
-                    position.set(position.x + 0.025, position.y, position.z);
+                    position.set(position.x + 0.1, position.y, position.z);
                 }
                 if (upPressed) {
-                    position.set(position.x, position.y + 0.025, position.z);
+                    position.set(position.x, position.y + 0.1, position.z);
                 }
                 if (downPressed) {
-                    position.set(position.x, position.y - 0.025, position.z);
+                    position.set(position.x, position.y - 0.1, position.z);
                 }
                 if (shootPressed) {
                     const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} direction={direction} />];
-
-                    //потом придумаю как дергать пули и выкидывать их из массива
                     setBullets(arr.concat(bullets));
                 }
             }
@@ -83,21 +81,20 @@ const Scene = (props: ISceneProps) => {
 
     return (
         <group>
-            <ambientLight intensity={1} />
+            <Physics gravity={[0, 0, 0]} colliders="hull">
 
-            <group ref={playerRef}>
-                <Player isAlive={props.playerProps.isAlive} id={props.playerProps.id} />
-            </group>
+                <ambientLight intensity={1} />
 
-            <group>
+                <mesh ref={playerRef}>
+                    <Player isAlive={props.playerProps.isAlive} id={props.playerProps.id} />
+                </mesh>
+
                 {bullets}
-            </group>
-      
-            <Robot />
 
-            <mesh ref={sceneRef}>
+                <Robot />
+
                 <Map scale={scale} />
-            </mesh>
+            </Physics>
         </group>
     );
 }
