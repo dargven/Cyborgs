@@ -249,7 +249,7 @@ WrongAnswer(code:700, text:'No skins')
 применимые для игрока
 
 ### Адрес
-```/?method = getSkins```
+```/?method = autoregister```
 
 ### Параметры
 
