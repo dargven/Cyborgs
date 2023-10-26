@@ -28,6 +28,11 @@ class Application
         return [false, 1001];
     }
 
+    function autoregister($params) 
+    {
+        $this->register($params);
+    }
+
     function login($params)
     {
         $login = $params['login'];

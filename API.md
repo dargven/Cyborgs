@@ -242,7 +242,31 @@ WrongAnswer(code:700, text:'No skins')
 
 ## AutoLogin
 
-## AutoRegistration
+## autoregister
+
+### Описание метода
+При успешном ответе(см.ниже) возвращается возможные скины, 
+применимые для игрока
+
+### Адрес
+```/?method = getSkins```
+
+### Параметры
+
+| Параметры | Тип    | Комментарий              |
+|-----------|--------|--------------------------|
+| login     | string | Login пользователя       |
+| hash      | string | Хэш-сумма                |     
+
+
+### Успешный ответ
+```
+CorrectAnswer=>true
+```
+### Ошибки
+```
+WrongAnswer(code:1003, text: 'Is it unique login?')
+```
 
 ## CheckToken
 

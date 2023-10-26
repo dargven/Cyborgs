@@ -38,6 +38,11 @@ class User
         return array (false, 1003);
     }
 
+    public function autoregister($login, $hash) 
+    {
+        $this->register($login, $hash);
+    }
+
     private function genToken()
     {
         return md5(microtime() . 'salt' . rand());
