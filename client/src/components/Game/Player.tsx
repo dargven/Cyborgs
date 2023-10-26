@@ -4,6 +4,8 @@ import { Group, Texture, TextureLoader } from "three";
 import { Mesh, Vector3, Sprite, SpriteMaterial } from "three";
 import { useEffect, useRef, useState } from "react";
 import HealthBar from "./HealthBar";
+import FlipSprites from "./sprites/AnimatedSprites";
+import { Cyborg_sSheet } from "../../assets/images";
 
 export interface IPlayerProps {
     id?: number;
@@ -24,7 +26,7 @@ const Player = (props: IPlayerProps) => {
     const TTROLLFACE = textureLoader.load(TROLLFACE);
     const TSADTROLLFACE = textureLoader.load(SADTROLLFACE);
 
-    const [textures, setTextures] = useState<Texture[]>([TTROLLFACE, TSADTROLLFACE]);
+    const [textures, setTextures] = useState<Texture[]>([TTROLLFACE, TSADTROLLFACE,]);
 
     return (
         <group ref={playerRef} scale={0.5} position={props.position}>
@@ -32,13 +34,16 @@ const Player = (props: IPlayerProps) => {
             <HealthBar />
 
             {/* <MakeSprite texture={isAlive ? TTROLLFACE : TSADTROLLFACE} position={new Vector3(0, 0, 0.1)} isCollider={isAlive} isSphere={true} /> */}
-           {/* <sprite>
+            
+            <FlipSprites spriteTexture = {Cyborg_sSheet} tilesHoriz = {2} tilesVert = {4}></FlipSprites>
+
+            {/* <sprite>
                 {isAlive ?
                     <spriteMaterial map={textures[0]} /> :
                     <spriteMaterial map={textures[1]} />
                 }
-            </sprite>*/}
-            < MakeSprite texture={isAlive ? TTROLLFACE : TSADTROLLFACE} position={new Vector3(0, 0, 0.1)}  isSphere={true}/>
+            </sprite> */}
+
         </group>
     );
 }
