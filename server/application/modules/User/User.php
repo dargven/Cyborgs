@@ -2,7 +2,7 @@
 
 class User
 {
-    private $db;
+    private DB $db;
 
     function __construct($db)
     {
@@ -28,6 +28,32 @@ class User
         return array(false, 1004);
     }   
 
+//    public function register($login, $hash)
+//    {
+//        $user = $this->db->getUserByLogin($login);
+//        if (!$user) {
+//            $this->db->addUser($login, $hash);
+//            return true;
+//        }
+//        return array (false, 1003);
+//    }
+//
+//    private function genToken()
+//    {
+//        return md5(microtime() . 'salt' . rand());
+//    }
+//
+//    function checkToken($token, $login)
+//    {
+//        $tokens = $this->db->getParamsUser($login, 'token');
+//        return ($token === $tokens);
+//        }
+//
+//    public function logout($login)
+//    {
+//        $this->db->setValue($login, null, 'token');
+//        return true;
+//    }
     public function register($login, $hash)
     {
         $user = $this->db->getUserByLogin($login);
@@ -55,7 +81,7 @@ class User
         return true;
     }
 
-    public function getSkins($id, $token) 
+    public function getSkins($id, $token)
     {
         $user = $this->db->getUserById($id);
         if ($user) {
@@ -65,11 +91,11 @@ class User
                     'skins' => $skins,
                     'numberOfSkins' => count($skins)
                 );
-                return [false, 700]; 
+                return [false, 700];
             }
-            return [false, 1002]; 
+            return [false, 1002];
         }
-        return [false, 705]; 
+        return [false, 705];
     }
 
     public function setSkin($id, $token, $skin) {
@@ -82,7 +108,7 @@ class User
                     'setSkin' => $skin
                 );
             }
-            return [false, 701]; 
+            return [false, 701];
         }
         return $skins; //error
     }
