@@ -1,7 +1,9 @@
 import { useContext, useRef, useState } from "react";
 import { ServerContext } from "../App";
 import { Navigate } from "react-router-dom";
+import md5 from 'md5-ts';
 import "../Auth.css";
+
 
 const LoginPage = () => {
   const server = useContext(ServerContext);
@@ -11,10 +13,15 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     if (loginRef.current && passwordRef.current) {
+        const login = loginRef.current.value;
+        const rnd = Math.round(283 * Math.random());
+        const hash = md5(md5(loginRef.current.value + loginRef.current.value) + rnd);
+        console.log(rnd);
       const user = await server.login(
-        loginRef.current.value,
-        passwordRef.current.value
-      );
+        login,
+        hash,
+        rnd
+    )
       console.log(user);
       if (user) {
         setLoginSuccess(true);
