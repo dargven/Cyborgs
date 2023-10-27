@@ -28,31 +28,31 @@ class User
         return array(false, 1004);
     }   
 
-    public function register($login, $hash)
-    {
-        $user = $this->db->getUserByLogin($login);
-        if (!$user) {
-            $this->db->addUser($login, $hash);
-            return true;
-        }
-        return array (false, 1003);
-    }
-
-    private function genToken()
-    {
-        return md5(microtime() . 'salt' . rand());
-    }
-
-    function checkToken($token, $login)
-    {
-        $tokens = $this->db->getParamsUser($login, 'token');
-        return ($token === $tokens);
-        }
-
-    public function logout($login)
-    {
-        $this->db->setValue($login, null, 'token');
-        return true;
-    }
+//    public function register($login, $hash)
+//    {
+//        $user = $this->db->getUserByLogin($login);
+//        if (!$user) {
+//            $this->db->addUser($login, $hash);
+//            return true;
+//        }
+//        return array (false, 1003);
+//    }
+//
+//    private function genToken()
+//    {
+//        return md5(microtime() . 'salt' . rand());
+//    }
+//
+//    function checkToken($token, $login)
+//    {
+//        $tokens = $this->db->getParamsUser($login, 'token');
+//        return ($token === $tokens);
+//        }
+//
+//    public function logout($login)
+//    {
+//        $this->db->setValue($login, null, 'token');
+//        return true;
+//    }
 
 }
