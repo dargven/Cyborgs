@@ -14,12 +14,12 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ServerContext.Provider value={server}>
-          <NavBar/>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/main" element={<MainPage />} />
-            <Route path="/registration" element={<RegistrationPage />} />
-          </Routes>
+        <NavBar />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/main" element={<MainPage />} />
+          <Route path="/registration" element={<RegistrationPage />} />
+        </Routes>
       </ServerContext.Provider>
     </BrowserRouter>
   );
