@@ -24,6 +24,7 @@ const Scene = (props: ISceneProps) => {
 
     const scale = 1;
 
+
     // const sceneRef = useRef<Mesh>(null!);
     const playerRef = useRef<Mesh>(null!);
 
@@ -34,13 +35,19 @@ const Scene = (props: ISceneProps) => {
     const vSize = props.cameraProps.vSize;
     const aspect = props.cameraProps.aspect;
 
+    const handleShooting = (id: number, position: Vector3, direction: Vector3) => {
+        const arr = [<Projectile key={`${id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} direction={direction} />]
+        setBullets(arr.concat(bullets));
+        console.log(bullets.length);
+    }
+
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
 
                 <ambientLight intensity={0.5} />
-                
-                <Player id={props.playerProps.id} />
+
+                <Player id={props.playerProps.id} callbacks={[handleShooting]} />
 
                 {bullets}
 
