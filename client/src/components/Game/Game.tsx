@@ -14,8 +14,6 @@ export enum EControls {
 
 const playerProps: IPlayerProps = {
     id: 1337,
-    callbacks: []
-    // isAlive: true
 }
 
 const Game = () => {

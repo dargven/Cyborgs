@@ -10,7 +10,8 @@ interface IProjectiileProps {
     texture: Texture;
 }
 
-const Progectile = (props: IProjectiileProps) => {
+const Projectile = (props: IProjectiileProps) => {
+    console.log(props.initialPosition)
     const bulletRef = useRef<Mesh>(null!);
     const [isActive, setActive] = useState<boolean>(true);
 
@@ -32,4 +33,4 @@ const Progectile = (props: IProjectiileProps) => {
 
 }
 
-export default Progectile;
+export default Projectile;
