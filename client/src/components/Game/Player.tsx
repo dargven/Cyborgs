@@ -1,26 +1,24 @@
-import MakeSprite from "./MakeSprite";
-import { SADTROLLFACE, TROLLFACE, HPBack } from "../../assets/images";
-import { Group, Texture, TextureLoader } from "three";
-import { Mesh, Vector3, Sprite, SpriteMaterial } from "three";
+import { SADTROLLFACE, TROLLFACE } from "../../assets/images";
+import { Texture, TextureLoader, Vector3 } from "three";
 import { useEffect, useRef, useState } from "react";
 import HealthBar from "./HealthBar";
-import FlipSprites from "./sprites/AnimatedSprites";
-import { Cyborg_sSheet } from "../../assets/images";
+import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
+import { useKeyboardControls } from "@react-three/drei";
+import { useThree, useFrame } from "@react-three/fiber";
 
 export interface IPlayerProps {
     id?: number;
     username?: string;
     hp?: number;
-    isAlive?: true | false;
     position?: Vector3;
 }
 
 const Player = (props: IPlayerProps) => {
-    const playerRef = useRef<Group>(null!);
-    // const healthbarRef = useRef<Sprite>(null!);
+    const playerRef = useRef<RapierRigidBody>(null!);
 
-    const [isAlive, setIsAlive] = useState<boolean>(true);
     const [hp, setHp] = useState<number>(100);
+
+    const [controlKeys, getKeys] = useKeyboardControls();
 
     const textureLoader = new TextureLoader();
     const TTROLLFACE = textureLoader.load(TROLLFACE);
@@ -28,23 +26,81 @@ const Player = (props: IPlayerProps) => {
 
     const [textures, setTextures] = useState<Texture[]>([TTROLLFACE, TSADTROLLFACE,]);
 
-    return (
-        <group ref={playerRef} scale={0.5} position={props.position}>
+    useEffect(() => {
+        // console.log(up, down, left, right)
 
-            <HealthBar />
+        const interval = setInterval(() => {
+            const { up, down, left, right, shoot } = getKeys();
+            if (hp > 0) {
+                // const direction = new Vector3(pointer.x, pointer.y / aspect, 0);
+                // direction.normalize();
+                const impulse = new Vector3();
 
-            {/* <MakeSprite texture={isAlive ? TTROLLFACE : TSADTROLLFACE} position={new Vector3(0, 0, 0.1)} isCollider={isAlive} isSphere={true} /> */}
-            
-            <FlipSprites spriteTexture = {Cyborg_sSheet} tilesHoriz = {2} tilesVert = {4}></FlipSprites>
-
-            {/* <sprite>
-                {isAlive ?
-                    <spriteMaterial map={textures[0]} /> :
-                    <spriteMaterial map={textures[1]} />
+                if (left) {
+                    impulse.x -= 1;
                 }
-            </sprite> */}
+                if (right) {
+                    impulse.x += 1;
+                }
+                if (up) {
+                    impulse.y += 1;
+                }
+                if (down) {
+                    impulse.y -= 1;
+                }
+                impulse.setLength(0.1);
+                // if (shoot) {
+                //     //     const arr = [<Projectile key={`${props.playerProps.id}-${bullets.length}`} initialPosition={position} texture={TPROJECTILE} direction={direction} />];
+                //     //     setBullets(arr.concat(bullets));
+                // }
 
-        </group>
+                // убрал стрельбу и движение камеры
+
+                const velocity = playerRef.current.linvel();
+
+                // velocity.setLength(velocity.length() > 10 ? 10 : velocity.length());
+                // console.log(velocity.length())
+                // console.log();
+                playerRef.current.applyImpulse(impulse, true);
+                // console.log(playerRef.current.translation(), impulse);
+            }
+        }, 50);
+
+        return () => {
+            clearInterval(interval);
+        }
+    });
+
+    const { viewport, camera, pointer } = useThree();
+
+    useFrame(() => {
+        if (hp > 0) {
+            const playerPosition = playerRef.current.translation() as Vector3;
+            // camera.lookAt(playerPosition);
+
+            // camera.setViewOffset(-vSize, vSize, -playerPosition.x / aspect, -playerPosition.y, -vSize * aspect / 2, vSize * aspect / 2)
+            // camera.updateProjectionMatrix();
+            // camera.clearViewOffset для удаления смещения
+        }
+    });
+
+    return (
+        <RigidBody
+            ref={playerRef}
+            scale={0.5}
+            position={[-2, 0, 0]}
+            colliders="hull"
+            friction={0.5}
+            linearDamping={0.9}
+            angularDamping={1}
+        >
+            <BallCollider args={[0.5]} />
+            <HealthBar />
+            {/* <MakeSprite texture={true ? TTROLLFACE : TSADTROLLFACE} position={new Vector3(0, 0, 0)} isCollider={true} isSphere={true} /> */}
+
+            {/* <FlipSprites spriteTexture={Cyborg_sSheet} tilesHoriz={2} tilesVert={4}></FlipSprites> */}
+
+        </RigidBody>
     );
 }
 

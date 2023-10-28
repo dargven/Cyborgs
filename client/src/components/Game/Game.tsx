@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import Scene from "./Scene";
 import { IPlayerProps } from "./Player";
-import { Suspense, useMemo } from "react";
+import { useMemo } from "react";
 import { KeyboardControlsEntry, KeyboardControls, OrthographicCamera } from "@react-three/drei";
 
 export enum EControls {
@@ -14,7 +14,7 @@ export enum EControls {
 
 const playerProps: IPlayerProps = {
     id: 1337,
-    isAlive: true
+    // isAlive: true
 }
 
 const Game = () => {

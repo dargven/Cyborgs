@@ -2,7 +2,7 @@ import { MeshStandardMaterial, PlaneGeometry, DoubleSide } from "three";
 import * as THREE from "three";
 import { Texture, Vector3 } from "three";
 import { Euler } from "@react-three/fiber"
-import MakeCollider from "./MakeCollider";
+import { CuboidCollider } from "@react-three/rapier";
 interface IMakeSprite {
     texture: Texture;
     position: Vector3;
@@ -28,7 +28,8 @@ const MakeSprite = ({ texture, position, scale = 1, isSphere = false, isCollider
             <sprite>
                 <spriteMaterial map={texture} rotation={rotation} />
             </sprite>
-            {isCollider && <MakeCollider isSphere={isSphere} />}
+            {/* {isCollider && <MakeCollider isSphere={isSphere} />} */}
+            {isCollider && <CuboidCollider args={[0.5, 0.5, 0.5]}></CuboidCollider>}
         </mesh>
     )
 }
