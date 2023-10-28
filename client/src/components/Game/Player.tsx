@@ -1,5 +1,5 @@
 import { RapierRigidBody, RigidBody, BallCollider } from "@react-three/rapier";
-import { forwardRef, useRef, useState } from "react";
+import { forwardRef, useState } from "react";
 import HealthBar from "./HealthBar";
 import { TextureLoader, Texture, Vector3 } from "three";
 import { TROLLFACE, SADTROLLFACE } from "../../assets/images";
@@ -12,11 +12,6 @@ export interface IPlayerProps {
 }
 
 const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>) => {
-
-    const fallbackRef = useRef<RapierRigidBody>(null!);
-
-    const safeRef = ref || fallbackRef;
-
     const textureLoader = new TextureLoader();
     const TTROLLFACE = textureLoader.load(TROLLFACE);
     const TSADTROLLFACE = textureLoader.load(SADTROLLFACE);
@@ -25,7 +20,7 @@ const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>)
 
     return (
         <RigidBody
-            ref={safeRef}
+            ref={ref}
             scale={0.5}
             position={[-2, 0, 0]}
             colliders="hull"
