@@ -2,7 +2,7 @@
 
 class User
 {
-    private DB $db;
+    private $db;
 
     function __construct($db)
     {
@@ -30,7 +30,7 @@ class User
 
     public function register($login, $hash)
     {
-        $user = $this->db->getUserByLogin($login);
+        $user = $this->db->getUser($login);
         if (!$user) {
             $this->db->addUser($login, $hash);
             return true;
@@ -38,9 +38,13 @@ class User
         return array (false, 1003);
     }
 
-    public function autoregister($login, $hash) 
+    public function autoregister() 
     {
-        $this->register($login, $hash);
+        $login = 'USER_'.bin2hex(random_bytes(10));
+        $hash = md5(bin2hex(random_bytes(20)).rand());
+        $token = md5($hash.rand());
+        //$token in localstorage .....
+        return $this->register($login, $hash);
     }
 
     private function genToken()

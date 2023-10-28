@@ -28,9 +28,9 @@ class Application
         return [false, 1001];
     }
 
-    function autoregister($params) 
+    function autoregister() 
     {
-        $this->register($params);
+        return $this->user->autoregister();
     }
 
     function login($params)

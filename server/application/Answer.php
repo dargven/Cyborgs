@@ -16,7 +16,7 @@ class Answer
         '9000' => 'unknown error'
     );
 
-    static function response(array $data)
+    static function response($data)
     {
         if ($data) {
             if (count($data) === 2 && !$data[0]) {

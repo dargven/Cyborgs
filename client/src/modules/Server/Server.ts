@@ -1,6 +1,6 @@
 import { TUser } from "./types";
 import md5 from 'md5-ts';
-import useAutoRegData from "../../hooks/useAutoRegData";
+//import useAutoRegData from "../../hooks/useAutoRegData";
 
 export default class Server {
     private HOST: string;
@@ -55,9 +55,7 @@ export default class Server {
         return this.request<TUser>('register', { login, hash });
     }
 
-    autoregister(): Promise<TUser | null> {
-        const login = useAutoRegData['login'];
-        const hash = useAutoRegData['hash']; 
-        return this.request<TUser>('autoregister', { login, hash });
+    autoregister(): Promise<TUser | null> { 
+        return this.request<TUser>('autoregister');
     }
 }
