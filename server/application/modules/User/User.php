@@ -30,7 +30,7 @@ class User
 
     public function register($login, $hash)
     {
-        $user = $this->db->getUser($login);
+        $user = $this->db->getUserByLogin($login); // после добавления метода в DB.php, в старой версии getUser($login)
         if (!$user) {
             $this->db->addUser($login, $hash);
             return true;
