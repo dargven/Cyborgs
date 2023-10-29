@@ -27,7 +27,7 @@ const Scene = (props: ISceneProps) => {
     const [controlKeys, getKeys] = useKeyboardControls();
     // const sceneRef = useRef<Mesh>(null!);
     const playerRef = createRef<RapierRigidBody>();
-    const [position, setPostition] = useState<Vector3>(new Vector3());
+    // const [position, setPostition] = useState<Vector3>(new Vector3());
 
     const [bullets, setBullets] = useState<JSX.Element[]>([]);
 
@@ -37,50 +37,50 @@ const Scene = (props: ISceneProps) => {
     const aspect = props.cameraProps.aspect;
 
     useEffect(() => {
-
-
-
         const interval = setInterval(() => {
+            playerRef.current?.resetForces(true);
+            const position = playerRef.current?.translation() as Vector3;
             // console.log(position);
             const { up, down, left, right, shoot } = getKeys();
             // if (hp > 0) {
             const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
             direction.normalize();
-            const impulse = new Vector3();
+            const force = new Vector3();
 
             if (left) {
-                impulse.x -= 1;
+                force.x -= 1;
             }
             if (right) {
-                impulse.x += 1;
+                force.x += 1;
             }
             if (up) {
-                impulse.y += 1;
+                force.y += 1;
             }
             if (down) {
-                impulse.y -= 1;
+                force.y -= 1;
             }
-            impulse.setLength(0.1);
+            const _velocity = playerRef.current?.linvel();
+            const vel = new Vector3(_velocity?.x, _velocity?.y, 0);
+            const len = vel.length();
+            if (len < 1) {
+                force.setLength(1);
+            } else {
+                force.setLength(1 / len);
+            }
             if (shoot) {
-                impulse.setLength(0.01);
-                const arr = [<Projectile
-                    key={`${props.playerProps.id}-${bullets.length}`}
-                    initialPosition={position}
-                    texture={TPROJECTILE}
-                    direction={direction} />]
-                setBullets(arr.concat(bullets));
+                force.setLength(0.4);
+                const arr = [
+                    <Projectile
+                        key={`${props.playerProps.id}-${bullets.length}`}
+                        initialPosition={position}
+                        texture={TPROJECTILE}
+                        direction={direction} />
+                ];
+
+                setBullets(bullets => arr.concat(bullets));
             }
             if (playerRef.current) {
-                playerRef.current.applyImpulse(impulse, true);
-
-
-                // абсолютно ненадежный кусок дерьма, который не может сохранить стейт
-
-                // const _velocity = playerRef.current.linvel();
-                // const velocity = new Vector3(_velocity.x, _velocity.y, 0);
-                // velocity.lerp()
-                // velocity.setLength();
-                // playerRef.current.setLinvel({ x: velocity.x, y: velocity.y, z: velocity.z }, true);
+                playerRef.current.addForce(force, true);
             }
         }, 50);
 
@@ -90,23 +90,13 @@ const Scene = (props: ISceneProps) => {
     }, []);
 
     useFrame(() => {
-
-        
-        // if (hp > 0) {
-        camera.setViewOffset(-vSize, vSize, -position.x / viewport.aspect, -position.y, -vSize * viewport.aspect / 2, vSize * viewport.aspect / 2)
-        camera.updateProjectionMatrix();
-        // camera.clearViewOffset для удаления смещения
-        // }
+        // camera.setViewOffset(-vSize, vSize, -position.x / viewport.aspect, -position.y, -vSize * viewport.aspect / 2, vSize * viewport.aspect / 2)
+        // camera.updateProjectionMatrix();
     });
 
-
-
-
-
-
     return (
-        <group>
-            <Physics gravity={[0, 0, 0]} colliders="hull">
+        <group position={[0, 0, -1]}>
+            <Physics gravity={[0, 0, 0]} colliders="hull" debug>
 
                 <ambientLight intensity={0.5} />
 
@@ -115,8 +105,10 @@ const Scene = (props: ISceneProps) => {
                 {bullets}
 
                 <Robot />
+                <group position={[0, 0, -0.1]}>
+                    <Map scale={scale} />
+                </group>
 
-                <Map scale={scale} />
             </Physics>
         </group>
     );

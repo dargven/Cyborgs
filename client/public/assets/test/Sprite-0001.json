@@ -1,6 +1,6 @@
 { "frames": [
   {
-   "filename": "Sprite-00010",
+   
     "frame": { "x": 0, "y": 0, "w": 32, "h": 32 },
     "rotated": false,
     "trimmed": false,
@@ -9,7 +9,7 @@
     "duration": 1000
    },
    {
-   "filename": "Sprite-00011",
+
     "frame": { "x": 32, "y": 0, "w": 32, "h": 32 },
     "rotated": false,
     "trimmed": false,

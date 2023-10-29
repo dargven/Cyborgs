@@ -11,7 +11,7 @@ interface IProjectiileProps {
 }
 
 const Projectile = (props: IProjectiileProps) => {
-    console.log(props.initialPosition)
+    // console.log(props.initialPosition)
     const bulletRef = useRef<Mesh>(null!);
     const [isActive, setActive] = useState<boolean>(true);
 

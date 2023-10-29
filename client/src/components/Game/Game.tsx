@@ -2,7 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import Scene from "./Scene";
 import { IPlayerProps } from "./Player";
 import { useMemo } from "react";
-import { KeyboardControlsEntry, KeyboardControls, OrthographicCamera } from "@react-three/drei";
+import { KeyboardControlsEntry, KeyboardControls, OrthographicCamera, OrbitControls, PerspectiveCamera } from "@react-three/drei";
 
 export enum EControls {
     up = 'up',
@@ -31,8 +31,18 @@ const Game = () => {
     return (
         <KeyboardControls map={inputMap}>
             <Canvas>
-                <OrthographicCamera makeDefault position={[0, 0, 0]} near={-100} far={10} left={-vSize * aspect / 2} right={vSize * aspect / 2} top={vSize / 2} bottom={-vSize / 2}>
+                <OrthographicCamera
+                    makeDefault
+                    position={[0, 0, 100]}
+                    near={0}
+                    far={1000}
+                    left={-vSize * aspect / 2}
+                    right={vSize * aspect / 2}
+                    top={vSize / 2}
+                    bottom={-vSize / 2}>
                     <Scene playerProps={playerProps} cameraProps={{ vSize, aspect }} />
+                    <OrbitControls maxZoom={1.5} minZoom={0.95} />
+                    <axesHelper />
                 </OrthographicCamera>
             </Canvas>
         </KeyboardControls>

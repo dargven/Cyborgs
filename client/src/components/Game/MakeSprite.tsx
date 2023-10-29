@@ -26,6 +26,7 @@ const MakeSprite = ({ texture, position, scale = 1, isSphere = false, isCollider
             {/* <meshStandardMaterial map={texture} transparent />
             <primitive object={planeGeometry} material={planeMaterial} /> */}
             <sprite>
+                <shadowMaterial />
                 <spriteMaterial map={texture} rotation={rotation} />
             </sprite>
             {/* {isCollider && <MakeCollider isSphere={isSphere} />} */}
