@@ -11,11 +11,19 @@ class DB
         $this->connect();
     }
 
+    public function __destruct()
+    {
+        $sth = null;
+        $dsn = null;
+    }
+
+    
+
     //ф-ция устанавливает соединение с ДБ
     private function connect()
     {
         $dsn = "mysql:host=localhost;dbname=Cyborgs;charset=utf8";
-        $this->link = new PDO($dsn, 'root', '123');
+        $this->link = new PDO($dsn, username:'root',password:'');
         return $this->link;
     }
 
@@ -85,4 +93,6 @@ class DB
          return $this->execute("DELETE * FROM `Bullet` WHERE id='$id'");
     }
 } 
-
+$db=new DB();
+$login='вася';
+print_r($db->getUserByLogin($login));
