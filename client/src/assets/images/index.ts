@@ -10,6 +10,8 @@ import TROLLFACE from './Skins/trollface.png'
 import SADTROLLFACE from './Skins/sadtrollface.png'
 import PROJECTILE from './Bullets/Projectile.png'
 import RobotTexture from './Skins/Robot.png';
-import HPBack from './Skins/hpbarbackground.png'
-export { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST, TROLLFACE, SADTROLLFACE, PROJECTILE,RobotTexture,HPBack };
+import HPBack from './Skins/hpbarbackground.png';
+import No_Texture from './No_texture.png';
+import Space from './Space.png';
+export { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST, TROLLFACE, SADTROLLFACE, PROJECTILE,RobotTexture,HPBack, No_Texture, Space };
 

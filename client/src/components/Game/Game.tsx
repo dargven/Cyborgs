@@ -34,14 +34,14 @@ const Game = () => {
                 <OrthographicCamera
                     makeDefault
                     position={[0, 0, 100]}
-                    near={0}
+                    near={-100}
                     far={1000}
                     left={-vSize * aspect / 2}
                     right={vSize * aspect / 2}
                     top={vSize / 2}
                     bottom={-vSize / 2}>
-                    <Scene playerProps={playerProps} cameraProps={{ vSize, aspect }} />
-                    <OrbitControls maxZoom={1.5} minZoom={0.95} />
+                    <Scene playerProps={playerProps} cameraProps={{ vSize, aspect }}/>
+                    <OrbitControls maxZoom={1.5} minZoom={-100} />
                     <axesHelper />
                 </OrthographicCamera>
             </Canvas>
