@@ -33,7 +33,6 @@ class DB
         return $result;
 
     }
-
     public function addUser($login,$password,$name,$soname,$token){
         $db = new DB();
         $user = $db->execute("INSERT INTO `Users` (login,password,name,soname,token)
