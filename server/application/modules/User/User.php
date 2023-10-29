@@ -13,13 +13,15 @@ class User
     {
         $user = $this->db->getUserByLogin($login);
         if ($user) {
-            $hashs = md5($user->password.$rnd);
+            var_dump($user);
+            $hashs = md5($user[0]['password'].$rnd);
+            var_dump($hashs);
             if ($hash === $hashs) {
                 $token = $this->genToken();
-                $this->db->setValue($login, $token, 'token');
+                $this->db->updateToken($user[0]['id'], $token);
                 return array(
-                    'id' => $user->id,
-                    'name' => $user->name,
+                    'id' => $user[0]['id'],
+                    'name' => $user[0]['name'],
                     'token' => $token,
                 );
             }
