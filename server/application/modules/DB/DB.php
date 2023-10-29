@@ -12,9 +12,8 @@ class DB
 
     //ф-ция устанавливает соединение с ДБ
     private function connect(){
-        $config = require_once 'config.php';
-        $dsn = 'mysql:host='.$config['host'].';dbname='.$config['db_name'].';charset='.$config['charset'] ;
-        $this->link = new PDO($dsn, $config['username'], $config['password']);
+        $dsn = "mysql:host=localhost;dbname=Cyborgs;charset=utf8" ;
+        $this->link = new PDO($dsn, username:'root',password:'');
         return $this;
     }
     //ф-ция, которая выполняет запрос
@@ -32,5 +31,52 @@ class DB
             return[];
         }
         return $result;
+
+    }
+
+    public function addUser($login,$password,$name,$soname,$token){
+        $db = new DB();
+        $user = $db->execute("INSERT INTO `Users` (login,password,name,soname,token)
+        VALUES ('$login','$password','$name','$soname','$token')"
+        );
+    }
+
+    public function getUserByLogin($login){
+        $db = new DB();
+        $user = $db->query("SELECT * FROM `Users` WHERE login='$login'");
+    }
+
+    public function getUserById($id){
+        $db = new DB();
+        $user = $db->query("SELECT * FROM `Users` WHERE id='$id'");
+    }
+
+    public function getUserByToken($token){
+        $db = new DB();
+        $user = $db->query("SELECT * FROM `Users` WHERE token='$token'");
+    }
+
+    public function updateToken($id,$token){
+        $db = new DB();
+        $user = $db->execute("UPDATE users SET  token='$token' WHERE id='$id'");
+    }
+
+    public function addMessage($user_id,$message){
+        $db = new DB();
+        $message = $db->execute("INSERT INTO `Messages` (user_id, message,created )
+        VALUES ('$user_id','$message',now())"
+        );
+    }
+
+    public function addBullet($id_user,$x,$y,$x1,$y1,$speed){
+        $db = new DB();
+        $bullet = $db->execute("INSERT INTO `Bullet` (id_user, x, y, x1, y1, speed)
+        VALUES ('$id_user','$x','$y','$x1','$y1','$speed')"
+        );
+    }
+
+    public function DeleteBullet($id){
+        $db = new DB();
+        $bullet = $db->execute("DELETE * FROM `Bullet` WHERE id='$id'");
     }
 }
