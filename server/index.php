@@ -13,6 +13,8 @@ function result($params)
         switch ($method) {
             case 'login':return $app->login($params);
             case 'register':return $app->register($params);
+            case 'getSkins':return $app->getSkins($params);
+            case 'setSkin':return $app->setSkin($params);
             default:return [false, 102];
         }
     }

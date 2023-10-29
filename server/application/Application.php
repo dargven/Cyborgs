@@ -58,4 +58,25 @@ class Application
         }
         return [false, 242];
     }
+
+    function getSkins($params) 
+    {
+        $id = $params['id'];
+        $token = $params['token'];
+        if ($token && $id) {
+            return $this->user->getSkins($id, $token);
+        }
+        return [false, 242]; 
+    } 
+
+    function setSkin($params) 
+    {
+        $id = $params['id'];
+        $token = $params['token'];
+        $skin = $params['skin'];
+        if ($token && $id && $skin) {
+            return $this->user->setSkin($id, $token, $skin);
+        }
+        return [false, 242]; 
+    }
 }

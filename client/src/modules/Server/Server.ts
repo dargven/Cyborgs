@@ -53,4 +53,12 @@ export default class Server {
     register(login: string, hash: string): Promise<TUser | null> {
         return this.request<TUser>('register', { login, hash });
     }
+
+    getSkins(id: number, token: string): Promise<TUser | null> {
+        return this.request<TUser>('getSkins', { id, token });
+    }
+
+    setSkin(id: number, token: string, skin: string): Promise<TUser | null> {
+        return this.request<TUser>('setSkin', { id, token, skin });
+    }
 }

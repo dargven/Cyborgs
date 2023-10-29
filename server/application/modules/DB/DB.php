@@ -2,7 +2,7 @@
 
 class DB
 {
-    private array $UsersData = [
+    private $UsersData = [
         'Vasya' => [
             'login' => 'Vasya',
             'hashPassword' => 'c082282cad5d535061e6205f6e3576a4', // Хэш от логина+пароль(md5('Vasya'.'1234')

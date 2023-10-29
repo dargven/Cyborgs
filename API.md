@@ -210,7 +210,7 @@ WrongAnswer(code:304, text: 'Team not found')
 ## Метод getSkins
 
 ### Описание метода
-При успешном ответе(см.ниже) возвращается возможные скины, 
+При успешном ответе(см.ниже) возвращаются возможные скины, 
 применимые для игрока
 
 ### Адрес
@@ -235,10 +235,41 @@ numberOfSkins:number
 ```
 WrongAnswer(code:1002, text: 'error in auth user')
 WrongAnswer(code:700, text:'No skins')
+WrongAnswer(code:705, text:'User is not found')
 
 ```
 
-## Метод setSkins
+## Метод setSkin
+
+### Описание метода
+При успешном ответе(см.ниже) устанавливает игроку переданный скин
+
+### Адрес
+```/?method = setSkin```
+
+### Параметры
+
+| Параметры | Тип    | Комментарий              |
+|-----------|--------|--------------------------|
+| id        | number | Id пользователя          |
+| token     | string | Аутентификационный токен |   
+| skin      | string | Выбранный скин           |       
+
+
+### Успешный ответ
+```
+CorrectAnswer=>data = {
+id: number,
+setSkin: string
+}
+```
+### Ошибки
+```
+WrongAnswer(code:1002, text: 'error in auth user')
+WrongAnswer(code:700, text:'No skins')
+WrongAnswer(code:701, text:'Skin is not found')
+WrongAnswer(code:705, text:'User is not found')
+```
 
 ## AutoLogin
 

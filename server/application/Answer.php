@@ -8,6 +8,9 @@ class Answer
         '242' => 'params not set fully ',
         '404' => 'not found',
         '555' => 'Is it Polygon?',
+        '700' => 'No skins',
+        '701' => 'Skin is not found',
+        '705' => 'User is not found',
         '999' => 'Is it Triangle?',
         '1001' => 'params login or password not set',
         '1002' => 'error in auth user',
@@ -16,7 +19,7 @@ class Answer
         '9000' => 'unknown error'
     );
 
-    static function response(array $data)
+    static function response($data)
     {
         if ($data) {
             if (count($data) === 2 && !$data[0]) {
