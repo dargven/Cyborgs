@@ -1,7 +1,6 @@
 import { useContext, useRef, useState } from "react";
 import { ServerContext } from "../App";
 import { Navigate } from "react-router-dom";
-import md5 from 'md5-ts';
 import "../Auth.css";
 
 const RegistrationPage = () => {
@@ -14,17 +13,18 @@ const RegistrationPage = () => {
   const handleRegistration = async () => {
     if (loginRef.current && passwordRef.current) {
       const login = loginRef.current.value;
-      const hash = md5(loginRef.current.value + passwordRef.current.value)
+      const password = passwordRef.current.value;
 
-      const response = await server.register(
-        login, 
-        hash
-        );
+      try {
+        const response = await server.register(login, password);
 
-      if (response) {
-        setRegistrationSuccess(true);
-      } else {
-        console.error("Ошибка при регистрации");
+        if (response) {
+          setRegistrationSuccess(true);
+        } else {
+          console.error("Ошибка при регистрации");
+        }
+      } catch (error) {
+        console.error("Ошибка при отправке запроса:", error);
       }
     }
   };
