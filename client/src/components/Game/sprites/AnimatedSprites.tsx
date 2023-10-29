@@ -2,13 +2,19 @@ import { useFrame } from "@react-three/fiber";
 import { Interface } from "readline";
 import { Sprite, SpriteMaterial, Texture, TextureLoader } from "three";
 import * as THREE from "three";
+import { SpriteAnimator } from "@react-three/drei";
+import { IPlayerProps } from "../Player";
+
+
 
 
 interface IFlipSpritesProps {
+    position: IPlayerProps
     spriteTexture: string,
     tilesHoriz: number,
     tilesVert: number
 }
+
 
 const FlipSprites = (props: IFlipSpritesProps) =>{
 
@@ -37,6 +43,7 @@ const FlipSprites = (props: IFlipSpritesProps) =>{
      * @param tilesVert Vertical number of tiles
      */
 
+    
     useFrame(
         () =>  loop([0,1,2,3,4,5,6,7,8], 1.5)
     )

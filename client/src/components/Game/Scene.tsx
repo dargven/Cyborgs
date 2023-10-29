@@ -106,7 +106,7 @@ const Scene = (props: ISceneProps) => {
 
     return (
         <group>
-            <Physics gravity={[0, 0, 0]} colliders="hull" debug>
+            <Physics gravity={[0, 0, 0]} colliders="hull">
 
                 <ambientLight intensity={0.5} />
 

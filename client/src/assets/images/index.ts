@@ -11,6 +11,5 @@ import SADTROLLFACE from './Skins/sadtrollface.png'
 import PROJECTILE from './Bullets/Projectile.png'
 import RobotTexture from './Skins/Robot.png';
 import HPBack from './Skins/hpbarbackground.png'
-import Cyborg_sSheet from "./Skins/Cyborg_sSheet.png"
-export { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST, TROLLFACE, SADTROLLFACE, PROJECTILE,RobotTexture,HPBack, Cyborg_sSheet };
+export { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST, TROLLFACE, SADTROLLFACE, PROJECTILE,RobotTexture,HPBack };
 

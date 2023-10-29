@@ -2,7 +2,8 @@ import { RapierRigidBody, RigidBody, BallCollider } from "@react-three/rapier";
 import { forwardRef, useState } from "react";
 import HealthBar from "./HealthBar";
 import { TextureLoader, Texture, Vector3 } from "three";
-import { TROLLFACE, SADTROLLFACE } from "../../assets/images";
+import { TROLLFACE, SADTROLLFACE} from "../../assets/images";
+import { SpriteAnimator } from "@react-three/drei";
 
 export interface IPlayerProps {
     id?: number;
@@ -28,6 +29,18 @@ const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>)
             linearDamping={0.9}
             angularDamping={1}
         >
+            <SpriteAnimator 
+            fps={40}
+            startFrame={0}
+            autoPlay={true}
+            loop={true}
+
+            textureImageURL = {'./assets/test/Sprite-0001.png'}
+            textureDataURL={'./assets/test/Sprite-0001.json'}
+            alphaTest={0.01}
+            //onStart={} две функции старта рендера и конца 
+            //onEnd={}
+        />
             <BallCollider args={[0.5]} />
             <HealthBar />
         </RigidBody>
