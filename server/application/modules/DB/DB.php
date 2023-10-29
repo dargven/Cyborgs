@@ -2,73 +2,87 @@
 
 class DB
 {
-    private array $UsersData = [
-        'Vasya' => [
-            'login' => 'Vasya',
-            'hashPassword' => 'c082282cad5d535061e6205f6e3576a4', // Хэш от логина+пароль(md5('Vasya'.'1234')
-            'token' => null
-        ],
-        'Kirill' => [
-            'login' => 'Kirill',
-            'hashPassword' => 'asd123',
-            'token' => null
-        ]
-    ];
+    //сохраняет соединение с ДБ
+    private $link;
 
-    private $BulletData;
-    private $SceneData;
-
-    public function addUser($login, $hashPassword)
+    //вызов соединения с БД
+    public function __construct()
     {
-        $this->UsersData[$login] = array(
-
-            'login' => $login,
-            'hashPassword' => $hashPassword,
-            'token' => $token
-        );
-
+        $this->connect();
     }
 
-    public function isItLogin($login)
+    //ф-ция устанавливает соединение с ДБ
+    private function connect()
     {
-        $users = $this->UsersData;
-        foreach ($users as $user) {
-            if ($login === $user['login']) {
-                return true;
-            }
+        $dsn = "mysql:host=localhost;dbname=Cyborgs;charset=utf8";
+        $this->link = new PDO($dsn, 'root', '123');
+        return $this->link;
+    }
+
+    //ф-ция, которая выполняет запрос
+    public function execute($sql)
+    {
+        $sth = $this->link->prepare($sql);
+        return $sth->execute();
+    }
+
+    //получение рез-та
+    public function query($sql)
+    {
+        $sth = $this->link->prepare($sql);
+        $sth->execute();
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+        if ($result === false) {
+            return [];
         }
-        return false;
+        return $result;
+
     }
 
-    public function addBullets($bulletId, $Bullet)
+    public function addUser($login, $password, $name, $soname, $token)
     {
-        $this->BulletData = array(
-            'bulletId' => $bulletId,
-            'Bullet' => $Bullet
+        $user = $this->execute("INSERT INTO `Users` (login,password,name,soname,token)
+        VALUES ('$login','$password','$name','$soname','$token')"
         );
     }
 
-    public function addScene($scene)
+    public function getUserByLogin($login)
     {
-        $this->SceneData = array(
-            'scene' => $scene,
+        return $this->query("SELECT * FROM `Users` WHERE login='$login'");
+    }
+
+    public function getUserById($id)
+    {
+        return $this->query("SELECT * FROM `Users` WHERE id='$id'");
+    }
+
+    public function getUserByToken($token)
+    {
+         return $this->query("SELECT * FROM `Users` WHERE token='$token'");
+    }
+
+    public function updateToken($id, $token)
+    {
+         return $this->execute("UPDATE users SET  token='$token' WHERE id='$id'");
+    }
+
+    public function addMessage($user_id, $message)
+    {
+        return $this->execute("INSERT INTO `Messages` (user_id, message,created )
+        VALUES ('$user_id','$message',now())"
         );
     }
 
-    public function getParamsUser($id, string $params = 'token')
+    public function addBullet($id_user, $x, $y, $x1, $y1, $speed)
     {
-        return $this->UsersData[$id][$params];
-
+        return $this->execute("INSERT INTO `Bullet` (id_user, x, y, x1, y1, speed)
+        VALUES ('$id_user','$x','$y','$x1','$y1','$speed')"
+        );
     }
 
-    public function getUser($login)
+    public function DeleteBullet($id)
     {
-        return $this->UsersData[$login];
+         return $this->execute("DELETE * FROM `Bullet` WHERE id='$id'");
     }
+} 
 
-    public function setValue($login, string $value, $params = 'token'): void
-    {
-        $this->UsersData[$login][$params] = $value;
-    }
-
-}
