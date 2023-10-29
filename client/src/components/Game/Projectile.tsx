@@ -1,7 +1,8 @@
 import MakeSprite from "./MakeSprite";
 import { Vector3, Mesh, Texture } from "three";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
+import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 
 interface IProjectiileProps {
     initialSpeed?: number;
@@ -12,25 +13,28 @@ interface IProjectiileProps {
 
 const Projectile = (props: IProjectiileProps) => {
     // console.log(props.initialPosition)
-    const bulletRef = useRef<Mesh>(null!);
+    const bulletRef = useRef<RapierRigidBody>(null!);
     const [isActive, setActive] = useState<boolean>(true);
 
-    const [speed, setSpeed] = useState<number>(props.initialSpeed ? props.initialSpeed : 10);
+    // const [speed, setSpeed] = useState<number>(props.initialSpeed ? props.initialSpeed : 10);
 
-    useFrame((clock, delta) => {
-        if (isActive) {
-            setSpeed(speed => speed += 4);
-            bulletRef.current.position.x += delta * speed * props.direction.x;
-            bulletRef.current.position.y += delta * speed * props.direction.y;
-        }
+    useEffect(() => {
+        bulletRef.current.addForce(props.direction, true);
     });
 
-    return isActive ? (
-        <mesh ref={bulletRef}>
-            <MakeSprite texture={props.texture} position={props.initialPosition} scale={0.5}  isSphere={true}/>
-        </mesh>
-    ) : <></>;
-
+    return (
+        <RigidBody
+            ref={bulletRef}
+            lockRotations
+            angularDamping={1}
+            position={props.initialPosition}
+        >
+            <sprite scale={0.5}>
+                <spriteMaterial map={props.texture} />
+            </sprite>
+            {isActive ? <BallCollider args={[0.1]} restitution={0} sensor/> : <></>}
+        </RigidBody>
+    );
 }
 
 export default Projectile;

@@ -8,7 +8,8 @@ import { useKeyboardControls } from "@react-three/drei";
 import Projectile from "./Projectile"
 import Robot from "./Robot";
 import { PROJECTILE } from "../../assets/images";
-import { Physics, RapierRigidBody } from "@react-three/rapier";
+import { Physics, RapierRigidBody, vec3 } from "@react-three/rapier";
+import Bullet from "../../modules/Game/Bullet";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -18,6 +19,8 @@ interface ISceneProps {
     }
 }
 
+const playerRef = createRef<RapierRigidBody>(); // вынес из зависимостей useEffect
+
 const Scene = (props: ISceneProps) => {
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load(PROJECTILE);
@@ -25,11 +28,8 @@ const Scene = (props: ISceneProps) => {
     const scale = 1;
 
     const [controlKeys, getKeys] = useKeyboardControls();
-    // const sceneRef = useRef<Mesh>(null!);
-    const playerRef = createRef<RapierRigidBody>();
-    // const [position, setPostition] = useState<Vector3>(new Vector3());
 
-    const [bullets, setBullets] = useState<JSX.Element[]>([]);
+    const [bullets, setBullets] = useState<Bullet[]>([]);
 
     const { viewport, camera, pointer } = useThree();
 
@@ -39,12 +39,10 @@ const Scene = (props: ISceneProps) => {
     useEffect(() => {
         const interval = setInterval(() => {
             playerRef.current?.resetForces(true);
-            const position = playerRef.current?.translation() as Vector3;
             // console.log(position);
             const { up, down, left, right, shoot } = getKeys();
             // if (hp > 0) {
             const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
-            direction.normalize();
             const force = new Vector3();
 
             if (left) {
@@ -59,53 +57,66 @@ const Scene = (props: ISceneProps) => {
             if (down) {
                 force.y -= 1;
             }
-            const _velocity = playerRef.current?.linvel();
-            const vel = new Vector3(_velocity?.x, _velocity?.y, 0);
-            const len = vel.length();
+            const velocity = vec3(playerRef.current?.linvel());
+            const len = velocity.length();
             if (len < 1) {
                 force.setLength(1);
             } else {
                 force.setLength(1 / len);
             }
             if (shoot) {
-                force.setLength(0.4);
-                const arr = [
-                    <Projectile
-                        key={`${props.playerProps.id}-${bullets.length}`}
-                        initialPosition={position}
-                        texture={TPROJECTILE}
-                        direction={direction} />
-                ];
+                const position = vec3(playerRef.current?.translation());
+                direction.setLength(0.6);
+                position.x += direction.x;
+                position.y += direction.y;
+                position.z = 0;
+                direction.setLength(0.01);
+                const bullet = new Bullet(
+                    10,
+                    position,
+                    direction,
+                    `${props.playerProps.id}-${bullets.length}`
+                );
+                setBullets((bullets) => [bullet, ...bullets]);
+            }
 
-                setBullets(bullets => arr.concat(bullets));
-            }
-            if (playerRef.current) {
-                playerRef.current.addForce(force, true);
-            }
+            playerRef.current?.addForce(force, true);
+
         }, 50);
 
         return () => {
             clearInterval(interval);
         }
-    }, []);
 
-    useFrame(() => {
+    }, [bullets, getKeys, pointer, viewport.aspect]);
+
+    useFrame((delta) => {
         // camera.setViewOffset(-vSize, vSize, -position.x / viewport.aspect, -position.y, -vSize * viewport.aspect / 2, vSize * viewport.aspect / 2)
         // camera.updateProjectionMatrix();
     });
 
     return (
-        <group position={[0, 0, -1]}>
+        <group>
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
 
                 <ambientLight intensity={0.5} />
 
                 <Player ref={playerRef} id={1338} />
 
-                {bullets}
+                {bullets.map(bullet =>
+                    <Projectile
+                        key={bullet.key}
+                        initialSpeed={bullet.speed}
+                        initialPosition={bullet.position}
+                        direction={bullet.direction}
+                        texture={TPROJECTILE}
+                    />
+                )}
 
-                <Robot />
-                <group position={[0, 0, -0.1]}>
+                <Player id={100}></Player>{/* robot */}
+
+                {/* <Robot position={new Vector3(-5, 0, 0)} /> */}
+                <group>
                     <Map scale={scale} />
                 </group>
 

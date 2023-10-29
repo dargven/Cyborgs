@@ -25,8 +25,8 @@ const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>)
             scale={0.5}
             position={[-2, 0, 0]}
             colliders="hull"
-            friction={0.9}
-            linearDamping={0.9}
+            friction={1}
+            linearDamping={10}
             angularDamping={1}
             lockRotations
         >
