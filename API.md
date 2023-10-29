@@ -38,7 +38,12 @@
     * [Ошибки](#ошибки-4)
   * [Метод setSkins](#метод-setskins)
   * [AutoLogin](#autologin)
-  * [AutoRegistration](#autoregistration)
+  * [autoregister](#autoregister)
+    * [Описание метода](#описание-метода-5)
+    * [Адрес](#адрес-5)
+    * [Параметры](#параметры-5)
+    * [Успешный ответ](#успешный-ответ-5)
+    * [Ошибки](#ошибки-5)
   * [CheckToken](#checktoken)
 
 <!-- TOC -->
