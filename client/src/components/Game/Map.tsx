@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Vector3 } from "three";
 import MakeSprite from "./MakeSprite";
 import { TextureLoader } from "three";
-import { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST, No_Texture, Space } from "../../assets/images";
+import { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST, No_Texture, Space, Glass, Snow } from "../../assets//images/";
 import { useTexture } from "@react-three/drei";
 import Room from "./Room";
 
@@ -13,13 +13,24 @@ interface IMap {
 //1-пол
 //2-стена
 //3-снег
+
+const textureLoader = new TextureLoader();
+const TSPACE = textureLoader.load(Space);
+const TFLOOR = textureLoader.load(FL);
+const TWALL = textureLoader.load(WALL);
+const TGLASS = textureLoader.load(Glass);
+const TSNOW = textureLoader.load(Snow);
+const TNOTEXTURE = textureLoader.load(No_Texture);
+
+const Textures = {TSPACE, TFLOOR, TWALL, TGLASS, TSNOW, TNOTEXTURE}
+
 function Map({ scale }: IMap) {
     const SideHall = [
-        [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
-        [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2,],
+        [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2,],
     ];
 
     const Long = [
@@ -40,6 +51,27 @@ function Map({ scale }: IMap) {
         [0, 2, 1, 1, 1, 1, 2,],
     ];
 
+    const SodaMachine = [
+        [0, 2, 2, 2, 2, 0,],
+        [2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1,],
+        [1, 1, 1, 1, 1, 1,],
+        [1, 1, 1, 1, 1, 1,],
+        [1, 1, 1, 1, 1, 1,],
+        [2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1,],
+        [1, 1, 1, 1, 1, 1,],
+        [1, 1, 1, 1, 1, 1,],
+        [1, 1, 1, 1, 1, 1,],
+    ];
+
     const TSpawn = [
         [0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2,],
         [2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 1, 2,],
@@ -47,27 +79,82 @@ function Map({ scale }: IMap) {
         [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
         [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
         [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
-        [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
-        [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
         [2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2,],
     ];
 
+    const DoorWay = [
+        [2, 2, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1,],
+        [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+        [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+        [2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0,],
+        [2, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+        [1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+        [1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+    ]
+
+    const Mid = [
+        [0, 0, 0, 2, 0,],
+        [0, 0, 2, 1, 1,],
+        [0, 0, 2, 1, 1,],
+        [0, 2, 1, 1, 1,],
+        [2, 1, 1, 1, 1,],
+        [2, 1, 1, 1, 1,],
+        [2, 1, 1, 1, 1,],
+        [2, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1,],
+        [2, 1, 1, 1, 1,],
+        [2, 1, 1, 1, 2,],
+    ]
+
     const FrontHall = [
-        [2, 2, 1, 1, 1, 1, 2,],
-        [1, 1, 1, 1, 1, 1, 2,],
-        [1, 1, 1, 1, 1, 1, 2,],
-        [1, 1, 1, 1, 1, 1, 2,],
-        [1, 1, 1, 1, 1, 1, 2,],
-        [2, 2, 1, 1, 1, 2, 2,],
+        [2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2,],
+    ]
+
+
+    const MainHall = [
+        [2, 2, 2, 2, 2, 0, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+        [2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2,],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0,],
     ]
 
     const Connector = [
-        [2, 2, 1, 1, 1, 1, 2,],
-        [1, 1, 1, 1, 1, 1, 2,],
-        [1, 1, 1, 1, 1, 1, 2,],
-        [1, 1, 1, 1, 1, 1, 2,],
-        [1, 1, 1, 1, 1, 1, 2,],
-        [2, 2, 1, 1, 1, 2, 2,],
+        [2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2,],
+    ]
+
+    const Elevators = [
+        [0, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2,],
+        [0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2,],
+        [0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2,],
+        [0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2,],
+        [0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2,],
+        [0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2,],
+        [2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2,],
+        [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,],
+        [2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2,],
     ]
     const Front = [
         [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, ],
@@ -141,7 +228,8 @@ function Map({ scale }: IMap) {
        
     ]
     const Dumpster = [
-        [1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
+        [2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,],
+        [1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,],
         [1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
@@ -149,8 +237,8 @@ function Map({ scale }: IMap) {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
         [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
-        [1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
-        [1, 1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+        [1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,],
+        [1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,],
         [2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
     ]
     const Garage = [
@@ -199,38 +287,53 @@ function Map({ scale }: IMap) {
 
     return (
         <>
-            <group position={[5, 6, 0]}>
-                <Room map={TSpawn} scale={scale}/>
+            <group position={[-3, -3, 0]}>
+                <Room map={Mid} scale= {scale} textures={Textures}/>
+            </group>
+            <group position={[1, 1, 0]}>
+                <Room map={DoorWay} scale= {scale} textures={Textures}/>
+            </group>
+            <group position={[4, 6, 0]}>
+                <Room map={TSpawn} scale= {scale} textures={Textures}/>
             </group>
             <group position={[-5, 10, 0]}>
-                <Room map={SideHall} scale={scale}/>
+                <Room map={SideHall} scale= {scale} textures={Textures}/>
             </group>
             <group position={[-12, 10, 0]}>
-                <Room map={Long} scale={scale}/>
+                <Room map={Long} scale= {scale} textures={Textures}/>
             </group>
-            <group position={[-12, -5, 0]}>
-                <Room map={FrontHall} scale={scale}/>
+            <group position={[-16, -5, 0]}>
+                <Room map={FrontHall} scale= {scale} textures={Textures}/>
             </group>
-            <group position={[-12, -11, 0]}>
-                <Room map={Connector} scale={scale}/>
+            <group position={[-3, -15, 0]}>
+                <Room map={Elevators} scale= {scale} textures={Textures}/>
             </group>
-            <group position={[-25, -10, 0]}>
-                <Room map={Front} scale={scale}/>
+            <group position={[-27, -15, 0]}>
+                <Room map={MainHall} scale= {scale} textures={Textures}/>
             </group>
-            <group position={[-15, -20, 0]}>
-                <Room map={Yard} scale={scale}/>
+            <group position={[-22, -2, 0]}>
+                <Room map={SodaMachine} scale= {scale} textures={Textures}/>
             </group>
-            <group position={[-40, -20, 0]}>
-                <Room map={CTSpawn} scale={scale}/>
+            <group position={[-11, -11, 0]}>
+                <Room map={Connector} scale= {scale} textures={Textures}/>
             </group>
-            <group position={[-60, -10, 0]}>
-                <Room map={Dumpster} scale={scale}/>
+            <group position={[-53, 0, 0]}>
+                <Room map={Front} scale= {scale} textures={Textures}/>
             </group>
-            <group position={[-40, -40, 0]}>
-                <Room map={Garage} scale={scale}/>
+            <group position={[-42, -14, 0]}>
+                <Room map={Yard} scale= {scale} textures={Textures}/>
             </group>
-            <group position={[-40, -70, 0]}>
-                <Room map={GarageYard} scale={scale}/>
+            <group position={[-55, -30, 0]}>
+                <Room map={CTSpawn} scale= {scale} textures={Textures}/>
+            </group>
+            <group position={[-44, -38, 0]}>
+                <Room map={Dumpster} scale= {scale} textures={Textures}/>
+            </group>
+            <group position={[-25, -38, 0]}>
+                <Room map={Garage} scale= {scale} textures={Textures}/>
+            </group>
+            <group position={[-7, -29, 0]}>
+                <Room map={GarageYard} scale= {scale} textures={Textures}/>
             </group>
         </>
         

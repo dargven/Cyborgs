@@ -1,28 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Vector3 } from "three";
 import MakeSprite from "./MakeSprite";
-import { TextureLoader } from "three";
-import { FL, WALL, LUC, RUC, LDC, RDC, COL, TEST, No_Texture, Space } from "../../assets/images";
 
 interface IRoom {
     map: number[][];
     scale: number | undefined;
+    textures: any;
 }
 
-function Room({ map, scale} : IRoom) {
+function Room({ map, scale, textures} : IRoom) {
     const tileSize = 32;
     const [roomSprites, setRoomSprites] = useState<JSX.Element[]>([]);
 
-    const textureLoader = new TextureLoader();
-    const TSPACE = textureLoader.load(Space);
-    const TFLOOR = textureLoader.load(FL);
-    const TWALL = textureLoader.load(WALL);
-    const TLUC = textureLoader.load(LUC);
-    const TRUC = textureLoader.load(RUC);
-    const TLDC = textureLoader.load(LDC);
-    const TRDC = textureLoader.load(RDC);
-    const TCOL = textureLoader.load(COL);
-    const TNOTEXTURE = textureLoader.load(No_Texture);
+    const {TSPACE, TFLOOR, TWALL, TSNOW, TGLASS, TNOTEXTURE} = textures;
   
     useEffect(() => {
       const sprites = [];
@@ -42,31 +32,12 @@ function Room({ map, scale} : IRoom) {
             case 2:
                 tile = <MakeSprite texture={TWALL} position={new Vector3(col, -row, 0)} scale={scale} key={`${row}-${col}`} />
                 break;
-            // case 'WL':
-            //     tile = <MakeSprite texture={TWALL}
-            //         rotation={Math.PI / 2}
-            //         position={new Vector3(col, -row, 0)} scale={scale} key={`${row}-${col}`} />
-            //     break;
-            // case 'WR':
-            //     tile = <MakeSprite texture={TWALL}
-            //         rotation={Math.PI / 2}
-            //         position={new Vector3(col, -row, 0)} scale={scale} key={`${row}-${col}`} />
-            //     break;
-            // case 'LU':
-            //     tile = <MakeSprite texture={TLUC} position={new Vector3(col, -row, 0)} scale={scale} key={`${row}-${col}`} />
-            //     break;
-            // case 'RU':
-            //     tile = <MakeSprite texture={TRUC} position={new Vector3(col, -row, 0)} scale={scale} key={`${row}-${col}`} />
-            //     break;
-            // case 'LD':
-            //     tile = <MakeSprite texture={TLDC} position={new Vector3(col, -row, 0)} scale={scale} key={`${row}-${col}`} />
-            //     break;
-            // case 'RD':
-            //     tile = <MakeSprite texture={TRDC} position={new Vector3(col, -row, 0)} scale={scale} key={`${row}-${col}`} />
-            //     break;
-            // case 'COL':
-            //     tile = <MakeSprite texture={TCOL} position={new Vector3(col, -row, 0)} scale={scale} key={`${row}-${col}`} colliderSize={[0.5, 0.5, 0.1]} />
-            //     break;
+            case 3:
+                tile = <MakeSprite texture={TSNOW} position={new Vector3(col, -row, 0)} scale={scale} key={`${row}-${col}`} isCollider={false}/>
+                break;
+            case 4:
+                tile = <MakeSprite texture={TGLASS} position={new Vector3(col, -row, 0)} scale={scale} key={`${row}-${col}`} />
+                break;
             default:
                 tile = <MakeSprite texture={TNOTEXTURE} position={new Vector3(col, -row, 0)} scale={scale} key={`${row}-${col}`} isCollider={false} />
         }

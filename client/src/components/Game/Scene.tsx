@@ -97,11 +97,14 @@ const Scene = (props: ISceneProps) => {
 
     return (
         <group>
-            <Physics gravity={[0, 0, 0]} colliders="hull" debug>
+            <Physics gravity={[0, 0, 0]} colliders="hull">
 
                 <ambientLight intensity={0.5} />
 
-                <Player ref={playerRef} id={1338} />
+                <group position={[10, 0, 0]}>
+                    <Player ref={playerRef} id={1338} />
+                    <Robot />
+                </group>
 
                 {bullets.map(bullet =>
                     <Projectile
@@ -113,10 +116,7 @@ const Scene = (props: ISceneProps) => {
                     />
                 )}
 
-                <Player id={100}></Player>{/* robot */}
-
-                {/* <Robot position={new Vector3(-5, 0, 0)} /> */}
-                <group>
+                <group position={[0, 0, -0.1]}>
                     <Map scale={scale} />
                 </group>
 
