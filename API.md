@@ -108,7 +108,7 @@ CorrectAnswer=>User
 ```
 WrongAnswer(code: 1001, text: 'params login or password not set')
 WrongAnswer(code: 1002, text: 'error in auth user')
-WrongAnswer(code: 1004, text: '-')
+WrongAnswer(code: 1004, text: 'Unable to find user. Are you cheater?')
 ```
 
 ## Метод logout
@@ -137,6 +137,7 @@ CorrectAnswer=>true
 
 ```
 WrongAnswer(code: 242, text: 'params not set fully ')
+Дописать
 ```
 
 ## Метод selectTeam

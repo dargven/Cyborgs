@@ -13,22 +13,19 @@ class User
     {
         $user = $this->db->getUserByLogin($login);
         if ($user) {
-            var_dump($user);
-            $hashs = md5($user[0]['password'].$rnd);
-            var_dump($hashs);
+            $hashs = md5($user[0]['password'] . $rnd);
             if ($hash === $hashs) {
                 $token = $this->genToken();
                 $this->db->updateToken($user[0]['id'], $token);
                 return array(
                     'id' => $user[0]['id'],
-                    'name' => $user[0]['name'],
                     'token' => $token,
                 );
             }
             return array(false, 1002);
         }
         return array(false, 1004);
-    }   
+    }
 
     public function register($login, $hash)
     {
@@ -37,7 +34,7 @@ class User
             $this->db->addUser($login, $hash);
             return true;
         }
-        return array (false, 1003);
+        return array(false, 1003);
     }
 
     private function genToken()
@@ -45,16 +42,40 @@ class User
         return md5(microtime() . 'salt' . rand());
     }
 
-    function checkToken($token, $login)
+    function authenticateUserByToken($id, $token): ?array
     {
-        $tokens = $this->db->getParamsUser($login, 'token');
-        return ($token === $tokens);
+        $user = $this->db->getUserById($id);
+        if ($user && $token === $user[0]['token']) {
+            return $user;
         }
+        return null;
+    }
 
-    public function logout($login)
+    public function logout($token)
     {
-        $this->db->setValue($login, null, 'token');
-        return true;
+        $user = $this->db->getUserByToken($token);
+        if ($user) {
+            $this->db->updateToken($user[0]['id'], null);
+            return true;
+        }
+        return [false, 1004];
+    }
+
+    public function selectTeam($id, $token, $teamCode)
+    {
+        $user = $this->authenticateUserByToken($id, $token);
+        if ($user !== null) {
+
+        }
+    }
+
+    public function getTeamsInfo($id, $token)
+    {
+        $user = $this->authenticateUserByToken($id, $token);
+        if ($user !== null) {
+
+
+        }
     }
 
 }

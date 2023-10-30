@@ -3,33 +3,31 @@
 class DB
 {
     //сохраняет соединение с ДБ
-    private $link;
+    private $pdo;
 
     //вызов соединения с БД
     public function __construct()
     {
-        $this->connect();
+        $this->pdo = new PDO("mysql:host=localhost;dbname=Cyborgs;charset=utf8", 'root', '123');
     }
 
-    //ф-ция устанавливает соединение с ДБ
-    private function connect()
+    public function __destruct()
     {
-        $dsn = "mysql:host=localhost;dbname=Cyborgs;charset=utf8";
-        $this->link = new PDO($dsn, 'root', '123');
-        return $this->link;
+        $this->pdo = null;
     }
+
 
     //ф-ция, которая выполняет запрос
     public function execute($sql)
     {
-        $sth = $this->link->prepare($sql);
+        $sth = $this->pdo->prepare($sql);
         return $sth->execute();
     }
 
     //получение рез-та
     public function query($sql)
     {
-        $sth = $this->link->prepare($sql);
+        $sth = $this->pdo->prepare($sql);
         $sth->execute();
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
         if ($result === false) {
@@ -39,10 +37,10 @@ class DB
 
     }
 
-    public function addUser($login, $password, $name, $soname, $token)
+    public function addUser($login, $password)
     {
         $user = $this->execute("INSERT INTO `Users` (login,password,name,soname,token)
-        VALUES ('$login','$password','$name','$soname','$token')"
+        VALUES ('$login','$password')"
         );
     }
 
@@ -58,13 +56,14 @@ class DB
 
     public function getUserByToken($token)
     {
-         return $this->query("SELECT * FROM `Users` WHERE token='$token'");
+        return $this->query("SELECT * FROM `Users` WHERE token='$token'");
     }
 
     public function updateToken($id, $token)
     {
-         return $this->execute("UPDATE users SET  token='$token' WHERE id='$id'");
+        return $this->execute("UPDATE users SET  token='$token' WHERE id='$id'");
     }
+
 
     public function addMessage($user_id, $message)
     {
@@ -82,7 +81,8 @@ class DB
 
     public function DeleteBullet($id)
     {
-         return $this->execute("DELETE * FROM `Bullet` WHERE id='$id'");
+        return $this->execute("DELETE * FROM `Bullet` WHERE id='$id'");
     }
-} 
+
+}
 

@@ -39,22 +39,21 @@ class Application
         return [false, 1001];
     }
 
-
     function checkToken($params)
     {
-        $token = $params['token'];
         $login = $params['login'];
+        $token = $params['token'];
         if ($token && $login) {
-            return $this->user->checkToken($token, $login);
+            return $this->user->checkToken($login, $token);
         }
         return [false, 242];
     }
 
     function logout($params)
     {
-        $login = $params['login'];
-        if ($login) {
-            return $this->user->logout($login);
+        $token = $params['token'];
+        if ($token) {
+            return $this->user->logout($token);
         }
         return [false, 242];
     }

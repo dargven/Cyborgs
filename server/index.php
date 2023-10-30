@@ -13,6 +13,7 @@ function result($params)
         switch ($method) {
             case 'login':return $app->login($params);
             case 'register':return $app->register($params);
+            case 'logout': return $app->logout($params);
             default:return [false, 102];
         }
     }
