@@ -1,6 +1,7 @@
 import { Vector3, Texture } from "three";
 import { useEffect, useRef, useState } from "react";
 import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
+import Bullet from "../../modules/Game/Bullet";
 
 interface IProjectiileProps {
     initialSpeed?: number;
@@ -32,21 +33,23 @@ const Projectile = (props: IProjectiileProps) => {
                 damage: 10
             }}
         >
-            <sprite scale={0.5}>
-                <spriteMaterial map={props.texture} />
-            </sprite>
-            {isActive ? <BallCollider
+            
+            {isActive ?<group
+            > <BallCollider
                 args={[0.1]}
                 restitution={0}
                 sensor
                 onIntersectionEnter={(e) => {
-                    // console.log(e);
                     const data: any = e.other.rigidBody?.userData;
-                    if (data.type) {
-                        console.log(data.type);
+                    if (data.type=="player") {
+                        setActive(false);
                     }
                 }}
-            /> : <></>}
+            />
+            <sprite scale={0.5}>
+                <spriteMaterial map={props.texture} />
+            </sprite>
+            </group> : <></>}
         </RigidBody>
     );
 }

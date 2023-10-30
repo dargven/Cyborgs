@@ -2,7 +2,7 @@ import { Color } from "three";
 
 export interface IHealthBarProps {
     value: number;
-    color?: Color;
+    color?: Color|number;
 }
 
 const HealthBar = (props: IHealthBarProps) => {
