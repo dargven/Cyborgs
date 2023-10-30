@@ -98,11 +98,29 @@ const Scene = (props: ISceneProps) => {
     });
 
     return (
-        <group>
+        <group>            
             <Physics gravity={[0, 0, 0]} colliders="hull">
 
-                <ambientLight intensity={0.5} />
+                <group>
+                    <ambientLight intensity={1} color={'rgb(25, 24, 104)'}/> 
+                    {/* SIDE HALL LIGHT */}
+                    <pointLight position={[9, 8, 3]} intensity={50} />
+                    <pointLight position={[-11, 8, 3]} intensity={30} />
+                    <pointLight position={[0, 9, 3]} intensity={50} />
+                    {/*  */}
 
+                    {/* LONG HALL LIGHT */}
+                    <pointLight position={[-10, 3, 3]} intensity={80} />
+                    <pointLight position={[-11, -5, 3]} intensity={80} />
+                    {/*  */}
+
+                    {/* T SPAWN LIGHT */}
+                    <pointLight position={[10, 0, 3]} intensity={100} />
+                    <pointLight position={[0, -5, 3]} intensity={100} />
+                    <pointLight position={[8, -10, 3]} intensity={100} />
+                    {/*  */}
+               </group>
+               
                 <group position={[10, 0, 0]}>
                     <Player ref={playerRef} id={1338} />
                     <Player />

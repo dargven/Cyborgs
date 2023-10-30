@@ -25,10 +25,10 @@ const MakeSprite = ({ texture, position, scale = 1, isSphere = false, isCollider
         <mesh position={position} scale={[scale, scale, scale]}>
             {/* <meshStandardMaterial map={texture} transparent />
             <primitive object={planeGeometry} material={planeMaterial} /> */}
-            <sprite>
-                <shadowMaterial />
-                <spriteMaterial map={texture} rotation={rotation} />
-            </sprite>
+            <mesh>
+                <planeGeometry attach="geometry" args={[1, 1, 4]} />
+                <meshStandardMaterial attach="material" map={texture} />
+            </mesh>
             {/* {isCollider && <MakeCollider isSphere={isSphere} />} */}
             {isCollider && <CuboidCollider args={[0.5, 0.5, 0.5]}></CuboidCollider>}
         </mesh>
