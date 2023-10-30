@@ -84,5 +84,27 @@ class DB
         return $this->execute("DELETE * FROM `Bullet` WHERE id='$id'");
     }
 
+    public function getScoreTeams()
+    {
+        return $this->execute("SELECT team_id, team_points FROM Teams group by team_id");
+    }
+
+    public function getCountOfPlayersInTeams()
+    {
+        return $this->execute("SELECT team_id, COUNT(user_id) as countOfPlayers from UserTeams group by team_id");
+
+    }
+
+    public function updateScoreInTeam($teamId, $score)
+    {
+        return $this->execute("UPDATE Teams SET WHERE team_id = '$teamId', team_points= SUM(team_points,) ");
+    }
+
+    public function addPlayerToTeam($id, $teamId)
+    {
+
+    }
+
+
 }
 
