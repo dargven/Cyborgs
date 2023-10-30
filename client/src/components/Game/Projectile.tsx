@@ -1,7 +1,5 @@
-import MakeSprite from "./MakeSprite";
-import { Vector3, Mesh, Texture } from "three";
+import { Vector3, Texture } from "three";
 import { useEffect, useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
 import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 
 interface IProjectiileProps {
@@ -9,6 +7,7 @@ interface IProjectiileProps {
     direction: Vector3;
     initialPosition: Vector3;
     texture: Texture;
+    //damage
 }
 
 const Projectile = (props: IProjectiileProps) => {
@@ -28,11 +27,26 @@ const Projectile = (props: IProjectiileProps) => {
             lockRotations
             angularDamping={1}
             position={props.initialPosition}
+            userData={{
+                type: 'projectile',
+                damage: 10
+            }}
         >
             <sprite scale={0.5}>
                 <spriteMaterial map={props.texture} />
             </sprite>
-            {isActive ? <BallCollider args={[0.1]} restitution={0} sensor/> : <></>}
+            {isActive ? <BallCollider
+                args={[0.1]}
+                restitution={0}
+                sensor
+                onIntersectionEnter={(e) => {
+                    // console.log(e);
+                    const data: any = e.other.rigidBody?.userData;
+                    if (data.type) {
+                        console.log(data.type);
+                    }
+                }}
+            /> : <></>}
         </RigidBody>
     );
 }

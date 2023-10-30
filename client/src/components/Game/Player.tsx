@@ -13,9 +13,16 @@ export interface IPlayerProps {
 }
 
 const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>) => {
+
+    const [hp, setHp] = useState<number>(100);
+
     const textureLoader = new TextureLoader();
     const TTROLLFACE = textureLoader.load(TROLLFACE);
     const TSADTROLLFACE = textureLoader.load(SADTROLLFACE);
+
+    const data = {
+        type: 'player'
+    }
 
     const [textures, setTextures] = useState<Texture[]>([TTROLLFACE, TSADTROLLFACE,]);
 
@@ -29,6 +36,7 @@ const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>)
             linearDamping={10}
             angularDamping={1}
             lockRotations
+            userData={data}
         >
             <SpriteAnimator
                 fps={40}
@@ -41,9 +49,9 @@ const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>)
             //onStart={} две функции старта рендера и конца 
             //onEnd={}
             />
-            
+
             <BallCollider args={[0.5]} restitution={0} />
-            <HealthBar />
+            <HealthBar value={hp} />
         </RigidBody>
     );
 });

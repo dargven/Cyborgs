@@ -2,7 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import Scene from "./Scene";
 import { IPlayerProps } from "./Player";
 import { useMemo } from "react";
-import { KeyboardControlsEntry, KeyboardControls, OrthographicCamera, OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { KeyboardControlsEntry, KeyboardControls, OrthographicCamera, OrbitControls } from "@react-three/drei";
 
 export enum EControls {
     up = 'up',
