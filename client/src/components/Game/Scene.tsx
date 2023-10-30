@@ -7,6 +7,7 @@ import Projectile from "./Projectile"
 import { PROJECTILE } from "../../assets/images";
 import { Physics, RapierRigidBody, vec3 } from "@react-three/rapier";
 import Bullet from "../../modules/Game/Bullet";
+import Map from "./Map";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -98,7 +99,7 @@ const Scene = (props: ISceneProps) => {
 
     return (
         <group>
-            <Physics gravity={[0, 0, 0]} colliders="hull" debug>
+            <Physics gravity={[0, 0, 0]} colliders="hull">
 
                 <ambientLight intensity={0.5} />
 
@@ -119,9 +120,9 @@ const Scene = (props: ISceneProps) => {
                     />
                 )}
 
-                {/* <group position={[0, 0, -0.1]}>
+                <group position={[0, 0, -0.1]}>
                     <Map scale={scale} />
-                </group> */}
+                </group> 
 
             </Physics>
         </group>
