@@ -79,6 +79,10 @@ const Scene = (props: ISceneProps) => {
     useFrame((delta) => {
         const { shoot, hitscan } = getKeys();
 
+        const playerPosition = vec3(playerRef.current?.translation());
+        camera.position.set(playerPosition.x, playerPosition.y, 7);
+        camera.updateProjectionMatrix();
+
         if (shoot) {
             const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
             const position = vec3(playerRef.current?.translation());
