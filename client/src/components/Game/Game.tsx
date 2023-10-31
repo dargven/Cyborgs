@@ -9,7 +9,8 @@ export enum EControls {
     down = 'down',
     left = 'left',
     right = 'right',
-    shoot = 'shoot'
+    shoot = 'shoot',
+    hitscan = 'hitscan'
 }
 
 const playerProps: IPlayerProps = {
@@ -23,6 +24,7 @@ const Game = () => {
         { name: EControls.left, keys: ['KeyA'] },
         { name: EControls.right, keys: ['KeyD'] },
         { name: EControls.shoot, keys: ['Space'] },
+        { name: EControls.hitscan, keys: ['KeyH'] },
     ], []);
 
     const vSize = 20;
@@ -40,7 +42,7 @@ const Game = () => {
                     right={vSize * aspect / 2}
                     top={vSize / 2}
                     bottom={-vSize / 2}>
-                    <Scene playerProps={playerProps} cameraProps={{ vSize, aspect }}/>
+                    <Scene playerProps={playerProps} cameraProps={{ vSize, aspect }} />
                     <OrbitControls maxZoom={1.5} minZoom={-100} />
                     <axesHelper />
                 </OrthographicCamera>

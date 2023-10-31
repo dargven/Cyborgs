@@ -8,6 +8,7 @@ import { PROJECTILE } from "../../assets/images";
 import { Physics, RapierRigidBody, vec3 } from "@react-three/rapier";
 import Bullet from "../../modules/Game/Bullet";
 import Map from "./Map";
+import Hitscan from "./Hitscan";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -28,6 +29,7 @@ const Scene = (props: ISceneProps) => {
     const [controlKeys, getKeys] = useKeyboardControls();
 
     const [bullets, setBullets] = useState<Bullet[]>([]);
+    const [lasers, setLasers] = useState<Bullet[]>([]);
 
     const { viewport, camera, pointer } = useThree();
 
@@ -71,10 +73,10 @@ const Scene = (props: ISceneProps) => {
             clearInterval(interval);
         }
 
-    }, [ getKeys, pointer, viewport.aspect]);
+    }, [getKeys, pointer, viewport.aspect]);
 
     useFrame((delta) => {
-        const { shoot } = getKeys();
+        const { shoot, hitscan } = getKeys();
 
         if (shoot) {
             const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
@@ -92,17 +94,33 @@ const Scene = (props: ISceneProps) => {
             );
             setBullets((bullets) => [...bullets, bullet]);
         }
+        if (hitscan) {
+            const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
+            const position = vec3(playerRef.current?.translation());
+            direction.setLength(0.6);
+            position.x = direction.x * 40;
+            position.y = direction.y * 40;
+            position.z = 0;
+            direction.setLength(0.01);
+            const laser = new Bullet(
+                0,
+                position,
+                direction,
+                `${props.playerProps.id}-${Date.now()}`
+            );
+            setLasers((lasers) => [...lasers, laser]);
+        }
 
         // camera.setViewOffset(-vSize, vSize, -position.x / viewport.aspect, -position.y, -vSize * viewport.aspect / 2, vSize * viewport.aspect / 2)
         // camera.updateProjectionMatrix();
     });
 
     return (
-        <group>            
+        <group>
             <Physics gravity={[0, 0, 0]} colliders="hull">
 
                 <group>
-                    <ambientLight intensity={1} color={'rgb(25, 24, 104)'}/> 
+                    <ambientLight intensity={1} color={'rgb(25, 24, 104)'} />
                     {/* SIDE HALL LIGHT */}
                     <pointLight position={[9, 8, 3]} intensity={50} />
                     <pointLight position={[-11, 8, 3]} intensity={30} />
@@ -119,8 +137,8 @@ const Scene = (props: ISceneProps) => {
                     <pointLight position={[0, -5, 3]} intensity={100} />
                     <pointLight position={[8, -10, 3]} intensity={100} />
                     {/*  */}
-               </group>
-               
+                </group>
+
                 <group position={[10, 0, 0]}>
                     <Player ref={playerRef} id={1338} />
                     <Player />
@@ -137,10 +155,17 @@ const Scene = (props: ISceneProps) => {
                         texture={TPROJECTILE}
                     />
                 )}
+                {lasers.map(laser =>
+                    <Hitscan
+                        key={laser.key}
+                        initialPosition={laser.position}
+                        direction={laser.direction}
+                    />
+                )}
 
                 <group position={[0, 0, -0.1]}>
                     <Map scale={scale} />
-                </group> 
+                </group>
 
             </Physics>
         </group>

@@ -51,19 +51,19 @@ const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>)
             />
 
             <BallCollider args={[0.5]} restitution={0}
-            onIntersectionEnter={(e) => {
-                   
+                onIntersectionEnter={(e) => {
+
                     const data: any = e.other.rigidBody?.userData;
-                    if (data.type=="projectile") {
-                        if(hp-10<0){
+                    if (data.type == "projectile") {
+                        if (hp - 10 < 0) {
                             setHp(0)
                         }
-                        else{
-                            setHp(hp-10)
+                        else {
+                            setHp(hp - 10)
                         }
                     }
                 }} />
-            <HealthBar value={hp} color={0xff0000}/>
+            <HealthBar value={hp} color={0xff0000} />
         </RigidBody>
     );
 });
