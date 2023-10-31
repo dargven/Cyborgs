@@ -10,11 +10,10 @@ body {
   overflow: auto;
   max-zoom: 50%;
 }
-
 p {
   font-family: "Zelek";
   color: rgb(0, 255, 255);
-  font-size: 120px;
+  font-size: 110px;
   position: absolute;
   text-shadow: 0px 0px 3px #00aeff;
   top: -50%;
@@ -123,12 +122,6 @@ p {
     height: 100%;
 }
 
-body {
-    -webkit-background-size: cover;
-    background-size: cover;
-    background-attachment: fixed;
-    font-family: sans-serif;
-}
 
 .form h1 {
     font-family: 'MinecrafterAltRegular';
@@ -189,6 +182,7 @@ h1 {
   margin: 0 auto;
   position: fixed;
   text-align: center;
+  top:15%;
   left: 50%;
 }
 
@@ -260,7 +254,7 @@ h1 {
 
 @font-face {
   font-family: Zelek;
-  src: url(Figma/Docker.ttf);
+  src: url(Figma/NeZelek.ttf);
 }
 @keyframes glitch {
   0% {
