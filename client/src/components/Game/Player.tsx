@@ -4,15 +4,19 @@ import HealthBar from "./HealthBar";
 import { TextureLoader, Texture, Vector3 } from "three";
 import { TROLLFACE, SADTROLLFACE } from "../../assets/images";
 import { SpriteAnimator } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 
 export interface IPlayerProps {
     id?: number;
     username?: string;
     hp?: number;
     position?: Vector3;
+    isMoving?: false | true;
 }
 
 const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>) => {
+
+    console.log(props.isMoving)
 
     const [hp, setHp] = useState<number>(100);
 
@@ -38,17 +42,17 @@ const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>)
             lockRotations
             userData={data}
         >
+           
             <SpriteAnimator
-                fps={2}
+                fps={40}
                 startFrame={0}
-                autoPlay={true}
-                loop={true}
+                loop = {true}
+                autoPlay = {true}
                 textureImageURL={'./assets/test/Sprite-0001.png'}
                 textureDataURL={'./assets/test/Sprite-0001.json'}
                 alphaTest={0.01}
-            //onStart={} две функции старта рендера и конца 
-            //onEnd={}
-            />
+                pause = {!props.isMoving}
+            /> 
 
             <BallCollider args={[0.5]} restitution={0}
                 onIntersectionEnter={(e) => {

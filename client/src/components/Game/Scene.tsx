@@ -29,6 +29,7 @@ const Scene = (props: ISceneProps) => {
 
     const [controlKeys, getKeys] = useKeyboardControls();
 
+    const [isMoving, setMoving] = useState<boolean>(false);
     const [bullets, setBullets] = useState<Bullet[]>([]);
     const [lasers, setLasers] = useState<Bullet[]>([]);
 
@@ -77,6 +78,14 @@ const Scene = (props: ISceneProps) => {
     }, [getKeys, pointer, viewport.aspect]);
 
     useFrame((delta) => {
+
+        const velocity = vec3(playerRef.current?.linvel())
+        if (velocity.length() === 0){
+            setMoving(false)
+        }else{
+            setMoving(true)
+        }
+
         const { shoot, hitscan } = getKeys();
 
         const playerPosition = vec3(playerRef.current?.translation());
