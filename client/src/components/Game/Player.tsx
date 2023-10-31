@@ -39,7 +39,7 @@ const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>)
             userData={data}
         >
             <SpriteAnimator
-                fps={40}
+                fps={2}
                 startFrame={0}
                 autoPlay={true}
                 loop={true}

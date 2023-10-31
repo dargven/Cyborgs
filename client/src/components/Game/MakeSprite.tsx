@@ -2,8 +2,8 @@ import { MeshStandardMaterial, PlaneGeometry, DoubleSide } from "three";
 import * as THREE from "three";
 import { Texture, Vector3 } from "three";
 import { Euler } from "@react-three/fiber"
-import { CuboidCollider } from "@react-three/rapier";
-interface IMakeSprite {
+import { CuboidCollider, RigidBody } from "@react-three/rapier";
+export interface IMakeSprite {
     texture: Texture;
     position: Vector3;
     scale?: number;
@@ -30,7 +30,14 @@ const MakeSprite = ({ texture, position, scale = 1, isSphere = false, isCollider
                 <meshStandardMaterial attach="material" map={texture} />
             </mesh>
             {/* {isCollider && <MakeCollider isSphere={isSphere} />} */}
-            {isCollider && <CuboidCollider args={[0.5, 0.5, 0.5]}></CuboidCollider>}
+            {isCollider &&
+            <RigidBody type="fixed"
+            userData={{
+                type: "Collider"
+            }}>
+             <CuboidCollider args={[0.5, 0.5, 0.5]} ></CuboidCollider>
+            </RigidBody>
+            }
         </mesh>
     )
 }

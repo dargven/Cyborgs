@@ -1,7 +1,6 @@
 import { Vector3, Texture } from "three";
 import { useEffect, useRef, useState } from "react";
-import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
-import Bullet from "../../modules/Game/Bullet";
+import { BallCollider, CuboidCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 
 interface IProjectiileProps {
     initialSpeed?: number;
@@ -41,7 +40,7 @@ const Projectile = (props: IProjectiileProps) => {
                 sensor
                 onIntersectionEnter={(e) => {
                     const data: any = e.other.rigidBody?.userData;
-                    if (data.type=="player") {
+                    if (data.type=="player"||data.type=="Collider") {
                         setActive(false);
                     }
                 }}

@@ -8,6 +8,7 @@ import { PROJECTILE } from "../../assets/images";
 import { Physics, RapierRigidBody, vec3 } from "@react-three/rapier";
 import Bullet from "../../modules/Game/Bullet";
 import Map from "./Map";
+import Zone from "./Zone";
 import Hitscan from "./Hitscan";
 
 interface ISceneProps {
@@ -117,7 +118,7 @@ const Scene = (props: ISceneProps) => {
 
     return (
         <group>
-            <Physics gravity={[0, 0, 0]} colliders="hull">
+            <Physics gravity={[0, 0, 0]} colliders="hull" debug>
 
                 <group>
                     <ambientLight intensity={1} color={'rgb(25, 24, 104)'} />
@@ -155,18 +156,18 @@ const Scene = (props: ISceneProps) => {
                         texture={TPROJECTILE}
                     />
                 )}
-                {lasers.map(laser =>
+                {/* {lasers.map(laser =>
                     <Hitscan
                         key={laser.key}
                         initialPosition={laser.position}
                         direction={laser.direction}
                     />
-                )}
+                )} */}
 
                 <group position={[0, 0, -0.1]}>
                     <Map scale={scale} />
                 </group>
-
+                <Zone/>
             </Physics>
         </group>
     );
