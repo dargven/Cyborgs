@@ -4,12 +4,13 @@ import { TextureLoader, Vector3 } from "three";
 import Player, { IPlayerProps } from "./Player";
 import { useKeyboardControls } from "@react-three/drei";
 import Projectile from "./Projectile"
+import Hitscan from "./Hitscan";
 import { PROJECTILE } from "../../assets/images";
 import { Physics, RapierRigidBody, vec3 } from "@react-three/rapier";
 import Bullet from "../../modules/Game/Bullet";
+import Laser from "../../modules/Game/Laser";
 import Map from "./Map";
 import Zone from "./Zone";
-import Hitscan from "./Hitscan";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -31,7 +32,7 @@ const Scene = (props: ISceneProps) => {
 
     const [isMoving, setMoving] = useState<boolean>(false);
     const [bullets, setBullets] = useState<Bullet[]>([]);
-    const [lasers, setLasers] = useState<Bullet[]>([]);
+    const [lasers, setLasers] = useState<Laser[]>([]);
 
     const { viewport, camera, pointer } = useThree();
 
@@ -80,9 +81,9 @@ const Scene = (props: ISceneProps) => {
     useFrame((delta) => {
 
         const velocity = vec3(playerRef.current?.linvel())
-        if (velocity.length() === 0){
+        if (velocity.length() === 0) {
             setMoving(false)
-        }else{
+        } else {
             setMoving(true)
         }
 
@@ -109,23 +110,20 @@ const Scene = (props: ISceneProps) => {
             setBullets((bullets) => [...bullets, bullet]);
         }
         if (hitscan) {
-            const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
             const position = vec3(playerRef.current?.translation());
-            direction.setLength(0.6);
-            position.x = direction.x * 40;
-            position.y = direction.y * 40;
-            position.z = 0;
-            direction.setLength(0.01);
-            const laser = new Bullet(
-                0,
+            const aimingPoint = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
+            aimingPoint.setLength(5);
+            aimingPoint.x += position.x;
+            aimingPoint.y += position.y;
+            const laser = new Laser(
                 position,
-                direction,
+                aimingPoint,
                 `${props.playerProps.id}-${Date.now()}`
-            );
-            setLasers((lasers) => [...lasers, laser]);
+            )
+            setLasers((lasers) => [...lasers, laser])
         }
 
-        // camera.setViewOffset(-vSize, vSize, -position.x / viewport.aspect, -position.y, -vSize * viewport.aspect / 2, vSize * viewport.aspect / 2)
+        // camera.setViewOffset(vSize, vSize, position.x / viewport.aspect, position.y, vSize * viewport.aspect / 2, vSize * viewport.aspect / 2)
         // camera.updateProjectionMatrix();
     });
 
@@ -169,18 +167,19 @@ const Scene = (props: ISceneProps) => {
                         texture={TPROJECTILE}
                     />
                 )}
-                {/* {lasers.map(laser =>
+                {lasers.map(laser =>
                     <Hitscan
                         key={laser.key}
-                        initialPosition={laser.position}
-                        direction={laser.direction}
+                        initialPosition={[laser.position.x, laser.position.y]}
+                        aimingPoint={[laser.aimingPoint.x, laser.aimingPoint.y]}
                     />
-                )} */}
+                )}
+
 
                 <group position={[0, 0, -0.1]}>
                     <Map scale={scale} />
                 </group>
-                <Zone/>
+                <Zone />
             </Physics>
         </group>
     );
