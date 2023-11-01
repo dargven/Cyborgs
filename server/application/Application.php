@@ -58,17 +58,36 @@ class Application
         return [false, 242];
     }
 
-    function getSkins($params) 
+    function selectTeam($params)
+    {
+        $id = $params['id'];
+        $token = $params['token'];
+        $teamId = $params['teamId'];
+        if ($id && $token && $teamId) {
+            $this->user->selectTeam($id, $token, $teamId);
+        }
+        return [false, 242];
+    }
+    function getTeamsInfo($params){
+        $teamId = $params['teamId'];
+        if($teamId){
+            $this->user->getTeamsInfo($teamId);
+        }
+        return [false,242];
+    }
+
+
+    function getSkins($params)
     {
         $id = $params['id'];
         $token = $params['token'];
         if ($token && $id) {
             return $this->user->getSkins($id, $token);
         }
-        return [false, 242]; 
-    } 
+        return [false, 242];
+    }
 
-    function setSkin($params) 
+    function setSkin($params)
     {
         $id = $params['id'];
         $token = $params['token'];
@@ -76,6 +95,6 @@ class Application
         if ($token && $id && $skin) {
             return $this->user->setSkin($id, $token, $skin);
         }
-        return [false, 242]; 
+        return [false, 242];
     }
 }

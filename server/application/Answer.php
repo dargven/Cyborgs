@@ -8,6 +8,7 @@ class Answer
         '242' => 'params not set fully ',
         '404' => 'not found',
         '555' => 'Is it Polygon?',
+        '605' => ' In selected team more gamers than in the other. Please, select other team ',
         '700' => 'No skins',
         '701' => 'Skin is not found',
         '705' => 'User is not found',
@@ -19,7 +20,7 @@ class Answer
         '9000' => 'unknown error'
     );
 
-    static function response($data)
+    static function response(array $data)
     {
         if ($data) {
             if (count($data) === 2 && !$data[0]) {
