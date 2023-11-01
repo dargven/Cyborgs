@@ -1,8 +1,8 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { createRef, useEffect, useState } from "react";
-import { TextureLoader, Vector3 } from "three";
+import { Texture, TextureLoader, Vector3 } from "three";
 import Player, { IPlayerProps } from "./Player";
-import { useKeyboardControls } from "@react-three/drei";
+import { SpotLight, useKeyboardControls } from "@react-three/drei";
 import Projectile from "./Projectile"
 import Hitscan from "./Hitscan";
 import { PROJECTILE } from "../../assets/images";
@@ -11,6 +11,8 @@ import Bullet from "../../modules/Game/Bullet";
 import Laser from "../../modules/Game/Laser";
 import Map from "./Map";
 import Zone from "./Zone";
+import TestRoom from "./TestRoom";
+import tspawn from './assets/rooms/tspawn.png';
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -20,16 +22,25 @@ interface ISceneProps {
     }
 }
 
+interface ITextureObject {
+    [key: string]: Texture
+}
+
 const playerRef = createRef<RapierRigidBody>(); // вынес из зависимостей useEffect
 
 const Scene = (props: ISceneProps) => {
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load(PROJECTILE);
+    const room = textureLoader.load('./assets/rooms/tspawn.png');
 
     const scale = 1;
 
     const [controlKeys, getKeys] = useKeyboardControls();
 
+    const [textures, setTextures] = useState<ITextureObject>({
+        'room': room,
+        'bullet': TPROJECTILE
+    });
     const [isMoving, setMoving] = useState<boolean>(false);
     const [bullets, setBullets] = useState<Bullet[]>([]);
     const [lasers, setLasers] = useState<Laser[]>([]);
@@ -132,16 +143,16 @@ const Scene = (props: ISceneProps) => {
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
 
                 <group>
-                    <ambientLight intensity={1} color={'rgb(25, 24, 104)'} />
+                    {/* <ambientLight intensity={0} color={'rgb(25, 24, 104)'} /> */}
                     {/* SIDE HALL LIGHT */}
-                    <pointLight position={[9, 8, 3]} intensity={50} />
+                    {/* <pointLight position={[9, 8, 3]} intensity={50} />
                     <pointLight position={[-11, 8, 3]} intensity={30} />
-                    <pointLight position={[0, 9, 3]} intensity={50} />
+                    <pointLight position={[0, 9, 3]} intensity={50} /> */}
                     {/*  */}
 
                     {/* LONG HALL LIGHT */}
-                    <pointLight position={[-10, 3, 3]} intensity={80} />
-                    <pointLight position={[-11, -5, 3]} intensity={80} />
+                    {/* <pointLight position={[-10, 3, 3]} intensity={80} />
+                    <pointLight position={[-11, -5, 3]} intensity={80} /> */}
                     {/*  */}
 
                     {/* T SPAWN LIGHT */}
@@ -151,12 +162,12 @@ const Scene = (props: ISceneProps) => {
                     {/*  */}
                 </group>
 
+
                 <group position={[10, 0, 0]}>
-                    <Player ref={playerRef} id={1338} />
+                    <Player ref={playerRef} id={1338} isMoving={isMoving} />
                     <Player />
                     {/* <Robot /> */}
                 </group>
-
 
                 {bullets.map(bullet =>
                     <Projectile
@@ -164,9 +175,10 @@ const Scene = (props: ISceneProps) => {
                         initialSpeed={bullet.speed}
                         initialPosition={bullet.position}
                         direction={bullet.direction}
-                        texture={TPROJECTILE}
+                        texture={textures['bullet']}
                     />
                 )}
+
                 {lasers.map(laser =>
                     <Hitscan
                         key={laser.key}
@@ -175,10 +187,13 @@ const Scene = (props: ISceneProps) => {
                     />
                 )}
 
-
-                <group position={[0, 0, -0.1]}>
-                    <Map scale={scale} />
+                <group scale={[12, 9, 1]}>
+                    <TestRoom texture={textures['room']} position={new Vector3()} />
                 </group>
+
+                {/* <group position={[0, 0, -0.1]}>
+                    <Map scale={scale} />
+                </group> */}
                 <Zone />
             </Physics>
         </group>

@@ -11,7 +11,7 @@ export interface IPlayerProps {
     username?: string;
     hp?: number;
     position?: Vector3;
-    isMoving?: false | true;
+    isMoving?: boolean;
 }
 
 const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>) => {
@@ -44,7 +44,7 @@ const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>)
         >
            
             <SpriteAnimator
-                fps={40}
+                fps={2}
                 startFrame={0}
                 loop = {true}
                 autoPlay = {true}
