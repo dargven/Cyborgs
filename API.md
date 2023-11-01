@@ -36,16 +36,12 @@
     * [Параметры](#параметры-4)
     * [Успешный ответ](#успешный-ответ-4)
     * [Ошибки](#ошибки-4)
-  * [Метод setSkins](#метод-setskin)
+  * [Метод setSkin](#метод-setskin)
     * [Описание метода](#описание-метода-5)
     * [Адрес](#адрес-5)
     * [Параметры](#параметры-5)
     * [Успешный ответ](#успешный-ответ-5)
-    * [Ошибки](#ошибки-5)  
-  * [AutoLogin](#autologin)
-  * [AutoRegistration](#autoregistration)
-  * [CheckToken](#checktoken)
-
+    * [Ошибки](#ошибки-5)
 <!-- TOC -->
 
 ## Адрес домена
@@ -161,7 +157,7 @@ teamCode, записывается токен пользователя.
 |-----------|--------|------------------------|
 | id        | number | Id пользователя        |
 | token     | string | Авторизационный токен  |
-| teamCode  | number | Уникальный Код команды |
+| teamId    | number | Уникальный Код команды |
 
 
 
@@ -179,12 +175,13 @@ WrongAnswer(code:604, text: 'Team not found')
 WrongAnswer(code:605, text: 'In selected team more gamers than in the other.
 Please, select other team ')
 WrongAnswer(code:1002, text: 'error in auth user')
+WrongAnswer(code: 242, text: 'params not set fully ')
 ```
 
 ## Метод getTeamsInfo
 
 ### Описание метода
-При успешной авторизации и при успешном ответе(см ниже) из базы данных по teamCode
+Из базы данных по teamCode
 извлекается информация о команде: количество очков, количество игроков
 
 ### Адрес
@@ -196,12 +193,12 @@ WrongAnswer(code:1002, text: 'error in auth user')
 
 | Параметры | Тип    | Комментарий            |
 |-----------|--------|------------------------|
-| teamCode  | number | Уникальный код команды |
+| teamId    | number | Уникальный код команды |
 
 ### Успешный ответ
 ```
 CorrectAnswer=>data = {
-numberOfPlayers: number,
+score: number,
 numberOfTeamPoints: number
 }
 ```
@@ -241,7 +238,6 @@ numberOfSkins:number
 ```
 WrongAnswer(code:1002, text: 'error in auth user')
 WrongAnswer(code:700, text:'No skins')
-WrongAnswer(code:705, text:'User is not found')
 
 ```
 
@@ -277,13 +273,6 @@ WrongAnswer(code:701, text:'Skin is not found')
 WrongAnswer(code:705, text:'User is not found')
 ```
 
-## AutoLogin
-
-## AutoRegistration
-
-## CheckToken
-
-##
 
 
 
