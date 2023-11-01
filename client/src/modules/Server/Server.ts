@@ -22,8 +22,9 @@ export default class Server {
             if (answer.result === 'ok') {
                 return answer.data;
             }
-            // обработать ошибку(6 пункт)
-            //...
+            console.log(
+                `Ошибка: ${answer["error"]["code"]}, text: ${answer["error"]["text"]}`
+            );
             return null;
         } catch (e) {
             return null;

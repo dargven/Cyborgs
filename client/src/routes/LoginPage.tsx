@@ -22,8 +22,7 @@ const LoginPage = () => {
             )
             if (user) {
                 setLoginSuccess(true);
-            } else
-                console.error("Ошибка авторизации");
+            } 
         }
     };
 

@@ -21,8 +21,8 @@ const RegistrationPage = () => {
         );
         if (response) {
           setRegistrationSuccess(true);
-        } else 
-          console.error("Ошибка при регистрации");
+        } 
+        
     }
   };
 
