@@ -25,7 +25,7 @@ function Zone({ }: IZone) {
             userData={{
                 type: "Zone"
             }}>
-            <group position={[3, 8, 0.5]}>
+            <group position={[5.5, 7.5, 0.5]}>
                 <CuboidCollider args={[1, 1, 0.5]} sensor
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
@@ -38,7 +38,7 @@ function Zone({ }: IZone) {
                         if (data.type == "player") {
                             const left = Date.now()
                             const score = Math.floor((left - time) / 1000)
-                            // console.log(score)
+                            console.log(score)
                         }
                     }}
                 />

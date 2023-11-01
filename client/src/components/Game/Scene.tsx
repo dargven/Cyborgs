@@ -6,13 +6,14 @@ import { Sky, SpotLight, Stars, useKeyboardControls } from "@react-three/drei";
 import Projectile from "./Projectile"
 import Hitscan from "./Hitscan";
 import { PROJECTILE } from "../../assets/images";
-import { Physics, RapierRigidBody, vec3 } from "@react-three/rapier";
+import { CuboidCollider, Physics, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
 import Bullet from "../../modules/Game/Bullet";
 import Laser from "../../modules/Game/Laser";
 import Map from "./Map";
 import Zone from "./Zone";
 import TestRoom from "./TestRoom";
 import tspawn from './assets/rooms/tspawn.png';
+import Colliders from "../../assets/images/CollidersPositions";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -44,6 +45,8 @@ const Scene = (props: ISceneProps) => {
     const [isMoving, setMoving] = useState<boolean>(false);
     const [bullets, setBullets] = useState<Bullet[]>([]);
     const [lasers, setLasers] = useState<Laser[]>([]);
+
+    const colliders = Colliders();
 
     const { viewport, camera, pointer } = useThree();
 
@@ -164,11 +167,25 @@ const Scene = (props: ISceneProps) => {
 
                 <fog />
 
-                <group position={[10, 0, 0]}>
+                <group position={[8, 5, 0]}>
                     <Player ref={playerRef} id={1338} isMoving={isMoving} />
                     <Player />
                     {/* <Robot /> */}
                 </group>
+
+                {colliders.map(collider => 
+                <RigidBody 
+                    type='fixed' 
+                    userData={{
+                        type: "Collider"
+                    }}>
+                    <CuboidCollider
+                        position={collider.position}
+                        args={collider.args}
+                        key={collider.key}
+                    />
+                </RigidBody>
+                )}
 
                 {bullets.map(bullet =>
                     <Projectile
