@@ -111,9 +111,9 @@ const Scene = (props: ISceneProps) => {
             position.x += direction.x;
             position.y += direction.y;
             position.z = 0;
-            direction.setLength(0.01);
+            direction.setLength(1);
             const bullet = new Bullet(
-                10,
+                30,
                 position,
                 direction,
                 `${props.playerProps.id}-${Date.now()}`
@@ -142,12 +142,12 @@ const Scene = (props: ISceneProps) => {
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
                 <group>
-                    {/* <ambientLight intensity={0} color={'rgb(25, 24, 104)'} /> */}
+                    <ambientLight intensity={5} />
                     {/* SIDE HALL LIGHT */}
                     <pointLight position={[9, 8, 3]} intensity={0.5} />
                     <pointLight position={[-11, 8, 3]} intensity={0.5} />
                     <pointLight position={[0, 9, 3]} intensity={10} />
-                    {/* <spotLight position={[5, 5, 1]} intensity={10}/> */}
+                    <spotLight position={[5, 5, 1]} intensity={10} />
                     {/*  */}
 
                     {/* LONG HALL LIGHT */}

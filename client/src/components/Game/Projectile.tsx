@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { BallCollider, CuboidCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 
 interface IProjectiileProps {
-    initialSpeed?: number;
+    initialSpeed: number;
     direction: Vector3;
     initialPosition: Vector3;
     texture: Texture;
@@ -11,14 +11,15 @@ interface IProjectiileProps {
 }
 
 const Projectile = (props: IProjectiileProps) => {
-    // console.log(props.initialPosition)
     const bulletRef = useRef<RapierRigidBody>(null!);
     const [isActive, setActive] = useState<boolean>(true);
 
     // const [speed, setSpeed] = useState<number>(props.initialSpeed ? props.initialSpeed : 10);
 
     useEffect(() => {
-        bulletRef.current.addForce(props.direction, true);
+        props.direction.setLength(props.initialSpeed)
+        bulletRef.current.setLinvel(props.direction, true);
+        // console.log(props.direction)
     });
 
     return (

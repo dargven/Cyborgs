@@ -20,17 +20,15 @@ interface IHitscanProps {
 const Hitscan = (props: IHitscanProps) => {
 	const laserRef = useRef<Line>(null!);
 	useEffect(() => {
-		laserRef.current.geometry.setFromPoints([props.aimingPoint, props.initialPosition].map((point) => new Vector3(...point)));
-	}, [props.aimingPoint, props.initialPosition]);
+		laserRef.current.geometry.setFromPoints([props.initialPosition, props.aimingPoint].map((point) => new Vector3(...point)));
+	}, [props.initialPosition, props.aimingPoint]);
 
 	return (
 		<sprite>
 			<line_ ref={laserRef}>
-				<bufferGeometry />
 				<lineBasicMaterial color={0x0000ff} />
 				<BallCollider args={[0.1]} />
 			</line_>
-			<line ></line>
 		</sprite>
 	)
 }

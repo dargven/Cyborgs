@@ -16,7 +16,7 @@ export interface IPlayerProps {
 
 const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>) => {
 
-    console.log(props.isMoving)
+    // console.log(props.isMoving)
 
     const [hp, setHp] = useState<number>(100);
 
@@ -42,17 +42,17 @@ const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>)
             lockRotations
             userData={data}
         >
-           
+
             <SpriteAnimator
                 fps={2}
                 startFrame={0}
-                loop = {true}
-                autoPlay = {true}
+                loop={true}
+                autoPlay={true}
                 textureImageURL={'./assets/test/Sprite-0001.png'}
                 textureDataURL={'./assets/test/Sprite-0001.json'}
                 alphaTest={0.01}
-                pause = {!props.isMoving}
-            /> 
+                pause={!props.isMoving}
+            />
 
             <BallCollider args={[0.5]} restitution={0}
                 onIntersectionEnter={(e) => {
