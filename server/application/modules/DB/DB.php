@@ -7,8 +7,7 @@ class DB
 
     //вызов соединения с БД
     public function __construct()
-    {
-        //Локальная:    $this->pdo = new PDO("mysql:host=localhost;dbname=Cyborgs;charset=utf8", 'root', '123');
+    { //Локальная:    $this->pdo = new PDO("mysql:host=localhost;dbname=Cyborgs;charset=utf8", 'root', '123');
         $this->pdo = new PDO("mysql:host=dargvetg.beget.tech;dbname=dargvetg_cyborgs;charset=utf8", 'dargvetg_cyborgs', 'vizual22cdxsaV');
     }
 
