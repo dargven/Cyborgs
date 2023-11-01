@@ -21,7 +21,6 @@ class Application
     {
         $login = $params['login'];
         $password = $params['password'];
-
         if ($login && $password) {
             return $this->user->register($login, $password);
         }
