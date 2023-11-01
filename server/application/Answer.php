@@ -13,14 +13,14 @@ class Answer
         '1001' => 'params login or password not set',
         '1002' => 'error in auth user',
         '1003' => 'Is it unique login?',
-        '1004' => 'Unable to find user. Are you cheater?',
+        '1004' => 'Unable to find user.',
         '9000' => 'unknown error'
     );
 
-    static function response(array $data)
+    static function response($data)
     {
         if ($data) {
-            if (count($data) === 2 && !$data[0]) {
+            if (!is_bool($data) && count($data) === 2 && !$data[0]) {
                 $code = $data[1];
                 return [
                     'result' => 'error',

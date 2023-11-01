@@ -39,8 +39,8 @@ class DB
 
     public function addUser($login, $password)
     {
-        $user = $this->execute("INSERT INTO `Users` (login,password,name,soname,token)
-        VALUES ('$login','$password')"
+        $user = $this->execute("INSERT INTO `Users` (login,password,token)
+        VALUES ('$login','$password', 'null')"
         );
     }
 
@@ -97,12 +97,12 @@ class DB
 
     public function updateScoreInTeam($teamId, $score)
     {
-        return $this->execute("UPDATE Teams SET WHERE team_id = '$teamId', team_points= SUM(team_points,) ");
-    }
+        return $this->execute("UPDATE Teams SET WHERE team_id = '$teamId', team_score= SUM(team_score,) ");
+    } // Дописать Кирилл || Женя
 
     public function addPlayerToTeam($id, $teamId)
     {
-       $this->execute("INSERT INTO UserTeams (team_id, user_id) VALUES ('$teamId', '$id')");
+        $this->execute("INSERT INTO UserTeams (team_id, user_id) VALUES ('$teamId', '$id')");
     }
 
 
