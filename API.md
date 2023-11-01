@@ -92,7 +92,7 @@ User = {
 | параметр | тип    | комментарий                  |
 |----------|--------|------------------------------|
 | login    | string | логин юзера                  |
-| hash     | string | md5(md5(login+password)+rnd) |
+| password | string | md5(md5(login+password)+rnd) |
 | rnd      | number | целое рандомное число        |
 
 ### Успешный ответ
