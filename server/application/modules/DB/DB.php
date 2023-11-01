@@ -8,7 +8,8 @@ class DB
     //вызов соединения с БД
     public function __construct()
     {
-        $this->pdo = new PDO("mysql:host=localhost;dbname=Cyborgs;charset=utf8", 'root', '123');
+        //Локальная:    $this->pdo = new PDO("mysql:host=localhost;dbname=Cyborgs;charset=utf8", 'root', '123');
+        $this->pdo = new PDO("mysql:host=dargvetg.beget.tech;dbname=dargvetg_cyborgs;charset=utf8", 'dargvetg_cyborgs', 'vizual22cdxsaV');
     }
 
     public function __destruct()
@@ -61,7 +62,7 @@ class DB
 
     public function updateToken($id, $token)
     {
-        return $this->execute("UPDATE users SET  token='$token' WHERE id='$id'");
+        return $this->execute("UPDATE Users SET  token='$token' WHERE id='$id'");
     }
 
 
