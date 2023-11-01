@@ -57,4 +57,23 @@ class Application
         }
         return [false, 242];
     }
+
+    function selectTeam($params)
+    {
+        $id = $params['id'];
+        $token = $params['token'];
+        $teamId = $params['teamId'];
+        if ($id && $token && $teamId) {
+            $this->user->selectTeam($id, $token, $teamId);
+        }
+        return [false, 242];
+    }
+    function getTeamsInfo($params){
+        $teamId = $params['teamId'];
+        if($teamId){
+            $this->user->getTeamsInfo($teamId);
+        }
+        return [false,242];
+    }
+
 }

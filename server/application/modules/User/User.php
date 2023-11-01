@@ -45,7 +45,7 @@ class User
     function authenticateUserByToken($id, $token): ?array
     {
         $user = $this->db->getUserById($id);
-        if ($user && $token === $user[0]['token']) {
+        if ($user && $token == $user[0]['token']) {
             return $user;
         }
         return null;
@@ -61,21 +61,63 @@ class User
         return [false, 1004];
     }
 
-    public function selectTeam($id, $token, $teamCode)
+    public function selectTeam($id, $token, $teamId)
     {
         $user = $this->authenticateUserByToken($id, $token);
-        if ($user !== null) {
+        if ($user !== null) { // !Ошибка авторизации
+            $teams = $this->db->getCountOfPlayersInTeams();
+            if ($teams[$teamId]) {
+                if ($teams[$teamId]['countOfPlayers'] <= 5) { // !Полная команда
+                    switch ($teamId) {
+                        case '1':
+                        {
+                            if ($teams[1]['countOfPlayers'] < $teams[2]['countOfPlayers']) {
+                                if ($teams[2]['countOfPlayers'] - $teams[1]['countOfPlayers'] <= 3) {
+                                    $this->db->addPlayerToTeam($id, $teamId);
+                                    return true;
+
+                                }
+                                return [false, 605];
+
+                            }
+                            return [false, 605];
+                        }
+                        case '2':
+                        {
+                            if ($teams[2]['countOfPlayers'] < $teams[1]['countOfPlayers']) {
+                                if ($teams[1]['countOfPlayers'] - $teams[2]['countOfPlayers'] <= 3) {
+                                    $this->db->addPlayerToTeam($id, $teamId);
+                                    return true;
+                                }
+                                return [false, 605];
+
+                            }
+                            return [false, 605];
+
+                        }
+                    }
+
+                }
+                return [false, 603];
+
+            }
+            return [false, 604];
 
         }
+        return [false, 1002];
     }
 
-    public function getTeamsInfo($id, $token)
-    {
-        $user = $this->authenticateUserByToken($id, $token);
-        if ($user !== null) {
-
+        public function getTeamsInfo($teamId)
+        {
+            $teams = $this->db->getCountOfPlayersInTeams();
+            if ($teams[$teamId]) {
+                return [
+                    'score' => $this->db->getScoreTeams(),
+                    'numberOfTeamPoints' => $teams
+                ];
+            }
+            return [false, 304];
 
         }
-    }
 
-}
+    }
