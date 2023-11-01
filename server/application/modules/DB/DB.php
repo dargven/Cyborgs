@@ -86,12 +86,12 @@ class DB
 
     public function getScoreTeams()
     {
-        return $this->execute("SELECT team_id, team_points FROM Teams group by team_id");
+        return $this->execute("SELECT team_id, team_score FROM Teams group by team_id");
     }
 
     public function getCountOfPlayersInTeams()
     {
-        return $this->execute("SELECT team_id, COUNT(user_id) as countOfPlayers from UserTeams group by team_id");
+        return $this->query("SELECT team_id, COUNT(user_id) as countOfPlayers from UserTeams group by team_id");
 
     }
 
@@ -102,7 +102,7 @@ class DB
 
     public function addPlayerToTeam($id, $teamId)
     {
-
+       $this->execute("INSERT INTO UserTeams (team_id, user_id) VALUES ('$teamId', '$id')");
     }
 
 
