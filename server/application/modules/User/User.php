@@ -9,17 +9,19 @@ class User
         $this->db = new DB();
     }
 
-    function login($login, $hash, $rnd)
+    function login($login, $password, $rnd)
     {
         $user = $this->db->getUserByLogin($login);
         if ($user) {
             $hashs = md5($user[0]['password'] . $rnd);
-            if ($hash === $hashs) {
+            if ($password === $hashs) {
                 $token = $this->genToken();
                 $this->db->updateToken($user[0]['id'], $token);
                 return array(
                     'id' => $user[0]['id'],
+                    'name'=> $user[0]['login'],
                     'token' => $token,
+
                 );
             }
             return array(false, 1002);
@@ -27,11 +29,11 @@ class User
         return array(false, 1004);
     }
 
-    public function register($login, $hash)
+    public function register($login, $password)
     {
         $user = $this->db->getUserByLogin($login);
         if (!$user) {
-            $this->db->addUser($login, $hash);
+            $this->db->addUser($login, $password);
             return true;
         }
         return array(false, 1003);
@@ -71,8 +73,8 @@ class User
                     switch ($teamId) {
                         case '1':
                         {
-                            if ($teams[1]['countOfPlayers'] < $teams[2]['countOfPlayers']) {
-                                if ($teams[2]['countOfPlayers'] - $teams[1]['countOfPlayers'] <= 3) {
+                            if ($teams[0]['countOfPlayers'] < $teams[1]['countOfPlayers']) {
+                                if ($teams[1]['countOfPlayers'] - $teams[0]['countOfPlayers'] <= 3) {
                                     $this->db->addPlayerToTeam($id, $teamId);
                                     return true;
 
@@ -84,8 +86,8 @@ class User
                         }
                         case '2':
                         {
-                            if ($teams[2]['countOfPlayers'] < $teams[1]['countOfPlayers']) {
-                                if ($teams[1]['countOfPlayers'] - $teams[2]['countOfPlayers'] <= 3) {
+                            if ($teams[1]['countOfPlayers'] < $teams[0]['countOfPlayers']) {
+                                if ($teams[0]['countOfPlayers'] - $teams[1]['countOfPlayers'] <= 3) {
                                     $this->db->addPlayerToTeam($id, $teamId);
                                     return true;
                                 }
@@ -107,17 +109,17 @@ class User
         return [false, 1002];
     }
 
-        public function getTeamsInfo($teamId)
-        {
-            $teams = $this->db->getCountOfPlayersInTeams();
-            if ($teams[$teamId]) {
-                return [
-                    'score' => $this->db->getScoreTeams(),
-                    'numberOfTeamPoints' => $teams
-                ];
-            }
-            return [false, 304];
-
+    public function getTeamsInfo($teamId)
+    {
+        $teams = $this->db->getCountOfPlayersInTeams();
+        if ($teams[$teamId]) {
+            return [
+                'score' => $this->db->getScoreTeams(),
+                'numberOfTeamPoints' => $teams
+            ];
         }
+        return [false, 304];
 
     }
+
+}
