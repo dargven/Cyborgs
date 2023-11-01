@@ -1,8 +1,8 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { createRef, useEffect, useState } from "react";
-import { Texture, TextureLoader, Vector3 } from "three";
+import { Fog, Texture, TextureLoader, Vector3 } from "three";
 import Player, { IPlayerProps } from "./Player";
-import { SpotLight, useKeyboardControls } from "@react-three/drei";
+import { Sky, SpotLight, Stars, useKeyboardControls } from "@react-three/drei";
 import Projectile from "./Projectile"
 import Hitscan from "./Hitscan";
 import { PROJECTILE } from "../../assets/images";
@@ -31,7 +31,7 @@ const playerRef = createRef<RapierRigidBody>(); // вынес из зависи�
 const Scene = (props: ISceneProps) => {
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load(PROJECTILE);
-    const room = textureLoader.load('./assets/rooms/tspawn.png');
+    const room = textureLoader.load('./assets/rooms/map-office-plain.png');
 
     const scale = 1;
 
@@ -141,27 +141,28 @@ const Scene = (props: ISceneProps) => {
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
-
                 <group>
                     {/* <ambientLight intensity={0} color={'rgb(25, 24, 104)'} /> */}
                     {/* SIDE HALL LIGHT */}
-                    {/* <pointLight position={[9, 8, 3]} intensity={50} />
-                    <pointLight position={[-11, 8, 3]} intensity={30} />
-                    <pointLight position={[0, 9, 3]} intensity={50} /> */}
+                    <pointLight position={[9, 8, 3]} intensity={0.5} />
+                    <pointLight position={[-11, 8, 3]} intensity={0.5} />
+                    <pointLight position={[0, 9, 3]} intensity={10} />
+                    {/* <spotLight position={[5, 5, 1]} intensity={10}/> */}
                     {/*  */}
 
                     {/* LONG HALL LIGHT */}
-                    {/* <pointLight position={[-10, 3, 3]} intensity={80} />
-                    <pointLight position={[-11, -5, 3]} intensity={80} /> */}
+                    <pointLight position={[-10, 3, 3]} intensity={0.5} />
+                    <pointLight position={[-11, -5, 3]} intensity={0.5} />
                     {/*  */}
 
                     {/* T SPAWN LIGHT */}
-                    <pointLight position={[10, 0, 3]} intensity={100} />
-                    <pointLight position={[0, -5, 3]} intensity={100} />
-                    <pointLight position={[8, -10, 3]} intensity={100} />
+                    <pointLight position={[10, 0, 3]} intensity={0.5} />
+                    <pointLight position={[0, -5, 3]} intensity={0.5} />
+                    <pointLight position={[8, -10, 3]} intensity={0.5} />
                     {/*  */}
                 </group>
 
+                <fog />
 
                 <group position={[10, 0, 0]}>
                     <Player ref={playerRef} id={1338} isMoving={isMoving} />
@@ -187,8 +188,8 @@ const Scene = (props: ISceneProps) => {
                     />
                 )}
 
-                <group scale={[12, 9, 1]}>
-                    <TestRoom texture={textures['room']} position={new Vector3()} />
+                <group scale={[81, 61, 1]} position={[0, 0, 0]}>
+                    <TestRoom texture={textures['room']} position={new Vector3(0, 0, 0)} />
                 </group>
 
                 {/* <group position={[0, 0, -0.1]}>
@@ -196,6 +197,7 @@ const Scene = (props: ISceneProps) => {
                 </group> */}
                 <Zone />
             </Physics>
+            <Stars />
         </group>
     );
 }

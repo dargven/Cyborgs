@@ -27,16 +27,16 @@ const MakeSprite = ({ texture, position, scale = 1, isSphere = false, isCollider
             <primitive object={planeGeometry} material={planeMaterial} /> */}
             <mesh>
                 <planeGeometry attach="geometry" args={[1, 1, 4]} />
-                <meshStandardMaterial attach="material" map={texture} />
+                <meshLambertMaterial attach="material" map={texture} alphaTest={0.5} />
             </mesh>
             {/* {isCollider && <MakeCollider isSphere={isSphere} />} */}
             {isCollider &&
-            <RigidBody type="fixed"
-            userData={{
-                type: "Collider"
-            }}>
-             <CuboidCollider args={[0.5, 0.5, 0.5]} ></CuboidCollider>
-            </RigidBody>
+                <RigidBody type="fixed"
+                    userData={{
+                        type: "Collider"
+                    }}>
+                    <CuboidCollider args={[0.5, 0.5, 0.5]} ></CuboidCollider>
+                </RigidBody>
             }
         </mesh>
     )

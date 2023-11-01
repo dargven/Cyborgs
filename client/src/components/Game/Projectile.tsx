@@ -32,22 +32,22 @@ const Projectile = (props: IProjectiileProps) => {
                 damage: 10
             }}
         >
-            
-            {isActive ?<group
-            > <BallCollider
-                args={[0.1]}
-                restitution={0}
-                sensor
-                onIntersectionEnter={(e) => {
-                    const data: any = e.other.rigidBody?.userData;
-                    if (data.type=="player"||data.type=="Collider") {
-                        setActive(false);
-                    }
-                }}
-            />
-            <sprite scale={0.5}>
-                <spriteMaterial map={props.texture} />
-            </sprite>
+
+            {isActive ? <group>
+                <BallCollider
+                    args={[0.1]}
+                    restitution={0}
+                    sensor
+                    onIntersectionEnter={(e) => {
+                        const data: any = e.other.rigidBody?.userData;
+                        if (data.type == "player" || data.type == "Collider") {
+                            setActive(false);
+                        }
+                    }}
+                />
+                <sprite scale={0.5}>
+                    <spriteMaterial map={props.texture} />
+                </sprite>
             </group> : <></>}
         </RigidBody>
     );
