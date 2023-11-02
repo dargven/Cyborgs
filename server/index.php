@@ -15,6 +15,8 @@ function result($params)
             case 'register':return $app->register($params);//Работает
             case 'selectTeam':return $app->selectTeam($params);
             case 'getTeamsInfo': return $app->getTeamsInfo($params);
+            case 'getSkins':return $app->getSkins($params);
+            case 'setSkin':$app->setSkin($params);
             default:return [false, 102];
         }
     }
