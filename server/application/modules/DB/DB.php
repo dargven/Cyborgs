@@ -105,6 +105,16 @@ class DB
         $this->execute("INSERT INTO UserTeams (team_id, user_id) VALUES ('$teamId', '$id')");
     }
 
+    public function getSkins($id)
+    {
+        return $this->query("SELECT skin_id, text FROM UserSkins, Skins WHERE user_id='$id'");
+    }
+
+    public function setSkin($id, $skinId)
+    {
+        return $this->execute("UPDATE UserSkins SET  skin_id='$skinId' WHERE id='$id'");
+    }
+
 
 }
 

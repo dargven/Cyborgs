@@ -126,32 +126,32 @@ class User
     {
         $user = $this->authenticateUserByToken($id, $token);
         if ($user !== null) {
-                $skins = $this->db->getSkins($id); // to do: db->getSkins($id) + table Skins (id(integer),user_id(integer),skin(text),isChosen(boolean))
-                if ($skins) {
-                    return array(
-                        'skins' => $skins,
-                        'numberOfSkins' => count($skins)
-                    );
-                }
-                return [false, 700];
+            $skins = $this->db->getSkins($id); // to do: db->getSkins($id) + table Skins (id(integer),user_id(integer),skin(text),isChosen(boolean))
+            if ($skins) {
+                return array(
+                    'skins' => $skins,
+                    'numberOfSkins' => count($skins)
+                );
             }
-            return [false, 1002];
+            return [false, 700];
         }
+        return [false, 1002];
+    }
 
-    public function setSkin($id, $token, $skin)
+    public function setSkin($id, $token, $skinId)
     {
         $skins = $this->getSkins($id, $token);
-        if ($skins[0]['skins'] !== NULL) {
-            if (in_array($skin, $skins['skins'])) {
-                $this->db->setSkin($id, $skin); // to do: db->setSkin($id,$skin) <=> for $skin isChosen=true
+        if ($skins['skins'] !== NULL) {
+            if (in_array($skinId, $skins['skins'])) {
+                $this->db->setSkin($id, $skinId); // to do: db->setSkin($id,$skin) <=> for $skin isChosen=true
                 return array(
                     'id' => $id,
-                    'setSkin' => $skin
+                    'setSkin' => $skinId
                 );
             }
             return [false, 701];
         }
-        return $skins; //error
+        return [false, 700];
     }
 
 }
