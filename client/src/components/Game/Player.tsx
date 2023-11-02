@@ -7,12 +7,11 @@ import HealthBar from "./HealthBar";
 export interface IPlayerProps {
     id?: number;
     username?: string;
-    hp?: number;
     position?: Vector3;
     isMoving?: boolean;
 }
 
-const Player = forwardRef((props: IPlayerProps, ref: Ref<RapierRigidBody>) => {
+const Player = forwardRef(({ id, username, position, isMoving }: IPlayerProps, ref: Ref<RapierRigidBody>) => {
 
     const [hp, setHp] = useState<number>(100);
     const data = {
@@ -40,7 +39,7 @@ const Player = forwardRef((props: IPlayerProps, ref: Ref<RapierRigidBody>) => {
                 textureImageURL={'./assets/test/Sprite-0001.png'}
                 textureDataURL={'./assets/test/Sprite-0001.json'}
                 alphaTest={0.01}
-                pause={!props.isMoving}
+                pause={!isMoving}
             />
 
             <BallCollider args={[0.5]} restitution={0}

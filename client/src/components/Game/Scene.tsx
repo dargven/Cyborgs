@@ -34,9 +34,6 @@ const Scene = (props: ISceneProps) => {
     const room = textureLoader.load('./assets/rooms/map-office-plain.png');
     const glass = textureLoader.load('./assets/Map parts/Glass.png');
 
-
-    const scale = 1;
-
     const [controlKeys, getKeys] = useKeyboardControls();
 
     const [textures, setTextures] = useState<ITextureObject>({
@@ -51,9 +48,6 @@ const Scene = (props: ISceneProps) => {
     const colliders = CollidersPosition();
 
     const { viewport, camera, pointer } = useThree();
-
-    const vSize = props.cameraProps.vSize;
-    const aspect = props.cameraProps.aspect;
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -95,7 +89,9 @@ const Scene = (props: ISceneProps) => {
     }, [getKeys, pointer, viewport.aspect]);
 
     useFrame((delta) => {
-
+        const playerPosition = vec3(playerRef.current?.translation());
+        camera.position.set(playerPosition.x, playerPosition.y, 7);
+        camera.updateProjectionMatrix();
         const velocity = vec3(playerRef.current?.linvel())
         if (velocity.length() === 0) {
             setMoving(false)
@@ -104,10 +100,6 @@ const Scene = (props: ISceneProps) => {
         }
 
         const { shoot, hitscan } = getKeys();
-
-        const playerPosition = vec3(playerRef.current?.translation());
-        camera.position.set(playerPosition.x, playerPosition.y, 7);
-        camera.updateProjectionMatrix();
 
         if (shoot) {
             const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
@@ -149,14 +141,12 @@ const Scene = (props: ISceneProps) => {
 
                 <LightMap />
 
-                <Robot position={new Vector3(-5, -5, 0)}/>
-
                 <fog />
 
                 <group position={[8, 5, 0]}>
                     <Player ref={playerRef} id={1338} isMoving={isMoving} />
                     <Player />
-                    {/* <Robot /> */}
+                    <Robot />
                 </group>
 
                 {colliders.map(collider =>
@@ -195,7 +185,7 @@ const Scene = (props: ISceneProps) => {
                     <Room texture={textures['room']} />
                 </group>
 
-                <Zone />
+                <Zone position={new Vector3(5.5, 7.5, 0.5)}/>
             </Physics>
             <Stars />
         </group>

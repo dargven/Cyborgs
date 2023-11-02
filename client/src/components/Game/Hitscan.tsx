@@ -18,11 +18,11 @@ interface IHitscanProps {
 	aimingPoint: number[];
 }
 
-const Hitscan = (props: IHitscanProps) => {
+const Hitscan = ({ initialPosition, aimingPoint }: IHitscanProps) => {
 	const laserRef = useRef<Line>(null!);
 	useEffect(() => {
-		laserRef.current.geometry.setFromPoints([props.initialPosition, props.aimingPoint].map((point) => new Vector3(...point)));
-	}, [props.initialPosition, props.aimingPoint]);
+		laserRef.current.geometry.setFromPoints([initialPosition, aimingPoint].map((point) => new Vector3(...point)));
+	}, [initialPosition, aimingPoint]);
 
 	return (
 		<sprite>

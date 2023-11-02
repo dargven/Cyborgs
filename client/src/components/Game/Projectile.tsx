@@ -11,13 +11,13 @@ interface IProjectiileProps {
     //damage
 }
 
-const Projectile = (props: IProjectiileProps) => {
+const Projectile = ({ initialSpeed, direction, initialPosition, texture }: IProjectiileProps) => {
     const bulletRef = useRef<RapierRigidBody>(null!);
     const [isActive, setActive] = useState<boolean>(true);
 
     useEffect(() => {
-        props.direction.setLength(props.initialSpeed)
-        bulletRef.current.setLinvel(props.direction, true);
+        direction.setLength(initialSpeed)
+        bulletRef.current.setLinvel(direction, true);
     });
 
     return (
@@ -25,7 +25,7 @@ const Projectile = (props: IProjectiileProps) => {
             ref={bulletRef}
             lockRotations
             angularDamping={1}
-            position={props.initialPosition}
+            position={initialPosition}
             userData={{
                 type: 'projectile',
                 damage: 10
@@ -42,7 +42,7 @@ const Projectile = (props: IProjectiileProps) => {
                         }
                     }} />
                 <sprite scale={0.5}>
-                    <spriteMaterial map={props.texture} />
+                    <spriteMaterial map={texture} />
                 </sprite>
             </group> : <></>}
         </RigidBody>

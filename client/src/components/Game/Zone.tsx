@@ -1,7 +1,12 @@
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import { useState } from 'react';
+import { Vector3 } from "three";
 
-function Zone() {
+interface IZoneProps {
+    position: Vector3;
+}
+
+function Zone({ position }: IZoneProps) {
     const [time, setTime] = useState<number>(0);
 
     return (
@@ -9,7 +14,7 @@ function Zone() {
             userData={{
                 type: "Zone"
             }}>
-            <group position={[5.5, 7.5, 0.5]}>
+            <group position={position}>
                 <CuboidCollider args={[1, 1, 0.5]} sensor
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;

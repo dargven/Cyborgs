@@ -1,8 +1,8 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
-import { Vector3 } from "three";
-import MakeSprite from "./MakeSprite";
+import { Vector3 } from "three/src/math/Vector3";
 import HealthBar from "./HealthBar";
+import MakeSprite from "./MakeSprite";
 
 interface IPRobotStats {
     position?: Vector3;
@@ -16,10 +16,9 @@ const Robot = ({ position }: IPRobotStats) => {
 
     return (
         <group>
-            <MakeSprite texture={TRobotTexture}/>
+            <MakeSprite texture={TRobotTexture} />
             <HealthBar value={hp} color={0x00ff00} />
         </group>
-
     );
 }
 
