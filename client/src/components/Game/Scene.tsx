@@ -5,14 +5,15 @@ import { createRef, useEffect, useState } from "react";
 import { Texture, TextureLoader, Vector3 } from "three";
 import Bullet from "../../modules/Game/Bullet";
 import Laser from "../../modules/Game/Laser";
-import CollidersPosition from "./CollidersPositions";
+import CollidersPositions from "./CollidersPositions";
 import Hitscan from "./Hitscan";
 import LightMap from "./LightMap";
+import MapObjects from "./MapObjects";
 import Player, { IPlayerProps } from "./Player";
 import Projectile from "./Projectile";
+import Robot from "./Robot";
 import Room from "./Room";
 import Zone from "./Zone";
-import Robot from "./Robot";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -45,7 +46,7 @@ const Scene = (props: ISceneProps) => {
     const [bullets, setBullets] = useState<Bullet[]>([]);
     const [lasers, setLasers] = useState<Laser[]>([]);
 
-    const colliders = CollidersPosition();
+    const colliders = CollidersPositions();
 
     const { viewport, camera, pointer } = useThree();
 
@@ -184,6 +185,8 @@ const Scene = (props: ISceneProps) => {
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
                     <Room texture={textures['room']} />
                 </group>
+
+                <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)}/>
 
                 <Zone position={new Vector3(5.5, 7.5, 0.5)}/>
             </Physics>
