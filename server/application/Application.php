@@ -67,4 +67,26 @@ class Application
         return [false, 242];
     }
 
+
+    function getSkins($params)
+    {
+        $id = $params['id'];
+        $token = $params['token'];
+        if ($token && $id) {
+            return $this->user->getSkins($id, $token);
+        }
+        return [false, 242];
+    }
+
+    function setSkin($params)
+    {
+        $id = $params['id'];
+        $token = $params['token'];
+        $skinId = $params['skinId'];
+        if ($token && $id && $skinId) {
+            return $this->user->setSkin($id, $token, $skinId);
+        }
+        return [false, 242];
+    }
+
 }
