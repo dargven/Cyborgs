@@ -10,7 +10,10 @@ export enum EControls {
     left = 'left',
     right = 'right',
     shoot = 'shoot',
-    hitscan = 'hitscan'
+    hitscan = 'hitscan',
+    select1 = 'select1',
+    select2 = 'select2',
+    select3 = 'select3',
 }
 
 const playerProps: IPlayerProps = {
@@ -25,6 +28,9 @@ const Game = () => {
         { name: EControls.right, keys: ['KeyD'] },
         { name: EControls.shoot, keys: ['Space'] },
         { name: EControls.hitscan, keys: ['KeyH'] },
+        { name: EControls.select1, keys: ['1'] },
+        { name: EControls.select2, keys: ['2'] },
+        { name: EControls.select3, keys: ['3'] },
     ], []);
 
     const vSize = 20;

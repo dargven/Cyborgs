@@ -59,7 +59,6 @@ const Player = forwardRef(({ id, username, position, isMoving }: IPlayerProps, r
                     }} />
                 <HealthBar value={hp} color={0xff0000} />
             </RigidBody>
-            <Inventory />
         </>
     );
 });

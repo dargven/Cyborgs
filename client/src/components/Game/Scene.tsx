@@ -14,6 +14,7 @@ import Projectile from "./Projectile";
 import Robot from "./Robot";
 import Room from "./Room";
 import Zone from "./Zone";
+import Inventory from "./Inventory";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -45,6 +46,7 @@ const Scene = (props: ISceneProps) => {
     const [isMoving, setMoving] = useState<boolean>(false);
     const [bullets, setBullets] = useState<Bullet[]>([]);
     const [lasers, setLasers] = useState<Laser[]>([]);
+    const [weaponSlot, setWeaponSlot] = useState<number>(1);
 
     const colliders = CollidersPositions();
 
@@ -54,7 +56,7 @@ const Scene = (props: ISceneProps) => {
         const interval = setInterval(() => {
             playerRef.current?.resetForces(true);
             // console.log(position);
-            const { up, down, left, right } = getKeys();
+            const { up, down, left, right, select1, select2, select3 } = getKeys();
             // if (hp > 0) {
             const force = new Vector3();
 
@@ -70,6 +72,9 @@ const Scene = (props: ISceneProps) => {
             if (down) {
                 force.y -= 1;
             }
+            if (select1) setWeaponSlot(1);
+            if (select2) setWeaponSlot(2);
+            if (select3) setWeaponSlot(3);
             const velocity = vec3(playerRef.current?.linvel());
             const len = velocity.length();
             if (len < 1) {
@@ -149,6 +154,8 @@ const Scene = (props: ISceneProps) => {
                     <Player />
                     <Robot />
                 </group>
+
+                <Inventory setWeapon={weaponSlot} />
 
                 {colliders.map(collider =>
                     <RigidBody
