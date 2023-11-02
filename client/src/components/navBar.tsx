@@ -1,6 +1,7 @@
 import NavButton from "./navButton";
 
 const NavBar = () => {
+
   return (
     <header className="App-header">
       <NavButton to="/main" text="Играть" />
@@ -8,6 +9,8 @@ const NavBar = () => {
       <NavButton to="/registration" text="Регистрация" />
 
       <NavButton to="/login" text="Войти" />
+
+      <button className="Leave" onClick={() => {localStorage.removeItem("token")}}>Выход</button>
     </header>
   );
 };
