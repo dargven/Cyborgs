@@ -3,6 +3,7 @@ import { ServerContext } from "../App";
 import { Navigate } from "react-router-dom";
 import md5 from 'md5-ts';
 import "../Auth.css";
+import NavBar from "../components/navBar";
 
 const RegistrationPage = () => {
   const server = useContext(ServerContext);
@@ -28,6 +29,7 @@ const RegistrationPage = () => {
 
   return (
     <>
+      <NavBar/>
       <div className="title">
         <p>
           КИБОРГИ <br /> ТЕПЕРЬ В 2D
