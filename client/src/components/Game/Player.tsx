@@ -1,7 +1,7 @@
 import { SpriteAnimator } from "@react-three/drei";
 import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { Ref, forwardRef, useState } from "react";
-import { Vector3 } from "three/src/math/Vector3";
+import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
 
 export interface IPlayerProps {

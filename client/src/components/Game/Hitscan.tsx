@@ -1,7 +1,7 @@
 import { ReactThreeFiber, extend } from '@react-three/fiber';
 import { BallCollider } from "@react-three/rapier";
 import { useEffect, useRef } from "react";
-import { Vector3 } from "three/src/math/Vector3";
+import { Vector3 } from "three";
 import { Line } from "three/src/objects/Line";
 extend({ Line_: Line })
 

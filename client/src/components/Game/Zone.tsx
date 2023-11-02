@@ -5,7 +5,6 @@ function Zone() {
     const [time, setTime] = useState<number>(0);
 
     return (
-
         <RigidBody
             userData={{
                 type: "Zone"
@@ -25,10 +24,9 @@ function Zone() {
                             const score = Math.floor((left - time) / 1000)
                             console.log(score)
                         }
-                    }}/>
+                    }} />
             </group>
         </RigidBody>
-
     )
 }
 

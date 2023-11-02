@@ -1,17 +1,18 @@
+import { Stars, useKeyboardControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { createRef, useEffect, useState } from "react";
-import { Fog, Texture, TextureLoader, Vector3 } from "three";
-import Player, { IPlayerProps } from "./Player";
-import { Sky, SpotLight, Stars, useKeyboardControls } from "@react-three/drei";
-import Projectile from "./Projectile"
-import Hitscan from "./Hitscan";
 import { CuboidCollider, Physics, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
+import { createRef, useEffect, useState } from "react";
+import { Texture, TextureLoader, Vector3 } from "three";
 import Bullet from "../../modules/Game/Bullet";
 import Laser from "../../modules/Game/Laser";
-import Zone from "./Zone";
-import TestRoom from "./TestRoom";
 import CollidersPosition from "./CollidersPositions";
+import Hitscan from "./Hitscan";
 import LightMap from "./LightMap";
+import Player, { IPlayerProps } from "./Player";
+import Projectile from "./Projectile";
+import Room from "./Room";
+import Zone from "./Zone";
+import Robot from "./Robot";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -145,8 +146,10 @@ const Scene = (props: ISceneProps) => {
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
-                
+
                 <LightMap />
+
+                <Robot position={new Vector3(-5, -5, 0)}/>
 
                 <fog />
 
@@ -189,9 +192,9 @@ const Scene = (props: ISceneProps) => {
                 )}
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
-                    <TestRoom texture={textures['room']}/>
+                    <Room texture={textures['room']} />
                 </group>
-                
+
                 <Zone />
             </Physics>
             <Stars />

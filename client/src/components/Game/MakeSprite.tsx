@@ -1,6 +1,6 @@
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import { NearestFilter } from "three/src/constants";
-import { Vector3 } from "three/src/math/Vector3";
+import { Vector3 } from "three";
 import { Texture } from "three/src/textures/Texture";
 
 export interface IMakeSprite {
@@ -24,7 +24,7 @@ const MakeSprite = ({ texture, position, scale = 1, isSphere = false, isCollider
                 <meshLambertMaterial attach="material" map={texture} alphaTest={0.5} />
             </mesh>
             {isCollider &&
-                <RigidBody 
+                <RigidBody
                     type="fixed"
                     userData={{
                         type: "Collider"
