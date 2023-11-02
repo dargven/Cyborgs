@@ -5,7 +5,6 @@ import Player, { IPlayerProps } from "./Player";
 import { Sky, SpotLight, Stars, useKeyboardControls } from "@react-three/drei";
 import Projectile from "./Projectile"
 import Hitscan from "./Hitscan";
-import { PROJECTILE } from "../../assets/images";
 import { CuboidCollider, Physics, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
 import Bullet from "../../modules/Game/Bullet";
 import Laser from "../../modules/Game/Laser";
@@ -13,7 +12,7 @@ import Map from "./Map";
 import Zone from "./Zone";
 import TestRoom from "./TestRoom";
 import tspawn from './assets/rooms/tspawn.png';
-import Colliders from "../../assets/images/CollidersPositions";
+import Colliders from "./CollidersPositions";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -31,8 +30,9 @@ const playerRef = createRef<RapierRigidBody>(); // вынес из зависи�
 
 const Scene = (props: ISceneProps) => {
     const textureLoader = new TextureLoader();
-    const TPROJECTILE = textureLoader.load(PROJECTILE);
+    const TPROJECTILE = textureLoader.load('client/public/assets/Bullets/Projectile.png');
     const room = textureLoader.load('./assets/rooms/map-office-plain.png');
+
 
     const scale = 1;
 

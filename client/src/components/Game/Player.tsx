@@ -2,7 +2,6 @@ import { RapierRigidBody, RigidBody, BallCollider } from "@react-three/rapier";
 import { forwardRef, useState } from "react";
 import HealthBar from "./HealthBar";
 import { TextureLoader, Texture, Vector3 } from "three";
-import { TROLLFACE, SADTROLLFACE } from "../../assets/images";
 import { SpriteAnimator } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 
@@ -21,14 +20,10 @@ const Player = forwardRef((props: IPlayerProps, ref: React.Ref<RapierRigidBody>)
     const [hp, setHp] = useState<number>(100);
 
     const textureLoader = new TextureLoader();
-    const TTROLLFACE = textureLoader.load(TROLLFACE);
-    const TSADTROLLFACE = textureLoader.load(SADTROLLFACE);
 
     const data = {
         type: 'player'
     }
-
-    const [textures, setTextures] = useState<Texture[]>([TTROLLFACE, TSADTROLLFACE,]);
 
     return (
         <RigidBody

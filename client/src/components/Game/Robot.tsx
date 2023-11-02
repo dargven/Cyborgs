@@ -1,4 +1,3 @@
-import { RobotTexture } from "../../assets/images";
 import MakeSprite from "./MakeSprite";
 import { TextureLoader } from "three";
 import { Vector3, SpriteMaterial, Sprite, Mesh } from "three";
@@ -14,7 +13,7 @@ const Robot = (props: IPRobotStats) => {
     const robotRef = useRef<Mesh>(null!);
 
     const textureLoader = new TextureLoader();
-    const TRobotTexture = textureLoader.load(RobotTexture);
+    const TRobotTexture = textureLoader.load('client/public/assets/Skins/Robot.png');
 
     return (
         <mesh ref={robotRef} scale={0.5} position={props.position} >

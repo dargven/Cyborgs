@@ -1,5 +1,4 @@
 import { TextureLoader } from "three";
-import { FL, WALL, No_Texture, Space, Glass, Snow } from "../../assets//images/";
 import Room from "./Room";
 
 interface IMap {
@@ -13,12 +12,12 @@ interface IMap {
 const mapVersion = "V 1.2";
 
 const textureLoader = new TextureLoader();
-const TSPACE = textureLoader.load(Space);
-const TFLOOR = textureLoader.load(FL);
-const TWALL = textureLoader.load(WALL);
-const TGLASS = textureLoader.load(Glass);
-const TSNOW = textureLoader.load(Snow);
-const TNOTEXTURE = textureLoader.load(No_Texture);
+const TSPACE = textureLoader.load('./public/assets/Map parts/Space.png');
+const TFLOOR = textureLoader.load('./public/assets/Map parts/Walls/Floor.png');
+const TWALL = textureLoader.load('./public/assets/Map parts/Walls/WALL.png');
+const TGLASS = textureLoader.load('./public/assets/Map parts/Glass.png');
+const TSNOW = textureLoader.load('./public/assets/Map parts/Smow.png');
+const TNOTEXTURE = textureLoader.load('./public/assets/Map parts/No_texture.png');
 
 const Textures = {TSPACE, TFLOOR, TWALL, TGLASS, TSNOW, TNOTEXTURE}
 

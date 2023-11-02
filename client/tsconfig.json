@@ -23,5 +23,5 @@
   },
   "include": [
     "src"
-  ]
+, "src/assets/index.ts"  ]
 }
