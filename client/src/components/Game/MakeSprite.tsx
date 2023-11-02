@@ -5,7 +5,7 @@ import { Texture } from "three/src/textures/Texture";
 
 export interface IMakeSprite {
     texture: Texture;
-    position: Vector3;
+    position?: Vector3;
     scale?: number;
     rotation?: number;
     isSphere?: boolean;

@@ -2,18 +2,16 @@ import { Texture, Vector3 } from "three";
 import MakeSprite from "./MakeSprite";
 
 export interface ITestRoomProps {
-    position: Vector3;
     texture: Texture;
     name?: string;
 }
 
-const TestRoom = ({ texture, position }: ITestRoomProps) => {
+const TestRoom = ({ texture}: ITestRoomProps) => {
     return (
         <group>
-            <MakeSprite texture={texture} position={position} isCollider={false} />
+            <MakeSprite texture={texture} isCollider={false} />
         </group>
     );
-
 }
 
 export default TestRoom;

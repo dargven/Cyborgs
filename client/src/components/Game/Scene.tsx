@@ -1,17 +1,17 @@
-import { Stars, useKeyboardControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { CuboidCollider, Physics, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
 import { createRef, useEffect, useState } from "react";
-import { Texture, TextureLoader, Vector3 } from "three";
+import { Fog, Texture, TextureLoader, Vector3 } from "three";
+import Player, { IPlayerProps } from "./Player";
+import { Sky, SpotLight, Stars, useKeyboardControls } from "@react-three/drei";
+import Projectile from "./Projectile"
+import Hitscan from "./Hitscan";
+import { CuboidCollider, Physics, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
 import Bullet from "../../modules/Game/Bullet";
 import Laser from "../../modules/Game/Laser";
-import CollidersPosition from "./CollidersPositions";
-import Hitscan from "./Hitscan";
-import MapObjects from "./MapObjects";
-import Player, { IPlayerProps } from "./Player";
-import Projectile from "./Projectile";
-import TestRoom from "./TestRoom";
 import Zone from "./Zone";
+import TestRoom from "./TestRoom";
+import CollidersPosition from "./CollidersPositions";
+import LightMap from "./LightMap";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -145,26 +145,8 @@ const Scene = (props: ISceneProps) => {
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
-                <group>
-                    <ambientLight intensity={5} />
-                    {/* SIDE HALL LIGHT */}
-                    <pointLight position={[9, 8, 3]} intensity={0.5} />
-                    <pointLight position={[-11, 8, 3]} intensity={0.5} />
-                    <pointLight position={[0, 9, 3]} intensity={10} />
-                    <spotLight position={[5, 5, 1]} intensity={10} />
-                    {/*  */}
-
-                    {/* LONG HALL LIGHT */}
-                    <pointLight position={[-10, 3, 3]} intensity={0.5} />
-                    <pointLight position={[-11, -5, 3]} intensity={0.5} />
-                    {/*  */}
-
-                    {/* T SPAWN LIGHT */}
-                    <pointLight position={[10, 0, 3]} intensity={0.5} />
-                    <pointLight position={[0, -5, 3]} intensity={0.5} />
-                    <pointLight position={[8, -10, 3]} intensity={0.5} />
-                    {/*  */}
-                </group>
+                
+                <LightMap />
 
                 <fog />
 
@@ -207,14 +189,9 @@ const Scene = (props: ISceneProps) => {
                 )}
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
-                    <TestRoom texture={textures['room']} position={new Vector3(0, 0, 0)} />
+                    <TestRoom texture={textures['room']}/>
                 </group>
                 
-                <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)}/>
-                
-                {/* <group position={[0, 0, -0.1]}>
-                    <Map scale={scale} />
-                </group> */}
                 <Zone />
             </Physics>
             <Stars />

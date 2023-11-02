@@ -2,7 +2,6 @@ import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import { useState } from 'react';
 
 function Zone() {
-
     const [time, setTime] = useState<number>(0);
 
     return (
@@ -26,8 +25,7 @@ function Zone() {
                             const score = Math.floor((left - time) / 1000)
                             console.log(score)
                         }
-                    }}
-                />
+                    }}/>
             </group>
         </RigidBody>
 
