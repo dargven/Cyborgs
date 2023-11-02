@@ -1,8 +1,8 @@
 import { Stars, useKeyboardControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CuboidCollider, Physics, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
-import { createRef, useEffect, useState } from "react";
-import { Texture, TextureLoader, Vector3 } from "three";
+import { createRef, useEffect, useRef, useState } from "react";
+import { Group, Texture, TextureLoader, Vector3 } from "three";
 import Bullet from "../../modules/Game/Bullet";
 import Laser from "../../modules/Game/Laser";
 import CollidersPositions from "./CollidersPositions";
@@ -52,12 +52,12 @@ const Scene = (props: ISceneProps) => {
 
     const { viewport, camera, pointer } = useThree();
 
+    const invRef = useRef<Group>();
+
     useEffect(() => {
         const interval = setInterval(() => {
             playerRef.current?.resetForces(true);
-            // console.log(position);
             const { up, down, left, right, select1, select2, select3 } = getKeys();
-            // if (hp > 0) {
             const force = new Vector3();
 
             if (left) {
@@ -94,10 +94,18 @@ const Scene = (props: ISceneProps) => {
 
     }, [getKeys, pointer, viewport.aspect]);
 
+    const positionToCamera = new Vector3(0, -2, -3);
+
     useFrame((delta) => {
         const playerPosition = vec3(playerRef.current?.translation());
-        camera.position.set(playerPosition.x, playerPosition.y, 7);
+        const cameraPos = new Vector3(playerPosition.x, playerPosition.y, 7);
+        camera.position.lerp(cameraPos, 0.1);
         camera.updateProjectionMatrix();
+
+        if (invRef.current) {
+            invRef.current.position.copy(camera.position).add(positionToCamera);
+        }
+
         const velocity = vec3(playerRef.current?.linvel())
         if (velocity.length() === 0) {
             setMoving(false)
@@ -136,9 +144,6 @@ const Scene = (props: ISceneProps) => {
             )
             setLasers((lasers) => [...lasers, laser])
         }
-
-        // camera.setViewOffset(vSize, vSize, position.x / viewport.aspect, position.y, vSize * viewport.aspect / 2, vSize * viewport.aspect / 2)
-        // camera.updateProjectionMatrix();
     });
 
     return (
@@ -155,7 +160,7 @@ const Scene = (props: ISceneProps) => {
                     <Robot />
                 </group>
 
-                <Inventory setWeapon={weaponSlot} />
+                <Inventory invRef={invRef} setWeapon={weaponSlot} />
 
                 {colliders.map(collider =>
                     <RigidBody

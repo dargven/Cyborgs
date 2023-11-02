@@ -3,7 +3,6 @@ import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { Ref, forwardRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
-import Inventory from "./Inventory";
 
 export interface IPlayerProps {
     id?: number;
