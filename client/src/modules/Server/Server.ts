@@ -22,8 +22,9 @@ export default class Server {
             if (answer.result === 'ok') {
                 return answer.data;
             }
-            // обработать ошибку(6 пункт)
-            //...
+            console.log(
+                `Ошибка: ${answer["error"]["code"]}, text: ${answer["error"]["text"]}`
+            );
             return null;
         } catch (e) {
             return null;
@@ -37,6 +38,7 @@ export default class Server {
         );
         if (result?.token) {
             this.token = result.token;
+            localStorage.setItem("token", this.token);
         }
         return result;
     }
@@ -51,13 +53,5 @@ export default class Server {
 
     register(login: string, password: string): Promise<TUser | null> {
         return this.request<TUser>('register', {login, password});
-    }
-
-    getSkins(id: number, token: string): Promise<TUser | null> {
-        return this.request<TUser>('getSkins', { id, token });
-    }
-
-    setSkin(id: number, token: string, skin: string): Promise<TUser | null> {
-        return this.request<TUser>('setSkin', { id, token, skin });
     }
 }

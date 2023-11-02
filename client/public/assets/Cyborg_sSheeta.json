@@ -1,0 +1,75 @@
+{"frames": [
+
+  {
+    "filename": "Cyborg_00",
+    "frame": {"x":1,"y":1,"w":376,"h":522},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":376,"h":522},
+    "sourceSize": {"w":376,"h":522}
+  },
+  {
+    "filename": "Cyborg_01",
+    "frame": {"x":379,"y":1,"w":376,"h":522},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":376,"h":522},
+    "sourceSize": {"w":376,"h":522}
+  },
+  {
+    "filename": "Cyborg_02",
+    "frame": {"x":757,"y":1,"w":376,"h":522},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":376,"h":522},
+    "sourceSize": {"w":376,"h":522}
+  },
+  {
+    "filename": "Cyborg_03",
+    "frame": {"x":1135,"y":1,"w":376,"h":522},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":376,"h":522},
+    "sourceSize": {"w":376,"h":522}
+  },
+  {
+    "filename": "Cyborg_04",
+    "frame": {"x":1513,"y":1,"w":376,"h":522},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":376,"h":522},
+    "sourceSize": {"w":376,"h":522}
+  },
+  {
+    "filename": "Cyborg_05",
+    "frame": {"x":1891,"y":1,"w":376,"h":522},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":376,"h":522},
+    "sourceSize": {"w":376,"h":522}
+  },
+  {
+    "filename": "Cyborg_06",
+    "frame": {"x":2269,"y":1,"w":376,"h":522},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":376,"h":522},
+    "sourceSize": {"w":376,"h":522}
+  },
+  {
+    "filename": "Cyborg_07",
+    "frame": {"x":2647,"y":1,"w":376,"h":522},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":376,"h":522},
+    "sourceSize": {"w":376,"h":522}
+  },
+  {
+    "filename": "Cyborg_08",
+    "frame": {"x":3025,"y":1,"w":376,"h":522},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {"x":0,"y":0,"w":376,"h":522},
+    "sourceSize": {"w":376,"h":522}
+  }]
+}

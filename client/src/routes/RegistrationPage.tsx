@@ -3,6 +3,7 @@ import { ServerContext } from "../App";
 import { Navigate } from "react-router-dom";
 import md5 from 'md5-ts';
 import "../Auth.css";
+import NavBar from "../components/navBar";
 
 const RegistrationPage = () => {
   const server = useContext(ServerContext);
@@ -16,18 +17,19 @@ const RegistrationPage = () => {
       const login = loginRef.current.value;
       const password = md5(loginRef.current.value + passwordRef.current.value)
       const response = await server.register(
-        login, 
+        login,
         password
         );
         if (response) {
           setRegistrationSuccess(true);
-        } else 
-          console.error("Ошибка при регистрации");
+        }
+
     }
   };
 
   return (
     <>
+      <NavBar/>
       <div className="title">
         <p>
           КИБОРГИ <br /> ТЕПЕРЬ В 2D
@@ -56,7 +58,7 @@ const RegistrationPage = () => {
             Зарегистрироваться
           </button>
         </div>
-        {registrationSuccess ? <Navigate to="/main" replace={true} /> : null}
+        {registrationSuccess ? <Navigate to="/login" replace={true} /> : null}
       </div>
     </>
   );

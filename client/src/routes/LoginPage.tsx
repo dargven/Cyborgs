@@ -3,6 +3,7 @@ import {ServerContext} from "../App";
 import {Navigate} from "react-router-dom";
 import md5 from 'md5-ts';
 import "../Auth.css";
+import NavBar from "../components/navBar";
 
 const LoginPage = () => {
     const server = useContext(ServerContext);
@@ -22,13 +23,13 @@ const LoginPage = () => {
             )
             if (user) {
                 setLoginSuccess(true);
-            } else
-                console.error("Ошибка авторизации");
+            } 
         }
     };
 
     return (
         <>
+            <NavBar/>
             <div className="title">
                 <p>
                     КИБОРГИ <br/> ТЕПЕРЬ В 2D

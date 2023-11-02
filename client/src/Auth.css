@@ -47,7 +47,6 @@ p {
   color: #ffffff;
   font-size: 20px;
   background: none;
-  outline: none;
   border-radius: 20px;
   margin-bottom: 30px;
   box-sizing: border-box;
@@ -62,37 +61,55 @@ p {
 }
 
 .input-form button {
-  padding: 10px;
-  width: 134px;
-  height: 54px;
-  color: #fff;
-  font-size: 20px;
-  background: linear-gradient(to right, #ff00bf, #008cff);
+  font-family: Zelek;
+  width: 15dvh;
+  height: 5dvh;
+  text-align: center;
+  font-size: 2.5dvh;
+  color: #27CEE9;
+  background: none;
   outline: none;
   border: none;
-  border-radius: 11px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
+}
+
+.input-form button:hover {
+  text-shadow: 0px 0px 3px #00aeff;
+  color: #27CEE9;
+  border-width: 0.6dvh 0.6dvh;
+  border-radius: 0;
+  filter: contrast(30);
+  border-color: #27CEE9;
+  box-shadow: inset 0px 0px 30px rgba(0, 0, 0);
+  clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
+}
+
+.input-form1 button {
+  font-family: Zelek;
+  text-align: center;
+  width: 32.4dvh;
+  height: 5dvh;
+  font-size: 2.5dvh;
+  color: #27CEE9;
+  background: none;
+  outline: none;
+  border: none;
+}
+
+.input-form1 button:hover {
+  text-shadow: 0px 0px 3px #00aeff;
+  color: #27CEE9;
+  border-width: 0.6dvh 0.6dvh;
+  border-radius: 0;
+  filter: contrast(30);
+  border-color: #27CEE9;
+  box-shadow: inset 0px 0px 30px rgba(0, 0, 0);
+  clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
 }
 
 .input-form1 {
   margin: 15px 40px;
   text-align: center;
   padding: 10px;
-}
-
-.input-form1 button {
-  padding: 10px;
-  width: auto;
-  height: 54px;
-  color: #fff;
-  font-size: 20px;
-  background: linear-gradient(to right, #ff00bf, #008cff);
-  outline: none;
-  border: none;
-  border-radius: 11px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
 }
 
 .input-form1 input {
@@ -110,17 +127,6 @@ p {
 
 .input-form1 input:hover {
   border: 5px solid rgb(0, 217, 255);
-}
-
-.input-form1 button:hover {
-  padding: 10px;
-  width: auto;
-  height: 54px;
-  color: #61dafb;
-  font-size: 20px;
-  border: 5px solid #691e6c;
-  box-sizing: border-box;
-    height: 100%;
 }
 
 body {
@@ -147,29 +153,9 @@ body {
     text-align: center;
 }
 
-.input-form input {
-    padding: 10px;
-    width: 100%;
-    color: #fff;
-    font-size: 20px;
-    background: none;
-    outline: none;
-    border: 1px solid #fff;
-    box-sizing: border-box;
-}
 
 .forget {
     color: #fff;
-}
-
-.input-form button:hover {
-  padding: 10px;
-  width: 134px;
-  height: 54px;
-  color: #61dafb;
-  font-size: 20px;
-  border: 5px solid #691e6c;
-  box-sizing: border-box;
 }
 
 h1 {
@@ -222,17 +208,23 @@ h1 {
 }
 
 .App-header button {
+  font-family: Zelek;
   background-color: #86263e;
-  text-align: center;
   padding: 10px;
-  text-decoration: none;
-  border-radius: 10px;
-  border: 1px solid #402e22;
   margin: 2px;
+  text-align: center;
+  font-size: 2.5dvh;
+  border: none;
+  background: none;
 }
 
 .App-header button:hover {
-  background-color: #c38d9e;
+  color: none;
+  filter: contrast(30);
+  border-color: #27CEE9;
+  clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
+  border-radius: 0;
+  border-width: 0.6dvh 0.6dvh;
 }
 
 .header-right {
