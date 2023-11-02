@@ -1,5 +1,7 @@
 import {TUser} from "./types";
 
+// https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV 
+
 export default class Server {
     private HOST: string;
     private token: string | null;
