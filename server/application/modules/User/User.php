@@ -30,7 +30,7 @@ class User
 
     public function register($login, $hash)
     {
-        $user = $this->db->getUserByLogin($login); // после добавления метода в DB.php, в старой версии getUser($login)
+        $user = $this->db->getUserByLogin($login); 
         if (!$user) {
             $this->db->addUser($login, $hash);
             return true;
@@ -42,8 +42,6 @@ class User
     {
         $login = 'USER_'.bin2hex(random_bytes(10));
         $hash = md5(bin2hex(random_bytes(20)).rand());
-        $token = md5($hash.rand());
-        //$token in localstorage .....
         return $this->register($login, $hash);
     }
 
