@@ -8,18 +8,19 @@ class Answer
         '242' => 'params not set fully ',
         '404' => 'not found',
         '555' => 'Is it Polygon?',
+        '605' => ' In selected team more gamers than in the other. Please, select other team ',
         '999' => 'Is it Triangle?',
         '1001' => 'params login or password not set',
         '1002' => 'error in auth user',
         '1003' => 'Is it unique login?',
-        '1004' => '-',
+        '1004' => 'Unable to find user.',
         '9000' => 'unknown error'
     );
 
     static function response($data)
     {
         if ($data) {
-            if (count($data) === 2 && !$data[0]) {
+            if (!is_bool($data) && count($data) === 2 && !$data[0]) {
                 $code = $data[1];
                 return [
                     'result' => 'error',
