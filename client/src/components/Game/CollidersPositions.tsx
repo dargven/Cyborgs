@@ -105,8 +105,42 @@ const CollidersPositions = () => {
         new Collider(new Vector3(4, 10, 0), [0.5, 0.5, 0.5]),
         new Collider(new Vector3(7, 5, 0), [0.5, 0.5, 0.5]),
         new Collider(new Vector3(7, 10, 0), [0.5, 0.5, 0.5]),
-    ]
 
+        //garage stairs
+        new Collider(new Vector3(9.5,-9, 0), [2, 0.5, 0.5]),
+
+        new Collider(new Vector3(4.5, -10, 0), [1, 3.5, 0.5]),
+        new Collider(new Vector3(3, -15.5, 0), [0.5, 2, 0.5]),
+        new Collider(new Vector3(8.5, -20, 0), [1, 2.5, 0.5]),
+        new Collider(new Vector3(8, -12, 0), [0.5, 2.5, 0.5]),
+        new Collider(new Vector3(5, -21, 0), [0.5, 1.5, 0.5]),
+        
+        new Collider(new Vector3(9, -14, 0), [0.5, 0.5, 0.5]),
+        
+        //outsideWindows
+        new Collider(new Vector3(25, -19, 0), [0.5, 8.5, 0.5]),
+        new Collider(new Vector3(20, -7.5, 0), [1.5, 2, 0.5]),
+        new Collider(new Vector3(23, -10, 0), [1.5, 0.5, 0.5]),
+        new Collider(new Vector3(16, -28, 0), [8.5, 0.5, 0.5]),
+
+        //outsideFront
+        new Collider(new Vector3(-38, 4, 0), [0.5, 14.5, 0.5]),
+        new Collider(new Vector3(-12, -6.5, 0), [0.5, 2, 0.5]),
+
+        new Collider(new Vector3(-33, 19, 0), [4.5, 0.5, 0.5]),
+        new Collider(new Vector3(-20, -9.5, 0), [7.5, 1, 0.5]),
+
+        //garage
+        new Collider(new Vector3(-12, -18.5, 0), [17.5, 1, 0.5]),
+        new Collider(new Vector3(-10, -29, 0), [17.5, 0.5, 0.5]),
+        new Collider(new Vector3(-33.5, -30, 0), [6, 0.5, 0.5]),
+        new Collider(new Vector3(-16, -20.5, 0), [5.5, 1, 0.5]),
+
+        new Collider(new Vector3(-40, -25, 0), [0.5, 4.5, 0.5]),
+        new Collider(new Vector3(-38, -15.5, 0), [1.5, 5, 0.5]),
+        new Collider(new Vector3(-28, -14, 0), [1.5, 3.5, 0.5]),
+    ]
+    
     return colliders;
 }
 
