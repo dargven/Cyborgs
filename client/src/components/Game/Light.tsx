@@ -1,7 +1,5 @@
-import React from "react";
-import { Color, ColorRepresentation, PointLight, Vector3 } from "three";
-import { IPlayerProps } from "./Player";
-
+import { ColorRepresentation } from "three/src/math/Color";
+import { Vector3 } from "three/src/math/Vector3";
 
 interface ILightProps {
     position: Vector3,
@@ -12,15 +10,14 @@ interface ILightProps {
     castshadow?: boolean
 }
 
-
 const Light = ((props: ILightProps) => {
-    return(
+    return (
         <>
-        <pointLight position={[0, 20, 10]} intensity={3} color = {'#ffffff'} />
-        <mesh rotation={[0, 10, 0]}>
-          <boxGeometry attach="geometry" args={[1, 1, 1]} />
-          <meshStandardMaterial attach="material" color={"#6be092"} />
-        </mesh>
+            <pointLight position={[0, 20, 10]} intensity={3} color={'#ffffff'} />
+            <mesh rotation={[0, 10, 0]}>
+                <boxGeometry attach="geometry" args={[1, 1, 1]} />
+                <meshStandardMaterial attach="material" color={"#6be092"} />
+            </mesh>
         </>
     );
 });

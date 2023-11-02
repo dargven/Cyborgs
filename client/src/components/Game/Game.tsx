@@ -1,8 +1,8 @@
+import { KeyboardControls, KeyboardControlsEntry, PerspectiveCamera } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import Scene from "./Scene";
-import { IPlayerProps } from "./Player";
 import { useMemo } from "react";
-import { KeyboardControlsEntry, KeyboardControls, PerspectiveCamera } from "@react-three/drei";
+import { IPlayerProps } from "./Player";
+import Scene from "./Scene";
 
 export enum EControls {
     up = 'up',

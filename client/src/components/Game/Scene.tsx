@@ -1,19 +1,17 @@
+import { Stars, useKeyboardControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { createRef, useEffect, useState } from "react";
-import { Fog, Texture, TextureLoader, Vector3 } from "three";
-import Player, { IPlayerProps } from "./Player";
-import { Sky, SpotLight, Stars, useKeyboardControls } from "@react-three/drei";
-import Projectile from "./Projectile"
-import Hitscan from "./Hitscan";
 import { CuboidCollider, Physics, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
+import { createRef, useEffect, useState } from "react";
+import { Texture, TextureLoader, Vector3 } from "three";
 import Bullet from "../../modules/Game/Bullet";
 import Laser from "../../modules/Game/Laser";
-import Map from "./Map";
-import Zone from "./Zone";
-import TestRoom from "./TestRoom";
-import React from "react";
 import CollidersPosition from "./CollidersPositions";
+import Hitscan from "./Hitscan";
 import MapObjects from "./MapObjects";
+import Player, { IPlayerProps } from "./Player";
+import Projectile from "./Projectile";
+import TestRoom from "./TestRoom";
+import Zone from "./Zone";
 
 interface ISceneProps {
     playerProps: IPlayerProps;

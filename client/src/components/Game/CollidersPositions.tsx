@@ -1,5 +1,5 @@
-import { Vector3 } from "three"
-import MapCollider, { ICollider } from "../../components/Game/Colliders"
+import { Vector3 } from "three";
+import MapCollider, { ICollider } from "../../components/Game/Colliders";
 
 
 const CollidersPositions = () => {

@@ -1,8 +1,8 @@
-import { Color } from "three";
+import { Color } from "three/src/math/Color";
 
 export interface IHealthBarProps {
     value: number;
-    color?: Color|number;
+    color?: Color | number;
 }
 
 const HealthBar = (props: IHealthBarProps) => {

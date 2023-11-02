@@ -1,6 +1,5 @@
-import { CuboidArgs } from "@react-three/rapier";
-
-import { Vector3 } from "three";
+import { Vector3 } from "three/src/math/Vector3";
+import { CuboidArgs } from "@react-three/rapier/dist/declarations/src/types";
 
 export interface ICollider {
     position: Vector3;

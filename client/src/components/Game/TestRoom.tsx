@@ -1,4 +1,4 @@
-import { Euler, Texture, TextureLoader, Vector3 } from "three";
+import { Texture, Vector3 } from "three";
 import MakeSprite from "./MakeSprite";
 
 export interface ITestRoomProps {
@@ -8,10 +8,6 @@ export interface ITestRoomProps {
 }
 
 const TestRoom = ({ texture, position }: ITestRoomProps) => {
-
-    const textureLoader = new TextureLoader();
-
-
     return (
         <group>
             <MakeSprite texture={texture} position={position} isCollider={false} />

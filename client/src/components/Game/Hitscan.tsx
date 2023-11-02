@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
-import { Line, Vector3 } from "three";
-import { ReactThreeFiber, extend } from '@react-three/fiber'
+import { ReactThreeFiber, extend } from '@react-three/fiber';
 import { BallCollider } from "@react-three/rapier";
+import { useEffect, useRef } from "react";
+import { Vector3 } from "three/src/math/Vector3";
+import { Line } from "three/src/objects/Line";
 extend({ Line_: Line })
 
 declare global {

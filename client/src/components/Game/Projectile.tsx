@@ -1,6 +1,7 @@
-import { Vector3, Texture } from "three";
+import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
-import { BallCollider, CuboidCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
+import { Vector3 } from "three/src/math/Vector3";
+import { Texture } from "three/src/textures/Texture";
 
 interface IProjectiileProps {
     initialSpeed: number;
@@ -31,25 +32,22 @@ const Projectile = (props: IProjectiileProps) => {
             userData={{
                 type: 'projectile',
                 damage: 10
-            }}
-        >
-
-            {isActive ? <group>
-                <BallCollider
-                    args={[0.1]}
-                    restitution={0}
-                    sensor
-                    onIntersectionEnter={(e) => {
-                        const data: any = e.other.rigidBody?.userData;
-                        if (data.type == "player" || data.type == "Collider") {
-                            setActive(false);
-                        }
-                    }}
-                />
-                <sprite scale={0.5}>
-                    <spriteMaterial map={props.texture} />
-                </sprite>
-            </group> : <></>}
+            }}>
+                {isActive ? <group>
+                    <BallCollider
+                        args={[0.1]}
+                        restitution={0}
+                        sensor
+                        onIntersectionEnter={(e) => {
+                            const data: any = e.other.rigidBody?.userData;
+                            if (data.type === "player" || data.type === "Collider") {
+                                setActive(false);
+                            }
+                        }}/>
+                    <sprite scale={0.5}>
+                        <spriteMaterial map={props.texture} />
+                    </sprite>
+                </group> : <></>}
         </RigidBody>
     );
 }

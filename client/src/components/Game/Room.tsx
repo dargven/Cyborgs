@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Vector3 } from "three";
+import { useEffect, useState } from "react";
+import { Vector3 } from "three/src/math/Vector3";
 import MakeSprite from "./MakeSprite";
 
 interface IRoom {
@@ -9,7 +9,6 @@ interface IRoom {
 }
 
 function Room({ map, scale, textures} : IRoom) {
-    const tileSize = 32;
     const [roomSprites, setRoomSprites] = useState<JSX.Element[]>([]);
 
     const {TSPACE, TFLOOR, TWALL, TSNOW, TGLASS, TNOTEXTURE} = textures;
@@ -47,7 +46,7 @@ function Room({ map, scale, textures} : IRoom) {
       }
   
       setRoomSprites(sprites);
-    }, [map]);
+    }, [TFLOOR, TGLASS, TNOTEXTURE, TSNOW, TSPACE, TWALL, map, scale]);
   
     return <group>{roomSprites}</group>;
   }
