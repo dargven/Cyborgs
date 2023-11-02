@@ -7,8 +7,7 @@ class DB
 
     //вызов соединения с БД
     public function __construct()
-    {
-        //Локальная:    $this->pdo = new PDO("mysql:host=localhost;dbname=Cyborgs;charset=utf8", 'root', '123');
+    { //Локальная:    $this->pdo = new PDO("mysql:host=localhost;dbname=Cyborgs;charset=utf8", 'root', '123');
         $this->pdo = new PDO("mysql:host=dargvetg.beget.tech;dbname=dargvetg_cyborgs;charset=utf8", 'dargvetg_cyborgs', 'vizual22cdxsaV');
     }
 
@@ -104,6 +103,16 @@ class DB
     public function addPlayerToTeam($id, $teamId)
     {
         $this->execute("INSERT INTO UserTeams (team_id, user_id) VALUES ('$teamId', '$id')");
+    }
+
+    public function getSkins($id)
+    {
+        return $this->query("SELECT skin_id, text FROM UserSkins, Skins WHERE user_id='$id'");
+    }
+
+    public function setSkin($id, $skinId)
+    {
+        return $this->execute("UPDATE UserSkins SET  skin_id='$skinId' WHERE id='$id'");
     }
 
 

@@ -7,7 +7,6 @@ import MainPage from "./routes/MainPage";
 import RegistrationPage from "./routes/RegistrationPage";
 import PrivateRoute from "./components/privateRoute";
 import GamePage from "./routes/GamePage";
-import NavBar from "./components/navBar";
 
 export const ServerContext = React.createContext<Server>(new Server(HOST));
 
@@ -17,6 +16,7 @@ const App: React.FC = () => {
         <BrowserRouter>
             <ServerContext.Provider value={server}>
                 <Routes>
+                    <Route path="" element={<LoginPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/registration" element={<RegistrationPage />} />
                     <Route element={<PrivateRoute />}>
