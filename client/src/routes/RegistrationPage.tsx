@@ -56,7 +56,7 @@ const RegistrationPage = () => {
             Зарегистрироваться
           </button>
         </div>
-        {registrationSuccess ? <Navigate to="/main" replace={true} /> : null}
+        {registrationSuccess ? <Navigate to="/login" replace={true} /> : null}
       </div>
     </>
   );

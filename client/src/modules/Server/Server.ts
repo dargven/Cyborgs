@@ -38,6 +38,7 @@ export default class Server {
         );
         if (result?.token) {
             this.token = result.token;
+            localStorage.setItem("token", this.token);
         }
         return result;
     }
