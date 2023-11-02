@@ -17,6 +17,7 @@ const App: React.FC = () => {
         <BrowserRouter>
             <ServerContext.Provider value={server}>
                 <Routes>
+                    <Route path="" element={<LoginPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/registration" element={<RegistrationPage />} />
                     <Route element={<PrivateRoute />}>
