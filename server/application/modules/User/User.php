@@ -19,7 +19,7 @@ class User
                 $this->db->updateToken($user[0]['id'], $token);
                 return array(
                     'id' => $user[0]['id'],
-                    'name'=> $user[0]['login'],
+                    'name' => $user[0]['login'],
                     'token' => $token,
 
                 );
@@ -120,6 +120,38 @@ class User
         }
         return [false, 304];
 
+    }
+
+    public function getSkins($id, $token)
+    {
+        $user = $this->authenticateUserByToken($id, $token);
+        if ($user !== null) {
+                $skins = $this->db->getSkins($id); // to do: db->getSkins($id) + table Skins (id(integer),user_id(integer),skin(text),isChosen(boolean))
+                if ($skins) {
+                    return array(
+                        'skins' => $skins,
+                        'numberOfSkins' => count($skins)
+                    );
+                }
+                return [false, 700];
+            }
+            return [false, 1002];
+        }
+
+    public function setSkin($id, $token, $skin)
+    {
+        $skins = $this->getSkins($id, $token);
+        if ($skins[0]['skins'] !== NULL) {
+            if (in_array($skin, $skins['skins'])) {
+                $this->db->setSkin($id, $skin); // to do: db->setSkin($id,$skin) <=> for $skin isChosen=true
+                return array(
+                    'id' => $id,
+                    'setSkin' => $skin
+                );
+            }
+            return [false, 701];
+        }
+        return $skins; //error
     }
 
 }
