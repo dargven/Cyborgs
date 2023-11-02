@@ -11,8 +11,9 @@ import Laser from "../../modules/Game/Laser";
 import Map from "./Map";
 import Zone from "./Zone";
 import TestRoom from "./TestRoom";
-import Colliders from "./CollidersPositions";
 import React from "react";
+import CollidersPosition from "./CollidersPositions";
+import MapObjects from "./MapObjects";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -30,8 +31,9 @@ const playerRef = createRef<RapierRigidBody>(); // вынес из зависи�
 
 const Scene = (props: ISceneProps) => {
     const textureLoader = new TextureLoader();
-    const TPROJECTILE = textureLoader.load('client/public/assets/Bullets/Projectile.png');
+    const TPROJECTILE = textureLoader.load('./assets/Bullets/Projectile.png');
     const room = textureLoader.load('./assets/rooms/map-office-plain.png');
+    const glass = textureLoader.load('./assets/Map parts/Glass.png');
 
 
     const scale = 1;
@@ -40,13 +42,14 @@ const Scene = (props: ISceneProps) => {
 
     const [textures, setTextures] = useState<ITextureObject>({
         'room': room,
-        'bullet': TPROJECTILE
+        'bullet': TPROJECTILE,
+        'glass': glass,
     });
     const [isMoving, setMoving] = useState<boolean>(false);
     const [bullets, setBullets] = useState<Bullet[]>([]);
     const [lasers, setLasers] = useState<Laser[]>([]);
 
-    const colliders = Colliders();
+    const colliders = CollidersPosition();
 
     const { viewport, camera, pointer } = useThree();
 
@@ -208,7 +211,9 @@ const Scene = (props: ISceneProps) => {
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
                     <TestRoom texture={textures['room']} position={new Vector3(0, 0, 0)} />
                 </group>
-
+                
+                <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)}/>
+                
                 {/* <group position={[0, 0, -0.1]}>
                     <Map scale={scale} />
                 </group> */}
