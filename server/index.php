@@ -3,7 +3,6 @@ header('Content-Type: Application/json; charset = utf-8');
 header('Access-Control-Allow-Origin: *');
 require_once 'application/Answer.php';
 require_once 'application/Application.php';
-//
 
 function result($params)
 {
@@ -11,8 +10,11 @@ function result($params)
     if ($method) {
         $app = new Application();
         switch ($method) {
-            case 'login':return $app->login($params);
-            case 'register':return $app->register($params);
+            case 'login':return $app->login($params); //Работает
+            case 'logout': return $app->logout($params); //Работает
+            case 'register':return $app->register($params);//Работает
+            case 'selectTeam':return $app->selectTeam($params);
+            case 'getTeamsInfo': return $app->getTeamsInfo($params);
             default:return [false, 102];
         }
     }

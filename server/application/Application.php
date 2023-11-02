@@ -6,10 +6,10 @@ require_once 'modules/DB/DB.php';
 
 class Application
 {
-    private $user;
+    private User $user;
     private $chat;
     private $game;
-    private $db;
+    private DB $db;
 
     function __construct()
     {
@@ -20,10 +20,9 @@ class Application
     function register($params)
     {
         $login = $params['login'];
-        $hash = $params['hash'];
-
-        if ($login && $hash) {
-            return $this->user->register($login, $hash);
+        $password = $params['password'];
+        if ($login && $password) {
+            return $this->user->register($login, $password);
         }
         return [false, 1001];
     }
@@ -31,31 +30,41 @@ class Application
     function login($params)
     {
         $login = $params['login'];
-        $hash = $params['hash'];
+        $password = $params['password'];
         $rnd = $params['rnd'];
-        if ($login && $hash && $rnd) {
-            return $this->user->login($login, $hash, $rnd);
+        if ($login && $password && $rnd) {
+            return $this->user->login($login, $password, $rnd);
         }
         return [false, 1001];
     }
 
-
-    function checkToken($params)
-    {
-        $token = $params['token'];
-        $login = $params['login'];
-        if ($token && $login) {
-            return $this->user->checkToken($token, $login);
-        }
-        return [false, 242];
-    }
-
     function logout($params)
     {
-        $login = $params['login'];
-        if ($login) {
-            return $this->user->logout($login);
+        $token = $params['token'];
+        if ($token) {
+            return $this->user->logout($token);
         }
         return [false, 242];
     }
+
+    function selectTeam($params)
+    {
+        $id = $params['id'];
+        $token = $params['token'];
+        $teamId = $params['teamId'];
+        if ($id && $token && $teamId) {
+            return $this->user->selectTeam($id, $token, $teamId);
+        }
+        return [false, 242];
+    }
+
+    function getTeamsInfo($params)
+    {
+        $teamId = $params['teamId'];
+        if ($teamId) {
+            $this->user->getTeamsInfo($teamId);
+        }
+        return [false, 242];
+    }
+
 }

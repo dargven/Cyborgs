@@ -1,5 +1,4 @@
-import { TUser } from "./types";
-import md5 from 'md5-ts';
+import {TUser} from "./types";
 
 export default class Server {
     private HOST: string;
@@ -23,18 +22,19 @@ export default class Server {
             if (answer.result === 'ok') {
                 return answer.data;
             }
-            // обработать ошибку(6 пункт)
-            //...
+            console.log(
+                `Ошибка: ${answer["error"]["code"]}, text: ${answer["error"]["text"]}`
+            );
             return null;
         } catch (e) {
             return null;
         }
     }
 
-    async login(login: string, hash: string, rnd: number): Promise<TUser | null> {
+    async login(login: string, password: string, rnd: number): Promise<TUser | null> {
         const result = await this.request<TUser>(
-            'login', 
-            { login, hash, rnd }
+            'login',
+            {login, password, rnd}
         );
         if (result?.token) {
             this.token = result.token;
@@ -50,7 +50,7 @@ export default class Server {
         return result;
     }
 
-    register(login: string, hash: string): Promise<TUser | null> {
-        return this.request<TUser>('register', { login, hash });
+    register(login: string, password: string): Promise<TUser | null> {
+        return this.request<TUser>('register', {login, password});
     }
 }

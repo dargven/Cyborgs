@@ -1,6 +1,7 @@
 # Описание методов API
 
 ## Оглавление
+
 <!-- TOC -->
 * [Описание методов API](#описание-методов-api)
   * [Оглавление](#оглавление)
@@ -37,10 +38,6 @@
     * [Успешный ответ](#успешный-ответ-4)
     * [Ошибки](#ошибки-4)
   * [Метод setSkins](#метод-setskins)
-  * [AutoLogin](#autologin)
-  * [AutoRegistration](#autoregistration)
-  * [CheckToken](#checktoken)
-
 <!-- TOC -->
 
 ## Адрес домена
@@ -83,6 +80,7 @@ User = {
 ## Метод login
 
 ### Описание метода
+
 Метод авторизации. См параметры ответа ниже
 
 ### Адрес
@@ -94,7 +92,7 @@ User = {
 | параметр | тип    | комментарий                  |
 |----------|--------|------------------------------|
 | login    | string | логин юзера                  |
-| hash     | string | md5(md5(login+password)+rnd) |
+| password | string | md5(md5(login+password)+rnd) |
 | rnd      | number | целое рандомное число        |
 
 ### Успешный ответ
@@ -108,13 +106,14 @@ CorrectAnswer=>User
 ```
 WrongAnswer(code: 1001, text: 'params login or password not set')
 WrongAnswer(code: 1002, text: 'error in auth user')
-WrongAnswer(code: 1004, text: '-')
+WrongAnswer(code: 1004, text: 'Unable to find user.')
 ```
 
 ## Метод logout
 
 ### Описание метода
-При успешном ответе(см.ниже) поступает запрос в базу данных, производится поиск по 
+
+При успешном ответе(см.ниже) поступает запрос в базу данных, производится поиск по
 токену(к какому пользователю принадлежит) и обнуляется
 
 ### Адрес
@@ -137,6 +136,7 @@ CorrectAnswer=>true
 
 ```
 WrongAnswer(code: 242, text: 'params not set fully ')
+Дописать
 ```
 
 ## Метод selectTeam
@@ -147,6 +147,7 @@ WrongAnswer(code: 242, text: 'params not set fully ')
 teamCode, записывается токен пользователя.
 
 ### Адрес
+
 ```/?method=selectTeam```
 
 ### Параметры
@@ -155,9 +156,7 @@ teamCode, записывается токен пользователя.
 |-----------|--------|------------------------|
 | id        | number | Id пользователя        |
 | token     | string | Авторизационный токен  |
-| teamCode  | number | Уникальный Код команды |
-
-
+| teamId    | number | Уникальный Код команды |
 
 ## Успешный ответ
 
@@ -173,15 +172,18 @@ WrongAnswer(code:604, text: 'Team not found')
 WrongAnswer(code:605, text: 'In selected team more gamers than in the other.
 Please, select other team ')
 WrongAnswer(code:1002, text: 'error in auth user')
+WrongAnswer(code: 242, text: 'params not set fully ')
 ```
 
 ## Метод getTeamsInfo
 
 ### Описание метода
-При успешной авторизации и при успешном ответе(см ниже) из базы данных по teamCode
+
+Из базы данных по teamCode
 извлекается информация о команде: количество очков, количество игроков
 
 ### Адрес
+
 ```
 /?method=getTeamsInfo
 ```
@@ -190,12 +192,13 @@ WrongAnswer(code:1002, text: 'error in auth user')
 
 | Параметры | Тип    | Комментарий            |
 |-----------|--------|------------------------|
-| teamCode  | number | Уникальный код команды |
+| teamId    | number | Уникальный код команды |
 
 ### Успешный ответ
+
 ```
 CorrectAnswer=>data = {
-numberOfPlayers: number,
+score: number,
 numberOfTeamPoints: number
 }
 ```
@@ -210,10 +213,12 @@ WrongAnswer(code:304, text: 'Team not found')
 ## Метод getSkins
 
 ### Описание метода
-При успешном ответе(см.ниже) возвращается возможные скины, 
+
+При успешном ответе(см.ниже) возвращается возможные скины,
 применимые для игрока
 
 ### Адрес
+
 ```/?method = getSkins```
 
 ### Параметры
@@ -223,15 +228,17 @@ WrongAnswer(code:304, text: 'Team not found')
 | id        | number | Id пользователя          |
 | token     | string | Аутентификационный токен |     
 
-
 ### Успешный ответ
+
 ```
 CorrectAnswer=>data = {
 skins: skins{ },
 numberOfSkins:number
 }
 ```
+
 ### Ошибки
+
 ```
 WrongAnswer(code:1002, text: 'error in auth user')
 WrongAnswer(code:700, text:'No skins')
@@ -240,13 +247,6 @@ WrongAnswer(code:700, text:'No skins')
 
 ## Метод setSkins
 
-## AutoLogin
-
-## AutoRegistration
-
-## CheckToken
-
-##
 
 
 
