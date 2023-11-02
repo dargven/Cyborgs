@@ -1,11 +1,7 @@
-import { useContext, useRef, useState } from "react";
-import { ServerContext } from "../App";
-import { Navigate } from "react-router-dom";
 import NavButton from "../components/navButton";
 import "../Main.css";
 
 const MainPage = () => {
-  const handleMain = () => { };
   return (
     <>
 

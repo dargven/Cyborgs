@@ -1,4 +1,3 @@
-import { type } from "os";
 import { useNavigate } from "react-router-dom";
 type TnavButton = {
   to: string;
