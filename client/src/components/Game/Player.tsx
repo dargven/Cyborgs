@@ -4,6 +4,7 @@ import HealthBar from "./HealthBar";
 import { TextureLoader, Texture, Vector3 } from "three";
 import { SpriteAnimator } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import React from "react";
 
 export interface IPlayerProps {
     id?: number;

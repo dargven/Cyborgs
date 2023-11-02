@@ -11,8 +11,8 @@ import Laser from "../../modules/Game/Laser";
 import Map from "./Map";
 import Zone from "./Zone";
 import TestRoom from "./TestRoom";
-import tspawn from './assets/rooms/tspawn.png';
 import Colliders from "./CollidersPositions";
+import React from "react";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -173,18 +173,18 @@ const Scene = (props: ISceneProps) => {
                     {/* <Robot /> */}
                 </group>
 
-                {colliders.map(collider => 
-                <RigidBody 
-                    type='fixed' 
-                    userData={{
-                        type: "Collider"
-                    }}>
-                    <CuboidCollider
-                        position={collider.position}
-                        args={collider.args}
-                        key={collider.key}
-                    />
-                </RigidBody>
+                {colliders.map(collider =>
+                    <RigidBody
+                        type='fixed'
+                        userData={{
+                            type: "Collider"
+                        }}>
+                        <CuboidCollider
+                            position={collider.position}
+                            args={collider.args}
+                            key={collider.key}
+                        />
+                    </RigidBody>
                 )}
 
                 {bullets.map(bullet =>
