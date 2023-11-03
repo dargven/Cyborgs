@@ -102,7 +102,7 @@ User = {
 | параметр | тип    | комментарий                  |
 |----------|--------|------------------------------|
 | login    | string | логин юзера                  |
-| password | string | md5(md5(login+password)+rnd) |
+| hash     | string | md5(md5(login+password)+rnd) |
 
 ### Ошибки
 
@@ -126,7 +126,7 @@ WrongAnswer(code: 1003, text: 'Is it unique login?')
 | параметр | тип    | комментарий                  |
 |----------|--------|------------------------------|
 | login    | string | логин юзера                  |
-| password | string | md5(md5(login+password)+rnd) |
+| hash     | string | md5(md5(login+password)+rnd) |
 | rnd      | number | целое рандомное число        |
 
 ### Успешный ответ
