@@ -6,16 +6,23 @@ class DB
     private $pdo;
 
     //вызов соединения с БД
-    function __construct() { 
-        $host = '127.0.0.1';
+    function __construct() {
+
+        // local
+//        $host = '127.0.0.1';
+//        $port = 3306;
+//        $user = 'root';
+//        $pass = '';
+//        $db = 'cyborgs';
+
+        $host = 'dargvetg.beget.tech';
         $port = 3306;
-        $user = 'root';
-        $pass = '';
-        $db = 'cyborgs';
-        // Локальная:    
+        $user = 'dargvetg_cyborgs';
+        $pass = 'vizual22cdxsaV';
+        $db = 'dargvetg_cyborgs';
+
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
-        //$this->pdo = new PDO("mysql:host=dargvetg.beget.tech;dbname=dargvetg_cyborgs;charset=utf8", 'dargvetg_cyborgs', 'vizual22cdxsaV');
     }
 
     function __destruct() {
@@ -27,7 +34,7 @@ class DB
             FROM fruit
             WHERE calories < ? AND colour = ?');
         $sth->execute([150, 'red']);
-    */
+    */ //Пример правильного запроса, предоставил Трусов.
 
     // выполнить запрос без возвращения данных
     private function execute($sql, $params = []) {
@@ -78,23 +85,22 @@ class DB
     /******************/
     /* ЖАЛКАЯ ПАРОДИЯ */
     /******************/
+    //Проверить метод addMessage
     public function addMessage($user_id, $message)
     {
-        return $this->execute("INSERT INTO `Messages` (user_id, message,created )
-        VALUES ('$user_id','$message',now())"
-        );
+        return $this->execute("INSERT INTO messages VALUES (?, ?, now())",
+       [$user_id, $message]);
     }
 
-    public function addBullet($id_user, $x, $y, $x1, $y1, $speed)
+    public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
     {
-        return $this->execute("INSERT INTO `Bullet` (id_user, x, y, x1, y1, speed)
-        VALUES ('$id_user','$x','$y','$x1','$y1','$speed')"
-        );
+        return $this->execute("INSERT INTO bullet (user_id, x, y, x1, y1, speed)
+        VALUES (?,?,?,?,?,?)", [$user_id, $x, $y, $x1, $y1, $speed]);
     }
 
     public function DeleteBullet($id)
     {
-        return $this->execute("DELETE * FROM `Bullet` WHERE id='$id'");
+        return $this->execute("DELETE * FROM bullet WHERE ?", [$id]);
     }
 
     public function getScoreTeams()
@@ -110,22 +116,22 @@ class DB
 
     public function updateScoreInTeam($teamId, $score)
     {
-        return $this->execute("UPDATE Teams SET WHERE team_id = '$teamId', team_score= SUM(team_score,) ");
+        return $this->execute("UPDATE Teams SET WHERE team_id = ?, team_score= SUM(team_score, ?)",[$teamId, $score]);
     } // Дописать Кирилл || Женя
 
     public function addPlayerToTeam($id, $teamId)
     {
-        $this->execute("INSERT INTO UserTeams (team_id, user_id) VALUES ('$teamId', '$id')");
+        $this->execute("INSERT INTO UserTeams (team_id, user_id) VALUES (?, ?)",[$teamId, $id]);
     }
 
     public function getSkins($id)
     {
-        return $this->query("SELECT skin_id, text FROM UserSkins, Skins WHERE user_id='$id'");
+        return $this->query("SELECT skin_id, text FROM UserSkins, Skins WHERE user_id=?", [$id]);
     }
 
     public function setSkin($id, $skinId)
     {
-        return $this->execute("UPDATE UserSkins SET  skin_id='$skinId' WHERE id='$id'");
+        return $this->execute("UPDATE UserSkins SET  skin_id=? WHERE id=?", [$skinId,$id]);
     }
 
 
