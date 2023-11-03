@@ -227,6 +227,17 @@ h1 {
   border-width: 0.6dvh 0.6dvh;
 }
 
+.App-header-Leave{
+  font-family: Zelek;
+  background-color: #86263e;
+  padding: 10px;
+  margin: 2px;
+  text-align: center;
+  font-size: 2.5dvh;
+  border: none;
+  background: none;
+}
+
 .header-right {
   float: right;
   padding: 10px;

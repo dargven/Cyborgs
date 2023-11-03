@@ -1,32 +1,44 @@
 <?php
 
-class User
-{
-    private DB $db;
+class User {
+    private $db;
 
-    function __construct($db)
-    {
-        $this->db = new DB();
+    function __construct($db) {
+        $this->db = $db;
     }
 
-    function login($login, $password, $rnd)
-    {
+    private function genToken() {
+        return md5(microtime() . 'salt' . rand());
+    }
+
+    public function getUser($token) {
+        return $this->db->getUserByToken($token);
+    }
+
+    public function login($login, $hash, $rnd) {
         $user = $this->db->getUserByLogin($login);
         if ($user) {
-            $hashs = md5($user[0]['password'] . $rnd);
-            if ($password === $hashs) {
+            $hashS = md5($user->password.$rnd);
+            if ($hash === $hashS) {
                 $token = $this->genToken();
-                $this->db->updateToken($user[0]['id'], $token);
+                $this->db->updateToken($user->id, $token);
                 return array(
-                    'id' => $user[0]['id'],
-                    'name'=> $user[0]['login'],
+                    'name' => $user->login,
                     'token' => $token,
-
                 );
             }
             return array(false, 1002);
         }
         return array(false, 1004);
+    }
+
+    public function logout($token) {
+        $user = $this->db->getUserByToken($token);
+        if ($user) {
+            $this->db->updateToken($user->id, null);
+            return true;
+        }
+        return [false, 1004];
     }
 
     public function register($login, $password)
@@ -39,33 +51,11 @@ class User
         return array(false, 1003);
     }
 
-    private function genToken()
-    {
-        return md5(microtime() . 'salt' . rand());
-    }
 
-    function authenticateUserByToken($id, $token): ?array
-    {
-        $user = $this->db->getUserById($id);
-        if ($user && $token == $user[0]['token']) {
-            return $user;
-        }
-        return null;
-    }
-
-    public function logout($token)
-    {
-        $user = $this->db->getUserByToken($token);
-        if ($user) {
-            $this->db->updateToken($user[0]['id'], null);
-            return true;
-        }
-        return [false, 1004];
-    }
 
     public function selectTeam($id, $token, $teamId)
     {
-        $user = $this->authenticateUserByToken($id, $token);
+        /*$user = $this->authenticateUserByToken($id, $token);
         if ($user !== null) { // !Ошибка авторизации
             $teams = $this->db->getCountOfPlayersInTeams();
             if ($teams[$teamId]) {
@@ -106,7 +96,7 @@ class User
             return [false, 604];
 
         }
-        return [false, 1002];
+        return [false, 1002];*/
     }
 
     public function getTeamsInfo($teamId)
@@ -120,6 +110,38 @@ class User
         }
         return [false, 304];
 
+    }
+
+    public function getSkins($id, $token)
+    {
+        /*$user = $this->authenticateUserByToken($id, $token);
+        if ($user !== null) {
+            $skins = $this->db->getSkins($id); // to do: db->getSkins($id) + table Skins (id(integer),user_id(integer),skin(text),isChosen(boolean))
+            if ($skins) {
+                return array(
+                    'skins' => $skins,
+                    'numberOfSkins' => count($skins)
+                );
+            }
+            return [false, 700];
+        }
+        return [false, 1002];*/
+    }
+
+    public function setSkin($id, $token, $skinId)
+    {
+        $skins = $this->getSkins($id, $token);
+        if ($skins['skins'] !== NULL) {
+            if (in_array($skinId, $skins['skins'])) {
+                $this->db->setSkin($id, $skinId); // to do: db->setSkin($id,$skin) <=> for $skin isChosen=true
+                return array(
+                    'id' => $id,
+                    'setSkin' => $skinId
+                );
+            }
+            return [false, 701];
+        }
+        return [false, 700];
     }
 
 }

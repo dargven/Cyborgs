@@ -3,19 +3,21 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useState } from "react";
 
 interface IInventory {
-    setWeapon: number
+    setWeapon: number,
+    invRef: any,
 }
 
 interface IInventoryObject {
     [key: string]: Texture;
 }
 
-const Inventory = ({setWeapon}: IInventory) => {
+const Inventory = ({setWeapon, invRef}: IInventory) => {
     const textureLoader = new TextureLoader();
     const inventory = textureLoader.load('./assets/Inventory.png');
     const choosenSlot = textureLoader.load('./assets/СhoosenSlot.png');
 
-    let slotPos = 0;
+    const slotPositions = [-0.47, 0, 0.47];
+    const slotPos = slotPositions[setWeapon - 1] || 0;
     
     const [texture, setTexture] = useState<IInventoryObject>({
         'inv': inventory,
@@ -24,32 +26,6 @@ const Inventory = ({setWeapon}: IInventory) => {
     
     inventory.magFilter = NearestFilter;
     inventory.minFilter = NearestFilter;
-    
-    const { camera } = useThree();
-    
-    const invRef = useRef<Group>(null);
-    
-    const positionToCamera = new Vector3(0, -2, -3);
-    
-    useFrame(() => {
-        if (invRef.current) {
-            invRef.current.position.copy(camera.position).add(positionToCamera);
-        }
-    });
-
-    switch (setWeapon) {
-        case 1:
-            slotPos = -0.47
-            break;
-        case 2:
-            slotPos = 0
-            break;
-        case 3:
-            slotPos = 0.47
-            break;
-        default:
-            break;
-    }
 
     return (
         <group ref={invRef}>

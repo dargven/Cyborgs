@@ -1,11 +1,16 @@
+import { Store } from "../Store/Store";
 import {TUser} from "./types";
+
+// https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV 
 
 export default class Server {
     private HOST: string;
+    private store: Store;
     private token: string | null;
 
-    constructor(HOST: string) {
+    constructor(HOST: string, store: Store) {
         this.HOST = HOST;
+        this.store = store;
         this.token = null;
     }
 
@@ -31,14 +36,14 @@ export default class Server {
         }
     }
 
-    async login(login: string, password: string, rnd: number): Promise<TUser | null> {
+    async login(login: string, hash: string, rnd: number): Promise<TUser | null> {
         const result = await this.request<TUser>(
             'login',
-            {login, password, rnd}
+            {login, hash, rnd}
         );
         if (result?.token) {
             this.token = result.token;
-            localStorage.setItem("token", this.token);
+            this.store.setUser(login);
         }
         return result;
     }

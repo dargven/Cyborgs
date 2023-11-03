@@ -1,10 +1,12 @@
+import { useContext } from 'react';
 import { Navigate, Outlet } from "react-router-dom";
+import { StoreContext } from '../App';
 
 const PrivateRoute = () => {
-    const auth = localStorage.getItem("token") ? true : false;
+    const store = useContext(StoreContext);
 
     return (
-        auth ? <Outlet/> : <Navigate to="/login"/>
+        store.isAuth() ? <Outlet/> : <Navigate to="/login"/>
     )
 }
 

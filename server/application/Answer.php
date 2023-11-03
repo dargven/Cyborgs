@@ -9,6 +9,9 @@ class Answer
         '404' => 'not found',
         '555' => 'Is it Polygon?',
         '605' => ' In selected team more gamers than in the other. Please, select other team ',
+        '700' => 'No skins',
+        '701' => 'Skin is not found',
+        '705' => 'User is not found',
         '999' => 'Is it Triangle?',
         '1001' => 'params login or password not set',
         '1002' => 'error in auth user',
@@ -20,7 +23,10 @@ class Answer
     static function response($data)
     {
         if ($data) {
-            if (!is_bool($data) && count($data) === 2 && !$data[0]) {
+            if (!is_bool($data) && 
+                count($data) === 2 && 
+                $data[0] === false
+            ) {
                 $code = $data[1];
                 return [
                     'result' => 'error',

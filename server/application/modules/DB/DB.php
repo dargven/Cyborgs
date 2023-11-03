@@ -6,66 +6,78 @@ class DB
     private $pdo;
 
     //вызов соединения с БД
-    public function __construct()
-    {
-        //Локальная:    $this->pdo = new PDO("mysql:host=localhost;dbname=Cyborgs;charset=utf8", 'root', '123');
-        $this->pdo = new PDO("mysql:host=dargvetg.beget.tech;dbname=dargvetg_cyborgs;charset=utf8", 'dargvetg_cyborgs', 'vizual22cdxsaV');
+    function __construct() { 
+        $host = '127.0.0.1';
+        $port = 3306;
+        $user = 'root';
+        $pass = '';
+        $db = 'cyborgs';
+        // Локальная:    
+        $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
+        $this->pdo = new PDO($connect, $user, $pass);
+        //$this->pdo = new PDO("mysql:host=dargvetg.beget.tech;dbname=dargvetg_cyborgs;charset=utf8", 'dargvetg_cyborgs', 'vizual22cdxsaV');
     }
 
-    public function __destruct()
-    {
+    function __destruct() {
         $this->pdo = null;
     }
 
+    /*
+            $sth = $dbh->prepare('SELECT name, colour, calories
+            FROM fruit
+            WHERE calories < ? AND colour = ?');
+        $sth->execute([150, 'red']);
+    */
 
-    //ф-ция, которая выполняет запрос
-    public function execute($sql)
-    {
+    // выполнить запрос без возвращения данных
+    private function execute($sql, $params = []) {
         $sth = $this->pdo->prepare($sql);
-        return $sth->execute();
+        return $sth->execute($params);
     }
 
-    //получение рез-та
-    public function query($sql)
-    {
+    // получение ОДНОЙ записи
+    private function query($sql, $params = []) {
         $sth = $this->pdo->prepare($sql);
-        $sth->execute();
-        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
-        if ($result === false) {
-            return [];
-        }
-        return $result;
-
+        $sth->execute($params);
+        return $sth->fetch(PDO::FETCH_OBJ);
     }
 
-    public function addUser($login, $password)
-    {
-        $user = $this->execute("INSERT INTO `Users` (login,password,token)
-        VALUES ('$login','$password', 'null')"
+    // получение НЕСКОЛЬКИХ записей
+    private function queryAll($sql, $params = []) {
+        $sth = $this->pdo->prepare($sql);
+        $sth->execute($params);
+        return $sth->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    /*************************/
+    /* НЕПОВТОРИМЫЙ ОРИГИНАЛ */
+    /*************************/
+    public function getUserByLogin($login) {
+        return $this->query("SELECT * FROM users WHERE login=?", [$login]);
+    }
+
+    public function getUserByToken($token) {
+        return $this->query("SELECT * FROM users WHERE token=?", [$token]);
+    }
+
+    public function getUserById($id) {
+        return $this->query("SELECT * FROM users WHERE id=?", [$id]);
+    }
+
+    public function updateToken($id, $token) {
+        return $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $id]);
+    }
+
+    public function addUser($login, $password) {
+        $this->execute(
+            "INSERT INTO users (login,password) VALUES (?, ?)", 
+            [$login, $password]
         );
     }
 
-    public function getUserByLogin($login)
-    {
-        return $this->query("SELECT * FROM `Users` WHERE login='$login'");
-    }
-
-    public function getUserById($id)
-    {
-        return $this->query("SELECT * FROM `Users` WHERE id='$id'");
-    }
-
-    public function getUserByToken($token)
-    {
-        return $this->query("SELECT * FROM `Users` WHERE token='$token'");
-    }
-
-    public function updateToken($id, $token)
-    {
-        return $this->execute("UPDATE Users SET  token='$token' WHERE id='$id'");
-    }
-
-
+    /******************/
+    /* ЖАЛКАЯ ПАРОДИЯ */
+    /******************/
     public function addMessage($user_id, $message)
     {
         return $this->execute("INSERT INTO `Messages` (user_id, message,created )
@@ -104,6 +116,16 @@ class DB
     public function addPlayerToTeam($id, $teamId)
     {
         $this->execute("INSERT INTO UserTeams (team_id, user_id) VALUES ('$teamId', '$id')");
+    }
+
+    public function getSkins($id)
+    {
+        return $this->query("SELECT skin_id, text FROM UserSkins, Skins WHERE user_id='$id'");
+    }
+
+    public function setSkin($id, $skinId)
+    {
+        return $this->execute("UPDATE UserSkins SET  skin_id='$skinId' WHERE id='$id'");
     }
 
 
