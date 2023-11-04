@@ -23,7 +23,7 @@ class Lobby
                 'numberOfTeamPoints' => $teams
             ];
         }
-        return [false, 304];
+        return ['error'=>304];
 
     }
 
@@ -38,9 +38,9 @@ class Lobby
                     'numberOfSkins' => count($skins)
                 );
             }
-            return [false, 700];
+            return ['error'=>700];
         }
-        return [false, 1002];
+        return ['error'=>1002];
     }
 
 
@@ -55,9 +55,9 @@ class Lobby
                     'setSkin' => $skinId
                 );
             }
-            return [false, 701];
+            return ['error'=>701];
         }
-        return [false, 700];
+        return ['error'=>700];
     }
 
 }

@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Хост: 127.0.0.1:3306
--- Время создания: Ноя 03 2023 г., 08:55
--- Версия сервера: 10.3.13-MariaDB
--- Версия PHP: 7.1.22
+-- Host: localhost:8889
+-- Generation Time: Nov 02, 2023 at 06:56 PM
+-- Server version: 5.7.39
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,16 +18,18 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `cyborgs`
+-- Database: `Cyborgs`
 --
+CREATE DATABASE IF NOT EXISTS `Cyborgs` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+USE `Cyborgs`;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `bullet`
+-- Table structure for table `Bullet`
 --
 
-CREATE TABLE `bullet` (
+CREATE TABLE `Bullet` (
   `id` int(11) DEFAULT NULL,
   `id_user` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `x` int(11) DEFAULT NULL,
@@ -41,10 +42,10 @@ CREATE TABLE `bullet` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `messages`
+-- Table structure for table `Messages`
 --
 
-CREATE TABLE `messages` (
+CREATE TABLE `Messages` (
   `id` int(11) DEFAULT NULL,
   `user_id` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `message` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -52,10 +53,10 @@ CREATE TABLE `messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- Дамп данных таблицы `messages`
+-- Dumping data for table `Messages`
 --
 
-INSERT INTO `messages` (`id`, `user_id`, `message`, `created`) VALUES
+INSERT INTO `Messages` (`id`, `user_id`, `message`, `created`) VALUES
 (1, '1', 'иди в жопу', '45'),
 (2, '1', 'иди в жопу', '2023-10-28 20:21:41'),
 (3, '1', 'иди в жопу', '2023-10-28 20:21:43');
@@ -63,124 +64,105 @@ INSERT INTO `messages` (`id`, `user_id`, `message`, `created`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `skins`
+-- Table structure for table `Skins`
 --
 
-CREATE TABLE `skins` (
+CREATE TABLE `Skins` (
   `id` int(11) DEFAULT NULL,
-  `text` text COLLATE utf8_bin DEFAULT NULL
+  `text` text COLLATE utf8_bin
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- Дамп данных таблицы `skins`
+-- Dumping data for table `Skins`
 --
 
-INSERT INTO `skins` (`id`, `text`) VALUES
+INSERT INTO `Skins` (`id`, `text`) VALUES
 (1, 'Супер-пупер скин');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `teams`
+-- Table structure for table `Teams`
 --
 
-CREATE TABLE `teams` (
+CREATE TABLE `Teams` (
   `team_id` int(11) DEFAULT NULL,
   `team_score` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- Дамп данных таблицы `teams`
+-- Dumping data for table `Teams`
 --
 
-INSERT INTO `teams` (`team_id`, `team_score`) VALUES
+INSERT INTO `Teams` (`team_id`, `team_score`) VALUES
 (1, 2),
 (2, 10);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `users`
+-- Table structure for table `Users`
 --
 
-CREATE TABLE `users` (
-  `id` bigint(11) NOT NULL,
-  `login` varchar(256) COLLATE utf8_bin NOT NULL,
-  `password` varchar(256) COLLATE utf8_bin NOT NULL,
-  `token` varchar(256) COLLATE utf8_bin DEFAULT NULL
+CREATE TABLE `Users` (
+  `id` int(11) DEFAULT NULL,
+  `login` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `token` text COLLATE utf8_bin
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- Дамп данных таблицы `users`
+-- Dumping data for table `Users`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `token`) VALUES
+INSERT INTO `Users` (`id`, `login`, `password`, `token`) VALUES
+(2, 'andrey', 'lokirovka', 'null'),
+(3, 'andrey2', 'lokirovka', 'null'),
 (4, 'Vasya1', 'b2095141a676f90ca0c928fdffe3c107', 'null'),
 (5, 'ruthik', '5d28c09911d1f3ff1033aa4623660cfe', 'null'),
 (6, 'REFLX', 'c1bae0bcdd7fabe8feedb362e220fba9', 'null'),
 (8, '1234', 'ed2b1f468c5f915f3f1cf75d7068baae', 'null'),
-(10, 'Vasya', 'c082282cad5d535061e6205f6e3576a4', 'b52713f17768b9f89998fd4e2a199c4c');
+(10, 'Vasya', 'c082282cad5d535061e6205f6e3576a4', 'e3d9078fc664fb60e4067695fcfa4cde');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `userskins`
+-- Table structure for table `UserSkins`
 --
 
-CREATE TABLE `userskins` (
+CREATE TABLE `UserSkins` (
   `id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `skin_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- Дамп данных таблицы `userskins`
+-- Dumping data for table `UserSkins`
 --
 
-INSERT INTO `userskins` (`id`, `user_id`, `skin_id`) VALUES
+INSERT INTO `UserSkins` (`id`, `user_id`, `skin_id`) VALUES
 (1, 1, 2),
 (2, 2, 1);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `userteams`
+-- Table structure for table `UserTeams`
 --
 
-CREATE TABLE `userteams` (
+CREATE TABLE `UserTeams` (
   `id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `team_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- Дамп данных таблицы `userteams`
+-- Dumping data for table `UserTeams`
 --
 
-INSERT INTO `userteams` (`id`, `user_id`, `team_id`) VALUES
+INSERT INTO `UserTeams` (`id`, `user_id`, `team_id`) VALUES
 (1, 2, 1),
 (2, 1, 2);
-
---
--- Индексы сохранённых таблиц
---
-
---
--- Индексы таблицы `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `login` (`login`);
-
---
--- AUTO_INCREMENT для сохранённых таблиц
---
-
---
--- AUTO_INCREMENT для таблицы `users`
---
-ALTER TABLE `users`
-  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
