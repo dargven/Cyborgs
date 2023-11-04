@@ -27,7 +27,7 @@ class Application
         if($login && $hash){
             return $this->user->register($login,$hash);
         }
-        return [false, 242];
+        return ['error'=>242];
     }
 
     function login($params)
@@ -38,7 +38,7 @@ class Application
         if ($login && $hash && $rnd) {
             return $this->user->login($login, $hash, $rnd);
         }
-        return [false, 1001];
+        return ['error'=>1001];
     }
 
     function logout($params)
@@ -47,7 +47,7 @@ class Application
         if ($token) {
             return $this->user->logout($token);
         }
-        return [false, 242];
+        return ['error'=>242];
     }
 
     function sendMessage($params)
@@ -59,9 +59,9 @@ class Application
             if ($user) {
                 //return $this->chat->sendMessage($user->id, $message);
             }
-            return [false, 1002];
+            return ['error'=>1002];
         }
-        return [false, 242];
+        return ['error'=>242];
     }
 
     /******************/
@@ -78,9 +78,9 @@ class Application
             if ($user) {
                 return $this->lobby->selectTeam($user->id, $teamId);
             }
-            return [false, 1002];
+            return ['error'=>1002];
         }
-        return [false, 242];
+        return ['error'=>242];
     }
 
     function getTeamsInfo($params)
@@ -89,7 +89,7 @@ class Application
         if ($teamId) {
             $this->user->getTeamsInfo($teamId);
         }
-        return [false, 242];
+        return ['error'=>242];
     }
 
 
@@ -100,7 +100,7 @@ class Application
         if ($token && $id) {
             return $this->user->getSkins($id, $token);
         }
-        return [false, 242];
+        return ['error'=>242];
     }
 
     function setSkin($params)
@@ -111,7 +111,7 @@ class Application
         if ($token && $id && $skinId) {
             return $this->user->setSkin($id, $token, $skinId);
         }
-        return [false, 242];
+        return ['error'=>242];
     }
 
 

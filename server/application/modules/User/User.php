@@ -1,24 +1,29 @@
 <?php
 
-class User {
+class User
+{
     private DB $db;
 
-    function __construct($db) {
+    function __construct($db)
+    {
         $this->db = $db;
     }
 
-    private function genToken() {
+    private function genToken()
+    {
         return md5(microtime() . 'salt' . rand());
     }
 
-    public function getUser($token) {
+    public function getUser($token)
+    {
         return $this->db->getUserByToken($token);
     }
 
-    public function login($login, $hash, $rnd) {
+    public function login($login, $hash, $rnd)
+    {
         $user = $this->db->getUserByLogin($login);
         if ($user) {
-            $hashS = md5($user->password.$rnd);
+            $hashS = md5($user->password . $rnd);
             if ($hash === $hashS) {
                 $token = $this->genToken();
                 $this->db->updateToken($user->id, $token);
@@ -27,18 +32,19 @@ class User {
                     'token' => $token,
                 );
             }
-            return array(false, 1002);
+            return ['error' => 1002];
         }
-        return array(false, 1004);
+        return ['error' => 1004];
     }
 
-    public function logout($token) {
+    public function logout($token)
+    {
         $user = $this->db->getUserByToken($token);
         if ($user) {
             $this->db->updateToken($user->id, null);
             return true;
         }
-        return [false, 1004];
+        return ['error' => 1004];
     }
 
     public function register($login, $hash)
@@ -48,7 +54,7 @@ class User {
             $this->db->addUser($login, $hash);
             return true;
         }
-        return array(false, 1003);
+        return ['error' => 1003];
     }
 
 }
