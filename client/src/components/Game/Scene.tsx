@@ -3,8 +3,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { CuboidCollider, Physics, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
 import { createRef, useEffect, useRef, useState } from "react";
 import { Group, Texture, TextureLoader, Vector3 } from "three";
-import Bullet from "../../modules/Game/Bullet";
-import Laser from "../../modules/Game/Laser";
+import { Collider, Bullet, Laser } from "../../modules/Game/entities";
 import CollidersPositions from "./CollidersPositions";
 import Hitscan from "./Hitscan";
 import LightMap from "./LightMap";
@@ -49,55 +48,48 @@ const Scene = (props: ISceneProps) => {
     const [weaponSlot, setWeaponSlot] = useState<number>(1);
 
     const colliders = CollidersPositions();
-
     const { viewport, camera, pointer } = useThree();
-
     const invRef = useRef<Group>();
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            playerRef.current?.resetForces(true);
-            const { up, down, left, right, select1, select2, select3 } = getKeys();
-            const force = new Vector3();
-
-            if (left) {
-                force.x -= 1;
-            }
-            if (right) {
-                force.x += 1;
-            }
-            if (up) {
-                force.y += 1;
-            }
-            if (down) {
-                force.y -= 1;
-            }
-            if (select1) setWeaponSlot(1);
-            if (select2) setWeaponSlot(2);
-            if (select3) setWeaponSlot(3);
-            const velocity = vec3(playerRef.current?.linvel());
-            const len = velocity.length();
-            if (len < 1) {
-                force.setLength(1);
-            } else {
-                force.setLength(1 / len);
-            }
-
-
-            playerRef.current?.addForce(force, true);
-
-        }, 50);
-
-        return () => {
-            clearInterval(interval);
-        }
-
-    }, [getKeys, pointer, viewport.aspect]);
-
     const positionToCamera = new Vector3(0, -2, -3);
 
-    useFrame((delta) => {
+    const movementController = (up: boolean, down: boolean, left: boolean, right: boolean) => {
+
+        const speed = 4;
+
+        playerRef.current?.setLinvel(new Vector3(), true);
+        const velocity = new Vector3();
+        if (left) {
+            velocity.x -= 1;
+        }
+        if (right) {
+            velocity.x += 1;
+        }
+        if (up) {
+            velocity.y += 1;
+        }
+        if (down) {
+            velocity.y -= 1;
+        }
+
+        velocity.setLength(speed);
+
+        playerRef.current?.setLinvel(velocity, true);
+    }
+
+    useFrame(() => {
+
+        const velocity = vec3(playerRef.current?.linvel());
+
+        const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
+
+        movementController(up, down, left, right);
+
+        if (select1) setWeaponSlot(1);
+        if (select2) setWeaponSlot(2);
+        if (select3) setWeaponSlot(3);
+
         const playerPosition = vec3(playerRef.current?.translation());
+
         const cameraPos = new Vector3(playerPosition.x, playerPosition.y, 7);
         camera.position.lerp(cameraPos, 0.1);
         camera.updateProjectionMatrix();
@@ -106,39 +98,41 @@ const Scene = (props: ISceneProps) => {
             invRef.current.position.copy(camera.position).add(positionToCamera);
         }
 
-        const velocity = vec3(playerRef.current?.linvel())
         if (velocity.length() === 0) {
             setMoving(false)
         } else {
             setMoving(true)
         }
 
-        const { shoot, hitscan } = getKeys();
-
         if (shoot) {
             const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
+
+            // смещение, чтобы игрок не мог расстрелять сам себя, придется фиксить под разные скорости
             const position = vec3(playerRef.current?.translation());
             direction.setLength(0.6);
             position.x += direction.x;
             position.y += direction.y;
             position.z = 0;
             direction.setLength(1);
+
             const bullet = new Bullet(
-                30,
+                15,
                 position,
                 direction,
                 `${props.playerProps.id}-${Date.now()}`
             );
             setBullets((bullets) => [...bullets, bullet]);
         }
+
+        // стрельба проджектайлами и хитсканом должна быть прописана на одно и то же нажатие, что именно полетит - зависит от выбора в инвентаре
+
         if (hitscan) {
-            const position = vec3(playerRef.current?.translation());
             const aimingPoint = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
             aimingPoint.setLength(5);
-            aimingPoint.x += position.x;
-            aimingPoint.y += position.y;
+            aimingPoint.x += playerPosition.x;
+            aimingPoint.y += playerPosition.y;
             const laser = new Laser(
-                position,
+                playerPosition,
                 aimingPoint,
                 `${props.playerProps.id}-${Date.now()}`
             )
@@ -198,9 +192,9 @@ const Scene = (props: ISceneProps) => {
                     <Room texture={textures['room']} />
                 </group>
 
-                <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)}/>
+                <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)} />
 
-                <Zone position={new Vector3(5.5, 7.5, 0.5)}/>
+                <Zone position={new Vector3(5.5, 7.5, 0.5)} />
             </Physics>
             <Stars />
         </group>

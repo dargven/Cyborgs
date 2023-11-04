@@ -18,7 +18,7 @@ const Projectile = ({ initialSpeed, direction, initialPosition, texture }: IProj
     useEffect(() => {
         direction.setLength(initialSpeed)
         bulletRef.current.setLinvel(direction, true);
-    });
+    }, []);
 
     return (
         <RigidBody
@@ -26,6 +26,8 @@ const Projectile = ({ initialSpeed, direction, initialPosition, texture }: IProj
             lockRotations
             angularDamping={1}
             position={initialPosition}
+            ccd
+            restitution={0}
             userData={{
                 type: 'projectile',
                 damage: 10
@@ -38,6 +40,8 @@ const Projectile = ({ initialSpeed, direction, initialPosition, texture }: IProj
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "player" || data.type === "Collider") {
+                            // bulletRef.current.setLinvel(new Vector3(), true);
+                            bulletRef.current.sleep();
                             setActive(false);
                         }
                     }} />
