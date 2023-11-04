@@ -25,6 +25,7 @@ class Answer
         if ($data) {
             if (!is_bool($data) && array_key_exists('error', $data)) {
                 $code = $data['error'];
+                var_dump($code);
                 return [
                     'result' => 'error',
                     'error' => [

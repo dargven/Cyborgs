@@ -17,10 +17,10 @@ function result($params) {
             case 'getSkins': return $app->getSkins($params);
             case 'setSkin': return $app->setSkin($params);
             case 'sendMessage':return $app->sendMessage($params);
-            default: return [false, 102];
+            default: return ['error' => 102];
         }
     }
-    return [false, 101];
+    return ['error' => 101];
 }
 
 echo json_encode(Answer::response(result($_GET)));
