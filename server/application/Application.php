@@ -57,7 +57,7 @@ class Application
         if ($token && $message) {
             $user = $this->user->getUser($token);
             if ($user) {
-                //return $this->chat->sendMessage($user->id, $message);
+                return $this->chat->sendMessage($user->id, $message);
             }
             return ['error'=>1002];
         }
