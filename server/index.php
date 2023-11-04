@@ -4,8 +4,7 @@ header('Access-Control-Allow-Origin: *');
 require_once 'application/Answer.php';
 require_once 'application/Application.php';
 
-function result($params)
-{
+function result($params) {
     $method = $params['method'];
     if ($method) {
         $app = new Application();
@@ -17,6 +16,7 @@ function result($params)
             case 'getTeamsInfo': return $app->getTeamsInfo($params);
             case 'getSkins': return $app->getSkins($params);
             case 'setSkin': return $app->setSkin($params);
+            case 'sendMessage':return $app->sendMessage($params);
             default: return [false, 102];
         }
     }

@@ -1,9 +1,10 @@
-import {useContext, useRef, useState} from "react";
-import {ServerContext} from "../App";
-import {Navigate} from "react-router-dom";
+import { useContext, useRef, useState } from "react";
+import { Navigate } from "react-router-dom";
 import md5 from 'md5-ts';
-import "../Auth.css";
+import { ServerContext } from "../App";
 import NavBar from "../components/navBar";
+
+import "../Auth.css";
 
 const LoginPage = () => {
     const server = useContext(ServerContext);
@@ -15,24 +16,24 @@ const LoginPage = () => {
         if (loginRef.current && passwordRef.current) {
             const login = loginRef.current.value;
             const rnd = Math.round(283 * Math.random());
-            const password = md5(md5(loginRef.current.value + passwordRef.current.value) + rnd);
+            const hash = md5(md5(login + passwordRef.current.value) + rnd);
             const user = await server.login(
                 login,
-                password,
+                hash,
                 rnd
-            )
+            );
             if (user) {
                 setLoginSuccess(true);
-            } 
+            }
         }
     };
 
     return (
         <>
-            <NavBar/>
+            <NavBar />
             <div className="title">
                 <p>
-                    КИБОРГИ <br/> ТЕПЕРЬ В 2D
+                    КИБОРГИ <br /> ТЕПЕРЬ В 2D
                 </p>
             </div>
             <div className="content">
@@ -57,7 +58,7 @@ const LoginPage = () => {
 
                     <button onClick={() => handleLogin()}>Войти</button>
                 </div>
-                {loginSuccess ? <Navigate to="/main" replace={true}/> : null}
+                {loginSuccess ? <Navigate to="/main" replace={true} /> : null}
             </div>
         </>
     );
