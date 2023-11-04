@@ -14,6 +14,7 @@ import Robot from "./Robot";
 import Room from "./Room";
 import Zone from "./Zone";
 import Inventory from "./Inventory";
+import { Gun, Item } from "../../modules/Game/entities/Items";
 
 interface ISceneProps {
     playerProps: IPlayerProps;
@@ -46,6 +47,20 @@ const Scene = (props: ISceneProps) => {
     const [bullets, setBullets] = useState<Bullet[]>([]);
     const [lasers, setLasers] = useState<Laser[]>([]);
     const [weaponSlot, setWeaponSlot] = useState<number>(1);
+    const [inventory, setInventory] = useState<Gun[]>([
+        new Gun({
+            name: 'pussy ripper',
+            type: 1,
+            damage: 99,
+            rate: 20,
+            magSize: 10,
+            maxAmmo: 20,
+            currentAmmo: 1,
+            speed: 6
+        })
+    ]);
+    const [item, setItem] = useState<Gun>(inventory[0]);
+    const [last, setLast] = useState<number>(0);
 
     const colliders = CollidersPositions();
     const { viewport, camera, pointer } = useThree();
@@ -76,6 +91,31 @@ const Scene = (props: ISceneProps) => {
         playerRef.current?.setLinvel(velocity, true);
     }
 
+    const onFire = () => {
+        const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
+
+        // смещение, чтобы игрок не мог расстрелять сам себя, придется фиксить под разные скорости
+        const position = vec3(playerRef.current?.translation());
+        direction.setLength(0.6);
+        position.x += direction.x;
+        position.y += direction.y;
+        position.z = 0;
+        direction.setLength(1);
+
+        const bullet = item.use(position, direction, `${props.playerProps.id}-${Date.now()}`);
+
+        // new Bullet(
+        //     15,
+        //     position,
+        //     direction,
+        //     `${props.playerProps.id}-${Date.now()}`
+        // );
+
+        if (bullet) {
+            setBullets((bullets) => [...bullets, bullet]);
+        }
+    }
+
     useFrame(() => {
 
         const velocity = vec3(playerRef.current?.linvel());
@@ -84,7 +124,10 @@ const Scene = (props: ISceneProps) => {
 
         movementController(up, down, left, right);
 
-        if (select1) setWeaponSlot(1);
+        if (select1) {
+            setWeaponSlot(1);
+            setItem(inventory[0]);
+        }
         if (select2) setWeaponSlot(2);
         if (select3) setWeaponSlot(3);
 
@@ -105,23 +148,7 @@ const Scene = (props: ISceneProps) => {
         }
 
         if (shoot) {
-            const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
-
-            // смещение, чтобы игрок не мог расстрелять сам себя, придется фиксить под разные скорости
-            const position = vec3(playerRef.current?.translation());
-            direction.setLength(0.6);
-            position.x += direction.x;
-            position.y += direction.y;
-            position.z = 0;
-            direction.setLength(1);
-
-            const bullet = new Bullet(
-                15,
-                position,
-                direction,
-                `${props.playerProps.id}-${Date.now()}`
-            );
-            setBullets((bullets) => [...bullets, bullet]);
+            onFire();
         }
 
         // стрельба проджектайлами и хитсканом должна быть прописана на одно и то же нажатие, что именно полетит - зависит от выбора в инвентаре
@@ -172,6 +199,7 @@ const Scene = (props: ISceneProps) => {
 
                 {bullets.map(bullet =>
                     <Projectile
+                        damage={bullet.damage}
                         key={bullet.key}
                         initialSpeed={bullet.speed}
                         initialPosition={bullet.position}

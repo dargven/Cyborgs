@@ -8,10 +8,10 @@ interface IProjectiileProps {
     direction: Vector3;
     initialPosition: Vector3;
     texture: Texture;
-    //damage
+    damage: number;
 }
 
-const Projectile = ({ initialSpeed, direction, initialPosition, texture }: IProjectiileProps) => {
+const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture }: IProjectiileProps) => {
     const bulletRef = useRef<RapierRigidBody>(null!);
     const [isActive, setActive] = useState<boolean>(true);
 
@@ -30,7 +30,7 @@ const Projectile = ({ initialSpeed, direction, initialPosition, texture }: IProj
             restitution={0}
             userData={{
                 type: 'projectile',
-                damage: 10
+                damage: damage
             }}>
             {isActive ? <group>
                 <BallCollider
