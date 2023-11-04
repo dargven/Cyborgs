@@ -16,6 +16,7 @@ function result($params) {
             case 'getTeamsInfo': return $app->getTeamsInfo($params);
             case 'getSkins': return $app->getSkins($params);
             case 'setSkin': return $app->setSkin($params);
+            case 'sendMessage':return $app->sendMessage($params);
             default: return [false, 102];
         }
     }

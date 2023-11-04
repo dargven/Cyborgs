@@ -1,12 +1,12 @@
 <?php
-
 class DB
 {
     //сохраняет соединение с ДБ
     private $pdo;
 
     //вызов соединения с БД
-    function __construct() {
+    public function __construct()
+    {
 
         // local
 //        $host = '127.0.0.1';
@@ -16,7 +16,7 @@ class DB
 //        $db = 'cyborgs';
 
         $host = 'dargvetg.beget.tech';
-        $port = 3306;
+        $port = '3306';
         $user = 'dargvetg_cyborgs';
         $pass = 'vizual22cdxsaV';
         $db = 'dargvetg_cyborgs';
@@ -25,71 +25,74 @@ class DB
         $this->pdo = new PDO($connect, $user, $pass);
     }
 
-    function __destruct() {
+    public function __destruct()
+    {
         $this->pdo = null;
     }
 
-    /*
-            $sth = $dbh->prepare('SELECT name, colour, calories
-            FROM fruit
-            WHERE calories < ? AND colour = ?');
-        $sth->execute([150, 'red']);
-    */ //Пример правильного запроса, предоставил Трусов.
 
     // выполнить запрос без возвращения данных
-    private function execute($sql, $params = []) {
+    private function execute($sql, $params = [])
+    {
         $sth = $this->pdo->prepare($sql);
         return $sth->execute($params);
     }
 
     // получение ОДНОЙ записи
-    private function query($sql, $params = []) {
+    private function query($sql, $params = [])
+    {
         $sth = $this->pdo->prepare($sql);
         $sth->execute($params);
         return $sth->fetch(PDO::FETCH_OBJ);
     }
 
     // получение НЕСКОЛЬКИХ записей
-    private function queryAll($sql, $params = []) {
+    private function queryAll($sql, $params = [])
+    {
         $sth = $this->pdo->prepare($sql);
         $sth->execute($params);
         return $sth->fetchAll(PDO::FETCH_OBJ);
     }
 
-    /*************************/
-    /* НЕПОВТОРИМЫЙ ОРИГИНАЛ */
-    /*************************/
-    public function getUserByLogin($login) {
+
+//    НЕПОВТОРИМЫЙ ОРИГИНАЛ
+
+    public function getUserByLogin($login)
+    {
         return $this->query("SELECT * FROM users WHERE login=?", [$login]);
     }
 
-    public function getUserByToken($token) {
+    public function getUserByToken($token)
+    {
         return $this->query("SELECT * FROM users WHERE token=?", [$token]);
     }
 
-    public function getUserById($id) {
+    public function getUserById($id)
+    {
         return $this->query("SELECT * FROM users WHERE id=?", [$id]);
     }
 
-    public function updateToken($id, $token) {
+    public function updateToken($id, $token)
+    {
         return $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $id]);
     }
 
-    public function addUser($login, $password) {
+    public function addUser($login, $password)
+    {
         $this->execute(
-            "INSERT INTO users (login,password) VALUES (?, ?)", 
+            "INSERT INTO users (login,password) VALUES (?, ?)",
             [$login, $password]
         );
     }
 
-    /******************/
-    /* ЖАЛКАЯ ПАРОДИЯ */
-    /******************/
+
+    // ЖАЛКАЯ ПАРОДИЯ //
+    //Методы полностью переписаны по феншую, осталось их нормально протестить.
     //Проверить метод addMessage
     public function addMessage($user_id, $message)
     {
         return $this->execute("INSERT INTO messages VALUES (?, ?, now())",
-       [$user_id, $message]);
+            [$user_id, $message]);
     }
 
     public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
@@ -105,35 +108,34 @@ class DB
 
     public function getScoreTeams()
     {
-        return $this->execute("SELECT team_id, team_score FROM Teams group by team_id");
+        return $this->execute("SELECT team_id, team_score FROM teams group by team_id");
     }
 
     public function getCountOfPlayersInTeams()
     {
-        return $this->query("SELECT team_id, COUNT(user_id) as countOfPlayers from UserTeams group by team_id");
+        return $this->queryAll("SELECT team_id, COUNT(user_id) as countOfPlayers from userTeams group by team_id");
 
     }
 
     public function updateScoreInTeam($teamId, $score)
     {
-        return $this->execute("UPDATE Teams SET WHERE team_id = ?, team_score= SUM(team_score, ?)",[$teamId, $score]);
+        return $this->execute("UPDATE teams SET WHERE team_id = ?, team_score= SUM(team_score, ?)", [$teamId, $score]);
     } // Дописать Кирилл || Женя
 
     public function addPlayerToTeam($id, $teamId)
     {
-        $this->execute("INSERT INTO UserTeams (team_id, user_id) VALUES (?, ?)",[$teamId, $id]);
+        $this->execute("INSERT INTO userTeams (team_id, user_id) VALUES (?, ?)", [$teamId, $id]);
     }
 
     public function getSkins($id)
     {
-        return $this->query("SELECT skin_id, text FROM UserSkins, Skins WHERE user_id=?", [$id]);
+        return $this->queryAll("SELECT skin_id, text FROM userSkins, skins WHERE user_id=?", [$id]);
     }
 
     public function setSkin($id, $skinId)
     {
-        return $this->execute("UPDATE UserSkins SET  skin_id=? WHERE id=?", [$skinId,$id]);
+        return $this->execute("UPDATE userSkins SET  skin_id=? WHERE id=?", [$skinId, $id]);
     }
-
 
 }
 

@@ -2,23 +2,36 @@
 require_once 'modules/User/User.php';
 require_once 'modules/Game/Game.php';
 require_once 'modules/DB/DB.php';
+require_once 'modules/Lobby/Lobby.php';
 
 class Application
 {
     private $user;
     private $chat;
     private $game;
+    private $lobby;
 
-    function __construct()
+    public function __construct()
     {
         $db = new DB();
         $this->user = new User($db);
+        $this->lobby = new Lobby($db);
     }
 
     /*************************/
     /* НЕПОВТОРИМЫЙ ОРИГИНАЛ */
     /*************************/
-    function login($params) {
+    function register($params){
+        $login = $params['login'];
+        $hash = $params['hash'];
+        if($login && $hash){
+            return $this->user->register($login,$hash);
+        }
+        return [false, 242];
+    }
+
+    function login($params)
+    {
         $login = $params['login'];
         $hash = $params['hash'];
         $rnd = $params['rnd'];
@@ -28,7 +41,8 @@ class Application
         return [false, 1001];
     }
 
-    function logout($params) {
+    function logout($params)
+    {
         $token = $params['token'];
         if ($token) {
             return $this->user->logout($token);
@@ -36,39 +50,35 @@ class Application
         return [false, 242];
     }
 
-    function sendMessage($params) {
+    function sendMessage($params)
+    {
         $token = $params['token'];
         $message = $params['message'];
         if ($token && $message) {
             $user = $this->user->getUser($token);
             if ($user) {
-                return $this->chat->sendMessage($user->id, $message);
+                //return $this->chat->sendMessage($user->id, $message);
             }
-            return [false, 9000];
+            return [false, 1002];
         }
-        return [false, 9000];
+        return [false, 242];
     }
 
     /******************/
     /* ЖАЛКАЯ ПАРОДИЯ */
     /******************/
-    function register($params)
-    {
-        $login = $params['login'];
-        $password = $params['password'];
-        if ($login && $password) {
-            return $this->user->register($login, $password);
-        }
-        return [false, 1001];
-    }
 
+//..
     function selectTeam($params)
     {
-        $id = $params['id'];
         $token = $params['token'];
         $teamId = $params['teamId'];
-        if ($id && $token && $teamId) {
-            return $this->user->selectTeam($id, $token, $teamId);
+        if ($token && $teamId) {
+            $user = $this->user->getUser($token);
+            if ($user) {
+                return $this->lobby->selectTeam($user->id, $teamId);
+            }
+            return [false, 1002];
         }
         return [false, 242];
     }
