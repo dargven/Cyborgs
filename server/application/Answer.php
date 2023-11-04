@@ -23,7 +23,7 @@ class Answer
     static function response($data)
     {
         if ($data) {
-            if (!is_bool($data) && count($data) === 2 && (!empty($data[0])) && $data[0] === false) {
+            if (!is_bool($data) && count($data) === 2) {
                 $code = $data[1];
                 return [
                     'result' => 'error',
