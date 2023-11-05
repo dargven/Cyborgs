@@ -16,5 +16,4 @@ export class Store {
     isAuth(): boolean {
         return this.user.isAuth;
     }
-
 }

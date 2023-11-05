@@ -1,8 +1,9 @@
 import { useContext, useRef, useState } from "react";
 import { Navigate } from "react-router-dom";
-import md5 from 'md5-ts';
 import { ServerContext } from "../App";
+import md5 from 'md5-ts';
 import NavBar from "../components/navBar";
+import Chat from "../components/Chat/Chat"
 
 import "../Auth.css";
 
@@ -30,7 +31,8 @@ const LoginPage = () => {
 
     return (
         <>
-            <NavBar />
+            <NavBar/>
+            <Chat/>
             <div className="title">
                 <p>
                     КИБОРГИ <br /> ТЕПЕРЬ В 2D
