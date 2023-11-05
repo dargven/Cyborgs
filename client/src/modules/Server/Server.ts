@@ -56,7 +56,7 @@ export default class Server {
         return result;
     }
 
-    register(login: string, password: string): Promise<TUser | null> {
-        return this.request<TUser>('register', {login, password});
+    register(login: string, hash: string): Promise<TUser | null> {
+        return this.request<TUser>('register', {login, hash});
     }
 }
