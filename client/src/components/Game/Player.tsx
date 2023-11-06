@@ -48,11 +48,11 @@ const Player = forwardRef(({ id, username, position, isMoving }: IPlayerProps, r
 
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "projectile") {
-                            if (hp - 10 < 0) {
+                            if (hp - data.damage < 0) {
                                 setHp(0)
                             }
                             else {
-                                setHp(hp - 10)
+                                setHp(hp - data.damage)
                             }
                         }
                     }} />
