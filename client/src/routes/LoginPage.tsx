@@ -32,7 +32,6 @@ const LoginPage = () => {
     return (
         <>
             <NavBar/>
-            <Chat/>
             <div className="title">
                 <p>
                     КИБОРГИ <br /> ТЕПЕРЬ В 2D

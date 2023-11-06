@@ -251,14 +251,6 @@ h1 {
 
 }
 
-.TEST:hover{
-  border: 5px solid rgb(0, 217, 255);
-}
-
-.TEST:active{
-
-}
-
 .header-right {
   float: right;
   padding: 10px;

@@ -25,12 +25,12 @@ const GamePage = () => {
     return (
         <div>
             <Game/>
-            <Chat/>
             {isPopupVisible && (
                 <div className="popUpMenu" onClick={() => setIsPopupVisible(false)}>
                     <div className="popUpMenu__content" onClick={(e => e.stopPropagation())}>
-                        <h1 onClick={() => setIsPopupVisible(false)}>Возобновить</h1>
-                        
+                        <button onClick={() => setIsPopupVisible(false)} className="popUpBtn">Возобновить</button>
+                        <NavButton to="/game" text="Настройки" className="popUpBtn"/>
+                        <NavButton to="/main" text="Выход" className="popUpBtn"/>
                     </div>
                 </div>
             )}
