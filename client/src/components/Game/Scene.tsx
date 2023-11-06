@@ -17,7 +17,6 @@ import Inventory from "./Inventory";
 import { Gun, Item } from "../../modules/Game/entities/Items";
 
 interface ISceneProps {
-    playerProps: IPlayerProps;
     cameraProps: {
         vSize: number;
         aspect: number;
@@ -101,8 +100,8 @@ const Scene = (props: ISceneProps) => {
         position.y += direction.y;
         position.z = 0;
         direction.setLength(1);
-
-        const bullet = item.use(position, direction, `${props.playerProps.id}-${Date.now()}`);
+        const data:any=playerRef?.current?.userData;
+        const bullet = item.use(position, direction, `${1337}-${Date.now()}`,data.team);
 
         // new Bullet(
         //     15,
@@ -161,7 +160,7 @@ const Scene = (props: ISceneProps) => {
             const laser = new Laser(
                 playerPosition,
                 aimingPoint,
-                `${props.playerProps.id}-${Date.now()}`
+                `${1337}-${Date.now()}`
             )
             setLasers((lasers) => [...lasers, laser])
         }
@@ -176,8 +175,9 @@ const Scene = (props: ISceneProps) => {
                 <fog />
 
                 <group position={[8, 5, 0]}>
-                    <Player ref={playerRef} id={1338} isMoving={isMoving} />
-                    <Player />
+                    <Player ref={playerRef} id={1338} isMoving={isMoving} team={1} />
+                    <Player team={2} />
+                    <Player team={1} />
                     <Robot />
                 </group>
 
@@ -197,7 +197,7 @@ const Scene = (props: ISceneProps) => {
                     </RigidBody>
                 )}
 
-                {bullets.map(bullet =>
+                 {bullets.map(bullet =>
                     <Projectile
                         damage={bullet.damage}
                         key={bullet.key}
@@ -205,8 +205,9 @@ const Scene = (props: ISceneProps) => {
                         initialPosition={bullet.position}
                         direction={bullet.direction}
                         texture={textures['bullet']}
+                        team={bullet.team}
                     />
-                )}
+                 )} 
 
                 {lasers.map(laser =>
                     <Hitscan

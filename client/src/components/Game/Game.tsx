@@ -16,9 +16,7 @@ export enum EControls {
     select3 = 'select3',
 }
 
-const playerProps: IPlayerProps = {
-    id: 1337,
-}
+
 
 const Game = () => {
     const inputMap = useMemo<KeyboardControlsEntry[]>(() => [
@@ -40,7 +38,7 @@ const Game = () => {
         <KeyboardControls map={inputMap}>
             <Canvas style={{ background: 'black' }}>
                 <PerspectiveCamera position={[0, 0, 0]}>
-                    <Scene playerProps={playerProps} cameraProps={{ vSize, aspect }} />
+                    <Scene  cameraProps={{ vSize, aspect }} />
                     <axesHelper />
                 </PerspectiveCamera>
             </Canvas>
