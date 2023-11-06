@@ -1,18 +1,92 @@
-import { SpriteAnimator } from "@react-three/drei";
-import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
-import { Ref, forwardRef, useState } from "react";
+import { SpriteAnimator, useKeyboardControls } from "@react-three/drei";
+import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
+import { useRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
+import { useFrame } from "@react-three/fiber";
+import { Laser } from "../../modules/Game/entities";
 
 export interface IPlayerProps {
     id?: number;
     username?: string;
     position?: Vector3;
-    isMoving?: boolean;
-    team:number;
+    team: number;
+    isControlled?: boolean
+    onFire?(position: Vector3, team: number): void;
+    onMovement?(position: Vector3): void;
 }
 
-const Player = forwardRef(({ id, username, position, isMoving,team }: IPlayerProps, ref: Ref<RapierRigidBody>) => {
+const Player = ({ id, username, position, team, onFire, onMovement, isControlled }: IPlayerProps) => {
+
+    const ref = useRef<RapierRigidBody>(null!);
+
+    const [controlKeys, getKeys] = useKeyboardControls();
+
+    const movementController = (up: boolean, down: boolean, left: boolean, right: boolean) => {
+
+        const speed = 4;
+
+        ref?.current.setLinvel(new Vector3(), true);
+        const velocity = new Vector3();
+        if (left) {
+            velocity.x -= 1;
+        }
+        if (right) {
+            velocity.x += 1;
+        }
+        if (up) {
+            velocity.y += 1;
+        }
+        if (down) {
+            velocity.y -= 1;
+        }
+
+        velocity.setLength(speed);
+
+        ref?.current.setLinvel(velocity, true);
+    }
+
+    useFrame(() => {
+        if (isControlled) {
+            const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
+            movementController(up, down, left, right);
+
+            // if (select1) {
+            //     setWeaponSlot(1);
+            //     setItem(inventory[0]);
+            // }
+            // if (select2) setWeaponSlot(2);
+            // if (select3) setWeaponSlot(3);
+
+            const playerPosition = vec3(ref?.current.translation());
+
+            if (onMovement){
+                onMovement(playerPosition);
+            }
+
+            if (shoot) {
+                if (onFire) {
+                    onFire(playerPosition, team);
+                }
+            }
+
+            // стрельба проджектайлами и хитсканом должна быть прописана на одно и то же нажатие, что именно полетит - зависит от выбора в инвентаре
+
+            if (hitscan) {
+                // const aimingPoint = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
+                // aimingPoint.setLength(5);
+                // aimingPoint.x += playerPosition.x;
+                // aimingPoint.y += playerPosition.y;
+                // const laser = new Laser(
+                //     playerPosition,
+                //     aimingPoint,
+                //     `${1337}-${Date.now()}`
+                // )
+                // setLasers((lasers) => [...lasers, laser])
+            }
+        }
+    });
+
 
     const [hp, setHp] = useState<number>(100);
     const data = {
@@ -42,25 +116,24 @@ const Player = forwardRef(({ id, username, position, isMoving,team }: IPlayerPro
                     textureImageURL={'./assets/test/Sprite-0001.png'}
                     textureDataURL={'./assets/test/Sprite-0001.json'}
                     alphaTest={0.01}
-                    pause={!isMoving}
+                // pause={!isMoving}
                 />
 
-                <BallCollider args={[0.5]} restitution={0} 
+                <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
 
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "projectile") {
-                            if(data.team === team && hp - data.damage < 0)
-                            {
+                            if (data.team === team && hp - data.damage < 0) {
                                 setHp(0)
                             }
                             else if (data.team === team) {
-                                setHp(hp - (data.damage/10))
+                                setHp(hp - (data.damage / 10))
                             }
-                            else if(hp - data.damage < 0) {
+                            else if (hp - data.damage < 0) {
                                 setHp(0)
                             }
-                            else{
+                            else {
                                 setHp(hp - data.damage)
                             }
                         }
@@ -69,6 +142,6 @@ const Player = forwardRef(({ id, username, position, isMoving,team }: IPlayerPro
             </RigidBody>
         </>
     );
-});
+}
 
 export default Player;
