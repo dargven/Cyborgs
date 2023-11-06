@@ -137,5 +137,6 @@ class DB
         return $this->execute("UPDATE userSkins SET skin_id=? WHERE `role`=?, id=?", [$skinId,'lobby',$id]);
     }
 
+
 }
 
