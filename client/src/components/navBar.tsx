@@ -11,9 +11,9 @@ const NavBar = () => {
       {store.isAuth() ?
         <button className="Leave" onClick={() => {}}>Выход</button> :
         <>
-          <NavButton to="/main" text="Играть" />
-          <NavButton to="/registration" text="Регистрация" />
-          <NavButton to="/login" text="Войти" />
+          <NavButton to="/main" text="Играть" className="header-right"/>
+          <NavButton to="/registration" text="Регистрация" className="header-right"/>
+          <NavButton to="/login" text="Войти" className="header-right"/>
         </>
       }
     </header >

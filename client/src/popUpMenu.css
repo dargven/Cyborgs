@@ -1,7 +1,7 @@
 .popUpMenu{
     height: 100vh;
     width: 100vw;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.9);
     position: fixed;
     top: 0;
     left: 0;
@@ -10,6 +10,7 @@
     justify-content: center;
     transition: 0.5s;
     opacity: 1;
+    
 }
 
 .popUpMenu:active{
@@ -19,5 +20,28 @@
 .popUpMenu__content{
     padding: 20px;
     border-radius: 12px;
-    background-color: rgb(26, 21, 21);
-}   
+    background-color: rgba(27, 43, 43, 0.8);
+} 
+
+.popUpBtn{
+    font-family: Zelek;
+    text-align: center;
+    width: 32.4dvh;
+    height: 5dvh;
+    font-size: 2.5dvh;
+    color: #27CEE9;
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.popUpBtn:hover{
+    text-shadow: 0px 0px 3px #00aeff;
+    color: #27CEE9;
+    border-width: 0.6dvh 0.6dvh;
+    border-radius: 0;
+    filter: contrast(30);
+    border-color: #27CEE9;
+    box-shadow: inset 0px 0px 30px rgba(0, 0, 0);
+    clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0); 
+}
