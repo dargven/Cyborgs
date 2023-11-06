@@ -1,22 +1,40 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import Chat from "../components/Chat/Chat";
 import Game from "../components/Game/Game";
+import NavButton from "../components/navButton";
+import "../popUpMenu.css"
 
 const GamePage = () => {
-
     const KEY_ESC = 27;
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
 
-    document.addEventListener("keydown", (event: KeyboardEvent) => {
+    const handleKeyPress = (event:KeyboardEvent) => {
         if (event.keyCode === KEY_ESC) {
-            alert('5345345')
+            setIsPopupVisible(true);
         }
+    };
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyPress);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyPress);
+        };
     });
 
     return (
-        <React.Fragment>
-            <Chat/>
+        <div>
             <Game/>
-        </React.Fragment>
+            <Chat/>
+            {isPopupVisible && (
+                <div className="popUpMenu" onClick={() => setIsPopupVisible(false)}>
+                    <div className="popUpMenu__content" onClick={(e => e.stopPropagation())}>
+                        <h1 onClick={() => setIsPopupVisible(false)}>Возобновить</h1>
+                        
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }
 
