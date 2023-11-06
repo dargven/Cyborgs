@@ -1,10 +1,12 @@
 import { Group, NearestFilter, Texture, TextureLoader, Vector3 } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useState } from "react";
+import { IWeapons } from "./Scene";
 
 interface IInventory {
     setWeapon: number;
     invRef: any;
+    weapons: IWeapons;
 }
 
 interface IInventoryObject {
@@ -19,11 +21,9 @@ interface IGuns {
     };
 }
 
-interface IWeapons {
-    [key: string]: number | null;
-}
 
-const Inventory = ({setWeapon, invRef}: IInventory) => {
+
+const Inventory = ({setWeapon, invRef, weapons}: IInventory) => {
     const textureLoader = new TextureLoader();
     const inventory = textureLoader.load('./assets/Inventory.png');
     const choosenSlot = textureLoader.load('./assets/ChoosenSlot.png');
@@ -40,11 +40,7 @@ const Inventory = ({setWeapon, invRef}: IInventory) => {
         'Butterfly': Butterfly,
     });
 
-    const [weapons, setWeapons] = useState<IWeapons>({
-        slot1: 1,
-        slot2: 2,
-        slot3: null,
-    });
+   
 
     const guns: IGuns = {
         1: {
@@ -71,7 +67,6 @@ const Inventory = ({setWeapon, invRef}: IInventory) => {
             )
         }
     }
-
     return (
         <group ref={invRef}>
             <sprite scale={[1.5, 0.5, 0]}>
@@ -82,15 +77,21 @@ const Inventory = ({setWeapon, invRef}: IInventory) => {
                 <spriteMaterial map={texture['choosenSlot']} />
             </sprite>
 
-            {Object.keys(weapons).map(slotName => (
-                weapons[slotName] != null ?
-                    renderWeaponSlot(
-                        weapons[slotName]!,
-                        guns[weapons[slotName]!].img
-                    )
-                :
-                null
-            ))}
+            {weapons.slot1 && 
+                <sprite scale={[0.45, 0.4, 0]} position={[slotPositions[0], 0, 0]}>
+                    <spriteMaterial map={guns[weapons.slot1].img} />
+                </sprite>
+            }
+            {weapons.slot2 && 
+                <sprite scale={[0.45, 0.4, 0]} position={[slotPositions[1], 0, 0]}>
+                    <spriteMaterial map={guns[weapons.slot2].img} />
+                </sprite>
+            }
+            {weapons.slot3 && 
+                <sprite scale={[0.45, 0.4, 0]} position={[slotPositions[2], 0, 0]}>
+                    <spriteMaterial map={guns[weapons.slot3].img} />
+                </sprite>
+            }
         </group>
     )
 }

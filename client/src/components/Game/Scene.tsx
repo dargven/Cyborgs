@@ -28,6 +28,10 @@ interface ITextureObject {
     [key: string]: Texture
 }
 
+export interface IWeapons {
+    [key: string]: number | null;
+}
+
 const playerRef = createRef<RapierRigidBody>(); // вынес из зависимостей useEffect
 
 const Scene = (props: ISceneProps) => {
@@ -59,6 +63,13 @@ const Scene = (props: ISceneProps) => {
             speed: 6
         })
     ]);
+
+    const [weapons, setWeapons] = useState<IWeapons>({
+        slot1: 2,
+        slot2: 1,
+        slot3: null,
+    });
+
     const [item, setItem] = useState<Gun>(inventory[0]);
     const [last, setLast] = useState<number>(0);
 
@@ -167,10 +178,21 @@ const Scene = (props: ISceneProps) => {
         }
     });
 
+    const getWeapon = (slot: number, id: number) => {
+        setWeapons(prevWeapons => {
+            const newWeapons = { ...prevWeapons };
+    
+            newWeapons[`slot${slot}`] = id;
+    
+            return newWeapons;
+        });
+    }
+
+    
+
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
-
                 <LightMap />
 
                 <fog />
@@ -181,19 +203,19 @@ const Scene = (props: ISceneProps) => {
                     <Robot />
                 </group>
 
-                <Inventory invRef={invRef} setWeapon={weaponSlot} />
+                <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons}/>
 
                 {colliders.map(collider =>
                     <RigidBody
-                        type='fixed'
-                        userData={{
-                            type: "Collider"
-                        }}>
+                    type='fixed'
+                    userData={{
+                        type: "Collider"
+                    }}>
                         <CuboidCollider
                             position={collider.position}
                             args={collider.args}
                             key={collider.key}
-                        />
+                            />
                     </RigidBody>
                 )}
 
@@ -205,16 +227,16 @@ const Scene = (props: ISceneProps) => {
                         initialPosition={bullet.position}
                         direction={bullet.direction}
                         texture={textures['bullet']}
-                    />
-                )}
+                        />
+                        )}
 
                 {lasers.map(laser =>
                     <Hitscan
-                        key={laser.key}
-                        initialPosition={[laser.position.x, laser.position.y]}
-                        aimingPoint={[laser.aimingPoint.x, laser.aimingPoint.y]}
+                    key={laser.key}
+                    initialPosition={[laser.position.x, laser.position.y]}
+                    aimingPoint={[laser.aimingPoint.x, laser.aimingPoint.y]}
                     />
-                )}
+                    )}
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
                     <Room texture={textures['room']} />
