@@ -9,13 +9,15 @@ export interface IPlayerProps {
     username?: string;
     position?: Vector3;
     isMoving?: boolean;
+    team:number;
 }
 
-const Player = forwardRef(({ id, username, position, isMoving }: IPlayerProps, ref: Ref<RapierRigidBody>) => {
+const Player = forwardRef(({ id, username, position, isMoving,team }: IPlayerProps, ref: Ref<RapierRigidBody>) => {
 
     const [hp, setHp] = useState<number>(100);
     const data = {
-        type: 'player'
+        type: 'player',
+        team: team
     }
 
     return (
@@ -43,15 +45,22 @@ const Player = forwardRef(({ id, username, position, isMoving }: IPlayerProps, r
                     pause={!isMoving}
                 />
 
-                <BallCollider args={[0.5]} restitution={0}
+                <BallCollider args={[0.5]} restitution={0} 
                     onIntersectionEnter={(e) => {
 
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "projectile") {
-                            if (hp - data.damage < 0) {
+                            if(data.team === team && hp - data.damage < 0)
+                            {
                                 setHp(0)
                             }
-                            else {
+                            else if (data.team === team) {
+                                setHp(hp - (data.damage/10))
+                            }
+                            else if(hp - data.damage < 0) {
+                                setHp(0)
+                            }
+                            else{
                                 setHp(hp - data.damage)
                             }
                         }

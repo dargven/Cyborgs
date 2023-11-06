@@ -29,10 +29,10 @@ class Gun extends Item {
         this.speed = speed;
     }
 
-    use(position: Vector3, direction: Vector3, key: string): Bullet | null {
+    use(position: Vector3, direction: Vector3, key: string,team:number): Bullet | null {
         if (this.currentAmmo > 0) {
             this.currentAmmo--;
-            return new Bullet(this.speed, position, direction, key, this.damage);
+            return new Bullet(this.speed, position, direction, key, this.damage, team);
         }
         return null;
     }
