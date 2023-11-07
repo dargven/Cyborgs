@@ -12,7 +12,7 @@ class Chat
     public function sendMessage($id, $message)
     {
         if (!empty($message)) {
-            $this->db->sendMessage($id, $message);
+            return $this->db->sendMessage($id, $message);
         }
         return ['error' => 706];
     }
