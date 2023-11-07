@@ -7,7 +7,7 @@ body{
   -webkit-background-size: cover;
   background-size: cover;
   background-attachment: fixed;
-  background-image: url("assets/image/giff23.gif");
+  background-image: url("../public/assets/image/giff23.gif");
   max-zoom: 50%;
 }
 
@@ -59,8 +59,8 @@ h2 {
 }
 
 .slide-in {
-  background-image: url("assets/image/Slide.gif");
-  background-size: cover; /* Масштабирование изображения, чтобы оно заполнило блок */
+  background-image: url("../public/assets/image/Slide.gif");
+  background-size: cover; 
   background-position: center;
   left: 20dvw;
   animation: slideIn 3s ease-in-out forwards;
