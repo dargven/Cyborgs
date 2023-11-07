@@ -105,10 +105,14 @@ const Scene = ({ vSize }: ISceneProps) => {
         });
     }
 
-    const weaponChangeSlot = (newSlot: number) => {
-        setWeaponSlot(newSlot)
-    }
+    let colliderKeyCounter = 0;
 
+    const generateColliderKey = () => {
+        const key = `collider-${colliderKeyCounter}`;
+        colliderKeyCounter++;
+        return key;
+    };
+    
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
@@ -134,6 +138,7 @@ const Scene = ({ vSize }: ISceneProps) => {
 
                 {colliders.map(collider =>
                     <RigidBody
+                    key={generateColliderKey()}
                     type='fixed'
                     userData={{
                         type: "Collider"
@@ -141,7 +146,6 @@ const Scene = ({ vSize }: ISceneProps) => {
                         <CuboidCollider
                             position={collider.position}
                             args={collider.args}
-                            key={collider.key}
                             />
                     </RigidBody>
                 )}
