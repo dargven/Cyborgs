@@ -9,17 +9,17 @@ interface IProjectiileProps {
     initialPosition: Vector3;
     texture: Texture;
     damage: number;
+    team:number;
 }
 
-const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture }: IProjectiileProps) => {
+const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture, team }: IProjectiileProps) => {
     const bulletRef = useRef<RapierRigidBody>(null!);
     const [isActive, setActive] = useState<boolean>(true);
-
     useEffect(() => {
         direction.setLength(initialSpeed)
         bulletRef.current.setLinvel(direction, true);
     }, []);
-
+console.log(team)
     return (
         <RigidBody
             ref={bulletRef}
@@ -30,7 +30,8 @@ const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture 
             restitution={0}
             userData={{
                 type: 'projectile',
-                damage: damage
+                damage: damage,
+                team: team,
             }}>
             {isActive ? <group>
                 <BallCollider
