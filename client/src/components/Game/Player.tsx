@@ -1,6 +1,6 @@
 import { SpriteAnimator, useKeyboardControls } from "@react-three/drei";
 import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
 import { useFrame } from "@react-three/fiber";
@@ -14,51 +14,60 @@ export interface IPlayerProps {
     isControlled?: boolean
     onFire?(position: Vector3, team: number): void;
     onMovement?(position: Vector3): void;
+    setWeaponSlot?(newSlot: number): void;
 }
 
-const Player = ({ id, username, position, team, onFire, onMovement, isControlled }: IPlayerProps) => {
-
+const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlot, isControlled }: IPlayerProps) => {
+    
     const ref = useRef<RapierRigidBody>(null!);
 
     const [controlKeys, getKeys] = useKeyboardControls();
 
     const movementController = (up: boolean, down: boolean, left: boolean, right: boolean) => {
 
-        const speed = 4;
+        if (ref.current){
 
-        ref?.current.setLinvel(new Vector3(), true);
-        const velocity = new Vector3();
-        if (left) {
-            velocity.x -= 1;
+            const speed = 4;
+            
+            ref.current.setLinvel(new Vector3(), true);
+            const velocity = new Vector3();
+            if (left) {
+                velocity.x -= 1;
+            }
+            if (right) {
+                velocity.x += 1;
+            }
+            if (up) {
+                velocity.y += 1;
+            }
+            if (down) {
+                velocity.y -= 1;
+            }
+            
+            velocity.setLength(speed);
+            
+            ref.current.setLinvel(velocity, true);
         }
-        if (right) {
-            velocity.x += 1;
-        }
-        if (up) {
-            velocity.y += 1;
-        }
-        if (down) {
-            velocity.y -= 1;
-        }
-
-        velocity.setLength(speed);
-
-        ref?.current.setLinvel(velocity, true);
     }
 
     useFrame(() => {
         if (isControlled) {
             const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
             movementController(up, down, left, right);
+            
+            const playerPosition = vec3(ref?.current?.translation());
+            
+            if (select1 && setWeaponSlot) {
+                setWeaponSlot(1)
+            }
 
-            // if (select1) {
-            //     setWeaponSlot(1);
-            //     setItem(inventory[0]);
-            // }
-            // if (select2) setWeaponSlot(2);
-            // if (select3) setWeaponSlot(3);
+            if (select2 && setWeaponSlot) {
+                setWeaponSlot(2)
+            }
 
-            const playerPosition = vec3(ref?.current.translation());
+            if (select3 && setWeaponSlot) {
+                setWeaponSlot(3)
+            }
 
             if (onMovement){
                 onMovement(playerPosition);

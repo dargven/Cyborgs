@@ -105,7 +105,9 @@ const Scene = ({ vSize }: ISceneProps) => {
         });
     }
 
-    
+    const weaponChangeSlot = (newSlot: number) => {
+        setWeaponSlot(newSlot)
+    }
 
     return (
         <group>
@@ -120,6 +122,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                         team={1}
                         onFire={onFire}
                         onMovement={onMovement}
+                        setWeaponSlot={setWeaponSlot}
                         isControlled
                     />
                     <Player team={2} />
