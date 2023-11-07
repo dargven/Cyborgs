@@ -1,7 +1,6 @@
 import { KeyboardControls, KeyboardControlsEntry, PerspectiveCamera } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { useMemo } from "react";
-import { IPlayerProps } from "./Player";
 import Scene from "./Scene";
 
 export enum EControls {
@@ -15,8 +14,6 @@ export enum EControls {
     select2 = 'select2',
     select3 = 'select3',
 }
-
-
 
 const Game = () => {
     const inputMap = useMemo<KeyboardControlsEntry[]>(() => [
@@ -32,13 +29,12 @@ const Game = () => {
     ], []);
 
     const vSize = 20;
-    const aspect = window.innerWidth / window.innerHeight;
 
     return (
         <KeyboardControls map={inputMap}>
             <Canvas style={{ background: 'black' }}>
                 <PerspectiveCamera position={[0, 0, 0]}>
-                    <Scene  cameraProps={{ vSize, aspect }} />
+                    <Scene vSize={vSize}/>
                     <axesHelper />
                 </PerspectiveCamera>
             </Canvas>
