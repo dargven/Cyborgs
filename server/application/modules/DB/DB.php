@@ -32,6 +32,7 @@ class DB
     }
 
 
+
     // выполнить запрос без возвращения данных
     private function execute($sql, $params = [])
     {
@@ -87,14 +88,23 @@ class DB
     }
 
 
-    // ЖАЛКАЯ ПАРОДИЯ //
-    //Методы полностью переписаны по феншую, осталось их нормально протестить.
-    //Проверить метод addMessage
-    public function addMessage($user_id, $message)
+
+
+    public function addPlayerToTeam($id, $teamId)
     {
-        return $this->execute("INSERT INTO messages VALUES (?, ?, now())",
-            [$user_id, $message]);
+        return $this->execute("INSERT INTO userTeams (team_id, user_id) VALUES (?, ?)", [$teamId, $id]);
     }
+
+    public function sendMessage($id, $message)
+    {
+        return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
+    }
+
+    public function getMessage()
+    {
+        return $this->queryAll('SELECT name, message, created FROM messages as m LEFT JOIN users as u on u.id = m.user_id ORDER BY m.created DESC');
+    }
+
 
     public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
     {
@@ -104,8 +114,28 @@ class DB
 
     public function DeleteBullet($id)
     {
-        return $this->execute("DELETE * FROM bullet WHERE id=?", [$id]);
+        return $this->execute("DELETE  FROM bullet WHERE id=?", [$id]);
     }
+
+    public function updateScoreInTeam($teamId,$score)
+    {
+        
+        return $this->execute("UPDATE teams SET team_score=team_score+? WHERE  team_id=?", [$score, $teamId]);
+        
+    }
+
+
+
+
+    public function setSkinInLobby($id, $skinId)
+    {
+        return $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
+    }
+    // ЖАЛКАЯ ПАРОДИЯ //
+    //Методы полностью переписаны по феншую, осталось их нормально протестить.
+
+    
+
 
     public function getScoreTeams()
     {
@@ -118,35 +148,18 @@ class DB
 
     }
 
-    public function updateScoreInTeam($teamId, $score)
-    {
-        return $this->execute("UPDATE teams SET WHERE team_id = ?, team_score= SUM(team_score, ?)", [$teamId, $score]);
-    } // Дописать Кирилл || Женя
 
-    public function addPlayerToTeam($id, $teamId)
-    {
-        return $this->execute("INSERT INTO userTeams (team_id, user_id) VALUES (?, ?)", [$teamId, $id]);
-    }
+
+   
 
     public function getSkinsInLobby()
     {
         return $this->queryAll("SELECT skin_id as id, text, image FROM userSkins, skins WHERE`role`='lobby'");
     }
 
-    public function setSkinInLobby($id, $skinId)
-    {
-        return $this->execute("UPDATE userSkins SET skin_id=? WHERE `role`=?, id=?", [$skinId, 'lobby', $id]);
-    }
+   
 
-    public function getMessage()
-    {
-        return $this->queryAll('SELECT name, message, created FROM messages as m LEFT JOIN users as u on u.id = m.user_id ORDER BY m.created DESC');
-    }
-
-    public function sendMessage($id, $message)
-    {
-        return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
-    }
+   
 
 
 }
