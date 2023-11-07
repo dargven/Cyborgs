@@ -65,7 +65,7 @@ p {
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color: #ffffff;
   background: none;
-  margin:  1.6em 0px;
+  margin:  1em 0px;
 }
 
 .input-form input:hover {
@@ -73,6 +73,7 @@ p {
 }
 
 .input-form button {
+  margin:  2em 0px;
   font-family: Zelek;
   width: auto;
   height: 5dvh;
@@ -98,7 +99,7 @@ h1 {
   font-family: "Zelek";
   color: rgb(0, 217, 255);
   text-shadow: 0px 1vh 4vh #00aeff;
-  font-size: 2dvh;
+  font-size: 3dvh;
 }
 
 .App-header {
