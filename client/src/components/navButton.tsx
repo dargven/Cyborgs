@@ -9,7 +9,7 @@ function NavButton({ to, text, className }: TnavButton) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(to, { replace: true });
+    navigate(to, { replace: true })
   };
 
   return (

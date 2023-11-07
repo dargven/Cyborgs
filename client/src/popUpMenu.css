@@ -8,18 +8,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 0.5s;
-    opacity: 1;
-    
-}
-
-.popUpMenu:active{
-    opacity: 0;
+    transition: 0.5s; 
 }
 
 .popUpMenu__content{
     padding: 20px;
     border-radius: 12px;
+    position: absolute;
     background-color: rgba(27, 43, 43, 0.8);
 } 
 

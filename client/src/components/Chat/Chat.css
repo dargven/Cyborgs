@@ -1,10 +1,16 @@
 .chat {
-    position: absolute;
+	position: absolute;
+	bottom: 0;
+	right: 0;
 	border:1px solid #333;
 	margin:15px;
 	width:20%;
 	height:40%;
-	background:rgba(28, 156, 179, 0.424)
+	background:rgba(255, 255, 255, 0.4);
+	min-height: 30dvh;
+	max-height: 50dvh;
+	max-width: 40dvh;
+	z-index: 1;
 }
 
 .chatComponent {
