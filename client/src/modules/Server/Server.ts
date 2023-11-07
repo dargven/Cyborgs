@@ -52,11 +52,12 @@ export default class Server {
         const result = await this.request<boolean>('logout');
         if (result) {
             this.token = null;
+            console.log(result);
         }
         return result;
     }
 
-    register(login: string, password: string): Promise<TUser | null> {
-        return this.request<TUser>('register', {login, password});
+    register(login: string, hash: string): Promise<TUser | null> {
+        return this.request<TUser>('register', {login, hash});
     }
 }

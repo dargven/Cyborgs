@@ -2,17 +2,18 @@ import { useNavigate } from "react-router-dom";
 type TnavButton = {
   to: string;
   text: string;
+  className?: string;
 };
 
-function NavButton({ to, text }: TnavButton) {
+function NavButton({ to, text, className }: TnavButton) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(to, { replace: true });
+    navigate(to, { replace: true })
   };
 
   return (
-    <button className="header-right" onClick={handleClick}>
+    <button className={className} onClick={handleClick}>
       {text}
     </button>
   );

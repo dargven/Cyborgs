@@ -15,10 +15,10 @@ const RegistrationPage = () => {
   const handleRegistration = async () => {
     if (loginRef.current && passwordRef.current) {
       const login = loginRef.current.value;
-      const password = md5(loginRef.current.value + passwordRef.current.value)
+      const hash = md5(login + passwordRef.current.value)
       const response = await server.register(
         login,
-        password
+        hash
         );
         if (response) {
           setRegistrationSuccess(true);

@@ -139,6 +139,19 @@ h1 {
   background: none;
 }
 
+.TEST{
+  color: rgba(211, 28, 28, 0.13);
+  padding: 10px;
+  height: 54px;
+  font-size: 20px;
+  outline: none;
+  border-radius: 11px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 5px solid rgb(0, 217, 255);
+
+}
+
 .header-right {
   float: right;
   padding: 1dvh;
