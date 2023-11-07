@@ -2,67 +2,79 @@ html {
   height: 100%;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Zelek;
+}
+
 body {
   -webkit-background-size: cover;
   background-size: cover;
   background-attachment: fixed;
-  background-image: url("Figma/Background.png");
-  overflow: auto;
-  max-zoom: 50%;
+  background-image: url("assets/image/giff23.gif");
+
+}
+
+.title {
+  font-family: "Zelek";
+  color: rgb(0, 255, 255);
+  font-size: 7vw;
+  text-shadow: 0px 0px 3px #00aeff;
+  text-align: center;
+  left: 50%;
 }
 
 p {
   font-family: "Zelek";
   color: rgb(0, 255, 255);
-  font-size: 120px;
-  position: absolute;
+  position: relative;
   text-shadow: 0px 0px 3px #00aeff;
-  top: -50%;
-  left: 50%;
+  animation: glitch1 0.5s infinite;
+}
+
+.content {
+  background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0.25em rgba(0, 0, 25, 0.25);
   transform: translate(-50%, -50%);
-  white-space: nowrap;
-  animation: glitch 5s infinite;
-  margin-bottom: 0;
-}
-
-.form h1 {
-  margin: 30px 100px;
-
+  left: 50%;
+  padding: 4dvw;
+  margin-top: 0;
+  position:fixed;
+  top: 70vh;
   text-align: center;
-  color: #ffffff;
-  font-size: 30px;
-  text-transform: uppercase;
+  min-height: 30dvh;
+  max-height: 30dvh;
+  max-width: 40dvh;
+    width: 50dvw;
 }
-
 .input-form {
-  margin: 15px 40px;
+  align-items: center;
+  margin: 1dvw 0px;
   text-align: center;
-  padding: 10px;
+  height: 120%;
+  font-size: 1dvw;
 }
 
 .input-form input {
   text-align: center;
-  width: 70%;
-  height: 45px;
+  width: 90%;
+  border-radius: 10vw;
+  border: 0.4vh solid rgb(70, 108, 134);
+  font-size: 2dvh;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color: #ffffff;
-  font-size: 20px;
   background: none;
-  border-radius: 20px;
-  margin-bottom: 30px;
-  box-sizing: border-box;
+  margin:  1.6em 0px;
 }
 
 .input-form input:hover {
-  border: 5px solid rgb(0, 217, 255);
-}
-
-.forget {
-  color: #fff;
+  border: 0.4vh solid #61dafb;
 }
 
 .input-form button {
   font-family: Zelek;
-  width: 15dvh;
+  width: auto;
   height: 5dvh;
   text-align: center;
   font-size: 2.5dvh;
@@ -79,141 +91,31 @@ p {
   border-radius: 0;
   filter: contrast(30);
   border-color: #27CEE9;
-  box-shadow: inset 0px 0px 30px rgba(0, 0, 0);
-  clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
 }
 
-.input-form1 button {
-  font-family: Zelek;
-  text-align: center;
-  width: 32.4dvh;
-  height: 5dvh;
-  font-size: 2.5dvh;
-  color: #27CEE9;
-  background: none;
-  outline: none;
-  border: none;
-}
-
-.input-form1 button:hover {
-  text-shadow: 0px 0px 3px #00aeff;
-  color: #27CEE9;
-  border-width: 0.6dvh 0.6dvh;
-  border-radius: 0;
-  filter: contrast(30);
-  border-color: #27CEE9;
-  box-shadow: inset 0px 0px 30px rgba(0, 0, 0);
-  clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
-}
-
-.input-form1 {
-  margin: 15px 40px;
-  text-align: center;
-  padding: 10px;
-}
-
-.input-form1 input {
-  text-align: center;
-  width: 70%;
-  height: 45px;
-  color: #ffffff;
-  font-size: 20px;
-  background: none;
-  outline: none;
-  border-radius: 20px;
-  margin-bottom: 30px;
-  box-sizing: border-box;
-}
-
-.input-form1 input:hover {
-  border: 5px solid rgb(0, 217, 255);
-}
-
-body {
-    -webkit-background-size: cover;
-    background-size: cover;
-    background-attachment: fixed;
-    font-family: sans-serif;
-}
-
-.form h1 {
-    font-family: 'MinecrafterAltRegular';
-    font-weight: normal;
-    font-style: normal;
-    margin: 30px 100px;
-    padding: 0;
-    text-align: center;
-    color: #fff;
-    font-size: 30px;
-    text-transform: uppercase;
-}
-
-.input-form {
-    margin: 15px 40px;
-    text-align: center;
-}
-
-
-.forget {
-    color: #fff;
-}
 
 h1 {
   font-family: "Zelek";
   color: rgb(0, 217, 255);
-  text-shadow: 0px 5px 10px #00aeff;
-}
-
-.title {
-  font-family: "Zelek";
-  color: rgb(0, 255, 255);
-  font-size: 120px;
-  text-shadow: 0px 0px 3px #00aeff;
-  white-space: nowrap;
-  animation: glitch 5s infinite;
-  margin-bottom: 0;
-  margin: 0 auto;
-  position: fixed;
-  text-align: center;
-  left: 50%;
-}
-
-.content {
-  background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 2em;
-  box-shadow: 0 0 0.25em rgba(0, 0, 25, 0.25);
-  box-sizing: border-box;
-  left: 50%;
-  padding: 20px;
-  position: fixed;
-  text-align: center;
-  top: 60%;
-  transform: translate(-50%, -50%);
-  height: auto;
-  width: 100%;
-  min-width: 0px;
-  min-height: 0px;
-  max-width: 514px;
-  max-height: 534px;
-  align-items: center;
-  margin: 20px;
+  text-shadow: 0px 1vh 4vh #00aeff;
+  font-size: 2dvh;
 }
 
 .App-header {
   overflow: hidden;
-  background-color: rgba(32, 9, 32, 0.8);
+  height: 7dvh;
+  padding: 0px 1vw;
   color: white;
-  padding: 20px 10px;
-  box-shadow: 0px 2px 6px black;
+  box-shadow: 0px 0.3dvh 1dvh black;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .App-header button {
   font-family: Zelek;
-  background-color: #86263e;
-  padding: 10px;
-  margin: 2px;
+  padding:  1% 1%;
+
   text-align: center;
-  font-size: 2.5dvh;
+  font-size: 2dvh;
   border: none;
   background: none;
 }
@@ -224,10 +126,10 @@ h1 {
   border-color: #27CEE9;
   clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
   border-radius: 0;
-  border-width: 0.6dvh 0.6dvh;
+  border-width: 0.4dvh 0.4dvh;
 }
 
-.App-header-Leave{
+.App-header-Leave {
   font-family: Zelek;
   background-color: #86263e;
   padding: 10px;
@@ -240,9 +142,8 @@ h1 {
 
 .header-right {
   float: right;
-  padding: 10px;
+  padding: 1dvh;
   width: auto;
-  height: 54px;
   color: #fff;
   font-size: 20px;
   outline: none;
@@ -263,30 +164,5 @@ h1 {
 
 @font-face {
   font-family: Zelek;
-  src: url(Figma/NeZelek.ttf);
-}
-@keyframes glitch {
-  0% {
-    text-shadow: 0px 0px 10px #00aeff, 0px 0px 30px #00aeff,
-      0px 0px 30px #00aeff;
-    color: rgb(0, 217, 255);
-  }
-  25% {
-    text-shadow: none;
-    color: #00aeff;
-  }
-  50% {
-    text-shadow: 0px 0px 10px #00aeff, 0px 0px 30px #00aeff,
-      0px 0px 30px #00aeff;
-    color: rgb(0, 217, 255);
-  }
-  75% {
-    text-shadow: none;
-    color: #00aeff;
-  }
-  100% {
-    text-shadow: 0px 0px 10px #00aeff, 0px 0px 30px #00aeff,
-      0px 0px 30px #00aeff;
-    color: rgb(0, 217, 255);
-  }
+  src: url(assets/fonts/NeZelek.ttf);
 }
