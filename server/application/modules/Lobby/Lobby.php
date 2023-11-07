@@ -17,11 +17,8 @@ class Lobby
 
     public function getTeamsInfo()
     {
-        $teams = $this->db->getTeamsInfo();
-        return [
-            'score' => $teams->score,
-            'numberOfTeamPoints' => $teams->playersCount
-        ];
+        return  $this->db->getTeamsInfo();
+        
 
     }
     public function getSkins(){

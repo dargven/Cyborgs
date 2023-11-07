@@ -20,6 +20,9 @@ class Application
         $this->chat = new Chat($db);
     }
 
+
+    
+
     /*************************/
     /* НЕПОВТОРИМЫЙ ОРИГИНАЛ */
     /*************************/
@@ -80,11 +83,7 @@ class Application
         return ['error' => 242];
     }
 
-    /******************/
-    /* ЖАЛКАЯ ПАРОДИЯ */
-    /******************/
 
-//..
     function selectTeam($params)
     {
         $token = $params['token'];
@@ -99,6 +98,15 @@ class Application
         return ['error' => 242];
     }
 
+
+    
+
+    /******************/
+    /* ЖАЛКАЯ ПАРОДИЯ */
+    /******************/
+
+//..
+  
     function getTeamsInfo($params)
     {
         $token = $params['token'];
