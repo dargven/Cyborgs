@@ -8,27 +8,30 @@ interface IProjectiileProps {
     direction: Vector3;
     initialPosition: Vector3;
     texture: Texture;
-    //damage
+    damage: number;
+    team:number;
 }
 
-const Projectile = ({ initialSpeed, direction, initialPosition, texture }: IProjectiileProps) => {
+const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture, team }: IProjectiileProps) => {
     const bulletRef = useRef<RapierRigidBody>(null!);
     const [isActive, setActive] = useState<boolean>(true);
-
     useEffect(() => {
         direction.setLength(initialSpeed)
         bulletRef.current.setLinvel(direction, true);
-    });
-
+    }, []);
+console.log(team)
     return (
         <RigidBody
             ref={bulletRef}
             lockRotations
             angularDamping={1}
             position={initialPosition}
+            ccd
+            restitution={0}
             userData={{
                 type: 'projectile',
-                damage: 10
+                damage: damage,
+                team: team,
             }}>
             {isActive ? <group>
                 <BallCollider
@@ -38,6 +41,8 @@ const Projectile = ({ initialSpeed, direction, initialPosition, texture }: IProj
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "player" || data.type === "Collider") {
+                            // bulletRef.current.setLinvel(new Vector3(), true);
+                            bulletRef.current.sleep();
                             setActive(false);
                         }
                     }} />

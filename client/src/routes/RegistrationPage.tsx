@@ -37,7 +37,7 @@ const RegistrationPage = () => {
       </div>
       <div className="content">
         <h1>Регистрация</h1>
-        <div className="input-form1">
+        <div className="input-form">
           <input
             type="text"
             id="login"
@@ -55,7 +55,7 @@ const RegistrationPage = () => {
             ref={passwordRef}
           />
           <button  onClick={() => handleRegistration()}>
-            Зарегистрироваться
+            <h1>Зарегистрироваться</h1>
           </button>
         </div>
         {registrationSuccess ? <Navigate to="/login" replace={true} /> : null}

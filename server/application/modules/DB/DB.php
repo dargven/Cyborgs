@@ -1,4 +1,5 @@
 <?php
+
 class DB
 {
     //сохраняет соединение с ДБ
@@ -51,7 +52,7 @@ class DB
     {
         $sth = $this->pdo->prepare($sql);
         $sth->execute($params);
-        return $sth->fetchAll(PDO::FETCH_OBJ);
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -103,7 +104,7 @@ class DB
 
     public function DeleteBullet($id)
     {
-        return $this->execute("DELETE * FROM bullet WHERE ?", [$id]);
+        return $this->execute("DELETE * FROM bullet WHERE id=?", [$id]);
     }
 
     public function getScoreTeams()
@@ -124,18 +125,29 @@ class DB
 
     public function addPlayerToTeam($id, $teamId)
     {
-        $this->execute("INSERT INTO userTeams (team_id, user_id) VALUES (?, ?)", [$teamId, $id]);
+        return $this->execute("INSERT INTO userTeams (team_id, user_id) VALUES (?, ?)", [$teamId, $id]);
     }
 
-    public function getSkins($id)
+    public function getSkinsInLobby()
     {
-        return $this->queryAll("SELECT skin_id, text FROM userSkins, skins WHERE user_id=?", [$id]);
+        return $this->queryAll("SELECT skin_id as id, text, image FROM userSkins, skins WHERE`role`='lobby'");
     }
 
-    public function setSkin($id, $skinId)
+    public function setSkinInLobby($id, $skinId)
     {
-        return $this->execute("UPDATE userSkins SET  skin_id=? WHERE id=?", [$skinId, $id]);
+        return $this->execute("UPDATE userSkins SET skin_id=? WHERE `role`=?, id=?", [$skinId, 'lobby', $id]);
     }
+
+    public function getMessage()
+    {
+        return $this->queryAll('SELECT name, message, created FROM messages as m LEFT JOIN users as u on u.id = m.user_id ORDER BY m.created DESC');
+    }
+
+    public function sendMessage($id, $message)
+    {
+        return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
+    }
+
 
 }
 

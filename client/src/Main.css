@@ -1,48 +1,46 @@
 html {
   height: 100%;
+  overflow: hidden;
 }
 
 body{
   -webkit-background-size: cover;
   background-size: cover;
   background-attachment: fixed;
-  background-image: url("Figma/MenuBack1.png");
-  overflow: auto;
+  background-image: url("assets/image/giff23.gif");
   max-zoom: 50%;
 }
 
 .Main {
   animation: slideButton 2s ease-in-out forwards;
   top: 45dvh;
-  left: 40dvh;
-  font-size: 10dvh;
-  display: flex;
+  width: 8dvw;
+  font-size: 6dvw;
   flex-direction: column;
   align-items: flex-start;
-  position: absolute;
-
+  position: fixed;
 }
 
 .Main button {
+  margin:  1em 0px;
   font-family: Zelek;
-  width: 10dvh;
+  width: 8dvw;
   height: 10dvh;
   text-align: left;
-  font-size: 2.5dvh;
+  font-size: 0.3em;
   width: 120%;
   color: none;
   background: none;
   outline: none;
   border: none;
-
 }
 
 .Main button:hover {
   text-align: left;
-  width: 200%;
   color: none;
   border-width: 0.6dvh 0.6dvh;
   border-radius: 0;
+  
   filter: contrast(30);
   border-color: #27CEE9;
   box-shadow: inset 0px 0px 30px rgba(0, 0, 0);
@@ -54,31 +52,30 @@ h2 {
   position: absolute;
   font-family: "Zelek";
   top: 13dvh;
-  font-size: 8dvh;
+  font-size: 4dvw;
   color: rgb(0, 217, 255);
   text-shadow: 5px 5px 10px #000;
   animation: slideRight 2s ease-in-out forwards, glitch1 0.5s infinite;
 }
 
 .slide-in {
-  background-image: url("Figma/Slide.gif");
-
-  left: 38dvh;
+  background-image: url("assets/image/Slide.gif");
+  background-size: cover; /* Масштабирование изображения, чтобы оно заполнило блок */
+  background-position: center;
+  left: 20dvw;
   animation: slideIn 3s ease-in-out forwards;
-  
-  height: -10px;
-  width: 50%;
+  max-width: 40dvh;
+  width: 50dvw;
   background-repeat: no-repeat;
-  position: fixed;
+ position: absolute;
 }
 
 .b-marquee--rtl {
   position: fixed;
   color: #028dff;
-  font-size: 2dvh;
+  font-size: 1vw;
   font-family: Zelek;
-   width: 250%; 
-  top:11dvh;
+   width: 250vw; 
   text-transform: uppercase;
   text-align: center;
   overflow:hidden;
@@ -119,33 +116,33 @@ h2 {
 
   20%,
   70% {
-    height: 100%;
+    height: 100vh;
     filter: brightness(2);
   }
 }
 
 @keyframes slideRight {
   0% {
-    left: -100vh;
+    left: -100dvw;
   }
 
   100% {
-    left: 31dvh;
+    left: 15dvw;
 
   }
 }
 
 @keyframes slideButton {
   0% {
-    left: -100vh;
+    left: -100dvw;
   }
 
   97% {
-    left: -100vh;
+    left: -100dvw;
   }
 
   100% {
-    left: 40dvh;
+    left: 24%;
 
   }
 }

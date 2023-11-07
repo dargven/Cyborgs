@@ -3,6 +3,7 @@ require_once 'modules/User/User.php';
 require_once 'modules/Game/Game.php';
 require_once 'modules/DB/DB.php';
 require_once 'modules/Lobby/Lobby.php';
+require_once 'modules/Chat/Chat.php';
 
 class Application
 {
@@ -16,18 +17,20 @@ class Application
         $db = new DB();
         $this->user = new User($db);
         $this->lobby = new Lobby($db);
+        $this->chat = new Chat($db);
     }
 
     /*************************/
     /* НЕПОВТОРИМЫЙ ОРИГИНАЛ */
     /*************************/
-    function register($params){
+    function register($params)
+    {
         $login = $params['login'];
         $hash = $params['hash'];
-        if($login && $hash){
-            return $this->user->register($login,$hash);
+        if ($login && $hash) {
+            return $this->user->register($login, $hash);
         }
-        return ['error'=>242];
+        return ['error' => 242];
     }
 
     function login($params)
@@ -38,7 +41,7 @@ class Application
         if ($login && $hash && $rnd) {
             return $this->user->login($login, $hash, $rnd);
         }
-        return ['error'=>1001];
+        return ['error' => 1001];
     }
 
     function logout($params)
@@ -47,7 +50,20 @@ class Application
         if ($token) {
             return $this->user->logout($token);
         }
-        return ['error'=>242];
+        return ['error' => 242];
+    }
+
+    function getMessage($params)
+    {
+        $token = $params['token'];
+        if ($token) {
+            $user = $this->user->getUser($token);
+            if ($user) {
+                return $this->chat->getMessage();
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
     }
 
     function sendMessage($params)
@@ -59,9 +75,9 @@ class Application
             if ($user) {
                 return $this->chat->sendMessage($user->id, $message);
             }
-            return ['error'=>1002];
+            return ['error' => 1002];
         }
-        return ['error'=>242];
+        return ['error' => 242];
     }
 
     /******************/
@@ -78,40 +94,56 @@ class Application
             if ($user) {
                 return $this->lobby->selectTeam($user->id, $teamId);
             }
-            return ['error'=>1002];
+            return ['error' => 1002];
         }
-        return ['error'=>242];
+        return ['error' => 242];
     }
 
     function getTeamsInfo($params)
     {
-        $teamId = $params['teamId'];
-        if ($teamId) {
-            $this->user->getTeamsInfo($teamId);
+        $token = $params['token'];
+        if ($token) {
+            $user = $this->user->getUser($token);
+            if ($user) {
+                $this->lobby->getTeamsInfo();
+            }
+            return ['error' => 1002];
+
         }
-        return ['error'=>242];
+        return ['error' => 242];
+
     }
 
 
     function getSkins($params)
     {
-        $id = $params['id'];
         $token = $params['token'];
-        if ($token && $id) {
-            return $this->user->getSkins($id, $token);
+        if ($token) {
+            $user = $this->user->getUser($token);
+            if ($user) {
+                return $this->lobby->getSkins();
+            }
+            return ['error' => 1002];
         }
-        return ['error'=>242];
+        return ['error' => 242];
+
     }
 
     function setSkin($params)
     {
-        $id = $params['id'];
         $token = $params['token'];
         $skinId = $params['skinId'];
-        if ($token && $id && $skinId) {
-            return $this->user->setSkin($id, $token, $skinId);
+        if ($token && $skinId) {
+            $user = $this->user->getUser($token);
+            if ($user) {
+                return $this->lobby->setSkin($user->id, $skinId);
+
+            }
+            return ['error' => 1002];
+
         }
-        return ['error'=>242];
+        return ['error' => 242];
+
     }
 
 
