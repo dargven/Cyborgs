@@ -12,8 +12,6 @@ body {
   -webkit-background-size: cover;
   background-size: cover;
   background-attachment: fixed;
-  background-image: url("assets/image/giff23.gif");
-
 }
 
 .title {
@@ -178,5 +176,5 @@ h1 {
 
 @font-face {
   font-family: Zelek;
-  src: url(assets/fonts/NeZelek.ttf);
+  src: url(../public/assets/fonts/NeZelek.ttf);
 }
