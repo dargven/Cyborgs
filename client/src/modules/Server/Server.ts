@@ -52,6 +52,7 @@ export default class Server {
         const result = await this.request<boolean>('logout');
         if (result) {
             this.token = null;
+            console.log(result);
         }
         return result;
     }

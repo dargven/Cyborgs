@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import Chat from "../components/Chat/Chat";
 import Game from "../components/Game/Game";
 import NavButton from "../components/navButton";
+import Chat from "../components/Chat/Chat";
 import "../popUpMenu.css"
 
 const GamePage = () => {
@@ -16,7 +16,6 @@ const GamePage = () => {
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyPress);
-
         return () => {
             document.removeEventListener("keydown", handleKeyPress);
         };
@@ -24,6 +23,7 @@ const GamePage = () => {
 
     return (
         <div>
+            <Chat/>
             <Game/>
             {isPopupVisible && (
                 <div className="popUpMenu" onClick={() => setIsPopupVisible(false)}>
@@ -34,6 +34,8 @@ const GamePage = () => {
                     </div>
                 </div>
             )}
+
+            
         </div>
     );
 }

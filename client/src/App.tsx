@@ -22,10 +22,10 @@ const App: React.FC = () => {
                 <ServerContext.Provider value={server}>
                     <Routes>
                         <Route path="" element={<TestPage/>} />
-                        <Route path="/game" element={<GamePage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/registration" element={<RegistrationPage />} />
                         <Route element={<PrivateRoute />}>
+                            <Route path="/game" element={<GamePage />} />
                             <Route path="/main" element={<MainPage />} />
                         </Route>
                     </Routes>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./Chat.css"
 
 const Chat = () => {
-    const [showChat, setShowChat] = useState(false)
+    //const [showChat, setShowChat] = useState(true)
 
     //const messagesContainer: HTMLElement | null = document.getElementById('messages'); // Контейнер сообщений — скрипт будет добавлять в него сообщения
     //let interval: NodeJS.Timer | null = null; // Переменная с интервалом подгрузки сообщений
@@ -25,14 +25,11 @@ const Chat = () => {
 //}
 
     return (
-        <div className="chatComponent">
-            <button onClick={() => setShowChat(!showChat)} className="chatBtn">
-                {showChat ? 'Скрыть' : 'Показать'}Чат</button>
-            {showChat && 
+        <div className="chatComponent"> 
             <div className='chat'>
                 <div className="chat-messages">
                     <div className="chat-messages__content" id="messages">
-                        Загрузка...
+                        
                     </div>
                 </div>
                 <div className="chat-input">
@@ -41,7 +38,7 @@ const Chat = () => {
                         <input type='submit' className="chat-form__submit" value='=>'/>
                     </form>
                 </div>
-            </div>}
+            </div>
         </div>
     );
 }
