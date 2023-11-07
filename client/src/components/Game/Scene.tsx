@@ -47,10 +47,10 @@ const Scene = ({ vSize }: ISceneProps) => {
             name: 'tah gun',
             type: 1,
             damage: 99,
-            rate: 20,
+            rate: 1,
             magSize: 10,
             maxAmmo: 20,
-            currentAmmo: 1,
+            currentAmmo: 20,
             speed: 6
         })
     ]);
@@ -61,7 +61,7 @@ const Scene = ({ vSize }: ISceneProps) => {
         slot3: null,
     });
 
-    const [item, setItem] = useState<Gun>(inventory[0]);
+    const [gun, setGun] = useState<Gun>(inventory[0]);
     const [last, setLast] = useState<number>(0);
 
     const colliders = CollidersPositions();
@@ -88,19 +88,25 @@ const Scene = ({ vSize }: ISceneProps) => {
         position.y += direction.y;
         position.z = 0;
         direction.setLength(1);
-        const bullet = item.use(position, direction, `${1337}-${Date.now()}`, team);
 
-        if (bullet) {
-            setBullets((bullets) => [...bullets, bullet]);
+        const current = Date.now();
+
+        if (.001 * (current - last) > gun.rate) {
+            const bullet = gun.use(position, direction, `${1337}-${Date.now()}`, team);
+
+            if (bullet) {
+                setBullets((bullets) => [...bullets, bullet]);
+            }
+            setLast(current);
         }
     }
 
     const getWeapon = (slot: number, id: number) => {
         setWeapons(prevWeapons => {
             const newWeapons = { ...prevWeapons };
-    
+
             newWeapons[`slot${slot}`] = id;
-    
+
             return newWeapons;
         });
     }
@@ -112,7 +118,7 @@ const Scene = ({ vSize }: ISceneProps) => {
         colliderKeyCounter++;
         return key;
     };
-    
+
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
@@ -134,19 +140,19 @@ const Scene = ({ vSize }: ISceneProps) => {
                     <Robot />
                 </group>
 
-                <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons}/>
+                <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons} />
 
                 {colliders.map(collider =>
                     <RigidBody
-                    key={generateColliderKey()}
-                    type='fixed'
-                    userData={{
-                        type: "Collider"
-                    }}>
+                        key={generateColliderKey()}
+                        type='fixed'
+                        userData={{
+                            type: "Collider"
+                        }}>
                         <CuboidCollider
                             position={collider.position}
                             args={collider.args}
-                            />
+                        />
                     </RigidBody>
                 )}
 
@@ -164,11 +170,11 @@ const Scene = ({ vSize }: ISceneProps) => {
 
                 {lasers.map(laser =>
                     <Hitscan
-                    key={laser.key}
-                    initialPosition={[laser.position.x, laser.position.y]}
-                    aimingPoint={[laser.aimingPoint.x, laser.aimingPoint.y]}
+                        key={laser.key}
+                        initialPosition={[laser.position.x, laser.position.y]}
+                        aimingPoint={[laser.aimingPoint.x, laser.aimingPoint.y]}
                     />
-                    )}
+                )}
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
                     <Room texture={textures['room']} />
