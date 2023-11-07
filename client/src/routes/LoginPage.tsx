@@ -56,7 +56,7 @@ const LoginPage = () => {
                         ref={passwordRef}
                     />
 
-                    <button onClick={() => handleLogin()}>Войти</button>
+                    <button onClick={() => handleLogin()}><h1>Войти</h1></button>
                 </div>
                 {loginSuccess ? <Navigate to="/main" replace={true} /> : null}
             </div>
