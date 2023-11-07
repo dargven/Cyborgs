@@ -12,6 +12,7 @@ class Answer
         '700' => 'No skins',
         '701' => 'Skin is not found',
         '705' => 'User is not found',
+        '706'=> 'text message is empty',
         '999' => 'Is it Triangle?',
         '1001' => 'params login or password not set',
         '1002' => 'error in auth user',
@@ -25,7 +26,6 @@ class Answer
         if ($data) {
             if (!is_bool($data) && array_key_exists('error', $data)) {
                 $code = $data['error'];
-                var_dump($code);
                 return [
                     'result' => 'error',
                     'error' => [

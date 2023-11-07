@@ -17,10 +17,11 @@ function result($params) {
             case 'getSkins': return $app->getSkins($params);
             case 'setSkin': return $app->setSkin($params);
             case 'sendMessage':return $app->sendMessage($params);
+            case 'getMessage':return $app->getMessage($params);
             default: return ['error' => 102];
         }
     }
     return ['error' => 101];
 }
 
-echo json_encode(Answer::response(result($_GET)));
+echo json_encode(Answer::response(result($_GET)), JSON_UNESCAPED_UNICODE);
