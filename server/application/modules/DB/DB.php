@@ -1,4 +1,5 @@
 <?php
+
 class DB
 {
     //сохраняет соединение с ДБ
@@ -51,7 +52,7 @@ class DB
     {
         $sth = $this->pdo->prepare($sql);
         $sth->execute($params);
-        return $sth->fetchAll(PDO::FETCH_OBJ);
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -134,7 +135,17 @@ class DB
 
     public function setSkinInLobby($id, $skinId)
     {
-        return $this->execute("UPDATE userSkins SET skin_id=? WHERE `role`=?, id=?", [$skinId,'lobby',$id]);
+        return $this->execute("UPDATE userSkins SET skin_id=? WHERE `role`=?, id=?", [$skinId, 'lobby', $id]);
+    }
+
+    public function getMessage()
+    {
+        return $this->queryAll('SELECT name, message, created FROM messages as m LEFT JOIN users as u on u.id = m.user_id ORDER BY m.created DESC');
+    }
+
+    public function sendMessage($id, $message)
+    {
+        return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
     }
 
 

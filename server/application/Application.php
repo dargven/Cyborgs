@@ -3,6 +3,7 @@ require_once 'modules/User/User.php';
 require_once 'modules/Game/Game.php';
 require_once 'modules/DB/DB.php';
 require_once 'modules/Lobby/Lobby.php';
+require_once 'modules/Chat/Chat.php';
 
 class Application
 {
@@ -16,6 +17,7 @@ class Application
         $db = new DB();
         $this->user = new User($db);
         $this->lobby = new Lobby($db);
+        $this->chat = new Chat($db);
     }
 
     /*************************/
@@ -47,6 +49,19 @@ class Application
         $token = $params['token'];
         if ($token) {
             return $this->user->logout($token);
+        }
+        return ['error' => 242];
+    }
+
+    function getMessage($params)
+    {
+        $token = $params['token'];
+        if ($token) {
+            $user = $this->user->getUser($token);
+            if ($user) {
+                return $this->chat->getMessage();
+            }
+            return ['error' => 1002];
         }
         return ['error' => 242];
     }
@@ -120,7 +135,7 @@ class Application
         $skinId = $params['skinId'];
         if ($token && $skinId) {
             $user = $this->user->getUser($token);
-            if($user){
+            if ($user) {
                 return $this->lobby->setSkin($user->id, $skinId);
 
             }
