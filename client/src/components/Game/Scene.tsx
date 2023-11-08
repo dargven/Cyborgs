@@ -15,6 +15,7 @@ import Room from "./Room";
 import Zone from "./Zone";
 import Inventory from "./Inventory";
 import { Gun, Item } from "../../modules/Game/entities/Items";
+import { Animator } from "./sprites/Animator";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -136,7 +137,7 @@ const Scene = ({ vSize }: ISceneProps) => {
 
                 <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons}/>
 
-                <SpriteAnimator
+                <Animator
                     fps={3}
                     startFrame={0}
                     loop={true}
