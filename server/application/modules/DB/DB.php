@@ -140,7 +140,7 @@ class DB
 
     public function getMessage()
     {
-        return $this->queryAll('SELECT name, message, created FROM messages as m LEFT JOIN users as u on u.id = m.user_id ORDER BY m.created DESC');
+        return $this->queryAll('SELECT name, message, created FROM messages as m LEFT JOIN users as u on u.id = m.user_id ORDER BY m.created ');
     }
 
     public function sendMessage($id, $message)
