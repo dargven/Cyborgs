@@ -5,8 +5,7 @@
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 48 },
-    "sourceSize": { "w": 16, "h": 48 },
-    "duration": 300
+    "sourceSize": { "w": 16, "h": 48 }
    },
    {
     "filename": "fishtank 1.ase",
@@ -14,8 +13,7 @@
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 48 },
-    "sourceSize": { "w": 16, "h": 48 },
-    "duration": 300
+    "sourceSize": { "w": 16, "h": 48 }
    },
    {
     "filename": "fishtank 2.ase",
@@ -23,8 +21,7 @@
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 48},
-    "sourceSize": { "w": 16, "h": 48 },
-    "duration": 300
+    "sourceSize": { "w": 16, "h": 48 }
    }
  ],
  "meta": {

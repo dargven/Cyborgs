@@ -138,6 +138,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                 <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons}/>
 
                 <Animator
+                    scale={[0.8,2,0]}
                     fps={3}
                     startFrame={0}
                     loop={true}

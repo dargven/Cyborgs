@@ -80,14 +80,14 @@ export const Animator: React.FC<TAnimatorProps> = (
         })
     }
 
-    const calculateAspectRatio = (width: number, height: number, factor: number): Vector3 => {
-        const adaptedHeight = height * (v.aspect > width / height ? v.width / width : v.height / height)
-        const adaptedWidth = width * (v.aspect > width / height ? v.width / width : v.height / height)
+    // const calculateAspectRatio = (width: number, height: number, factor: number): Vector3 => {
+    //     const adaptedHeight = height * (v.aspect > width / height ? v.width / width : v.height / height)
+    //     const adaptedWidth = width * (v.aspect > width / height ? v.width / width : v.height / height)
 
-        setAspect([adaptedWidth * factor, adaptedHeight * factor, 1])
-        // spriteRef.current.scale = [adaptedWidth * factor, adaptedHeight * factor, 1]
-        return [adaptedWidth * factor, adaptedHeight * factor, 1]
-    }
+    //     setAspect([adaptedWidth * factor, adaptedHeight * factor, 1])
+    //     //spriteRef.current.scale = [adaptedWidth * factor, adaptedHeight * factor, 1]
+    //     return [adaptedWidth * factor, adaptedHeight * factor, 1]
+    // }
 
     // initial loads
     React.useEffect(() => {
@@ -131,7 +131,6 @@ export const Animator: React.FC<TAnimatorProps> = (
                 const height = _spriteTexture.image.height
                 const frameWidth = width / numberOfFrames
                 const frameHeight = height
-                console.log(width, height, frameWidth, frameHeight, numberOfFrames)
                 textureData.current = _spriteTexture
                 totalFrames.current = numberOfFrames
                 spriteData.current = {
@@ -163,7 +162,7 @@ export const Animator: React.FC<TAnimatorProps> = (
             textureData.current = _spriteTexture
 
             const { w, h } = getFirstItem(json.frames).sourceSize;
-            const aspect = calculateAspectRatio(w, h, aspectFactor);
+            //const aspect = calculateAspectRatio(w, h, aspectFactor);
 
             setAspect(aspect)
             if (matRef.current) {
@@ -280,7 +279,7 @@ export const Animator: React.FC<TAnimatorProps> = (
         if (diff <= fpsInterval) return
         timerOffset.current = now - (diff % fpsInterval)
 
-        calculateAspectRatio(frameW, frameH, aspectFactor)
+        //calculateAspectRatio(frameW, frameH, aspectFactor)
         const framesH = (metaInfo.w) / frameW
         const framesV = (metaInfo.h) / frameH
         const {
