@@ -12,7 +12,7 @@ const Chat = () => {
     }
 
     if (interval === null) {
-        interval = setInterval(updateChat, 500);
+        interval = setInterval(updateChat, 5000);
     }
 
     const handleChat = async () => {
