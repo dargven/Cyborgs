@@ -19,7 +19,6 @@ function result($params) {
             case 'setSkin': return $app->setSkin($params);//50-50
             case 'sendMessage':return $app->sendMessage($params);//Работает
             case 'getMessage':return $app->getMessage($params);//Работает
-            case 'A': return $db->updateScoreInTeam($teamId=1,$score=12);
             default: return ['error' => 102];
         }
     }
