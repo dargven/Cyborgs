@@ -1,0 +1,45 @@
+{ "frames": [
+   {
+    "filename": "fishtank 0.ase",
+    "frame": { "x": 0, "y": 0, "w": 16, "h": 47.5 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 47.5 },
+    "sourceSize": { "w": 16, "h": 47.5 },
+    "duration": 300
+   },
+   {
+    "filename": "fishtank 1.ase",
+    "frame": { "x": 15.5, "y": 0, "w": 16, "h": 47.5 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 47.5 },
+    "sourceSize": { "w": 16, "h": 47.5 },
+    "duration": 300
+   },
+   {
+    "filename": "fishtank 2.ase",
+    "frame": { "x": 31.5, "y": 0, "w": 16, "h": 47.5},
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 47.5},
+    "sourceSize": { "w": 16, "h": 47.5 },
+    "duration": 300
+   }
+ ],
+ "meta": {
+  "app": "https://github.com/LibreSprite/LibreSprite/",
+  "version": "1.0-dev",
+  "format": "RGBA8888",
+  "size": { "w": 48, "h": 48 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "bed", "opacity": 255 },
+   { "name": "scape", "opacity": 255 },
+   { "name": "scape-shadow", "opacity": 255},
+   { "name": "Layer 1", "opacity": 160 }
+  ]
+ }
+}

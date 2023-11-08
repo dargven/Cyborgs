@@ -118,13 +118,12 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             >
 
                 <SpriteAnimator
-                    fps={2}
+                    fps={3}
                     startFrame={0}
                     loop={true}
                     autoPlay={true}
                     textureImageURL={'./assets/test/Sprite-0001.png'}
                     textureDataURL={'./assets/test/Sprite-0001.json'}
-                    alphaTest={0.01}
                 // pause={!isMoving}
                 />
 

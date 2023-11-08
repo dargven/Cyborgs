@@ -1,4 +1,4 @@
-import { Stars } from "@react-three/drei";
+import { SpriteAnimator, Stars } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
 import { createRef, useEffect, useRef, useState } from "react";
@@ -136,6 +136,15 @@ const Scene = ({ vSize }: ISceneProps) => {
 
                 <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons}/>
 
+                <SpriteAnimator
+                    fps={3}
+                    startFrame={0}
+                    loop={true}
+                    autoPlay={true}
+                    textureImageURL={'./assets/Map Parts/fishtank.png'}
+                    textureDataURL={'./assets/Map Parts/fishtank.json'}
+                // pause={!isMoving}
+                />
                 {colliders.map(collider =>
                     <RigidBody
                     key={generateColliderKey()}
