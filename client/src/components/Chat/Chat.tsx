@@ -1,8 +1,6 @@
-import { useState } from "react";
 import "./Chat.css"
 
 const Chat = () => {
-    //const [showChat, setShowChat] = useState(true)
 
     //const messagesContainer: HTMLElement | null = document.getElementById('messages'); // Контейнер сообщений — скрипт будет добавлять в него сообщения
     //let interval: NodeJS.Timer | null = null; // Переменная с интервалом подгрузки сообщений
@@ -29,7 +27,7 @@ const Chat = () => {
             <div className='chat'>
                 <div className="chat-messages">
                     <div className="chat-messages__content" id="messages">
-                        
+                        СООБЩЕНИЕ
                     </div>
                 </div>
                 <div className="chat-input">

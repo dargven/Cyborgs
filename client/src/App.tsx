@@ -8,7 +8,6 @@ import MainPage from "./routes/MainPage";
 import RegistrationPage from "./routes/RegistrationPage";
 import PrivateRoute from "./components/privateRoute";
 import GamePage from "./routes/GamePage";
-import TestPage from "./routes/TestPage";
 
 export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
@@ -21,11 +20,11 @@ const App: React.FC = () => {
             <StoreContext.Provider value={store}>
                 <ServerContext.Provider value={server}>
                     <Routes>
-                        <Route path="" element={<TestPage/>} />
+                        <Route path="" element={<LoginPage/>} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/registration" element={<RegistrationPage />} />
+                        <Route path="/game" element={<GamePage />} />
                         <Route element={<PrivateRoute />}>
-                            <Route path="/game" element={<GamePage />} />
                             <Route path="/main" element={<MainPage />} />
                         </Route>
                     </Routes>

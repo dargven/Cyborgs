@@ -1,5 +1,5 @@
 import { Store } from "../Store/Store";
-import {TUser} from "./types";
+import {TMessage, TUser} from "./types";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV 
 
@@ -53,6 +53,27 @@ export default class Server {
         if (result) {
             this.token = null;
             console.log(result);
+        }
+        return result;
+    }
+
+    async sendMessage(token: string, message: string): Promise<TMessage | null> {
+        const result = await this.request<TMessage>('sendMessage',{
+            token,
+            message,
+        });
+        if(result) {
+            return result;
+        }
+        return result;
+    }
+
+    async getMessage(token: string): Promise<TMessage | null> {
+        const result = await this.request<TMessage>('getMessage',{
+            token,
+        });
+        if(result) {
+            return result;
         }
         return result;
     }
