@@ -57,9 +57,9 @@ export default class Server {
         return result;
     }
 
-    async sendMessage(token: string, message: string): Promise<TMessage | null> {
+    async sendMessage(message: string): Promise<TMessage | null> {
         const result = await this.request<TMessage>('sendMessage',{
-            token,
+            token: this.token,
             message,
         });
         if(result) {
@@ -68,9 +68,9 @@ export default class Server {
         return result;
     }
 
-    async getMessage(token: string): Promise<TMessage | null> {
+    async getMessage(): Promise<TMessage | null> {
         const result = await this.request<TMessage>('getMessage',{
-            token,
+            token: this.token,
         });
         if(result) {
             return result;

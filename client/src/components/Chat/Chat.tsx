@@ -1,26 +1,27 @@
+import { useContext, useRef } from "react";
 import "./Chat.css"
+import { ServerContext } from "../../App";
 
 const Chat = () => {
+    const chatRef = useRef<HTMLInputElement | null>(null);
+    const server = useContext(ServerContext);
+    const token = 'HZ';
+    let interval: NodeJS.Timer | null = null;
 
-    //const messagesContainer: HTMLElement | null = document.getElementById('messages'); // Контейнер сообщений — скрипт будет добавлять в него сообщения
-    //let interval: NodeJS.Timer | null = null; // Переменная с интервалом подгрузки сообщений
-    //const sendForm: HTMLFormElement | null = document.getElementById('chat-form'); // Форма отправки
-    //const messageInput: HTMLInputElement | null = document.getElementById('message-text'); // Инпут для текста сообщения
+    const updateChat = () => {
+        const messages = server.getMessage()
+    }
 
-    //function update() {
-    // send_request('load');
-    //}
+    if (interval === null) {
+        interval = setInterval(updateChat, 500);
+    }
 
-    //if (interval === null) {
-    //interval = setInterval(update, 500);
-    //}
-
-    //if (sendForm) {
-    //sendForm.onsubmit = function (event: Event) {
-        //send_request('send');
-        //event.preventDefault(); // Используем preventDefault() вместо return false, чтобы остановить стандартную отправку формы
-    //};
-//}
+    const handleChat = async () => {
+        if(chatRef.current?.value) {
+            await server.sendMessage(chatRef.current?.value);
+        }
+    }
+    
 
     return (
         <div className="chatComponent"> 
@@ -31,10 +32,10 @@ const Chat = () => {
                     </div>
                 </div>
                 <div className="chat-input">
-                    <form method="post" id="chat-form">
-                        <input type="text" id="mesage-text" className="chat-form__input" placeholder="Введите сообщение"/>
-                        <input type='submit' className="chat-form__submit" value='=>'/>
-                    </form>
+                    <div id="chat-form">
+                        <input ref={chatRef} type="text" id="mesage-text" className="chat-form__input" placeholder="Введите сообщение"/>
+                        <button className="chat-form__submit" onClick={() => handleChat()}>Отправить</button>
+                    </div>
                 </div>
             </div>
         </div>
