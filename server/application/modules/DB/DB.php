@@ -9,7 +9,7 @@ class DB
     public function __construct()
     {
 
-//        local
+        // local
 //        $host = '127.0.0.1';
 //        $port = 3306;
 //        $user = 'root';
@@ -30,6 +30,8 @@ class DB
     {
         $this->pdo = null;
     }
+
+
 
     // выполнить запрос без возвращения данных
     private function execute($sql, $params = [])
@@ -85,6 +87,9 @@ class DB
         );
     }
 
+
+
+
     public function addPlayerToTeam($id, $teamId)
     {
         return $this->execute("INSERT INTO userTeams (team_id, user_id) VALUES (?, ?)", [$teamId, $id]);
@@ -99,6 +104,7 @@ class DB
     {
         return $this->queryAll('SELECT name, message, created FROM messages as m LEFT JOIN users as u on u.id = m.user_id ORDER BY m.created DESC');
     }
+
 
     public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
     {
@@ -118,12 +124,8 @@ class DB
         
     }
 
-    public function getCountOfPlayersAndScoreInTeams()
-    
-    {
-        return $this->queryAll("SELECT * FROM teams as t INNER JOIN userTeams as u on t.team_id = u.team_id");
 
-    }
+
 
     public function setSkinInLobby($id, $skinId)
     {
@@ -132,10 +134,33 @@ class DB
     // ЖАЛКАЯ ПАРОДИЯ //
     //Методы полностью переписаны по феншую, осталось их нормально протестить.
 
+    
+
+
+    public function getScoreTeams()
+    {
+        return $this->execute("SELECT team_id, team_score FROM teams group by team_id");
+    }
+
+    public function getCountOfPlayersInTeams()
+    {
+        return $this->queryAll("SELECT team_id, COUNT(user_id) as countOfPlayers from userTeams group by team_id");
+
+    }
+
+
+
+   
+
     public function getSkinsInLobby()
     {
         return $this->queryAll("SELECT skin_id as id, text, image FROM userSkins, skins WHERE`role`='lobby'");
     }
+
+   
+
+   
+
 
 }
 
