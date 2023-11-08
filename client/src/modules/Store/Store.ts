@@ -1,12 +1,14 @@
 export class Store {
     private user = {
         name: '',
-        isAuth: false
+        isAuth: false,
+        token: '',
     }
 
-    setUser(name: string): void {
+    setUser(name: string, token: string): void {
         this.user.name = name;
         this.user.isAuth = true;
+        this.user.token = token;
     }
 
     getUser() {

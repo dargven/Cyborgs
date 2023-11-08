@@ -43,7 +43,7 @@ export default class Server {
         );
         if (result?.token) {
             this.token = result.token;
-            this.store.setUser(login);
+            this.store.setUser(login, this.token);
         }
         return result;
     }
@@ -52,7 +52,6 @@ export default class Server {
         const result = await this.request<boolean>('logout');
         if (result) {
             this.token = null;
-            console.log(result);
         }
         return result;
     }
