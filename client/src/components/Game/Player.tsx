@@ -1,10 +1,11 @@
-import { SpriteAnimator, useKeyboardControls } from "@react-three/drei";
+import { useKeyboardControls } from "@react-three/drei";
 import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
 import { useFrame } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
+import { Animator } from "./sprites/Animator";
 
 export interface IPlayerProps {
     id?: number;
@@ -117,7 +118,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 userData={data}
             >
 
-                <SpriteAnimator
+                <Animator
                     fps={3}
                     startFrame={0}
                     loop={true}

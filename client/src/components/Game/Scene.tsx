@@ -16,6 +16,7 @@ import Zone from "./Zone";
 import Inventory from "./Inventory";
 import { Gun, Item } from "../../modules/Game/entities/Items";
 import { Animator } from "./sprites/Animator";
+import FishTank from "./Fishtank";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -116,8 +117,11 @@ const Scene = ({ vSize }: ISceneProps) => {
     
     return (
         <group>
+
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
                 <LightMap />
+
+                <FishTank />
 
                 <fog />
 
@@ -137,16 +141,6 @@ const Scene = ({ vSize }: ISceneProps) => {
 
                 <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons}/>
 
-                <Animator
-                    scale={[0.8,2,0]}
-                    fps={3}
-                    startFrame={0}
-                    loop={true}
-                    autoPlay={true}
-                    textureImageURL={'./assets/Map Parts/fishtank.png'}
-                    textureDataURL={'./assets/Map Parts/fishtank.json'}
-                // pause={!isMoving}
-                />
                 {colliders.map(collider =>
                     <RigidBody
                     key={generateColliderKey()}
