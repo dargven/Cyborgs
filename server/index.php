@@ -8,7 +8,6 @@ function result($params) {
     $method = $params['method'];
     if ($method) {
         $app = new Application();
-        $db = new DB();
         switch ($method) {
             case 'login': return $app->login($params); //Работает
             case 'logout': return $app->logout($params); //Работает
