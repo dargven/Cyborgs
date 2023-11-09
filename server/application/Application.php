@@ -18,6 +18,7 @@ class Application
         $this->user = new User($db);
         $this->lobby = new Lobby($db);
         $this->chat = new Chat($db);
+        $this->game = new Game($db);
     }
 
 
@@ -114,7 +115,7 @@ class Application
 
             $user = $this->user->getUser($token);
             if ($user) {
-                $this->lobby->getTeamsInfo();
+                return $this->lobby->getTeamsInfo();
             }
             return ['error' => 1002];
 

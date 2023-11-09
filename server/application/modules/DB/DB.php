@@ -121,7 +121,7 @@ class DB
     public function getTeamsInfo()
     
     {
-        return $this->queryAll("SELECT * FROM teams as t INNER JOIN userTeams as u on t.team_id = u.team_id");
+        return $this->queryAll("SELECT t.team_id, user_id, team_score FROM teams as t INNER JOIN userTeams as u on t.team_id = u.team_id GROUP BY t.team_id");
 
     }
 

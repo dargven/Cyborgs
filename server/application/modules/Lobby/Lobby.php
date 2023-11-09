@@ -17,24 +17,20 @@ class Lobby
 
     public function getTeamsInfo()
     {
-        return  $this->db->getTeamsInfo();
-        
+        return $this->db->getTeamsInfo();
 
     }
-    public function getSkins(){
-        $skins = $this->db->getSkinsInLobby();
-        return [
-            $skins->id=>[
-                'text' =>$skins->id->text,
-                'image' => $skins->id->image
-            ]
-            ];
+
+    public function getSkins()
+    {
+        return $this->db->getSkinsInLobby();
 
     }
-    public function setSkin($id, $skinId){
+
+    public function setSkin($id, $skinId)
+    {
         return $this->db->setSkinInLobby($id, $skinId);
     }
-
 
 
 }
