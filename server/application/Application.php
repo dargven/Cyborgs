@@ -111,6 +111,13 @@ class Application
     {
         $token = $params['token'];
         if ($token) {
+
+            $sql = '
+                SELECT teams.*
+                FROM teams
+                JOIN users ON teams.team_id = users.id
+                WHERE users.token = :token';
+
             $user = $this->user->getUser($token);
             if ($user) {
                 $this->lobby->getTeamsInfo();
@@ -127,6 +134,14 @@ class Application
     {
         $token = $params['token'];
         if ($token) {
+
+            $sql = '
+                SELECT skins.*, users.*
+                FROM skins
+                JOIN userSkins ON skins.id = userSkins.skin_id
+                JOIN users ON userSkins.user_id = users.id
+                WHERE users.token = :token';
+
             $user = $this->user->getUser($token);
             if ($user) {
                 return $this->lobby->getSkins();
@@ -142,6 +157,14 @@ class Application
         $token = $params['token'];
         $skinId = $params['skinId'];
         if ($token && $skinId) {
+
+            $sql = '
+                SELECT skins.*, users.*
+                FROM skins 
+                JOIN userSkins ON skins.id = userSkins.skin_id
+                JOIN users ON userSkins.user_id = users.id
+                WHERE users.token = :token AND skins.id = :skinId';
+                
             $user = $this->user->getUser($token);
             if ($user) {
                 return $this->lobby->setSkin($user->id, $skinId);
