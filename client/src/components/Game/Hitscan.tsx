@@ -25,12 +25,12 @@ const Hitscan = ({ initialPosition, aimingPoint }: IHitscanProps) => {
 	}, [initialPosition, aimingPoint]);
 
 	return (
-		<sprite>
+		// <sprite>
 			<line_ ref={laserRef}>
 				<lineBasicMaterial color={0x0000ff} />
 				<BallCollider args={[0.1]} />
 			</line_>
-		</sprite>
+		// </sprite>
 	)
 }
 

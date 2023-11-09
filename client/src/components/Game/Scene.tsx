@@ -1,11 +1,14 @@
 import { Stars } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
-import { createRef, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Group, Texture, TextureLoader, Vector3 } from "three";
-import { Collider, Bullet, Laser } from "../../modules/Game/entities";
+import { Bullet, Laser } from "../../modules/Game/entities";
+import { Gun } from "../../modules/Game/entities/Items";
+import LaserGun from "../../modules/Game/entities/Items/LaserGun";
 import CollidersPositions from "./CollidersPositions";
 import Hitscan from "./Hitscan";
+import Inventory from "./Inventory";
 import LightMap from "./LightMap";
 import MapObjects from "./MapObjects";
 import Player from "./Player";
@@ -13,8 +16,6 @@ import Projectile from "./Projectile";
 import Robot from "./Robot";
 import Room from "./Room";
 import Zone from "./Zone";
-import Inventory from "./Inventory";
-import { Gun, Item } from "../../modules/Game/entities/Items";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -42,7 +43,7 @@ const Scene = ({ vSize }: ISceneProps) => {
     const [bullets, setBullets] = useState<Bullet[]>([]);
     const [lasers, setLasers] = useState<Laser[]>([]);
     const [weaponSlot, setWeaponSlot] = useState<number>(1);
-    const [inventory, setInventory] = useState<Gun[]>([
+    const [inventory, setInventory] = useState<any>([
         new Gun({
             name: 'tah gun',
             type: 1,
@@ -50,7 +51,17 @@ const Scene = ({ vSize }: ISceneProps) => {
             rate: 20,
             magSize: 10,
             maxAmmo: 20,
-            currentAmmo: 1,
+            currentAmmo: 999999,
+            speed: 6
+        }), 
+        new LaserGun({
+            name: 'tough guy',
+            type: 2,
+            damage: 99,
+            rate: 20,
+            magSize: 10,
+            maxAmmo: 20,
+            currentAmmo: 999,
             speed: 6
         })
     ]);
@@ -61,7 +72,7 @@ const Scene = ({ vSize }: ISceneProps) => {
         slot3: null,
     });
 
-    const [item, setItem] = useState<Gun>(inventory[0]);
+    const [item, setItem] = useState<any>();
     const [last, setLast] = useState<number>(0);
 
     const colliders = CollidersPositions();
@@ -80,18 +91,30 @@ const Scene = ({ vSize }: ISceneProps) => {
     }
 
     const onFire = (position: Vector3, team: number) => {
-        const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
+        if (weapons.slot1) {
+            const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
 
-        // смещение, чтобы игрок не мог расстрелять сам себя, придется фиксить под разные скорости
-        direction.setLength(0.6);
-        position.x += direction.x;
-        position.y += direction.y;
-        position.z = 0;
-        direction.setLength(1);
-        const bullet = item.use(position, direction, `${1337}-${Date.now()}`, team);
-
-        if (bullet) {
-            setBullets((bullets) => [...bullets, bullet]);
+            // смещение, чтобы игрок не мог расстрелять сам себя, придется фиксить под разные скорости
+            direction.setLength(0.6);
+            position.x += direction.x;
+            position.y += direction.y;
+            position.z = 0;
+            direction.setLength(1);
+            const bullet = inventory[0].use(position, direction, `${1337}-${Date.now()}`, team);
+    
+            if (bullet) {
+                setBullets((bullets) => [...bullets, bullet]);
+            }
+        }
+        if (weapons.slot2) {
+            const aimingPoint = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
+            aimingPoint.setLength(5);
+            aimingPoint.x += position.x;
+            aimingPoint.y += position.y;
+            const laser = inventory[1].use(position, aimingPoint, `${1337}-${Date.now()}`)
+            if (laser) { 
+                setLasers((lasers) => [...lasers, laser])
+            }
         }
     }
 
@@ -164,11 +187,11 @@ const Scene = ({ vSize }: ISceneProps) => {
 
                 {lasers.map(laser =>
                     <Hitscan
-                    key={laser.key}
-                    initialPosition={[laser.position.x, laser.position.y]}
-                    aimingPoint={[laser.aimingPoint.x, laser.aimingPoint.y]}
+                        key={laser.key}
+                        initialPosition={[laser.position.x, laser.position.y]}
+                        aimingPoint={[laser.aimingPoint.x, laser.aimingPoint.y]}
                     />
-                    )}
+                )}
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
                     <Room texture={textures['room']} />

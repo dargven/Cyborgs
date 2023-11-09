@@ -1,10 +1,9 @@
 import { SpriteAnimator, useKeyboardControls } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
-import { useFrame } from "@react-three/fiber";
-import { Laser } from "../../modules/Game/entities";
 
 export interface IPlayerProps {
     id?: number;
@@ -52,7 +51,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
 
     useFrame(() => {
         if (isControlled) {
-            const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
+            const { up, down, left, right, select1, select2, select3, shoot } = getKeys();
             movementController(up, down, left, right);
             
             const playerPosition = vec3(ref?.current?.translation());
@@ -77,21 +76,6 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 if (onFire) {
                     onFire(playerPosition, team);
                 }
-            }
-
-            // стрельба проджектайлами и хитсканом должна быть прописана на одно и то же нажатие, что именно полетит - зависит от выбора в инвентаре
-
-            if (hitscan) {
-                // const aimingPoint = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
-                // aimingPoint.setLength(5);
-                // aimingPoint.x += playerPosition.x;
-                // aimingPoint.y += playerPosition.y;
-                // const laser = new Laser(
-                //     playerPosition,
-                //     aimingPoint,
-                //     `${1337}-${Date.now()}`
-                // )
-                // setLasers((lasers) => [...lasers, laser])
             }
         }
     });
