@@ -1,5 +1,5 @@
 import { Vector3 } from "three";
-import Bullet, { IBullet } from "../Bullet";
+import Bullet, { IBullet } from "../entities/Bullet";
 import Item, { IItem } from "./Item";
 
 interface IGun extends IItem {

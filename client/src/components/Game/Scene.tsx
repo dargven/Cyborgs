@@ -14,7 +14,7 @@ import Robot from "./Robot";
 import Room from "./Room";
 import Zone from "./Zone";
 import Inventory from "./Inventory";
-import { Gun, Item } from "../../modules/Game/entities/Items";
+import { Gun, Item } from "../../modules/Game/items";
 
 interface ITextureObject {
     [key: string]: Texture

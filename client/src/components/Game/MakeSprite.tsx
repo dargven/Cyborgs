@@ -21,7 +21,7 @@ const MakeSprite = ({ texture, position, scale = 1, isSphere = false, isCollider
         <mesh position={position} scale={[scale, scale, scale]}>
             <mesh>
                 <planeGeometry attach="geometry" args={[1, 1, 4]} />
-                <meshLambertMaterial attach="material" map={texture} alphaTest={0.5} />
+                <meshStandardMaterial attach="material" map={texture} alphaTest={0.5} />
             </mesh>
             {isCollider &&
                 <RigidBody
