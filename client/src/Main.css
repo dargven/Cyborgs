@@ -29,7 +29,7 @@ body{
   text-align: left;
   font-size: 0.3em;
   width: 120%;
-  color: none;
+  color: white;
   background: none;
   outline: none;
   border: none;
@@ -37,12 +37,11 @@ body{
 
 .Main button:hover {
   text-align: left;
-  color: none;
   border-width: 0.6dvh 0.6dvh;
   border-radius: 0;
-  
+  width: 200%;
   filter: contrast(30);
-  border-color: #27CEE9;
+  border:0.2vi solid #27CEE9;
   box-shadow: inset 0px 0px 30px rgba(0, 0, 0);
   clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
 
@@ -142,7 +141,7 @@ h2 {
   }
 
   100% {
-    left: 24%;
+    left: 21%;
 
   }
 }

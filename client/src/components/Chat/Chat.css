@@ -1,21 +1,19 @@
 .chat {
 	position: absolute;
-	bottom: 0;
-	right: 0;
-	border:1px solid #333;
-	margin:15px;
-	width:20%;
-	height:40%;
-	background:rgba(255, 255, 255, 0.4);
-	min-height: 30dvh;
-	max-height: 50dvh;
-	max-width: 40dvh;
+	bottom: 6vh;
+	right: 2dvw;
+	border:0.2vi solid rgba(0, 0, 0, 0.7);
+	border-bottom: none;
+	width:41dvh;
+	height:40dvh;
+	background:rgba(0, 0, 0, 0.7);
+	
 	z-index: 1;
 }
 
 .chatComponent {
-    bottom:100%;
-    right: 43px;
+    bottom:100dvh;
+    right: 4dvw;
 }
 
 .chat-messages {
@@ -30,7 +28,7 @@
 
 .chat__message {
 	border-left:3px solid rgb(51, 51, 51)333;
-	margin-top:2px;
+	margin-top:2vh;
 	padding:2px;
 }
 
@@ -51,23 +49,18 @@
 }
 
 .chat-input {
-	min-height:6%;
+	min-height:6dvw;
 }
-input {
+
+
+.chat-form__input {
 	font-family:arial;
-	font-size:16px;
+	font-size:1dvw;
 	vertical-align:middle;
 	background:rgba(18, 74, 138, 0.541);
 	border:0;
-	display:inline-block;
-	margin:1px;
-	height:30px;
-}
-
-.chat-form__input {
-	width:79%;
-}
-
-.chat-form__submit {
-	width:18%;
+	height:3vh;	
+	position:absolute;
+	width:94%;
+	color: rgba(218, 218, 218, 0.884);
 }

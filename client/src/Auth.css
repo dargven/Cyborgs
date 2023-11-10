@@ -37,7 +37,6 @@ p {
   transform: translate(-50%, -50%);
   left: 50%;
   padding: 4dvw;
-  margin-top: 0;
   position:fixed;
   top: 70vh;
   text-align: center;
@@ -46,9 +45,10 @@ p {
   max-width: 40dvh;
     width: 50dvw;
 }
+
 .input-form {
   align-items: center;
-  margin: 1dvw 0px;
+  margin: 2dvw 0px;
   text-align: center;
   height: 120%;
   font-size: 1dvw;
@@ -56,7 +56,7 @@ p {
 
 .input-form input {
   text-align: center;
-  width: 90%;
+  width: 100%;
   border-radius: 10vw;
   border: 0.4vh solid rgb(70, 108, 134);
   font-size: 2dvh;
@@ -97,7 +97,7 @@ h1 {
   font-family: "Zelek";
   color: rgb(0, 217, 255);
   text-shadow: 0px 1vh 4vh #00aeff;
-  font-size: 3dvh;
+  font-size: 1dvw;
 }
 
 .App-header {
