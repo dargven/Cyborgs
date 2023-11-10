@@ -16,11 +16,11 @@ class DB
 //        $pass = '';
 //        $db = 'cyborgs';
 
-        $host = 'dargvetg.beget.tech';
+        $host = 'server187.hosting.reg.ru';
         $port = '3306';
-        $user = 'dargvetg_cyborgs';
-        $pass = 'vizual22cdxsaV';
-        $db = 'dargvetg_cyborgs';
+        $user = 'u2333359_dargven';
+        $pass = 'bAq-UKv-YCK-fxx';
+        $db = 'u2333359_Cyborgs';
 
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
@@ -118,7 +118,7 @@ class DB
         
     }
 
-    public function getCountOfPlayersAndScoreInTeams()
+    public function getTeamsInfo()
     
     {
         return $this->queryAll("SELECT * FROM teams as t INNER JOIN userTeams as u on t.team_id = u.team_id");
@@ -134,8 +134,7 @@ class DB
 
     public function getSkinsInLobby()
     {
-        return $this->queryAll("SELECT skin_id as id, text, image FROM userSkins, skins WHERE`role`='lobby'");
+        return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id WHERE skins.role='lobby'");
     }
-
 }
 
