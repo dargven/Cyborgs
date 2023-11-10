@@ -18,7 +18,11 @@ class Application
         $this->user = new User($db);
         $this->lobby = new Lobby($db);
         $this->chat = new Chat($db);
+        $this->game = new Game($db);
     }
+
+
+    
 
     /*************************/
     /* НЕПОВТОРИМЫЙ ОРИГИНАЛ */
@@ -80,11 +84,7 @@ class Application
         return ['error' => 242];
     }
 
-    /******************/
-    /* ЖАЛКАЯ ПАРОДИЯ */
-    /******************/
 
-//..
     function selectTeam($params)
     {
         $token = $params['token'];
@@ -99,13 +99,22 @@ class Application
         return ['error' => 242];
     }
 
+
+    
+
+    /******************/
+    /* ЖАЛКАЯ ПАРОДИЯ */
+    /******************/
+
+//..
+  
     function getTeamsInfo($params)
     {
         $token = $params['token'];
         if ($token) {
             $user = $this->user->getUser($token);
             if ($user) {
-                $this->lobby->getTeamsInfo();
+                return $this->lobby->getTeamsInfo();
             }
             return ['error' => 1002];
 
