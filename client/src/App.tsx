@@ -20,12 +20,15 @@ const App: React.FC = () => {
             <StoreContext.Provider value={store}>
                 <ServerContext.Provider value={server}>
                     <Routes>
+                    {store.isAuth() ?
+                        <Route path="" element={<MainPage/>} /> :
                         <Route path="" element={<LoginPage/>} />
+                    }
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/registration" element={<RegistrationPage />} />
-                        <Route path="/game" element={<GamePage />} />
                         <Route element={<PrivateRoute />}>
                             <Route path="/main" element={<MainPage />} />
+                            <Route path="/game" element={<GamePage />} />
                         </Route>
                     </Routes>
                 </ServerContext.Provider>

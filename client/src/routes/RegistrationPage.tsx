@@ -2,8 +2,8 @@ import { useContext, useRef, useState } from "react";
 import { ServerContext } from "../App";
 import { Navigate } from "react-router-dom";
 import md5 from 'md5-ts';
-import "../Auth.css";
 import NavBar from "../components/navBar";
+import "../Auth.css";
 
 const RegistrationPage = () => {
   const server = useContext(ServerContext);

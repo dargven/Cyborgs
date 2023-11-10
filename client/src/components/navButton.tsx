@@ -3,9 +3,10 @@ type TnavButton = {
   to: string;
   text: string;
   className?: string;
+  navFunction?(): string; 
 };
 
-function NavButton({ to, text, className }: TnavButton) {
+function NavButton({ to, text, className, navFunction }: TnavButton) {
   const navigate = useNavigate();
 
   const handleClick = () => {

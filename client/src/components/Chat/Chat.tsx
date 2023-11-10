@@ -21,7 +21,6 @@ const Chat = () => {
         }
     }
     
-
     return (
         <div className="chatComponent"> 
             <div className='chat'>

@@ -3,7 +3,6 @@ import { Navigate } from "react-router-dom";
 import { ServerContext } from "../App";
 import md5 from 'md5-ts';
 import NavBar from "../components/navBar";
-import Chat from "../components/Chat/Chat"
 
 import "../Auth.css";
 
