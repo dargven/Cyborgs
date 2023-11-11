@@ -22,6 +22,7 @@ body{
 }
 
 .Main button {
+  color: #27CEE9;
   margin:  1em 0px;
   font-family: Zelek;
   width: 8dvw;
@@ -32,15 +33,12 @@ body{
   color: none;
   background: none;
   outline: none;
-  border: none;
+ border: none;
 }
 
 .Main button:hover {
   text-align: left;
-  color: none;
-  border-width: 0.6dvh 0.6dvh;
   border-radius: 0;
-  
   filter: contrast(30);
   border-color: #27CEE9;
   box-shadow: inset 0px 0px 30px rgba(0, 0, 0);
