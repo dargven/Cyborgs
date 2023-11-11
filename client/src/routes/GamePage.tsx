@@ -8,11 +8,15 @@ const GamePage = () => {
     const KEY_ESC = 27;
     const [isPopupVisible, setIsPopupVisible] = useState(false);
 
-    const handleKeyPress = (event:KeyboardEvent) => {
+    const handleKeyPress = (event: KeyboardEvent) => {
         if (event.keyCode === KEY_ESC) {
+          if (isPopupVisible) {
+            setIsPopupVisible(false);
+          } else {
             setIsPopupVisible(true);
+          }
         }
-    };
+      };
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyPress);
@@ -20,22 +24,27 @@ const GamePage = () => {
             document.removeEventListener("keydown", handleKeyPress);
         };
     });
-
+    const openPopup = () => {
+        setIsPopupVisible(!isPopupVisible);
+    };
     return (
         <div>
-            <Chat/>
-            <Game/>
+            <Chat />
+            <Game />
+            <button onClick={openPopup} className="openPopupBtn">
+                Esc
+            </button>
             {isPopupVisible && (
                 <div className="popUpMenu" onClick={() => setIsPopupVisible(false)}>
                     <div className="popUpMenu__content" onClick={(e => e.stopPropagation())}>
                         <button onClick={() => setIsPopupVisible(false)} className="popUpBtn">Возобновить</button>
-                        <NavButton to="/game" text="Настройки" className="popUpBtn"/>
-                        <NavButton to="/main" text="Выход" className="popUpBtn"/>
+                        <NavButton to="/game" text="Настройки" className="popUpBtn" />
+                        <NavButton to="/main" text="Выход" className="popUpBtn" />
                     </div>
                 </div>
             )}
 
-            
+
         </div>
     );
 }

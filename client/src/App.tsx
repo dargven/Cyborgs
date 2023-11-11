@@ -9,6 +9,7 @@ import RegistrationPage from "./routes/RegistrationPage";
 import PrivateRoute from "./components/privateRoute";
 import GamePage from "./routes/GamePage";
 import TestPage from "./routes/TestPage";
+import Game from "./components/Game/Game";
 
 export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
