@@ -24,6 +24,7 @@ export default class Server {
                 .join('&');
             const res = await fetch(`${this.HOST}/?method=${method}&${str}`);
             const answer = await res.json();
+            console.log(answer)
             if (answer.result === 'ok') {
                 return answer.data;
             }
@@ -67,8 +68,8 @@ export default class Server {
         return result;
     }
 
-    async getMessage(): Promise<string[] | null> {
-        const result = await this.request<string[]>('getMessage',{
+    async getMessage(): Promise<[] | null> {
+        const result = await this.request<[]>('getMessage',{
             token: this.token,
         });
         if(result) {

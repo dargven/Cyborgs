@@ -2,14 +2,21 @@ import { useContext, useEffect, useRef, useState } from "react";
 import "./Chat.css"
 import { ServerContext } from "../../App";
 
+interface IMessage {
+    name: string,
+    message: string,
+    created: string, 
+}
+
 const Chat = () => {
     const chatRef = useRef<HTMLInputElement | null>(null);
     const server = useContext(ServerContext);
     let interval: NodeJS.Timer | null = null;
-    const [messages, setMessages] = useState<string[]>([]);
+    const [messages, setMessages] = useState<IMessage[]>([]);
 
     const updateChat = async () => {
         const messagesFromServer = await server.getMessage()
+        console.log(messagesFromServer)
         if(messagesFromServer) {
             setMessages(messagesFromServer);
         }
@@ -35,7 +42,9 @@ const Chat = () => {
             <div className='chat'>
                 <div className="chat-messages">
                     <div className="chat-messages__content" id="messages">
-                        СООБЩЕНИЕ
+                        {messages.map(msg => (
+                            <p>{msg.created} {msg.name}:{msg.message}</p>
+                        ))}
                     </div>
                 </div>
                 <div className="chat-input">
