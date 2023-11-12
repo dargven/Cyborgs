@@ -4,17 +4,18 @@ import { CuboidArgs } from "@react-three/rapier/dist/declarations/src/types";
 export interface ICollider {
     position: Vector3;
     args: CuboidArgs;
-    key?: string;
+    isDestroyable?: boolean;
 }
 
 class Collider implements ICollider {
     position: Vector3;
     args: CuboidArgs;
-    key: string;
-    constructor(position: Vector3 = new Vector3(), args: CuboidArgs, key: string = 'none') {
+    isDestroyable?: boolean;
+
+    constructor(position: Vector3 = new Vector3(), args: CuboidArgs, isDestroyable = false) {
         this.position = position;
         this.args = args;
-        this.key = key;
+        this.isDestroyable = isDestroyable;
     }
 }
 

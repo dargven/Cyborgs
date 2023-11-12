@@ -15,13 +15,12 @@ interface IProjectiileProps {
 const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture, team }: IProjectiileProps) => {
     const bulletRef = useRef<RapierRigidBody>(null!);
     const [isActive, setActive] = useState<boolean>(true);
-    
+
     useEffect(() => {
         direction.setLength(initialSpeed)
         bulletRef.current.setLinvel(direction, true);
     }, []);
 
-    console.log(team)
     return (
         <RigidBody
             ref={bulletRef}
@@ -43,6 +42,9 @@ const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture,
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "player" || data.type === "Collider") {
+                            if (data.isDestroyable) {
+                                e.other.rigidBody?.setEnabled(false);
+                            }
                             // bulletRef.current.setLinvel(new Vector3(), true);
                             bulletRef.current.setEnabled(false);
                             setActive(false);

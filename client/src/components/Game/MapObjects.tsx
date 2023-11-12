@@ -1,6 +1,7 @@
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
-import { Vector3, Texture} from "three";
+import { Vector3, Texture } from "three";
 import MakeSprite from "./MakeSprite";
+import Collider from "./Collider";
 
 interface IMapObjects {
     textures: Texture;
@@ -42,21 +43,15 @@ const MapObjects = (props: IMapObjects) => {
                     key={key}
                     texture={props.textures}
                     position={sprite.position}
-                    isCollider={false}
                 />
             ))}
-            {sprites.map((sprite, key) =>
-                <RigidBody
-                    key={sprite.key}
-                    type='fixed'
-                    userData={{
-                        type: "Collider"
-                    }}>
-                    <CuboidCollider
-                        position={sprite.position}
-                        args={[0.5, 0.5, 0.5]}
-                    />
-                </RigidBody>
+
+            {sprites.map((sprite) =>
+                <Collider
+                    {...sprite}
+                    args={[0.5, 0.5, 0.5]}
+                    isDestroyable
+                />
             )}
 
         </group>

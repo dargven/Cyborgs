@@ -1,15 +1,14 @@
 import { Texture } from "three";
 import MakeSprite from "./MakeSprite";
 
-export interface ITestRoomProps {
+interface IMapProps {
     texture: Texture;
-    name?: string;
 }
 
-const Map = ({ texture }: ITestRoomProps) => {
+const Map = ({ texture }: IMapProps) => {
     return (
         <group>
-            <MakeSprite texture={texture} isCollider={false} />
+            <MakeSprite texture={texture} />
         </group>
     );
 }

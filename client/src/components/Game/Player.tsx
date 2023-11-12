@@ -6,7 +6,7 @@ import HealthBar from "./HealthBar";
 import { useFrame } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
 
-export interface IPlayerProps {
+interface IPlayerProps {
     id?: number;
     username?: string;
     position?: Vector3;
@@ -17,18 +17,22 @@ export interface IPlayerProps {
     setWeaponSlot?(newSlot: number): void;
 }
 
+// export interface IRigidBodyData {
+//     type: string
+// }
+
 const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlot, isControlled }: IPlayerProps) => {
-    
+
     const ref = useRef<RapierRigidBody>(null!);
 
     const [controlKeys, getKeys] = useKeyboardControls();
 
     const movementController = (up: boolean, down: boolean, left: boolean, right: boolean) => {
 
-        if (ref.current){
+        if (ref.current) {
 
             const speed = 4;
-            
+
             ref.current.setLinvel(new Vector3(), true);
             const velocity = new Vector3();
             if (left) {
@@ -43,9 +47,9 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             if (down) {
                 velocity.y -= 1;
             }
-            
+
             velocity.setLength(speed);
-            
+
             ref.current.setLinvel(velocity, true);
         }
     }
@@ -54,9 +58,9 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
         if (isControlled) {
             const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
             movementController(up, down, left, right);
-            
+
             const playerPosition = vec3(ref?.current?.translation());
-            
+
             if (select1 && setWeaponSlot) {
                 setWeaponSlot(1)
             }
@@ -69,7 +73,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 setWeaponSlot(3)
             }
 
-            if (onMovement){
+            if (onMovement) {
                 onMovement(playerPosition);
             }
 

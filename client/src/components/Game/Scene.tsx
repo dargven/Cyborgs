@@ -3,7 +3,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
 import { createRef, useEffect, useRef, useState } from "react";
 import { Group, Texture, TextureLoader, Vector3 } from "three";
-import { Collider, Bullet, Laser } from "../../modules/Game/entities";
+import { Bullet, Laser } from "../../modules/Game/entities";
 import CollidersPositions from "./CollidersPositions";
 import Hitscan from "./Hitscan";
 import LightMap from "./LightMap";
@@ -15,6 +15,7 @@ import Map from "./Map";
 import Zone from "./Zone";
 import Inventory from "./Inventory";
 import { Gun, Item } from "../../modules/Game/items";
+import Collider from "./Collider";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -121,7 +122,7 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     return (
         <group>
-            <Physics gravity={[0, 0, 0]} colliders="hull">
+            <Physics gravity={[0, 0, 0]} colliders="hull" debug>
                 <LightMap />
 
                 <fog />
@@ -143,17 +144,10 @@ const Scene = ({ vSize }: ISceneProps) => {
                 <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons} />
 
                 {colliders.map(collider =>
-                    <RigidBody
+                    <Collider
                         key={generateColliderKey()}
-                        type='fixed'
-                        userData={{
-                            type: "Collider"
-                        }}>
-                        <CuboidCollider
-                            position={collider.position}
-                            args={collider.args}
-                        />
-                    </RigidBody>
+                        {...collider}
+                    />
                 )}
 
                 {bullets.map(bullet =>
