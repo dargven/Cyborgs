@@ -11,7 +11,7 @@ import MapObjects from "./MapObjects";
 import Player from "./Player";
 import Projectile from "./Projectile";
 import Robot from "./Robot";
-import Room from "./Room";
+import Map from "./Map";
 import Zone from "./Zone";
 import Inventory from "./Inventory";
 import { Gun, Item } from "../../modules/Game/items";
@@ -46,11 +46,11 @@ const Scene = ({ vSize }: ISceneProps) => {
         new Gun({
             name: 'tah gun',
             type: 1,
-            damage: 99,
-            rate: 1,
+            damage: 50,
+            rate: 0.01,
             magSize: 10,
-            maxAmmo: 20,
-            currentAmmo: 20,
+            maxAmmo: 200,
+            currentAmmo: 10000,
             speed: 6
         })
     ]);
@@ -121,7 +121,7 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     return (
         <group>
-            <Physics gravity={[0, 0, 0]} colliders="hull" debug>
+            <Physics gravity={[0, 0, 0]} colliders="hull">
                 <LightMap />
 
                 <fog />
@@ -177,7 +177,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                 )}
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
-                    <Room texture={textures['room']} />
+                    <Map texture={textures['room']} />
                 </group>
 
                 <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)} />

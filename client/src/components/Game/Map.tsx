@@ -6,7 +6,7 @@ export interface ITestRoomProps {
     name?: string;
 }
 
-const TestRoom = ({ texture }: ITestRoomProps) => {
+const Map = ({ texture }: ITestRoomProps) => {
     return (
         <group>
             <MakeSprite texture={texture} isCollider={false} />
@@ -14,4 +14,4 @@ const TestRoom = ({ texture }: ITestRoomProps) => {
     );
 }
 
-export default TestRoom;
+export default Map;

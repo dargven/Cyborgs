@@ -130,7 +130,6 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
 
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
-
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "projectile") {
                             if (data.team === team && hp - data.damage < 0) {
