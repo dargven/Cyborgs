@@ -112,6 +112,7 @@ class Application
     {
         $token = $params['token'];
         if ($token) {
+
             $user = $this->user->getUser($token);
             if ($user) {
                 return $this->lobby->getTeamsInfo();
@@ -128,6 +129,7 @@ class Application
     {
         $token = $params['token'];
         if ($token) {
+
             $user = $this->user->getUser($token);
             if ($user) {
                 return $this->lobby->getSkins();
@@ -143,6 +145,7 @@ class Application
         $token = $params['token'];
         $skinId = $params['skinId'];
         if ($token && $skinId) {
+                
             $user = $this->user->getUser($token);
             if ($user) {
                 return $this->lobby->setSkin($user->id, $skinId);
