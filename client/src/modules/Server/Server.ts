@@ -67,8 +67,8 @@ export default class Server {
         return result;
     }
 
-    async getMessage(): Promise<TMessage | null> {
-        const result = await this.request<TMessage>('getMessage',{
+    async getMessage(): Promise<string[] | null> {
+        const result = await this.request<string[]>('getMessage',{
             token: this.token,
         });
         if(result) {

@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import "./Chat.css"
 import { ServerContext } from "../../App";
 
@@ -6,9 +6,13 @@ const Chat = () => {
     const chatRef = useRef<HTMLInputElement | null>(null);
     const server = useContext(ServerContext);
     let interval: NodeJS.Timer | null = null;
+    const [messages, setMessages] = useState<string[]>([]);
 
-    const updateChat = () => {
-        const messages = server.getMessage()
+    const updateChat = async () => {
+        const messagesFromServer = await server.getMessage()
+        if(messagesFromServer) {
+            setMessages(messagesFromServer);
+        }
     }
 
     if (interval === null) {
@@ -18,6 +22,7 @@ const Chat = () => {
     const handleChat = async () => {
         if(chatRef.current?.value) {
             await server.sendMessage(chatRef.current?.value);
+            chatRef.current.value = "";
         }
     }
     
