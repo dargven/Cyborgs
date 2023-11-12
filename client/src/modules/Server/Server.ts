@@ -32,7 +32,6 @@ export default class Server {
             errorContainer.style.color = "red";
             errorContainer.textContent = `${answer["error"]["text"]}`;
             document.body.appendChild(errorContainer);
-            console.log(`${answer["error"]["text"]}`);
             setTimeout(function () {
                 if (errorContainer) {
                     errorContainer.remove();

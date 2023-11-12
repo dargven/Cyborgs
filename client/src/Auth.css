@@ -75,7 +75,7 @@ p {
     position: absolute;
     display: inline;
     top: 15%;
-   right: -1dvw;
+    right: -1dvw;
     transform: translateY(-50%);
     background: none;
     border: none;
@@ -87,8 +87,8 @@ p {
 .input-form input[type="password"] {
     width: 90%;
 }
-.eyeIcon{
-    width:1.5dvw;
+.eyeIcon {
+    width: 1.5dvw;
 }
 
 .input-form input:hover {
@@ -162,7 +162,29 @@ h1 {
     border: none;
     background: none;
 }
-
+.SelectTeam {
+    width: 300px;
+    height: 300px;
+}
+.Team1 {
+    width: 50%;
+    font-size: 2dvh;
+    position: fixed;
+    text-shadow: 0px 0px 3px #00aeff;
+    color: #27cee9;
+    height: 100%;
+    background-image: url("../public/assets/image/Team1.jpg");
+}
+.Team2 {
+    width: 50%;
+    height: 100%;
+    left: 50%;
+    color: #27cee9;
+    font-size: 2dvh;
+    text-shadow: 0px 0px 3px #00aeff;
+    position: fixed;
+    background-image: url("../public/assets/image/Team2.jpg");
+}
 .TEST {
     color: rgba(211, 28, 28, 0.13);
     padding: 10px;
