@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import "./Chat.css"
 import { ServerContext } from "../../App";
 
@@ -15,9 +15,13 @@ const Chat = () => {
         }
     }
 
-    if (interval === null) {
-        interval = setInterval(updateChat, 5000);
-    }
+    useEffect(() => {
+        const interval = setInterval(updateChat, 5000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
 
     const handleChat = async () => {
         if(chatRef.current?.value) {
