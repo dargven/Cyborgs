@@ -26,9 +26,9 @@ const App: React.FC = () => {
                     }
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/registration" element={<RegistrationPage />} />
+                            <Route path="/game" element={<GamePage />} />
                         <Route element={<PrivateRoute />}>
                             <Route path="/main" element={<MainPage />} />
-                            <Route path="/game" element={<GamePage />} />
                         </Route>
                     </Routes>
                 </ServerContext.Provider>

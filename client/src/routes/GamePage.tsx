@@ -10,7 +10,7 @@ const GamePage = () => {
 
     const handleKeyPress = (event:KeyboardEvent) => {
         if (event.keyCode === KEY_ESC) {
-            setIsPopupVisible(true);
+            setIsPopupVisible(!isPopupVisible);
         }
     };
 
