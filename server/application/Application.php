@@ -4,6 +4,7 @@ require_once 'modules/Game/Game.php';
 require_once 'modules/DB/DB.php';
 require_once 'modules/Lobby/Lobby.php';
 require_once 'modules/Chat/Chat.php';
+require_once 'modules/Mailer/Mailer.php';
 
 class Application
 {
@@ -11,6 +12,7 @@ class Application
     private $chat;
     private $game;
     private $lobby;
+    private $mailer;
 
     public function __construct()
     {
@@ -19,10 +21,22 @@ class Application
         $this->lobby = new Lobby($db);
         $this->chat = new Chat($db);
         $this->game = new Game($db);
+        $this->mailer = new Mailer();
+    }
+
+    function sendEmail($params)
+    {
+        $recipient = $params['recipient'];
+        $subject = $params['subject'];
+        $body = $params['body'];
+        if ($recipient && $body && $subject){
+            return $this->mailer->sendMail($recipient, $body, $subject);
+        }
+        return ['error'=>'242'];
     }
 
 
-    
+
 
     /*************************/
     /* НЕПОВТОРИМЫЙ ОРИГИНАЛ */
@@ -100,14 +114,14 @@ class Application
     }
 
 
-    
+
 
     /******************/
     /* ЖАЛКАЯ ПАРОДИЯ */
     /******************/
 
 //..
-  
+
     function getTeamsInfo($params)
     {
         $token = $params['token'];
@@ -145,7 +159,7 @@ class Application
         $token = $params['token'];
         $skinId = $params['skinId'];
         if ($token && $skinId) {
-                
+
             $user = $this->user->getUser($token);
             if ($user) {
                 return $this->lobby->setSkin($user->id, $skinId);

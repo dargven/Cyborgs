@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c44b025-0991-4adb-b2c9-0ca5490f3922" name="Changes" comment="Minor">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="9c44b025-0991-4adb-b2c9-0ca5490f3922" name="Changes" comment="Add PhpMailer" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,7 +16,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Task-B-15" />
+        <entry key="$PROJECT_DIR$" value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -47,6 +44,11 @@
       </UrlAndAccount>
     </option>
   </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/opt/homebrew/Cellar/php/8.2.10/bin/php">
+    <include_path>
+      <path value="/opt/homebrew/Cellar/php/8.2.10/share/php/pear" />
+    </include_path>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -63,9 +65,10 @@
     "RunOnceActivity.OpenDatabaseViewOnStart": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "dev",
-    "last_opened_file_path": "C:/OSPanel/domains/Cyborgs-1",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "git-widget-placeholder": "Task-16-Mail",
+    "last_opened_file_path": "/Users/brize/PhpstormProjects/HotOvci/server/vendor/phpmailer/phpmailer",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "ts.external.directory.path": "/Users/brize/PhpstormProjects/HotOvci/client/node_modules/typescript/lib"
   },
   "keyToStringList": {
     "DatabaseDriversLRU": [
@@ -73,6 +76,25 @@
     ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer" />
+      <recent name="$PROJECT_DIR$/server/library" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server/library" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Mailer.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/server/application/modules/Mailer/Mailer.php">
+      <CommandLine>
+        <PhpTestInterpreterSettings>
+          <option name="interpreterName" value="/opt/homebrew/Cellar/php/8.2.10/bin/php" />
+        </PhpTestInterpreterSettings>
+      </CommandLine>
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task id="LOCAL-00001" summary="Minor">
@@ -83,11 +105,52 @@
       <option name="project" value="LOCAL" />
       <updated>1699881150229</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add PhpMailer">
+      <option name="closed" value="true" />
+      <created>1699890156708</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1699890156708</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add PhpMailer">
+      <option name="closed" value="true" />
+      <created>1699894133558</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1699894133558</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Add PhpMailer">
+      <option name="closed" value="true" />
+      <created>1699894449083</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1699894449083</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Add PhpMailer">
+      <option name="closed" value="true" />
+      <created>1699894453714</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1699894453714</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add PhpMailer">
+      <option name="closed" value="true" />
+      <created>1699971875019</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1699971875019</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Minor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor" />
+    <MESSAGE value="Add PhpMailer" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add PhpMailer" />
   </component>
 </project>
