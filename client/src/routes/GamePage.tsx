@@ -24,9 +24,11 @@ const GamePage = () => {
             document.removeEventListener("keydown", handleKeyPress);
         };
     });
+
     const openPopup = () => {
         setIsPopupVisible(!isPopupVisible);
     };
+
     return (
         <div>
             {team ? (
@@ -42,7 +44,9 @@ const GamePage = () => {
                 </div>
             )}
             <Chat />
-
+            <button onClick={openPopup} className="openPopupBtn">
+                Esc
+            </button>
             {isPopupVisible && (
                 <div
                     className="popUpMenu"
