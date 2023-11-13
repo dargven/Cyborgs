@@ -65,9 +65,10 @@ const Scene = ({ vSize }: ISceneProps) => {
     const [last, setLast] = useState<number>(0);
 
     const colliders = CollidersPositions();
-    const { viewport, camera, pointer } = useThree();
     const invRef = useRef<Group>();
     const positionToCamera = new Vector3(0, -2, -3);
+
+    const { viewport, camera, pointer, scene } = useThree();
 
     const onMovement = (position: Vector3) => {
         const cameraPos = new Vector3(position.x, position.y, 7);

@@ -1,180 +1,225 @@
 html {
-  height: 100%;
+    height: 100%;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  font-family: Zelek;
+    margin: 0;
+    padding: 0;
+    font-family: Zelek;
 }
 
 body {
-  -webkit-background-size: cover;
-  background-size: cover;
-  background-attachment: fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .title {
-  font-family: "Zelek";
-  color: rgb(0, 255, 255);
-  font-size: 7vw;
-  text-shadow: 0px 0px 3px #00aeff;
-  text-align: center;
-  left: 50%;
+    font-family: "Zelek";
+    color: rgb(0, 255, 255);
+    font-size: 7vw;
+    text-shadow: 0px 0px 3px #00aeff;
+    text-align: center;
+    left: 50%;
 }
 
 p {
-  font-family: "Zelek";
-  color: rgb(0, 255, 255);
-  position: relative;
-  text-shadow: 0px 0px 3px #00aeff;
-  animation: glitch1 0.5s infinite;
+    font-family: "Zelek";
+    color: rgb(0, 255, 255);
+    position: relative;
+    text-shadow: 0px 0px 3px #00aeff;
+    animation: glitch1 0.5s infinite;
 }
 
 .content {
-  background-color: rgba(0, 0, 0, 0.6);
-  box-shadow: 0 0 0.25em rgba(0, 0, 25, 0.25);
-  transform: translate(-50%, -50%);
-  left: 50%;
-  padding: 4dvw;
-  margin-top: 0;
-  position:fixed;
-  top: 70vh;
-  text-align: center;
-  min-height: 30dvh;
-  max-height: 30dvh;
-  max-width: 40dvh;
+    background-color: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 0.25em rgba(0, 0, 25, 0.25);
+    transform: translate(-50%, -50%);
+    left: 50%;
+    padding: 4dvw;
+    margin-top: 0;
+    position: fixed;
+    top: 70vh;
+    text-align: center;
+    min-height: 30dvh;
+    max-height: 30dvh;
+    max-width: 40dvh;
     width: 50dvw;
 }
 .input-form {
-  align-items: center;
-  margin: 1dvw 0px;
-  text-align: center;
-  height: 120%;
-  font-size: 1dvw;
+    margin: 1dvw 0px;
+    text-align: center;
+    height: 120%;
+    font-size: 1dvw;
 }
 
 .input-form input {
-  text-align: center;
-  width: 90%;
-  border-radius: 10vw;
-  border: 0.4vh solid rgb(70, 108, 134);
-  font-size: 2dvh;
-  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  color: #ffffff;
-  background: none;
-  margin:  1em 0px;
+    text-align: center;
+    width: 90%;
+    border-radius: 10vw;
+    border: 0.4vh solid rgb(70, 108, 134);
+    font-size: 2dvh;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    color: #ffffff;
+    background: none;
+    margin: 2dvh 0px;
+    align-items: center;
+    height: 3dvh;
+}
+
+.input-form .password-input-container {
+    position: relative;
+}
+
+.input-form .show-password-button {
+    position: absolute;
+    display: inline;
+    top: 15%;
+    right: -1dvw;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 1.5vh;
+}
+
+.input-form input[type="password"] {
+    width: 90%;
+}
+.eyeIcon {
+    width: 1.5dvw;
 }
 
 .input-form input:hover {
-  border: 0.4vh solid #61dafb;
+    border: 0.4vh solid #61dafb;
 }
 
 .input-form button {
-  margin:  2em 0px;
-  font-family: Zelek;
-  width: auto;
-  height: 5dvh;
-  text-align: center;
-  font-size: 2.5dvh;
-  color: #27CEE9;
-  background: none;
-  outline: none;
-  border: none;
+    margin: 2em 0px;
+    font-family: Zelek;
+    width: auto;
+    height: 5dvh;
+    text-align: center;
+    font-size: 2.5dvh;
+    color: #27cee9;
+    background: none;
+    outline: none;
+    border: none;
 }
 
 .input-form button:hover {
-  text-shadow: 0px 0px 3px #00aeff;
-  color: #27CEE9;
-  border-width: 0.6dvh 0.6dvh;
-  border-radius: 0;
-  filter: contrast(30);
-  border-color: #27CEE9;
+    text-shadow: 0px 0px 3px #00aeff;
+    color: #27cee9;
+    border-width: 0.6dvh 0.6dvh;
+    border-radius: 0;
+    filter: contrast(30);
+    border-color: #27cee9;
 }
 
-
 h1 {
-  font-family: "Zelek";
-  color: rgb(0, 217, 255);
-  text-shadow: 0px 1vh 4vh #00aeff;
-  font-size: 3dvh;
+    font-family: "Zelek";
+    color: rgb(0, 217, 255);
+    text-shadow: 0px 1vh 4vh #00aeff;
+    font-size: 1.5dvw;
 }
 
 .App-header {
-  overflow: hidden;
-  height: 7dvh;
-  padding: 0px 1vw;
-  color: white;
-  box-shadow: 0px 0.3dvh 1dvh black;
-  background-color: rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    height: 7dvh;
+    padding: 0px 1vw;
+    color: white;
+    box-shadow: 0px 0.3dvh 1dvh black;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .App-header button {
-  font-family: Zelek;
-  padding:  1% 1%;
+    font-family: Zelek;
+    padding: 1% 1%;
 
-  text-align: center;
-  font-size: 2dvh;
-  border: none;
-  background: none;
+    text-align: center;
+    font-size: 2dvh;
+    border: none;
+    background: none;
 }
 
 .App-header button:hover {
-  color: none;
-  filter: contrast(30);
-  border-color: #27CEE9;
-  clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
-  border-radius: 0;
-  border-width: 0.4dvh 0.4dvh;
+    color: none;
+    filter: contrast(30);
+    border-color: #27cee9;
+    clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
+    border-radius: 0;
+    border-width: 0.4dvh 0.4dvh;
 }
 
 .App-header-Leave {
-  font-family: Zelek;
-  background-color: #86263e;
-  padding: 10px;
-  margin: 2px;
-  text-align: center;
-  font-size: 2.5dvh;
-  border: none;
-  background: none;
+    font-family: Zelek;
+    background-color: #86263e;
+    padding: 10px;
+    margin: 2px;
+    text-align: center;
+    font-size: 2.5dvh;
+    border: none;
+    background: none;
 }
-
-.TEST{
-  color: rgba(211, 28, 28, 0.13);
-  padding: 10px;
-  height: 54px;
-  font-size: 20px;
-  outline: none;
-  border-radius: 11px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-  border: 5px solid rgb(0, 217, 255);
-
+.SelectTeam {
+    width: 300px;
+    height: 300px;
+}
+.Team1 {
+    width: 50%;
+    font-size: 2dvh;
+    position: fixed;
+    text-shadow: 0px 0px 3px #00aeff;
+    color: #27cee9;
+    height: 100%;
+    background-image: url("../public/assets/image/Team1.jpg");
+}
+.Team2 {
+    width: 50%;
+    height: 100%;
+    left: 50%;
+    color: #27cee9;
+    font-size: 2dvh;
+    text-shadow: 0px 0px 3px #00aeff;
+    position: fixed;
+    background-image: url("../public/assets/image/Team2.jpg");
+}
+.TEST {
+    color: rgba(211, 28, 28, 0.13);
+    padding: 10px;
+    height: 54px;
+    font-size: 20px;
+    outline: none;
+    border-radius: 11px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 5px solid rgb(0, 217, 255);
 }
 
 .header-right {
-  float: right;
-  padding: 1dvh;
-  width: auto;
-  color: #fff;
-  font-size: 20px;
-  outline: none;
-  border-radius: 11px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-  border: 5px solid rgb(0, 217, 255);
+    float: right;
+    padding: 1dvh;
+    width: auto;
+    color: #fff;
+    font-size: 20px;
+    outline: none;
+    border-radius: 11px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 5px solid rgb(0, 217, 255);
 }
 
 .header-right:hover {
-  color: #61dafb;
-  border: 5px solid #691e6c;
+    color: #61dafb;
+    border: 5px solid #691e6c;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @font-face {
-  font-family: Zelek;
-  src: url(../public/assets/fonts/NeZelek.ttf);
+    font-family: Zelek;
+    src: url(../public/assets/fonts/NeZelek.ttf);
 }
