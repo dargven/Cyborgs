@@ -16,6 +16,7 @@ import Zone from "./Zone";
 import Inventory from "./Inventory";
 import { Gun, Item } from "../../modules/Game/items";
 import Collider from "./Collider";
+import Inventory2 from "../../modules/Game/Inventory";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -48,7 +49,7 @@ const Scene = ({ vSize }: ISceneProps) => {
             name: 'tah gun',
             type: 1,
             damage: 50,
-            rate: 0.01,
+            rate: 1,
             magSize: 10,
             maxAmmo: 200,
             currentAmmo: 10000,
@@ -80,6 +81,8 @@ const Scene = ({ vSize }: ISceneProps) => {
         }
     }
 
+    const [inv, setInv] = useState<Inventory2>();
+
     const onFire = (position: Vector3, team: number) => {
         const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
 
@@ -92,8 +95,13 @@ const Scene = ({ vSize }: ISceneProps) => {
 
         const current = Date.now();
 
-        if (.001 * (current - last) > gun.rate) {
-            const bullet = gun.use(position, direction, `${1337}-${Date.now()}`, team);
+        if (.001 * (current - last) > 1 / gun.rate) {
+            const bullet = gun.fire({
+                position,
+                direction,
+                key: `${1337}-${Date.now()}`,
+                team
+            });
 
             if (bullet) {
                 setBullets((bullets) => [...bullets, bullet]);

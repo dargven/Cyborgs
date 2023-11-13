@@ -12,28 +12,28 @@ const MapObjects = (props: IMapObjects) => {
 
 
     const sprites = [
-        { position: new Vector3(-13, 1, 0), key: 'mainGlass1' },
-        { position: new Vector3(-13, 2, 0), key: 'mainGlass2' },
-        { position: new Vector3(-13, 3, 0), key: 'mainGlass3' },
-        { position: new Vector3(-13, 4, 0), key: 'mainGlass4' },
+        { position: new Vector3(-13, 1, 0), key: 'mainGlass1', isDestructible: true },
+        { position: new Vector3(-13, 2, 0), key: 'mainGlass2', isDestructible: true },
+        { position: new Vector3(-13, 3, 0), key: 'mainGlass3', isDestructible: true },
+        { position: new Vector3(-13, 4, 0), key: 'mainGlass4', isDestructible: true },
 
-        { position: new Vector3(-21, 6, 0), key: 'frontOfficeGlass1' },
-        { position: new Vector3(-20, 6, 0), key: 'frontOfficeGlass2' },
-        { position: new Vector3(-19, 6, 0), key: 'frontOfficeGlass3' },
-        { position: new Vector3(-28, 11, 0), key: 'frontOfficeGlass4' },
-        { position: new Vector3(-28, 12, 0), key: 'frontOfficeGlass5' },
-        { position: new Vector3(-28, 13, 0), key: 'frontOfficeGlass6' },
-        { position: new Vector3(-28, 15, 0), key: 'frontOfficeGlass7' },
-        { position: new Vector3(-28, 16, 0), key: 'frontOfficeGlass8' },
-        { position: new Vector3(-28, 17, 0), key: 'frontOfficeGlass9' },
+        { position: new Vector3(-21, 6, 0), key: 'frontOfficeGlass1', isDestructible: true },
+        { position: new Vector3(-20, 6, 0), key: 'frontOfficeGlass2', isDestructible: true },
+        { position: new Vector3(-19, 6, 0), key: 'frontOfficeGlass3', isDestructible: true },
+        { position: new Vector3(-28, 11, 0), key: 'frontOfficeGlass4', isDestructible: true },
+        { position: new Vector3(-28, 12, 0), key: 'frontOfficeGlass5', isDestructible: true },
+        { position: new Vector3(-28, 13, 0), key: 'frontOfficeGlass6', isDestructible: true },
+        { position: new Vector3(-28, 15, 0), key: 'frontOfficeGlass7', isDestructible: true },
+        { position: new Vector3(-28, 16, 0), key: 'frontOfficeGlass8', isDestructible: true },
+        { position: new Vector3(-28, 17, 0), key: 'frontOfficeGlass9', isDestructible: true },
 
-        { position: new Vector3(12, -9, 0), key: 'windowGlass1' },
-        { position: new Vector3(13, -9, 0), key: 'windowGlass2' },
-        { position: new Vector3(14, -9, 0), key: 'windowGlass3' },
-        { position: new Vector3(15, -9, 0), key: 'windowGlass4' },
-        { position: new Vector3(16, -9, 0), key: 'windowGlass5' },
-        { position: new Vector3(17, -9, 0), key: 'windowGlass6' },
-        { position: new Vector3(18, -9, 0), key: 'windowGlass7' },
+        { position: new Vector3(12, -9, 0), key: 'windowGlass1', isDestructible: true },
+        { position: new Vector3(13, -9, 0), key: 'windowGlass2', isDestructible: true },
+        { position: new Vector3(14, -9, 0), key: 'windowGlass3', isDestructible: true },
+        { position: new Vector3(15, -9, 0), key: 'windowGlass4', isDestructible: true },
+        { position: new Vector3(16, -9, 0), key: 'windowGlass5', isDestructible: true },
+        { position: new Vector3(17, -9, 0), key: 'windowGlass6', isDestructible: true },
+        { position: new Vector3(18, -9, 0), key: 'windowGlass7', isDestructible: true },
     ];
 
     return (
@@ -50,7 +50,7 @@ const MapObjects = (props: IMapObjects) => {
                 <Collider
                     {...sprite}
                     args={[0.5, 0.5, 0.5]}
-                    isDestroyable
+                    isDestructible
                 />
             )}
 

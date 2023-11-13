@@ -11,6 +11,13 @@ interface IGun extends IItem {
     speed: number;
 }
 
+export interface IFireProps {
+    position: Vector3;
+    direction: Vector3;
+    key: string;
+    team: number;
+}
+
 class Gun extends Item {
     damage: number;
     rate: number;
@@ -29,7 +36,7 @@ class Gun extends Item {
         this.speed = speed;
     }
 
-    use(position: Vector3, direction: Vector3, key: string,team:number): Bullet | null {
+    fire({ position, direction, key, team }: IFireProps): Bullet | null {
         if (this.currentAmmo > 0) {
             this.currentAmmo--;
             return new Bullet(this.speed, position, direction, key, this.damage, team);
