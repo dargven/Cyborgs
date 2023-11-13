@@ -3,6 +3,7 @@ import Game from "../components/Game/Game";
 import NavButton from "../components/navButton";
 import Chat from "../components/Chat/Chat";
 import "../popUpMenu.css";
+import "../TeamSelect.css";
 
 const GamePage = () => {
     const KEY_ESC = 27;

@@ -43,9 +43,7 @@ const LoginPage = () => {
         <>
             <NavBar />
             <div className="title">
-                <p>
-                    КИБОРГИ <br /> ТЕПЕРЬ В 2D
-                </p>
+                   КИБОРГИ <br /> ТЕПЕРЬ В 2D
             </div>
             <div className="content">
                 <h1>Вход</h1>

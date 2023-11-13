@@ -31,9 +31,7 @@ const RegistrationPage = () => {
     <>
       <NavBar/>
       <div className="title">
-        <p>
           КИБОРГИ <br /> ТЕПЕРЬ В 2D
-        </p>
       </div>
       <div className="content">
         <h1>Регистрация</h1>
