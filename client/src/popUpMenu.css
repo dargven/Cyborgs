@@ -1,4 +1,4 @@
-.popUpMenu{
+.popUpMenu {
     height: 100vh;
     width: 100vw;
     background-color: rgba(0, 0, 0, 0.9);
@@ -8,35 +8,48 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 0.5s; 
 }
 
-.popUpMenu__content{
-    padding: 20px;
-    border-radius: 12px;
-    position: absolute;
+.popUpMenu__content {
+    width: 50dvw;
+    height: 8dvh;
+    padding: 1dvw;
+    display: flex; 
+    align-items: center; 
+    border-radius: 2dvh;
     background-color: rgba(27, 43, 43, 0.8);
-} 
+}
 
-.popUpBtn{
+.popUpBtn {
     font-family: Zelek;
     text-align: center;
-    width: 32.4dvh;
-    height: 5dvh;
-    font-size: 2.5dvh;
+    height:60%;
+    width: 60%;
+    font-size: 1.5dvw;
     color: #27CEE9;
     background: none;
     outline: none;
-    border: none;
+    border: none;margin: 1dvw;
 }
 
 .popUpBtn:hover{
-    text-shadow: 0px 0px 3px #00aeff;
     color: #27CEE9;
     border-width: 0.6dvh 0.6dvh;
     border-radius: 0;
     filter: contrast(30);
     border-color: #27CEE9;
-    box-shadow: inset 0px 0px 30px rgba(0, 0, 0);
+    box-shadow: inset 0px 0px 2dvw rgba(0, 0, 0);
     clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0); 
+}
+.openPopupBtn {
+    position: absolute;
+    z-index: 1;
+    top: 1dvh;
+    left: 1dvw;
+    font-size: 2dvw;
+    width: 5dvw;
+    color: rgb(0, 217, 255);
+    border: none;
+    box-shadow: 0px 0.3dvh 1dvw black;
+    background-color: rgba(0, 195, 255, 0.3); clip-path: polygon(100% 0, 100% 50%, 80% 100%, 0 100%, 0 0); 
 }

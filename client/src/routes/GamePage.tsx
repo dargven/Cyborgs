@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Game from "../components/Game/Game";
 import NavButton from "../components/navButton";
 import Chat from "../components/Chat/Chat";
-import Player from "../components/Game/Player";
 import "../popUpMenu.css";
 
 const GamePage = () => {
@@ -11,9 +10,13 @@ const GamePage = () => {
     const [team, setTeam] = useState<number>(0);
     const handleKeyPress = (event: KeyboardEvent) => {
         if (event.keyCode === KEY_ESC) {
+          if (isPopupVisible) {
+            setIsPopupVisible(false);
+          } else {
             setIsPopupVisible(true);
+          }
         }
-    };
+      };
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyPress);
@@ -21,6 +24,10 @@ const GamePage = () => {
             document.removeEventListener("keydown", handleKeyPress);
         };
     });
+
+    const openPopup = () => {
+        setIsPopupVisible(!isPopupVisible);
+    };
 
     return (
         <div>
@@ -37,7 +44,9 @@ const GamePage = () => {
                 </div>
             )}
             <Chat />
-
+            <button onClick={openPopup} className="openPopupBtn">
+                Esc
+            </button>
             {isPopupVisible && (
                 <div
                     className="popUpMenu"
