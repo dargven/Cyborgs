@@ -80,7 +80,7 @@ class DB
     public function addUser($login, $hash, $name, $email)
     {
         $this->execute(
-            "INSERT INTO users (login,password,name,email ) VALUES (?, ?, ?, ?)",
+            "INSERT INTO users (login,hash,name,email ) VALUES (?, ?, ?, ?)",
             [$login, $hash, $name, $email]
         );
     }

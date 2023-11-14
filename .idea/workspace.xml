@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c44b025-0991-4adb-b2c9-0ca5490f3922" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/68681bfd-cc6a-424e-a2e5-c80de797d3cb.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/68681bfd-cc6a-424e-a2e5-c80de797d3cb.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/application/Application.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/Application.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/application/modules/DB/DB.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/modules/DB/DB.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/application/modules/User/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/modules/User/User.php" afterDir="false" />
+    <list default="true" id="9c44b025-0991-4adb-b2c9-0ca5490f3922" name="Changes" comment="HotFixReg">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +23,14 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="recentNewPullRequestHead">
+      <RepoCoordinatesHolder>
+        <option name="owner" value="SaveliiBulatov" />
+        <option name="repository" value="Cyborgs" />
+      </RepoCoordinatesHolder>
+    </option>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -44,6 +50,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "Fix-Registration-of-Back",
     "last_opened_file_path": "C:/OSPanel/domains/Cyborgs-1",
+    "node.js.selected.package.tslint": "(autodetect)",
     "ts.external.directory.path": "/Users/brize/PhpstormProjects/HotOvci/client/node_modules/typescript/lib"
   },
   "keyToStringList": {
@@ -54,6 +61,28 @@
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
+    <task id="LOCAL-00001" summary="Minor">
+      <option name="closed" value="true" />
+      <created>1699978267170</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1699978267170</updated>
+    </task>
+    <task id="LOCAL-00002" summary="HotFixReg">
+      <option name="closed" value="true" />
+      <created>1699978365018</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1699978365018</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Minor" />
+    <MESSAGE value="HotFixReg" />
+    <option name="LAST_COMMIT_MESSAGE" value="HotFixReg" />
   </component>
 </project>
