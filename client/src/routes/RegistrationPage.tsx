@@ -5,12 +5,16 @@ import md5 from 'md5-ts';
 import NavBar from "../components/navBar";
 import "../Auth.css";
 
+const openEyeIcon = process.env.PUBLIC_URL + '/assets/image/eye-open.png';
+const closeEyeIcon = process.env.PUBLIC_URL + '/assets/image/eye-close.png';
 const RegistrationPage = () => {
   const server = useContext(ServerContext);
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  
 
   const handleRegistration = async () => {
     if (loginRef.current && passwordRef.current) {
@@ -26,6 +30,12 @@ const RegistrationPage = () => {
 
     }
   };
+  const togglePasswordVisibility = () => {
+    if (passwordRef.current) {
+        passwordRef.current.type = showPassword ? 'password' : 'text';
+        setShowPassword(!showPassword);
+    }
+};
 
   return (
     <>
@@ -43,7 +53,7 @@ const RegistrationPage = () => {
             className="input"
             placeholder="Логин"
             ref={loginRef}
-          />
+          /><div className="password-input-container">
           <input
             type="password"
             id="password"
@@ -52,6 +62,16 @@ const RegistrationPage = () => {
             placeholder="Пароль"
             ref={passwordRef}
           />
+          <button
+                        className="show-password-button"
+                        onClick={togglePasswordVisibility}
+                    >
+                        <img
+                            src={showPassword ? openEyeIcon : closeEyeIcon}
+                            alt={showPassword ? 'Show' : 'Hide'}
+                            className="eyeIcon"
+                        />
+                    </button></div>
           <button  onClick={() => handleRegistration()}>
             <h1>Зарегистрироваться</h1>
           </button>
