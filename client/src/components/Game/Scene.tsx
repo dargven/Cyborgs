@@ -2,7 +2,7 @@ import { Stars } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
 import { createRef, useEffect, useRef, useState } from "react";
-import { Group, Texture, TextureLoader, Vector3 } from "three";
+import { Group, Texture, TextureLoader, Vector2, Vector3 } from "three";
 import { Collider, Bullet, Laser } from "../../modules/Game/entities";
 import CollidersPositions from "./CollidersPositions";
 import Hitscan from "./Hitscan";
@@ -63,6 +63,8 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     const [gun, setGun] = useState<Gun>(inventory[0]);
     const [last, setLast] = useState<number>(0);
+    const mouseX = useRef(0);
+    const mouseY = useRef(0);
 
     const colliders = CollidersPositions();
     const invRef = useRef<Group>();
@@ -70,8 +72,15 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     const { viewport, camera, pointer, scene } = useThree();
 
+    const handleMouseMove = (event: MouseEvent) => {
+        mouseX.current = (event.clientX / window.innerWidth) * 2 - 1;
+        mouseY.current = -(event.clientY / window.innerHeight) * 2 + 1;
+    }
+    
+    document.addEventListener("mousemove", handleMouseMove);
+
     const onMovement = (position: Vector3) => {
-        const cameraPos = new Vector3(position.x, position.y, 7);
+        const cameraPos = new Vector3(position.x + mouseX.current, position.y + mouseY.current, 7);
         camera.position.lerp(cameraPos, 0.1);
         camera.updateProjectionMatrix();
 
