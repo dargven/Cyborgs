@@ -30,9 +30,11 @@ class Application
     function register($params)
     {
         $login = $params['login'];
+        $name = $params ['name'];
+        $email = $params['email'];
         $hash = $params['hash'];
-        if ($login && $hash) {
-            return $this->user->register($login, $hash);
+        if ($login && $hash && $name && $email) {
+            return $this->user->register($login, $hash, $name, $email);
         }
         return ['error' => 242];
     }
