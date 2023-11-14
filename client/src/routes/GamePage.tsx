@@ -22,28 +22,21 @@ const GamePage = () => {
         };
     });
 
-    const openPopup = () => {
-        setIsPopupVisible(!isPopupVisible);
-    };
-
     return (
         <div>
             {team ? (
                 <Game />
             ) : (
-                <div>
+                <>
                     <button onClick={() => setTeam(1)} className="Team1">
                         команда 1
                     </button>
                     <button onClick={() => setTeam(2)} className="Team2">
                         команда 2
                     </button>
-                </div>
+                </>
             )}
             <Chat />
-            <button onClick={openPopup} className="openPopupBtn">
-                Esc
-            </button>
             {isPopupVisible && (
                 <div
                     className="popUpMenu"

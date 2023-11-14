@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { StoreContext } from '../App';
-import { ServerContext } from "../App";
 import NavButton from "./navButton";
 import "../Auth.css"
 
