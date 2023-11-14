@@ -1,31 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="@dargvetg.beget.tech">
   <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.49">
-    <root id="1">
-      <DefaultCasing>exact</DefaultCasing>
-      <DefaultEngine>InnoDB</DefaultEngine>
-      <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
-      <Grants>u2333359\\_Cyborgs|schema||u2333359_dargven||ALTER|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||ALTER ROUTINE|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||CREATE|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||CREATE ROUTINE|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||CREATE TEMPORARY TABLES|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||CREATE VIEW|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||DELETE|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||DROP|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||EVENT|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||EXECUTE|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||INDEX|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||INSERT|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||LOCK TABLES|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||REFERENCES|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||SELECT|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||SHOW VIEW|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||TRIGGER|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||UPDATE|G
-u2333359\\_Cyborgs|schema||u2333359_dargven||grant option|G</Grants>
-      <ServerVersion>5.7.27</ServerVersion>
-    </root>
+    <root id="1"/>
     <collation id="2" parent="1" name="big5_chinese_ci">
       <Charset>big5</Charset>
       <DefaultForCharset>1</DefaultForCharset>

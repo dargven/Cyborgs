@@ -41,15 +41,3 @@
     box-shadow: inset 0px 0px 2dvw rgba(0, 0, 0);
     clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0); 
 }
-.openPopupBtn {
-    position: absolute;
-    z-index: 1;
-    top: 1dvh;
-    left: 1dvw;
-    font-size: 2dvw;
-    width: 5dvw;
-    color: rgb(0, 217, 255);
-    border: none;
-    box-shadow: 0px 0.3dvh 1dvw black;
-    background-color: rgba(0, 195, 255, 0.3); clip-path: polygon(100% 0, 100% 50%, 80% 100%, 0 100%, 0 0); 
-}
