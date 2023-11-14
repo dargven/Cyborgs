@@ -1,5 +1,6 @@
 .chat {
 	position: absolute;
+	font-size: 1dvw;
 	bottom: 2dvh;
 	right: 2dvw;
 	border:0.2vi solid rgba(0, 0, 0, 0.7);
@@ -7,7 +8,8 @@
 	width:20vw;
 	height:40dvh;
 	background:rgba(0, 0, 0, 0.2);
-	
+	color:white;
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 	z-index: 1;
 }
 
@@ -60,7 +62,7 @@
 	border:none;
 	height:3vh;	
 	position:absolute;
-	width:94%;
+	width:70%;
 	color: white;
 }
 .chat-form__submit{
@@ -72,6 +74,6 @@
 	height:3vh;	
 	position:absolute;
 	right:0;
-	width:6%;
+	width:30%;
 	color: white;
 }

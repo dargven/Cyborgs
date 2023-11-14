@@ -2,11 +2,6 @@ html {
     height: 100%;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    font-family: Zelek;
-}
 
 body {
     -webkit-background-size: cover;
@@ -20,12 +15,6 @@ body {
     font-size: 7vw;
     text-shadow: 0px 0px 3px #00aeff;
     text-align: center;
-    left: 50%;
-}
-
-p {
-    font-family: "Zelek";
-    color: rgb(0, 255, 255);
     position: relative;
     text-shadow: 0px 0px 3px #00aeff;
     animation: glitch1 0.5s infinite;
@@ -161,29 +150,6 @@ h1 {
     font-size: 2.5dvh;
     border: none;
     background: none;
-}
-.SelectTeam {
-    width: 300px;
-    height: 300px;
-}
-.Team1 {
-    width: 50%;
-    font-size: 2dvh;
-    position: fixed;
-    text-shadow: 0px 0px 3px #00aeff;
-    color: #27cee9;
-    height: 100%;
-    background-image: url("../public/assets/image/Team1.jpg");
-}
-.Team2 {
-    width: 50%;
-    height: 100%;
-    left: 50%;
-    color: #27cee9;
-    font-size: 2dvh;
-    text-shadow: 0px 0px 3px #00aeff;
-    position: fixed;
-    background-image: url("../public/assets/image/Team2.jpg");
 }
 .TEST {
     color: rgba(211, 28, 28, 0.13);

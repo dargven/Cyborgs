@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import "./Chat.css"
 import { ServerContext } from "../../App";
+import "./Chat.css"
 
 interface IMessage {
     name: string,
