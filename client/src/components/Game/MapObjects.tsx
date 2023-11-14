@@ -1,7 +1,7 @@
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import { Vector3, Texture } from "three";
 import MakeSprite from "./MakeSprite";
-import Collider from "./Collider";
+import Obstacle from "./Obstacle";
 
 interface IMapObjects {
     textures: Texture;
@@ -47,7 +47,7 @@ const MapObjects = (props: IMapObjects) => {
             ))}
 
             {sprites.map((sprite) =>
-                <Collider
+                <Obstacle
                     {...sprite}
                     args={[0.5, 0.5, 0.5]}
                     isDestructible

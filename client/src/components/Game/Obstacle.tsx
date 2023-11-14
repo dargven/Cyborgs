@@ -3,7 +3,7 @@ import { ICollider } from "../../modules/Game/entities/Collider";
 import { useEffect, useRef, useState } from "react";
 import MakeSprite from "./MakeSprite";
 
-const Collider = ({ position, args, isDestructible, texture }: ICollider) => {
+const Obstacle = ({ position, args, isDestructible, texture }: ICollider) => {
 
     const [isActive, setActive] = useState<boolean>(true);
     const ref = useRef<RapierRigidBody>(null!);
@@ -42,4 +42,4 @@ const Collider = ({ position, args, isDestructible, texture }: ICollider) => {
 
 }
 
-export default Collider;
+export default Obstacle;

@@ -5,6 +5,7 @@ import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
 import { useFrame } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
+import { IZonePlayer } from "./Zone";
 
 interface IPlayerProps {
     id?: number;
@@ -53,6 +54,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             ref.current.setLinvel(velocity, true);
         }
     }
+
 
     useFrame(() => {
         if (isControlled) {
@@ -104,7 +106,9 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
     const [hp, setHp] = useState<number>(100);
     const data = {
         type: 'player',
-        team: team
+        team: team,
+        hp: hp,
+        id: id
     }
 
     return (
@@ -135,9 +139,10 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
+                        const targetData: any = e.target.rigidBody?.userData;
                         if (data.type === "projectile") {
                             if (data.team === team && hp - data.damage < 0) {
-                                setHp(0)
+                                setHp(0);
                             }
                             else if (data.team === team) {
                                 setHp(hp - (data.damage / 10))
@@ -149,6 +154,19 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                                 setHp(hp - data.damage)
                             }
                         }
+                        targetData.hp = hp;
+
+
+                        if (data.type === 'zone') {
+                            const players: IZonePlayer[] = data.players;
+                            data.players = players.filter(player => player.id !== targetData.id);
+                            data.players = [...data.players, { team: targetData.team, hp: targetData.hp, id: targetData.id }];
+                            data.test = true;                            
+                            if (e.other.rigidBody) {
+                                e.other.rigidBody.userData = data;
+                            }
+                        }
+
                     }} />
                 <HealthBar value={hp} color={0xff0000} />
             </RigidBody>

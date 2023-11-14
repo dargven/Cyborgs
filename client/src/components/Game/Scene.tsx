@@ -15,8 +15,8 @@ import Map from "./Map";
 import Zone from "./Zone";
 import Inventory from "./Inventory";
 import { Gun, Item } from "../../modules/Game/items";
-import Collider from "./Collider";
-import Inventory2 from "../../modules/Game/Inventory";
+import Obstacle from "./Obstacle";
+import Inventory2 from "../../modules/Game/misc/Inventory";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -144,15 +144,15 @@ const Scene = ({ vSize }: ISceneProps) => {
                         setWeaponSlot={setWeaponSlot}
                         isControlled
                     />
-                    <Player team={2} />
-                    <Player team={1} />
+                    <Player team={0} id={1002} />
+                    <Player team={1} id={1001} />
                     <Robot />
                 </group>
 
                 <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons} />
 
                 {colliders.map(collider =>
-                    <Collider
+                    <Obstacle
                         key={generateColliderKey()}
                         {...collider}
                     />
