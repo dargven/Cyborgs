@@ -88,7 +88,7 @@ export default class Server {
         return result;
     }
 
-    register(login: string, hash: string): Promise<TUser | null> {
-        return this.request<TUser>("register", { login, hash });
+    register(login: string, hash: string, name: string, email: string): Promise<TUser | null> {
+        return this.request<TUser>("register", { login, hash, name,  email});
     }
 }
