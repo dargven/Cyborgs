@@ -1,4 +1,5 @@
 <?php
+session_start();
 class User
 {
     private DB $db;
@@ -13,9 +14,13 @@ class User
         return md5(microtime() . 'salt' . rand());
     }
 
-    public function getUser($token)
+    public function getUserByToken($token)
     {
         return $this->db->getUserByToken($token);
+    }
+
+    public function getUserByLogin($login){
+        return $this->db->getUserByLogin($login);
     }
 
     public function login($login, $hash, $rnd)
@@ -54,6 +59,11 @@ class User
             return true;
         }
         return ['error' => 1003];
+    }
+    public function resetPasswordByEmail($login){
+        $randomNumber = random_int(10000, 99999);
+        $_SESSION[$login] = $randomNumber;
+
     }
 
 }

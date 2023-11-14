@@ -4,49 +4,39 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+require '/Users/brize/PhpstormProjects/HotOvci/server/vendor/autoload.php';
+
 class Mailer
 {
-    protected PHPMailer $mail;
+    private $mail;
 
     public function __construct()
     {
         $this->mail = new PHPMailer(true);
 
-        // Настройки сервера SMTP
+        //Настройка подключения
         $this->mail->isSMTP();
-        $this->mail->Host = 'smtp.yandex.ru';
+        $this->mail->Host = 'smtp-relay.brevo.com';
         $this->mail->SMTPAuth = true;
-        $this->mail->Username = 'cy8orgs';
-        $this->mail->Password = 'm7n-DZW-yVe-t8n';
-        $this->mail->SMTPSecure = 'SSL';
-        $this->mail->Port = 465;
+        $this->mail->Username = 'dargvel@gmail.com';
+        $this->mail->Password = 'w95fDd7txYUqmgna';
+        $this->mail->SMTPSecure = 'tls';
+        $this->mail->Port = 587;
 
-        // Остальные настройки, если необходимо
-
-        // Адрес отправителя по умолчанию
-        $this->mail->setFrom('cy8orgs@yandex.ru', 'Your Name');
     }
 
-    public function sendMail($recipient, $subject, $body)
+    public function sendEmail($to, $subject, $body)
     {
         try {
-            // Адрес получателя
-            $this->mail->addAddress($recipient);
-
-            // Тело письма
-            $this->mail->isHTML(true);
+            $this->mail->addAddress($to);
             $this->mail->Subject = $subject;
             $this->mail->Body = $body;
-
-            // Отправка письма
             $this->mail->send();
             return true;
         } catch (Exception $e) {
-            return ['error' => '24242'];
-        } finally {
-            // Сброс настроек после отправки
-            $this->mail->clearAddresses();
-            $this->mail->clearAttachments();
+            return ['error' => 707];
         }
+
     }
+
 }

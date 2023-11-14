@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c44b025-0991-4adb-b2c9-0ca5490f3922" name="Changes" comment="Add PhpMailer" />
+    <list default="true" id="9c44b025-0991-4adb-b2c9-0ca5490f3922" name="Changes" comment="Add PhpMailer">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/application/Answer.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/Answer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/application/Application.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/Application.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/application/modules/Mailer/Mailer.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/modules/Mailer/Mailer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/application/modules/User/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/modules/User/User.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,15 +27,15 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "history": [
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
     {
-      "assignee": "dargven"
+      &quot;assignee&quot;: &quot;dargven&quot;
     }
   ],
-  "lastFilter": {
+  &quot;lastFilter&quot;: {
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="recentNewPullRequestHead">
       <RepoCoordinatesHolder>
@@ -60,22 +66,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenDatabaseViewOnStart": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Task-16-Mail",
-    "last_opened_file_path": "/Users/brize/PhpstormProjects/HotOvci/server/vendor/phpmailer/phpmailer",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "ts.external.directory.path": "/Users/brize/PhpstormProjects/HotOvci/client/node_modules/typescript/lib"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenDatabaseViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Task-16-Mail&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/brize/PhpstormProjects/HotOvci/server/vendor/phpmailer/phpmailer&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/brize/PhpstormProjects/HotOvci/client/node_modules/typescript/lib&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer" />

@@ -24,16 +24,6 @@ class Application
         $this->mailer = new Mailer();
     }
 
-    function sendEmail($params)
-    {
-        $recipient = $params['recipient'];
-        $subject = $params['subject'];
-        $body = $params['body'];
-        if ($recipient && $body && $subject){
-            return $this->mailer->sendMail($recipient, $body, $subject);
-        }
-        return ['error'=>'242'];
-    }
 
 
 
@@ -75,7 +65,7 @@ class Application
     {
         $token = $params['token'];
         if ($token) {
-            $user = $this->user->getUser($token);
+            $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->chat->getMessage();
             }
@@ -89,7 +79,7 @@ class Application
         $token = $params['token'];
         $message = $params['message'];
         if ($token && $message) {
-            $user = $this->user->getUser($token);
+            $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->chat->sendMessage($user->id, $message);
             }
@@ -104,7 +94,7 @@ class Application
         $token = $params['token'];
         $teamId = $params['teamId'];
         if ($token && $teamId) {
-            $user = $this->user->getUser($token);
+            $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->lobby->selectTeam($user->id, $teamId);
             }
@@ -113,21 +103,12 @@ class Application
         return ['error' => 242];
     }
 
-
-
-
-    /******************/
-    /* ЖАЛКАЯ ПАРОДИЯ */
-    /******************/
-
-//..
-
     function getTeamsInfo($params)
     {
         $token = $params['token'];
         if ($token) {
 
-            $user = $this->user->getUser($token);
+            $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->lobby->getTeamsInfo();
             }
@@ -138,13 +119,12 @@ class Application
 
     }
 
-
     function getSkins($params)
     {
         $token = $params['token'];
         if ($token) {
 
-            $user = $this->user->getUser($token);
+            $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->lobby->getSkins();
             }
@@ -160,10 +140,25 @@ class Application
         $skinId = $params['skinId'];
         if ($token && $skinId) {
 
-            $user = $this->user->getUser($token);
+            $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->lobby->setSkin($user->id, $skinId);
 
+            }
+            return ['error' => 1002];
+
+        }
+        return ['error' => 242];
+
+    }
+
+    function resetPasswordByEmail($params)
+    {
+        $login = $params['login'];
+        if ($login) {
+            $user = $this->user->getUserByLogin($login);
+            if ($user){
+                $this->user->resetPasswordByEmail($login);
             }
             return ['error' => 1002];
 
