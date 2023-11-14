@@ -77,11 +77,11 @@ class DB
         return $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $id]);
     }
 
-    public function addUser($login, $password)
+    public function addUser($login, $hash, $name, $email)
     {
         $this->execute(
-            "INSERT INTO users (login,password) VALUES (?, ?)",
-            [$login, $password]
+            "INSERT INTO users (login,password,name,email ) VALUES (?, ?, ?, ?)",
+            [$login, $hash, $name, $email]
         );
     }
 
