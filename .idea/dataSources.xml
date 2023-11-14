@@ -8,5 +8,15 @@
       <jdbc-url>jdbc:mysql://dargvetg.beget.tech:3306</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="@server187.hosting.reg.ru" uuid="f53c8c49-7e88-4bf5-abe9-d4ad678bf5c0">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://server187.hosting.reg.ru:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <driver-properties>
+        <property name="enabledTLSProtocols" value="TLSv1, TLSv1.1, TLSv1.2, TLSv1.3" />
+      </driver-properties>
+    </data-source>
   </component>
 </project>
