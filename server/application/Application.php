@@ -18,7 +18,11 @@ class Application
         $this->user = new User($db);
         $this->lobby = new Lobby($db);
         $this->chat = new Chat($db);
+        $this->game = new Game($db);
     }
+
+
+    
 
     /*************************/
     /* НЕПОВТОРИМЫЙ ОРИГИНАЛ */
@@ -26,9 +30,11 @@ class Application
     function register($params)
     {
         $login = $params['login'];
+        $name = $params ['name'];
+        $email = $params['email'];
         $hash = $params['hash'];
-        if ($login && $hash) {
-            return $this->user->register($login, $hash);
+        if ($login && $hash && $name && $email) {
+            return $this->user->register($login, $hash, $name, $email);
         }
         return ['error' => 242];
     }
@@ -80,11 +86,7 @@ class Application
         return ['error' => 242];
     }
 
-    /******************/
-    /* ЖАЛКАЯ ПАРОДИЯ */
-    /******************/
 
-//..
     function selectTeam($params)
     {
         $token = $params['token'];
@@ -99,13 +101,23 @@ class Application
         return ['error' => 242];
     }
 
+
+    
+
+    /******************/
+    /* ЖАЛКАЯ ПАРОДИЯ */
+    /******************/
+
+//..
+  
     function getTeamsInfo($params)
     {
         $token = $params['token'];
         if ($token) {
+
             $user = $this->user->getUser($token);
             if ($user) {
-                $this->lobby->getTeamsInfo();
+                return $this->lobby->getTeamsInfo();
             }
             return ['error' => 1002];
 
@@ -119,6 +131,7 @@ class Application
     {
         $token = $params['token'];
         if ($token) {
+
             $user = $this->user->getUser($token);
             if ($user) {
                 return $this->lobby->getSkins();
@@ -134,6 +147,7 @@ class Application
         $token = $params['token'];
         $skinId = $params['skinId'];
         if ($token && $skinId) {
+                
             $user = $this->user->getUser($token);
             if ($user) {
                 return $this->lobby->setSkin($user->id, $skinId);

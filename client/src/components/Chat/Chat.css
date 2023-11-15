@@ -1,21 +1,21 @@
 .chat {
 	position: absolute;
-	bottom: 0;
-	right: 0;
-	border:1px solid #333;
-	margin:15px;
-	width:20%;
-	height:40%;
-	background:rgba(255, 255, 255, 0.4);
-	min-height: 30dvh;
-	max-height: 50dvh;
-	max-width: 40dvh;
+	font-size: 1dvw;
+	bottom: 2dvh;
+	right: 2dvw;
+	border:0.2vi solid rgba(0, 0, 0, 0.7);
+	border-bottom: none;
+	width:20vw;
+	height:40dvh;
+	background:rgba(0, 0, 0, 0.2);
+	color:white;
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 	z-index: 1;
 }
 
 .chatComponent {
-    bottom:100%;
-    right: 43px;
+    bottom:100dvh;
+    right: 4dvw;
 }
 
 .chat-messages {
@@ -30,7 +30,7 @@
 
 .chat__message {
 	border-left:3px solid rgb(51, 51, 51)333;
-	margin-top:2px;
+	margin-top:2vh;
 	padding:2px;
 }
 
@@ -51,23 +51,29 @@
 }
 
 .chat-input {
-	min-height:6%;
+	min-height:6dvw;
 }
-input {
-	font-family:arial;
-	font-size:16px;
-	vertical-align:middle;
-	background:rgba(18, 74, 138, 0.541);
-	border:0;
-	display:inline-block;
-	margin:1px;
-	height:30px;
-}
+
 
 .chat-form__input {
-	width:79%;
+	font-family:'Courier New', Courier, monospace;
+	font-size:1dvw;
+	background:rgba(18, 74, 138, 0.541);
+	border:none;
+	height:3vh;	
+	position:absolute;
+	width:70%;
+	color: white;
 }
-
-.chat-form__submit {
-	width:18%;
+.chat-form__submit{
+	font-family:arial;
+	font-size:1dvw;
+	vertical-align:middle;
+	background:rgba(29, 124, 231, 0.541);
+	border:0;
+	height:3vh;	
+	position:absolute;
+	right:0;
+	width:30%;
+	color: white;
 }

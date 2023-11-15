@@ -9,18 +9,18 @@ class DB
     public function __construct()
     {
 
-        // local
+//        local
 //        $host = '127.0.0.1';
 //        $port = 3306;
 //        $user = 'root';
 //        $pass = '';
 //        $db = 'cyborgs';
 
-        $host = 'dargvetg.beget.tech';
+        $host = 'server187.hosting.reg.ru';
         $port = '3306';
-        $user = 'dargvetg_cyborgs';
-        $pass = 'vizual22cdxsaV';
-        $db = 'dargvetg_cyborgs';
+        $user = 'u2333359_dargven';
+        $pass = 'bAq-UKv-YCK-fxx';
+        $db = 'u2333359_Cyborgs';
 
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
@@ -30,7 +30,6 @@ class DB
     {
         $this->pdo = null;
     }
-
 
     // выполнить запрос без возвращения данных
     private function execute($sql, $params = [])
@@ -78,22 +77,27 @@ class DB
         return $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $id]);
     }
 
-    public function addUser($login, $password)
+    public function addUser($login, $hash, $name, $email)
     {
         $this->execute(
-            "INSERT INTO users (login,password) VALUES (?, ?)",
-            [$login, $password]
+            "INSERT INTO users (login,password,name,email ) VALUES (?, ?, ?, ?)",
+            [$login, $hash, $name, $email]
         );
     }
 
-
-    // ЖАЛКАЯ ПАРОДИЯ //
-    //Методы полностью переписаны по феншую, осталось их нормально протестить.
-    //Проверить метод addMessage
-    public function addMessage($user_id, $message)
+    public function addPlayerToTeam($id, $teamId)
     {
-        return $this->execute("INSERT INTO messages VALUES (?, ?, now())",
-            [$user_id, $message]);
+        return $this->execute("INSERT INTO userTeams (team_id, user_id) VALUES (?, ?)", [$teamId, $id]);
+    }
+
+    public function sendMessage($id, $message)
+    {
+        return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
+    }
+
+    public function getMessage()
+    {
+        return $this->queryAll('SELECT name, message, created FROM messages as m LEFT JOIN users as u on u.id = m.user_id ORDER BY m.created DESC');
     }
 
     public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
@@ -104,50 +108,33 @@ class DB
 
     public function DeleteBullet($id)
     {
-        return $this->execute("DELETE * FROM bullet WHERE id=?", [$id]);
+        return $this->execute("DELETE  FROM bullet WHERE id=?", [$id]);
     }
 
-    public function getScoreTeams()
+    public function updateScoreInTeam($teamId,$score)
     {
-        return $this->execute("SELECT team_id, team_score FROM teams group by team_id");
+        
+        return $this->execute("UPDATE teams SET team_score=team_score+? WHERE  team_id=?", [$score, $teamId]);
+        
     }
 
-    public function getCountOfPlayersInTeams()
+    public function getTeamsInfo()
+    
     {
-        return $this->queryAll("SELECT team_id, COUNT(user_id) as countOfPlayers from userTeams group by team_id");
+        return $this->queryAll("SELECT t.team_id, user_id, team_score FROM teams as t INNER JOIN userTeams as u on t.team_id = u.team_id GROUP BY t.team_id");
 
-    }
-
-    public function updateScoreInTeam($teamId, $score)
-    {
-        return $this->execute("UPDATE teams SET WHERE team_id = ?, team_score= SUM(team_score, ?)", [$teamId, $score]);
-    } // Дописать Кирилл || Женя
-
-    public function addPlayerToTeam($id, $teamId)
-    {
-        return $this->execute("INSERT INTO userTeams (team_id, user_id) VALUES (?, ?)", [$teamId, $id]);
-    }
-
-    public function getSkinsInLobby()
-    {
-        return $this->queryAll("SELECT skin_id as id, text, image FROM userSkins, skins WHERE`role`='lobby'");
     }
 
     public function setSkinInLobby($id, $skinId)
     {
-        return $this->execute("UPDATE userSkins SET skin_id=? WHERE `role`=?, id=?", [$skinId, 'lobby', $id]);
+        return $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
     }
+    // ЖАЛКАЯ ПАРОДИЯ //
+    //Методы полностью переписаны по феншую, осталось их нормально протестить.
 
-    public function getMessage()
+    public function getSkinsInLobby()
     {
-        return $this->queryAll('SELECT name, message, created FROM messages as m LEFT JOIN users as u on u.id = m.user_id ORDER BY m.created DESC');
+        return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id WHERE skins.role='lobby'");
     }
-
-    public function sendMessage($id, $message)
-    {
-        return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
-    }
-
-
 }
 

@@ -2,6 +2,12 @@
 
 class Game
 {
+    private $db;
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
+
     public function getSkins($id)
     {
         $skins = $this->db->getSkins($id);

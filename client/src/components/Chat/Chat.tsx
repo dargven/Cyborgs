@@ -1,42 +1,57 @@
-import { useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { ServerContext } from "../../App";
 import "./Chat.css"
 
+interface IMessage {
+    name: string,
+    message: string,
+    created: string, 
+}
+
 const Chat = () => {
-    //const [showChat, setShowChat] = useState(true)
+    const chatRef = useRef<HTMLInputElement | null>(null);
+    const server = useContext(ServerContext);
+    let interval: NodeJS.Timer | null = null;
+    const [messages, setMessages] = useState<IMessage[]>([]);
 
-    //const messagesContainer: HTMLElement | null = document.getElementById('messages'); // Контейнер сообщений — скрипт будет добавлять в него сообщения
-    //let interval: NodeJS.Timer | null = null; // Переменная с интервалом подгрузки сообщений
-    //const sendForm: HTMLFormElement | null = document.getElementById('chat-form'); // Форма отправки
-    //const messageInput: HTMLInputElement | null = document.getElementById('message-text'); // Инпут для текста сообщения
+    const updateChat = async () => {
+        const messagesFromServer = await server.getMessage()
+        console.log(messagesFromServer)
+        if(messagesFromServer) {
+            setMessages(messagesFromServer);
+        }
+    }
 
-    //function update() {
-    // send_request('load');
-    //}
+    useEffect(() => {
+        const interval = setInterval(updateChat, 5000);
 
-    //if (interval === null) {
-    //interval = setInterval(update, 500);
-    //}
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
 
-    //if (sendForm) {
-    //sendForm.onsubmit = function (event: Event) {
-        //send_request('send');
-        //event.preventDefault(); // Используем preventDefault() вместо return false, чтобы остановить стандартную отправку формы
-    //};
-//}
-
+    const handleChat = async () => {
+        if(chatRef.current?.value) {
+            await server.sendMessage(chatRef.current?.value);
+            chatRef.current.value = "";
+        }
+    }
+    
     return (
         <div className="chatComponent"> 
             <div className='chat'>
                 <div className="chat-messages">
                     <div className="chat-messages__content" id="messages">
-                        
+                        {messages.map(msg => (
+                            <p>{msg.created} {msg.name}:{msg.message}</p>
+                        ))}
                     </div>
                 </div>
                 <div className="chat-input">
-                    <form method="post" id="chat-form">
-                        <input type="text" id="mesage-text" className="chat-form__input" placeholder="Введите сообщение"/>
-                        <input type='submit' className="chat-form__submit" value='=>'/>
-                    </form>
+                    <div id="chat-form">
+                        <input ref={chatRef} type="text" id="mesage-text" className="chat-form__input" placeholder="Введите сообщение"/>
+                        <button className="chat-form__submit" onClick={() => handleChat()}>Отправить</button>
+                    </div>
                 </div>
             </div>
         </div>

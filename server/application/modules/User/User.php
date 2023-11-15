@@ -40,17 +40,17 @@ class User
     {
         $user = $this->db->getUserByToken($token);
         if ($user) {
-            $this->db->updateToken($user->id, null);
+            $this->db->updateToken($user->id, '');
             return true;
         }
         return ['error' => 1004];
     }
 
-    public function register($login, $hash)
+    public function register($login, $hash, $name, $email)
     {
         $user = $this->db->getUserByLogin($login);
         if (!$user) {
-            $this->db->addUser($login, $hash);
+            $this->db->addUser($login, $hash, $name, $email);
             return true;
         }
         return ['error' => 1003];

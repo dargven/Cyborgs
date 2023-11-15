@@ -3,7 +3,7 @@ import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rap
 import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
 import { IZonePlayer } from "./Zone";
 
@@ -25,6 +25,8 @@ interface IPlayerProps {
 const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlot, isControlled }: IPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
+
+    const [isShooting, setShooting] = useState<boolean>(false);
 
     const [controlKeys, getKeys] = useKeyboardControls();
 
@@ -48,21 +50,43 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             if (down) {
                 velocity.y -= 1;
             }
-
+            
             velocity.setLength(speed);
-
+            
             ref.current.setLinvel(velocity, true);
         }
     }
 
+    useEffect(() => {
+        if (isControlled) {
+            const mouseDownHandler = (e: MouseEvent) => {
+                if (e.button === 0) {
+                    setShooting(true);
+                }
+            }
+            const mouseUpHandler = (e: MouseEvent) => {
+                if (e.button === 0) {
+                    setShooting(false);
+                }
+            }
+
+            document.addEventListener("mousedown", mouseDownHandler);
+            document.addEventListener("mouseup", mouseUpHandler);
+
+            return () => {
+                document.removeEventListener("mousedown", mouseDownHandler);
+                document.removeEventListener("mouseup", mouseUpHandler);
+            }
+        }
+    }, []);
 
     useFrame(() => {
         if (isControlled) {
             const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
             movementController(up, down, left, right);
-
+            
             const playerPosition = vec3(ref?.current?.translation());
-
+            
             if (select1 && setWeaponSlot) {
                 setWeaponSlot(1)
             }
@@ -75,11 +99,11 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 setWeaponSlot(3)
             }
 
-            if (onMovement) {
+            if (onMovement){
                 onMovement(playerPosition);
             }
 
-            if (shoot) {
+            if (shoot || isShooting) {
                 if (onFire) {
                     onFire(playerPosition, team);
                 }

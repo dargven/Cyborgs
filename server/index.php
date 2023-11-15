@@ -12,12 +12,12 @@ function result($params) {
             case 'login': return $app->login($params); //Работает
             case 'logout': return $app->logout($params); //Работает
             case 'register': return $app->register($params);//Работает
-            case 'selectTeam': return $app->selectTeam($params);
-            case 'getTeamsInfo': return $app->getTeamsInfo($params);
-            case 'getSkins': return $app->getSkins($params);
-            case 'setSkin': return $app->setSkin($params);
-            case 'sendMessage':return $app->sendMessage($params);
-            case 'getMessage':return $app->getMessage($params);
+            case 'selectTeam': return $app->selectTeam($params);//Работает
+            case 'getTeamsInfo': return $app->getTeamsInfo($params);//работает
+            case 'getSkins': return $app->getSkins($params);//работает
+            case 'setSkin': return $app->setSkin($params);//работает для тех пользователей, кто добавлен в userSkins
+            case 'sendMessage':return $app->sendMessage($params);//Работает
+            case 'getMessage':return $app->getMessage($params);//Работает
             default: return ['error' => 102];
         }
     }

@@ -2,11 +2,6 @@ html {
     height: 100%;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    font-family: Zelek;
-}
 
 body {
     -webkit-background-size: cover;
@@ -20,12 +15,6 @@ body {
     font-size: 7vw;
     text-shadow: 0px 0px 3px #00aeff;
     text-align: center;
-    left: 50%;
-}
-
-p {
-    font-family: "Zelek";
-    color: rgb(0, 255, 255);
     position: relative;
     text-shadow: 0px 0px 3px #00aeff;
     animation: glitch1 0.5s infinite;
@@ -47,7 +36,6 @@ p {
     width: 50dvw;
 }
 .input-form {
-    align-items: center;
     margin: 1dvw 0px;
     text-align: center;
     height: 120%;
@@ -63,7 +51,33 @@ p {
     font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
     color: #ffffff;
     background: none;
-    margin: 1em 0px;
+    margin: 1dvh 0px;
+    align-items: center;
+    height: 3dvh;
+}
+
+.input-form .password-input-container {
+    position: relative;
+}
+
+.input-form .show-password-button {
+    position: absolute;
+    display: inline;
+    top: 15%;
+    right: -1dvw;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 1.5vh;
+}
+
+.input-form input[type="password"] {
+    width: 90%;
+}
+.eyeIcon {
+    width: 1.5dvw;
 }
 
 .input-form input:hover {
@@ -96,7 +110,7 @@ h1 {
     font-family: "Zelek";
     color: rgb(0, 217, 255);
     text-shadow: 0px 1vh 4vh #00aeff;
-    font-size: 3dvh;
+    font-size: 1.5dvw;
 }
 
 .App-header {
@@ -137,7 +151,6 @@ h1 {
     border: none;
     background: none;
 }
-
 .TEST {
     color: rgba(211, 28, 28, 0.13);
     padding: 10px;

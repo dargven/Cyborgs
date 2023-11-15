@@ -1,0 +1,37 @@
+.Team1,
+.Team2 {
+    border: none;
+    font-family: Zelek;
+    width: 50%;
+    font-size: 4dvh;
+    position: fixed;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.8);
+    transition: border 0.5s, color 0.3s,font-size 0.3s;
+}
+
+.Team1 {
+    
+    text-shadow: 0px 0px 3dvw rgb(233, 39, 217);
+    color: rgb(233, 39, 217);
+     background-image: url("../public/assets/image/Team3.png"); 
+}
+
+.Team2 {
+    text-shadow: 0px 0px 3dvw #00aeff;
+    color: #27cee9;
+    border-left: 1dvw #00aeff;
+    left: 50%;
+     background-image: url("../public/assets/image/Team4.png"); 
+}
+.Team2:hover {
+    font-size: 5dvh;
+    border: 1.5dvw solid #00aeff; 
+}
+.Team1:hover {
+    font-size:5dvh;
+    border: 1.5dvw solid rgb(233, 39, 217);
+}
