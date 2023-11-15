@@ -5,7 +5,7 @@ namespace App\server\application\modules\Mailer\Mailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-require_once '/Users/brize/PhpstormProjects/HotOvci/server/vendor/autoload.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 class Mailer
 {
     private PHPMailer $mail;
@@ -35,12 +35,9 @@ class Mailer
             $this->mail->Subject = $subject;
             $this->mail->Body = $body;
             $this->mail->send();
-            var_dump('asd');
-
             return true;
         } catch (Exception $e) {
-            var_dump('asd');
-            return ['error' => 707];
+            return false;
         }
 
     }

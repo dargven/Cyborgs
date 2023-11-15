@@ -19,6 +19,8 @@ function result($params) {
             case 'sendMessage':return $app->sendMessage($params);//Работает
             case 'getMessage':return $app->getMessage($params);//Работает
             case 'resetPasswordByEmail':return $app->resetPasswordByEmail($params);
+            case 'setPasswordAfterReset':return $app->setPasswordAfterReset($params);
+            case 'getCodeToResetPassword':return $app->getCodeToResetPassword($params);
             default: return ['error' => 102];
         }
     }

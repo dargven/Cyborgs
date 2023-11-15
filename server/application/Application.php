@@ -5,7 +5,8 @@ require_once 'modules/DB/DB.php';
 require_once 'modules/Lobby/Lobby.php';
 require_once 'modules/Chat/Chat.php';
 require_once 'modules/Mailer/Mailer.php';
-use App\server\application\modules\Mailer\Mailer;
+
+use App\server\application\modules\Mailer\Mailer\Mailer;
 
 
 class Application
@@ -159,14 +160,40 @@ class Application
         $login = $params['login'];
         if ($login) {
             $user = $this->user->getUserByLogin($login);
-            if ($user){
-                return $this->user->resetPasswordByEmail($login);
+            if ($user) {
+                return $this->user->resetPasswordByEmail($login, $user);
             }
             return ['error' => 1002];
 
         }
         return ['error' => 242];
 
+    }
+
+    function getCodeToResetPassword($params)
+    {
+        $login = $params['login'];
+        $code = $params['code'];
+        if ($login && $code) {
+            $user = $this->user->getUserByLogin($login);
+            if ($user) {
+                return $this->user->getCodeToResetPassword($login, $code, $user);
+
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
+    }
+
+    function setPasswordAfterReset($params)
+    {
+        $hash = $params['hash'];
+        $login = $params['login'];
+        if ($login && $hash) {
+            $user = $this->user->getUserByLogin($login);
+                return $this->user->setPasswordAfterReset($hash, $user);
+        }
+        return ['error' => 242];
     }
 
 

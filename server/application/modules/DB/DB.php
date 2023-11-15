@@ -77,6 +77,11 @@ class DB
         return $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $id]);
     }
 
+    public function setPassword($id, $password)
+    {
+        return $this->execute("UPDATE users  SET password =? WHERE id = ?", [$password, $id]);
+    }
+
     public function addUser($login, $password)
     {
         $this->execute(
@@ -111,15 +116,15 @@ class DB
         return $this->execute("DELETE  FROM bullet WHERE id=?", [$id]);
     }
 
-    public function updateScoreInTeam($teamId,$score)
+    public function updateScoreInTeam($teamId, $score)
     {
-        
+
         return $this->execute("UPDATE teams SET team_score=team_score+? WHERE  team_id=?", [$score, $teamId]);
-        
+
     }
 
     public function getTeamsInfo()
-    
+
     {
         return $this->queryAll("SELECT t.team_id, user_id, team_score FROM teams as t INNER JOIN userTeams as u on t.team_id = u.team_id GROUP BY t.team_id");
 

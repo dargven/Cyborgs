@@ -1,6 +1,8 @@
 <?php
 session_start();
+
 use App\server\application\modules\Mailer\Mailer\Mailer;
+
 class User
 {
     private DB $db;
@@ -65,13 +67,32 @@ class User
         return ['error' => 1003];
     }
 
-    public function resetPasswordByEmail($login)
+    public function resetPasswordByEmail($login, $user)
     {
+
         $randomNumber = random_int(10000, 99999);
         $_SESSION[$login] = $randomNumber;
-        $user = $this->getUserByLogin($login);
         $email = $user->email;
-        $this->mailer->sendEmail($email, 'verifCode', 'your Verificitaion code is '.$randomNumber);
+        if ($this->mailer->sendEmail($email, 'verifCode', 'your Verificitaion code is ' . $randomNumber)) {
+           return true;
+        }
+        return ['error' => 707];// could not send message
+    }
+public function getCodeToResetPassword($login, $code, $user)
+{
+    if ($_SESSION[$login] == $code) {
+        return $this->db->setPassword($user->id, '');
+    }
+    return ['error' => 708]; // invalid code from e-mail;
+}
+    public function setPasswordAfterReset($hash, $user)
+    {
+        $login = $_SESSION[$user->login];
+        if ($user && $login) {
+            return $this->db->setPassword($user->id, $hash);
+        }
+        return ['error' => 1002];
+
     }
 
 
