@@ -5,7 +5,7 @@ namespace App\server\application\modules\Mailer\Mailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-
+require_once '/Users/brize/PhpstormProjects/HotOvci/server/vendor/autoload.php';
 class Mailer
 {
     private PHPMailer $mail;
