@@ -5,8 +5,9 @@ import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
+import { IZonePlayer } from "./Zone";
 
-export interface IPlayerProps {
+interface IPlayerProps {
     id?: number;
     username?: string;
     position?: Vector3;
@@ -16,6 +17,10 @@ export interface IPlayerProps {
     onMovement?(position: Vector3): void;
     setWeaponSlot?(newSlot: number): void;
 }
+
+// export interface IRigidBodyData {
+//     type: string
+// }
 
 const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlot, isControlled }: IPlayerProps) => {
 
@@ -45,9 +50,9 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             if (down) {
                 velocity.y -= 1;
             }
-
+            
             velocity.setLength(speed);
-
+            
             ref.current.setLinvel(velocity, true);
         }
     }
@@ -79,9 +84,9 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
         if (isControlled) {
             const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
             movementController(up, down, left, right);
-
+            
             const playerPosition = vec3(ref?.current?.translation());
-
+            
             if (select1 && setWeaponSlot) {
                 setWeaponSlot(1)
             }
@@ -94,7 +99,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 setWeaponSlot(3)
             }
 
-            if (onMovement) {
+            if (onMovement){
                 onMovement(playerPosition);
             }
 
@@ -123,10 +128,19 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
 
 
     const [hp, setHp] = useState<number>(100);
-    const data = {
-        type: 'player',
-        team: team
-    }
+
+    useEffect(() => {
+        const data = {
+            type: 'player',
+            team: team,
+            hp: hp,
+            id: id
+        }
+        ref.current.userData = data;
+        if (hp===0){
+            ref.current.setEnabled(false);
+        }
+    }, [hp]);
 
     return (
         <>
@@ -139,7 +153,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 linearDamping={10}
                 angularDamping={1}
                 lockRotations
-                userData={data}
+            // userData={data}
             >
 
                 <SpriteAnimator
@@ -150,26 +164,25 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                     textureImageURL={'./assets/test/Sprite-0001.png'}
                     textureDataURL={'./assets/test/Sprite-0001.json'}
                     alphaTest={0.01}
-                // pause={!isMoving}
+                // pause={}
                 />
 
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
-
                         const data: any = e.other.rigidBody?.userData;
+                        const target = e.target.rigidBody;
                         if (data.type === "projectile") {
-                            if (data.team === team && hp - data.damage < 0) {
-                                setHp(0)
+                            const damage = data.team === team ? data.damage / 2 : data.damage;
+                            if (hp - damage < 0) {
+                                setHp(0);
+                                // target?.setEnabled(false);
+                                // ref.current.setEnabled(false);
+                            } else {
+                                setHp(hp - damage);
                             }
-                            else if (data.team === team) {
-                                setHp(hp - (data.damage / 10))
-                            }
-                            else if (hp - data.damage < 0) {
-                                setHp(0)
-                            }
-                            else {
-                                setHp(hp - data.damage)
-                            }
+                        }
+                        if (data.type === "zone") {
+                            // console.log(target.activeEvents())
                         }
                     }} />
                 <HealthBar value={hp} color={0xff0000} />

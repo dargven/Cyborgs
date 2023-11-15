@@ -2,7 +2,6 @@ export interface IItem {
     name: string;
     type: number;
 }
-
 class Item implements IItem {
     name: string;
     type: number;
@@ -10,6 +9,9 @@ class Item implements IItem {
     constructor(name: string, type: number) {
         this.name = name;
         this.type = type;
+    }
+    use() {
+
     }
 }
 
