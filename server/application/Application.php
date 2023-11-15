@@ -5,6 +5,8 @@ require_once 'modules/DB/DB.php';
 require_once 'modules/Lobby/Lobby.php';
 require_once 'modules/Chat/Chat.php';
 require_once 'modules/Mailer/Mailer.php';
+use App\server\application\modules\Mailer\Mailer;
+
 
 class Application
 {
@@ -158,7 +160,7 @@ class Application
         if ($login) {
             $user = $this->user->getUserByLogin($login);
             if ($user){
-                $this->user->resetPasswordByEmail($login);
+                return $this->user->resetPasswordByEmail($login);
             }
             return ['error' => 1002];
 

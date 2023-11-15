@@ -18,7 +18,7 @@ function result($params) {
             case 'setSkin': return $app->setSkin($params);//работает для тех пользователей, кто добавлен в userSkins
             case 'sendMessage':return $app->sendMessage($params);//Работает
             case 'getMessage':return $app->getMessage($params);//Работает
-            case 'send':return $app->sendEmail($params);
+            case 'resetPasswordByEmail':return $app->resetPasswordByEmail($params);
             default: return ['error' => 102];
         }
     }

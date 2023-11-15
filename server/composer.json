@@ -1,5 +1,15 @@
 {
     "require": {
-        "phpmailer/phpmailer": "^6.8"
+        "phpmailer/phpmailer": "^6.8.1"
+
+
+},
+    "config": {
+        "autoload": {
+            "psr-4": {"App\\": "/"}
+        }
+
     }
 }
+
+

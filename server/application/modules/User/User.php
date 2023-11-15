@@ -1,12 +1,15 @@
 <?php
 session_start();
+use App\server\application\modules\Mailer\Mailer\Mailer;
 class User
 {
     private DB $db;
+    private Mailer $mailer;
 
     function __construct($db)
     {
         $this->db = $db;
+        $this->mailer = new Mailer();
     }
 
     private function genToken()
@@ -19,7 +22,8 @@ class User
         return $this->db->getUserByToken($token);
     }
 
-    public function getUserByLogin($login){
+    public function getUserByLogin($login)
+    {
         return $this->db->getUserByLogin($login);
     }
 
@@ -60,10 +64,15 @@ class User
         }
         return ['error' => 1003];
     }
-    public function resetPasswordByEmail($login){
+
+    public function resetPasswordByEmail($login)
+    {
         $randomNumber = random_int(10000, 99999);
         $_SESSION[$login] = $randomNumber;
-
+        $user = $this->getUserByLogin($login);
+        $email = $user->email;
+        $this->mailer->sendEmail($email, 'verifCode', 'your Verificitaion code is '.$randomNumber);
     }
+
 
 }

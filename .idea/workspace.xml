@@ -5,11 +5,94 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c44b025-0991-4adb-b2c9-0ca5490f3922" name="Changes" comment="Add PhpMailer">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/68681bfd-cc6a-424e-a2e5-c80de797d3cb.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/68681bfd-cc6a-424e-a2e5-c80de797d3cb.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/application/Answer.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/Answer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/application/Application.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/Application.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/application/modules/Chat/Chat.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/modules/Chat/Chat.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/application/modules/Mailer/Mailer.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/modules/Mailer/Mailer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/application/modules/User/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/application/modules/User/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/composer.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/composer.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/autoload.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/composer/ClassLoader.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/composer/InstalledVersions.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/composer/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/composer/autoload_classmap.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/composer/autoload_namespaces.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/composer/autoload_psr4.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/composer/autoload_real.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/composer/autoload_static.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/composer/installed.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/composer/installed.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/composer/platform_check.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/COMMITMENT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/SECURITY.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/VERSION" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/composer.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/get_oauth_token.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-af.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-ar.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-az.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-ba.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-be.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-bg.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-ca.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-cs.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-da.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-de.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-el.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-eo.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-es.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-et.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-fa.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-fi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-fo.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-fr.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-gl.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-he.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-hi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-hr.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-hu.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-hy.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-id.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-it.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-ja.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-ka.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-ko.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-lt.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-lv.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-mg.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-mn.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-ms.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-nb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-nl.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-pl.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-pt.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-pt_br.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-ro.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-ru.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-si.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-sk.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-sl.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-sr.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-sr_latn.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-sv.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-tl.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-tr.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-uk.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-vi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-zh.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/language/phpmailer.lang-zh_cn.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/src/DSNConfigurator.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/src/Exception.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/src/OAuth.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/src/OAuthTokenProvider.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/src/PHPMailer.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/src/POP3.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/vendor/phpmailer/phpmailer/src/SMTP.php" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,12 +100,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ComposerSettings">
-    <execution />
+    <execution>
+      <executable path="composer" />
+    </execution>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="dev" />
+        <entry key="$PROJECT_DIR$" value="Fix-Registration-of-Back" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -153,6 +238,23 @@
     </task>
     <option name="localTasksCounter" value="7" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="ruthikgame" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Minor" />
