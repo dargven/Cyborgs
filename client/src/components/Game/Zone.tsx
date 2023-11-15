@@ -19,41 +19,48 @@ function Zone({ position }: IZoneProps) {
     const ref = useRef<RapierRigidBody>(null!);
 
     const [state, setState] = useState<ContestZone>(new ContestZone());
-    const [players, setPlayers] = useState<IZonePlayer[]>([]);
-    const [data, setData] = useState<any>({
-        type: "zone",
-        players: [] as IZonePlayer[]
-    });
+    // const [players, setPlayers] = useState<IZonePlayer[]>([]);
+    // const [data, setData] = useState<any>({
+    //     type: "zone",
+    //     players: [] as IZonePlayer[],
+    //     bodies: [] as RapierRigidBody[]
+    // });
 
     useEffect(() => {
         const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
 
-            if (ref.current.userData) {
-                const _data: any = ref.current.userData;
-                // console.log(data.type);
-                const dataPlayers: IZonePlayer[] = _data.players;
-            }
+            // if (ref.current.userData) {
+            // const userData: any = ref.current.userData ? ref.current.userData : { players: [] };
+            // // console.log(_data)
+            // // console.log(data.type);
+            // const dataPlayers: IZonePlayer[] = userData.players;
+            // const bodies: RapierRigidBody[] = userData.bodies;
 
-                ref.current.userData = data;
+            // ref.current.userData = data;
 
-                const time = Date.now();
-                state.updateScore(time);
+            const time = Date.now();
+            state.updateScore(time);
 
-                const filtered = players.filter(player => player.hp !== 0);
-                setPlayers(filtered);
+            // const filtered = players.filter(player => player.hp !== 0);
+            // setPlayers(filtered);
+            console.log(state.score, state.players);
+            // console.log(bodies)
+            // }
 
-                console.log(state.score, state.players, players, data)
         }, 1000);
 
         return () => {
             clearInterval(interval);
         }
 
-    }, [players, state, ref.current]);
+    }, [state]);
 
     return (
         <RigidBody
             ref={ref}
+            userData={{
+                type: "zone"
+            }}
         >
 
             <group position={position}>
@@ -62,17 +69,19 @@ function Zone({ position }: IZoneProps) {
                     sensor
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
-                        if (data.type === "player") {
+                        const target = e.target.collider;
+                        // console.log(data, target.handle);
+                        if (data.type === "player" && data.hp) {
                             state.addPlayer(data.team);
-                            setPlayers([...players, { team: data.team, hp: data.hp, id: data.id }])
+                            // setPlayers([...players, { team: data.team, hp: data.hp, id: data.id }]);
                         }
                     }}
                     onIntersectionExit={(e) => {
                         const data: any = e.other.rigidBody?.userData;
-                        if (data.type === "player") {
+                        if (data.type === "player" || data.hp === 0) {
                             state.removePlayer(data.team);
-                            const filtered = players.filter(player => player.id !== data.id);
-                            setPlayers(filtered);
+                            // const filtered = players.filter(player => player.id !== data.id);
+                            // setPlayers(filtered);
                         }
                     }} />
             </group>

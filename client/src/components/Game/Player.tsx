@@ -104,12 +104,19 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
 
 
     const [hp, setHp] = useState<number>(100);
-    const data = {
-        type: 'player',
-        team: team,
-        hp: hp,
-        id: id
-    }
+
+    useEffect(() => {
+        const data = {
+            type: 'player',
+            team: team,
+            hp: hp,
+            id: id
+        }
+        ref.current.userData = data;
+        if (hp===0){
+            ref.current.setEnabled(false);
+        }
+    }, [hp]);
 
     return (
         <>
@@ -122,7 +129,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 linearDamping={10}
                 angularDamping={1}
                 lockRotations
-                userData={data}
+            // userData={data}
             >
 
                 <SpriteAnimator
@@ -133,40 +140,26 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                     textureImageURL={'./assets/test/Sprite-0001.png'}
                     textureDataURL={'./assets/test/Sprite-0001.json'}
                     alphaTest={0.01}
-                // pause={!isMoving}
+                // pause={}
                 />
 
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
-                        const targetData: any = e.target.rigidBody?.userData;
+                        const target = e.target.rigidBody;
                         if (data.type === "projectile") {
-                            if (data.team === team && hp - data.damage < 0) {
+                            const damage = data.team === team ? data.damage / 2 : data.damage;
+                            if (hp - damage < 0) {
                                 setHp(0);
-                            }
-                            else if (data.team === team) {
-                                setHp(hp - (data.damage / 10))
-                            }
-                            else if (hp - data.damage < 0) {
-                                setHp(0)
-                            }
-                            else {
-                                setHp(hp - data.damage)
+                                // target?.setEnabled(false);
+                                // ref.current.setEnabled(false);
+                            } else {
+                                setHp(hp - damage);
                             }
                         }
-                        targetData.hp = hp;
-
-
-                        if (data.type === 'zone') {
-                            const players: IZonePlayer[] = data.players;
-                            data.players = players.filter(player => player.id !== targetData.id);
-                            data.players = [...data.players, { team: targetData.team, hp: targetData.hp, id: targetData.id }];
-                            data.test = true;                            
-                            if (e.other.rigidBody) {
-                                e.other.rigidBody.userData = data;
-                            }
+                        if (data.type === "zone") {
+                            // console.log(target.activeEvents())
                         }
-
                     }} />
                 <HealthBar value={hp} color={0xff0000} />
             </RigidBody>
