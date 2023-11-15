@@ -11,10 +11,12 @@ import MapObjects from "./MapObjects";
 import Player from "./Player";
 import Projectile from "./Projectile";
 import Robot from "./Robot";
-import Room from "./Room";
+import Map from "./Map";
 import Zone from "./Zone";
 import Inventory from "./Inventory";
-import { Gun, Item } from "../../modules/Game/entities/Items";
+import { Gun, Item } from "../../modules/Game/items";
+import Obstacle from "./Obstacle";
+import Inventory2 from "../../modules/Game/misc/Inventory";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -46,11 +48,11 @@ const Scene = ({ vSize }: ISceneProps) => {
         new Gun({
             name: 'tah gun',
             type: 1,
-            damage: 99,
+            damage: 50,
             rate: 1,
             magSize: 10,
-            maxAmmo: 20,
-            currentAmmo: 20,
+            maxAmmo: 200,
+            currentAmmo: 10000,
             speed: 6
         })
     ]);
@@ -89,6 +91,8 @@ const Scene = ({ vSize }: ISceneProps) => {
         }
     }
 
+    const [inv, setInv] = useState<Inventory2>();
+
     const onFire = (position: Vector3, team: number) => {
         const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
 
@@ -101,8 +105,13 @@ const Scene = ({ vSize }: ISceneProps) => {
 
         const current = Date.now();
 
-        if (.001 * (current - last) > gun.rate) {
-            const bullet = gun.use(position, direction, `${1337}-${Date.now()}`, team);
+        if (.001 * (current - last) > 1 / gun.rate) {
+            const bullet = gun.fire({
+                position,
+                direction,
+                key: `${1337}-${Date.now()}`,
+                team
+            });
 
             if (bullet) {
                 setBullets((bullets) => [...bullets, bullet]);
@@ -145,25 +154,18 @@ const Scene = ({ vSize }: ISceneProps) => {
                         setWeaponSlot={setWeaponSlot}
                         isControlled
                     />
-                    <Player team={2} />
-                    <Player team={1} />
+                    <Player team={0} id={1002} />
+                    <Player team={1} id={1001} />
                     <Robot />
                 </group>
 
                 <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons} />
 
                 {colliders.map(collider =>
-                    <RigidBody
+                    <Obstacle
                         key={generateColliderKey()}
-                        type='fixed'
-                        userData={{
-                            type: "Collider"
-                        }}>
-                        <CuboidCollider
-                            position={collider.position}
-                            args={collider.args}
-                        />
-                    </RigidBody>
+                        {...collider}
+                    />
                 )}
 
                 {bullets.map(bullet =>
@@ -187,7 +189,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                 )}
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
-                    <Room texture={textures['room']} />
+                    <Map texture={textures['room']} />
                 </group>
 
                 <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)} />
