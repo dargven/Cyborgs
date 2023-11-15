@@ -142,15 +142,13 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
         }
     }, [hp]);
 
-
-
-
     useEffect(() => {
         const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
             if (setPlayers) {
+                console.log(ref.current.translation(), ref.current.linvel());
                 setPlayers(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
             }
-        }, 100);
+        }, 500);
 
         return () => {
             clearInterval(interval);
@@ -185,19 +183,13 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
-                        const target = e.target.rigidBody;
                         if (data.type === "projectile") {
                             const damage = data.team === team ? data.damage / 2 : data.damage;
                             if (hp - damage < 0) {
                                 setHp(0);
-                                // target?.setEnabled(false);
-                                // ref.current.setEnabled(false);
                             } else {
                                 setHp(hp - damage);
                             }
-                        }
-                        if (data.type === "zone") {
-                            // console.log(target.activeEvents())
                         }
                     }} />
                 <HealthBar value={hp} color={0xff0000} />

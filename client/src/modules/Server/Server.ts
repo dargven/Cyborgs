@@ -88,7 +88,7 @@ export default class Server {
         return await this.request<[]>('getPlayers', { token: this.token });
     }
 
-    async setPlayers(token: string, x: number, y: number, vx: number, vy: number): Promise<TPlayer | null> {
-        return await this.request<TPlayer>('setPlayers', { token, x, y, vx, vy });
+    async setPlayer(token: string, x: number, y: number, vx: number, vy: number): Promise<TPlayer | null> {
+        return await this.request<TPlayer>('setPlayer', { token, x, y, vx, vy });
     }
 }

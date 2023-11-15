@@ -38,7 +38,6 @@ const Scene = ({ vSize }: ISceneProps) => {
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
 
-
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load('./assets/Bullets/Projectile.png');
     const room = textureLoader.load('./assets/rooms/map-office-plain.png');
@@ -96,7 +95,7 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     const onMovement = (position: Vector3) => {
         const cameraPos = new Vector3(position.x + mouseX.current, position.y + mouseY.current, 7);
-        camera.position.lerp(cameraPos, 0.1);
+        camera.position.lerp(cameraPos, 0.05);
         camera.updateProjectionMatrix();
 
         if (invRef.current) {
@@ -159,7 +158,7 @@ const Scene = ({ vSize }: ISceneProps) => {
     }
 
     const setPlayers = async (position: Vector3, velocity: Vector3) => {
-        await server.setPlayers(store.getUser().token, position.x, position.y, velocity.x, velocity.y);
+        await server.setPlayer(store.getUser().token, position.x, position.y, velocity.x, velocity.y);
     }
 
     useEffect(() => {
@@ -178,14 +177,14 @@ const Scene = ({ vSize }: ISceneProps) => {
                     const player = new PlayerEntity(sp.token, position, velocity);
                     ps.push(player);
                 }
-            })
+            });
             setOtherPlayers(ps);
-        }, 100);
+        }, 500);
 
         return () => {
             clearInterval(interval);
         }
-    }, []);
+    }, [dataPlayers, getPlayers, setPlayers, store]);
 
     return (
         <group>
@@ -196,7 +195,6 @@ const Scene = ({ vSize }: ISceneProps) => {
 
                 <Player
                     team={0}
-                    position={new Vector3()}
                     token={store.getUser().token}
                     key={store.getUser().token}
                     onFire={onFire}
