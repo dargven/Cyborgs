@@ -22,12 +22,12 @@ const App: React.FC = () => {
                     <Routes>
                     {store.isAuth() ?
                         <Route path="" element={<LoginPage/>} /> :
-                        <Route path="" element={<LoginPage/>} />
+                        <Route path="" element={<LoginPage/>} /> // нахер на одно и тоже слать-то?
                     }
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/registration" element={<RegistrationPage />} />
-                        <Route element={<PrivateRoute />}>
                             <Route path="/game" element={<GamePage />} />
+                        <Route element={<PrivateRoute />}>
                             <Route path="/main" element={<MainPage />} />
                         </Route>
                     </Routes>

@@ -1,28 +1,30 @@
 import { SpriteAnimator, useKeyboardControls } from "@react-three/drei";
 import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
 import { IZonePlayer } from "./Zone";
+import { ServerContext } from "../../App";
 
 interface IPlayerProps {
     id?: number;
+    token: string;
     username?: string;
     position?: Vector3;
+    velocity?: Vector3;
     team: number;
     isControlled?: boolean
     onFire?(position: Vector3, team: number): void;
     onMovement?(position: Vector3): void;
     setWeaponSlot?(newSlot: number): void;
+    setPlayers?(position: Vector3, velocity: Vector3): void;
 }
 
-// export interface IRigidBodyData {
-//     type: string
-// }
+const Player = ({ velocity = new Vector3(), id, username, position, team, onFire, onMovement, setWeaponSlot, setPlayers, isControlled, token }: IPlayerProps) => {
 
-const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlot, isControlled }: IPlayerProps) => {
+    const server = useContext(ServerContext);
 
     const ref = useRef<RapierRigidBody>(null!);
 
@@ -37,7 +39,6 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             const speed = 4;
 
             ref.current.setLinvel(new Vector3(), true);
-            const velocity = new Vector3();
             if (left) {
                 velocity.x -= 1;
             }
@@ -50,9 +51,9 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             if (down) {
                 velocity.y -= 1;
             }
-            
+
             velocity.setLength(speed);
-            
+
             ref.current.setLinvel(velocity, true);
         }
     }
@@ -84,9 +85,9 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
         if (isControlled) {
             const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
             movementController(up, down, left, right);
-            
+
             const playerPosition = vec3(ref?.current?.translation());
-            
+
             if (select1 && setWeaponSlot) {
                 setWeaponSlot(1)
             }
@@ -99,7 +100,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 setWeaponSlot(3)
             }
 
-            if (onMovement){
+            if (onMovement) {
                 onMovement(playerPosition);
             }
 
@@ -126,7 +127,6 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
         }
     });
 
-
     const [hp, setHp] = useState<number>(100);
 
     useEffect(() => {
@@ -137,17 +137,32 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             id: id
         }
         ref.current.userData = data;
-        if (hp===0){
+        if (hp === 0) {
             ref.current.setEnabled(false);
         }
     }, [hp]);
+
+
+
+
+    useEffect(() => {
+        const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
+            if (setPlayers) {
+                setPlayers(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
+            }
+        }, 100);
+
+        return () => {
+            clearInterval(interval);
+        }
+    }, []);
 
     return (
         <>
             <RigidBody
                 ref={ref}
                 scale={0.5}
-                position={[-2, 0, 0]}
+                position={position}
                 colliders="hull"
                 friction={1}
                 linearDamping={10}

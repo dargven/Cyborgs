@@ -1,5 +1,5 @@
 import { Store } from "../Store/Store";
-import {TMessage, TUser} from "./types";
+import { TMessage, TPlayer, TUser } from "./types";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
@@ -68,27 +68,27 @@ export default class Server {
     }
 
     async sendMessage(message: string): Promise<TMessage | null> {
-        const result = await this.request<TMessage>('sendMessage',{
+        return await this.request<TMessage>('sendMessage', {
             token: this.token,
             message,
         });
-        if(result) {
-            return result;
-        }
-        return result;
     }
 
     async getMessage(): Promise<[] | null> {
-        const result = await this.request<[]>('getMessage',{
+        return await this.request<[]>('getMessage', {
             token: this.token,
         });
-        if(result) {
-            return result;
-        }
-        return result;
     }
 
     register(login: string, hash: string, name: string, email: string): Promise<TUser | null> {
-        return this.request<TUser>("register", { login, hash, name,  email});
+        return this.request<TUser>("register", { login, hash, name, email });
+    }
+
+    async getPlayers(): Promise<[] | null> {
+        return await this.request<[]>('getPlayers', { token: this.token });
+    }
+
+    async setPlayers(token: string, x: number, y: number, vx: number, vy: number): Promise<TPlayer | null> {
+        return await this.request<TPlayer>('setPlayers', { token, x, y, vx, vy });
     }
 }
