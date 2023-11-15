@@ -22,7 +22,7 @@ class Application
     }
 
 
-    
+
 
     /*************************/
     /* НЕПОВТОРИМЫЙ ОРИГИНАЛ */
@@ -101,15 +101,47 @@ class Application
         return ['error' => 242];
     }
 
+    function getPlayers($params)
+    {
+        $token = $params['token'];
+        if ($token) {
+            $user = $this->user->getUser($token);
+            if ($user) {
+                return $this->game->getPlayers();
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
+    }
 
-    
+    function setPlayer($params)
+    {
+        $token = $params['token'];
+        $x = $params['x'];
+        $y = $params['y'];
+        $vx = $params['vx'];
+        $vy = $params['vy'];
+        if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0) && ($vy || $vy == 0)) {
+            $user = $this->user->getUser($token);
+            if ($user) {
+                return $this->game->setPlayer($user->id, $x, $y, $vx, $vy);
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
+
+
+    }
+
+
+
 
     /******************/
     /* ЖАЛКАЯ ПАРОДИЯ */
     /******************/
 
 //..
-  
+
     function getTeamsInfo($params)
     {
         $token = $params['token'];
@@ -147,7 +179,7 @@ class Application
         $token = $params['token'];
         $skinId = $params['skinId'];
         if ($token && $skinId) {
-                
+
             $user = $this->user->getUser($token);
             if ($user) {
                 return $this->lobby->setSkin($user->id, $skinId);

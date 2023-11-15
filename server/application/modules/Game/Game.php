@@ -2,10 +2,20 @@
 
 class Game
 {
-    private $db;
+    private DB $db;
+
     public function __construct($db)
     {
         $this->db = $db;
+    }
+
+    public function getPlayers()
+    {
+        return $this->db->getPlayers();
+    }
+    public function setPlayer($id, $x, $y, $vx, $vy)
+    {
+        return $this->db->setPlayer($id, $x, $y, $vx, $vy);
     }
 
     public function getSkins($id)
@@ -29,4 +39,6 @@ class Game
         $this->db->setSkin($id, $skinId); // Потребуется дополнительная проверка, если будут ещё какие-то скины
 
     }
+
+
 }
