@@ -27,6 +27,12 @@ class Lobby
 
     }
 
+    public function FirstSkin($id,$skin_id)
+    {
+        return $this->db->FirstSkinsInLobby($id,$skin_id);
+
+    }
+
     public function setSkin($id, $skinId)
     {
         return $this->db->setSkinInLobby($id, $skinId);

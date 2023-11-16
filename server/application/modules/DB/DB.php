@@ -133,8 +133,26 @@ class DB
     {
         return $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
     }
+
+    public function FirstSkinsInLobby($id,$skin_id)
+    {
+        return $this->execute("INSERT INTO  userSkins (user_id,skin_id)VALUES (?, ?)",[$id,$skin_id]);
+    }
+
+    public function GetUsersIdByLogin($token)
+    {
+        return $this->query("SELECT id FROM users WHERE token=?", [$token]); 
+    }
+
+    public function SkinsIdFromUserSkins($user_id)
+    {
+        return $this->query("SELECT skin_id FROM userSkins WHERE user_id=?", [$user_id]); 
+    }
     // ЖАЛКАЯ ПАРОДИЯ //
     //Методы полностью переписаны по феншую, осталось их нормально протестить.
+
+
+    
 
     public function getSkinsInLobby()
     {

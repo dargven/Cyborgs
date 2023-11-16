@@ -180,6 +180,8 @@ class Application
 
     }
 
+   
+
     function setSkin($params)
     {
         $token = $params['token'];
@@ -188,14 +190,20 @@ class Application
 
             $user = $this->user->getUserByToken($token);
             if ($user) {
-                return $this->lobby->setSkin($user->id, $skinId);
-
+                $id=$user->id;
+                $skinNow=$this->user->SkinsIdFromUserSkins($id);
+                if($skinNow){
+                    return $this->lobby->setSkin($user->id, $skinId);
+                }else{
+                    return $this->lobby->FirstSkin($id,$skinId);
+                }
+                
             }
             return ['error' => 1002];
 
         }
         return ['error' => 242];
-
+        
     }
 
     function sendCodeToresetPassword($params)

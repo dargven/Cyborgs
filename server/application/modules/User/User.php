@@ -31,6 +31,11 @@ class User
         return $this->db->getUserByLogin($login);
     }
 
+    public function SkinsIdFromUserSkins($user_id)
+    {
+        return $this->db->SkinsIdFromUserSkins($user_id);
+    }
+
     public function login($login, $hash, $rnd)
     {
         $user = $this->db->getUserByLogin($login);
