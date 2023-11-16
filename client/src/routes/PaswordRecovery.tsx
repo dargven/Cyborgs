@@ -1,13 +1,21 @@
 import { useContext, useRef, useState } from "react";
 import { ServerContext } from "../App";
 import NavButton from "../components/navButton";
+import NavBar from "../components/navBar";
 import "../Main.css";
 
 const PasswordRecovery = () => {
     const server = useContext(ServerContext);
     const loginRef = useRef<HTMLInputElement | null>(null);
+    const [loginSuccess, setLoginSuccess] = useState(false);
+
+    const Recovery = async () => {
+        if (loginRef.current) {
+        }
+    };
     return (
         <>
+            <NavBar />
             <div className="title">
                 КИБОРГИ <br /> ТЕПЕРЬ В 2D
             </div>
