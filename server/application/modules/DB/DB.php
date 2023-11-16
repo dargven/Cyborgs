@@ -141,9 +141,9 @@ class DB
         return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id WHERE skins.role='lobby'");
     }
 
-    public function getPlayers(){
-        return $this->queryAll("SELECT user_id, x,y,vx,vy FROM players");
-
+    public function getPlayers()
+    {
+        return $this->queryAll("SELECT u.token, p.x, p.y, p.vx, p.vy FROM players as p INNER JOIN users as u on u.id = p.user_id");
     }
     public function setPlayer($id, $x, $y, $vx, $vy){
         return $this->execute("INSERT INTO players (user_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) 
