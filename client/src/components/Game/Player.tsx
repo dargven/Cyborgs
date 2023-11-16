@@ -19,16 +19,14 @@ interface IPlayerProps {
     onFire?(position: Vector3, team: number): void;
     onMovement?(position: Vector3): void;
     setWeaponSlot?(newSlot: number): void;
-    setPlayers?(position: Vector3, velocity: Vector3): void;
+    getPosVel?(position: Vector3, velocity: Vector3): void;
 }
 
-const Player = ({ velocity = new Vector3(), id, username, position, team, onFire, onMovement, setWeaponSlot, setPlayers, isControlled, token }: IPlayerProps) => {
+const Player = ({ velocity = new Vector3(), id, username, position, team, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token }: IPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
     const [isShooting, setShooting] = useState<boolean>(false);
-    const [pos, setPos] = useState<Vector3>(new Vector3());
-    const [vel, setVel] = useState<Vector3>(new Vector3());
 
     const [controlKeys, getKeys] = useKeyboardControls();
 
@@ -38,7 +36,6 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
 
             const speed = 4;
 
-            ref.current.setLinvel(new Vector3(), true);
             if (left) {
                 velocity.x -= 1;
             }
@@ -53,9 +50,12 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
             }
 
             velocity.setLength(speed);
-            console.log(velocity, token);
+            // console.log(velocity, token);
 
             ref.current.setLinvel(velocity, true);
+            if (getPosVel && isControlled) {
+                getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
+            }
         }
     }
 
@@ -87,7 +87,7 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
             const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
             movementController(up, down, left, right);
 
-            const playerPosition = vec3(ref?.current?.translation());
+            const playerPosition = vec3(ref.current?.translation());
 
             if (select1 && setWeaponSlot) {
                 setWeaponSlot(1)
@@ -132,12 +132,9 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
 
     const [hp, setHp] = useState<number>(100);
 
-    // useEffect(() => {
-    //     setPos(ref.current.translation() as Vector3);
-    //     setVel(ref.current.linvel() as Vector3);
-    // }, [pos, vel]);
-
     useEffect(() => {
+        // setPos(ref.current.translation() as Vector3);
+        // setVel(ref.current.linvel() as Vector3);
         const data = {
             type: 'player',
             team: team,
@@ -150,17 +147,17 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
         }
     }, [hp, id, team]);
 
-    useEffect(() => {
-        const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
-            if (setPlayers) {
-                setPlayers(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
-            }
-        }, 50);
+    // useEffect(() => {
+    //     const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
+    //         if (setPlayers) {
+    //             setPlayers(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
+    //         }
+    //     }, 1000);
 
-        return () => {
-            clearInterval(interval);
-        }
-    }, [setPlayers]);
+    //     return () => {
+    //         clearInterval(interval);
+    //     }
+    // });
 
     return (
         <>
@@ -173,6 +170,7 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
                 linearDamping={10}
                 angularDamping={1}
                 lockRotations
+            // type={isControlled ? "dynamic" : "kinematicPosition"}
             >
 
                 <SpriteAnimator

@@ -49,7 +49,15 @@ const Scene = ({ vSize }: ISceneProps) => {
         'glass': glass,
     });
 
+    const [character, setCharacter] = useState({
+        position: new Vector3(),
+        velocity: new Vector3()
+    });
     const [bullets, setBullets] = useState<Bullet[]>([]);
+    const [players, setPlayers] = useState<PlayerEntity[]>([new PlayerEntity(store.getUser().token, new Vector3())]);
+    const [serverPlayers, setServerPlayers] = useState<TPlayer[]>([]);
+
+    const [last, setLast] = useState<number>(0);
     // const [lasers, setLasers] = useState<Laser[]>([]);
     const [weaponSlot, setWeaponSlot] = useState<number>(1);
     const [inventory, setInventory] = useState<Gun[]>([
@@ -72,14 +80,9 @@ const Scene = ({ vSize }: ISceneProps) => {
     });
 
     const [gun, setGun] = useState<Gun>(inventory[0]);
-    const [last, setLast] = useState<number>(0);
-
-    const [otherPlayers, setOtherPlayers] = useState<PlayerEntity[]>([new PlayerEntity(store.getUser().token, new Vector3)]);
-    const [dataPlayers, setServerPlayers] = useState<TPlayer[]>([]);
 
     const mouseX = useRef(0);
     const mouseY = useRef(0);
-
     const colliders = CollidersPositions();
     const invRef = useRef<Group>();
     const positionToCamera = new Vector3(0, -2, -3);
@@ -148,61 +151,59 @@ const Scene = ({ vSize }: ISceneProps) => {
         return key;
     };
 
-    const getPlayers = async () => {
+    const getP = async () => {
         const sPlayers = await server.getPlayers();
-        // console.log(sPlayers);
         if (sPlayers) {
             setServerPlayers(sPlayers);
         }
     }
 
-    const setPlayers = async (position: Vector3, velocity: Vector3) => {
+    const setP = async (position: Vector3, velocity: Vector3) => {
         await server.setPlayer(store.getUser().token, position.x, position.y, velocity.x, velocity.y);
     }
 
-    useEffect(() => {
-        setPlayers(new Vector3(), new Vector3());
-        const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
+    const getPosVel = (position: Vector3, velocity: Vector3) => {
+        setCharacter({
+            position,
+            velocity
+        })
+    }
 
-            getPlayers();
+    // setP(new Vector3(0, 0, 0), new Vector3());
+
+    useEffect(() => {
+
+        const interval = setInterval(() => {
+
+            setP(character.position, character.velocity);
+
+            getP();
 
             const ps: PlayerEntity[] = [];
-            setOtherPlayers([]);
-
-            dataPlayers.forEach(sp => {
-                if (store.getUser().token !== sp.token) {
-                    const position = new Vector3(sp.x, sp.y, 0);
-                    const velocity = new Vector3(sp.vx, sp.vy, 0);
-                    const player = new PlayerEntity(sp.token, position, velocity);
-                    ps.push(player);
-                }
+            serverPlayers.forEach(sp => {
+                const position = new Vector3(sp.x, sp.y, 0);
+                const velocity = new Vector3(sp.vx, sp.vy, 0);
+                const player = new PlayerEntity(sp.token, position, velocity);
+                ps.push(player);
             });
-            setOtherPlayers(ps);
-        }, 50);
+
+            setPlayers(ps);
+            console.log(players);
+
+        }, 1000);
 
         return () => {
             clearInterval(interval);
         }
-    }, [dataPlayers, getPlayers, setPlayers, store]);
+
+    }, [players]);
 
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
                 <LightMap />
 
-                <fog />
-
-                <Player
-                    team={0}
-                    token={store.getUser().token}
-                    key={store.getUser().token}
-                    onFire={onFire}
-                    onMovement={onMovement}
-                    setPlayers={setPlayers}
-                    isControlled
-                />
-
-                {otherPlayers.map(player => {
+                {players.map(player => {
                     const token = store.getUser().token;
                     if (player.token !== token) {
                         return <Player
@@ -211,6 +212,16 @@ const Scene = ({ vSize }: ISceneProps) => {
                             position={player.position}
                             velocity={player.velocity}
                             key={player.token} />
+                    } else {
+                        return <Player
+                            team={0}
+                            token={player.token}
+                            key={player.token}
+                            onFire={onFire}
+                            onMovement={onMovement}
+                            getPosVel={getPosVel}
+                            isControlled
+                        />
                     }
                 })}
 
