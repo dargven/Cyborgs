@@ -6,7 +6,6 @@ import HealthBar from "./HealthBar";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
 import { IZonePlayer } from "./Zone";
-import ContestSpawn from "../../modules/Game/misc/Contestspawn";
 interface IPlayerProps {
     id?: number;
     username?: string;
