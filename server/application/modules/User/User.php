@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 use App\server\application\modules\Mailer\Mailer\Mailer;
 
@@ -71,11 +73,11 @@ class User
     {
         $randomNumber = random_int(10000, 99999);
         $email = $user->email;
-        $_SESSION['login'] = $login;
-        $_SESSION['rndCode'] = $randomNumber;
-        $_SESSION['e-mail'] = $email;
-        $_SESSION['idUser'] = $user->id;
         if ($this->mailer->sendEmail($email, 'verifCode', 'your Verificitaion code is ' . $randomNumber)) {
+            $_SESSION['login'] = $login;
+            $_SESSION['rndCode'] = $randomNumber;
+            $_SESSION['e-mail'] = $email;
+            $_SESSION['idUser'] = $user->id;
             return true;
         }
         return ['error' => 707];// could not send message
@@ -83,21 +85,39 @@ class User
 
     public function getCodeToResetPassword($code)
     {
-        $id = $_SESSION['idUser'];
-        if ($_SESSION['rndCode'] == $code) {
-            return $this->db->setPassword($id, '');
+        if (isset($_SESSION['idUser']) && isset($_SESSION['rndCode'])) {
+            $id = $_SESSION['idUser'];
+            if ($_SESSION['rndCode'] == $code) {
+                return $this->db->setPassword($id, '');
+            }
+            return ['error' => 708]; // invalid code from e-mail;
         }
-        return ['error' => 708]; // invalid code from e-mail;
+        return ['error' => 709]; //'709'=>'session did not start or you need use previous method',
+
+
     }
 
     public function setPasswordAfterReset($hash)
     {
-        $id = $_SESSION['idUser'];
-        if ($id) {
+        if (isset($_SESSION['idUser'])) {
+            $id = $_SESSION['idUser'];
+            $this->sendWarningOfReplacePassword();
             return $this->db->setPassword($id, $hash);
         }
-        return ['error' => 1002];
+        return ['error' => 709];// 709'=>'session did not start
+        // or you need use previous method',
 
+
+
+    }
+
+    public function sendWarningOfReplacePassword()
+    {
+        if (isset($_SESSION['idUser']) && isset($_SESSION['e-mail'])) {
+            $email = $_SESSION['e-mail'];
+            return $this->mailer->sendEmail($email, "Replaced Password", "The Password was be replaced. You can login in your account.");
+        }
+        return ['error' => 709];
     }
 
 
