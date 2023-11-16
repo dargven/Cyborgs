@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import { ServerContext } from "../App";
 import { Navigate } from "react-router-dom";
 import md5 from 'md5-ts';
@@ -38,6 +38,18 @@ const RegistrationPage = () => {
           setShowPassword(!showPassword);
       }
     };
+    const KEY_ENTER = 13;
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.keyCode === KEY_ENTER) {
+      handleRegistration();
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  });
 
   return (
     <>

@@ -1,6 +1,6 @@
-import { useContext, useRef, useState } from "react";
-import { Navigate } from "react-router-dom";
-import { ServerContext } from "../App";
+import {useContext, useEffect, useRef, useState} from "react";
+import {ServerContext} from "../App";
+import {Navigate} from "react-router-dom";
 import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import NavButton from "../components/navButton";
@@ -33,12 +33,24 @@ const LoginPage = () => {
             setShowPassword(!showPassword);
         }
     };
+    const KEY_ENTER = 13;
+    const handleKeyPress = (event: KeyboardEvent) => {
+        if (event.keyCode === KEY_ENTER) {
+            handleLogin();
+        }
+    };
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyPress);
+        return () => {
+            document.removeEventListener("keydown", handleKeyPress);
+        };
+    });
 
     return (
         <>
-            <NavBar />
+            <NavBar/>
             <div className="title">
-                КИБОРГИ <br /> ТЕПЕРЬ В 2D
+                КИБОРГИ <br/> ТЕПЕРЬ В 2D
             </div>
             <div className="content">
                 <h1>Вход</h1>
@@ -82,7 +94,7 @@ const LoginPage = () => {
                     </div>
                 </div>
 
-                {loginSuccess ? <Navigate to="/main" replace={true} /> : null}
+                {loginSuccess ? <Navigate to="/main" replace={true}/> : null}
             </div>
         </>
     );
