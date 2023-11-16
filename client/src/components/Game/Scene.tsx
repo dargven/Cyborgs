@@ -1,22 +1,24 @@
-import { Stars } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
-import { Physics } from "@react-three/rapier";
-import { useRef, useState } from "react";
-import { Group, Texture, TextureLoader, Vector3 } from "three";
-import { Bullet, Laser } from "../../modules/Game/entities";
-import { Gun } from "../../modules/Game/items";
-import Inventory2 from "../../modules/Game/misc/Inventory";
+import { SpriteAnimator, Stars } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
+import { createRef, useEffect, useRef, useState } from "react";
+import { Group, Texture, TextureLoader, Vector2, Vector3 } from "three";
+import { Collider, Bullet, Laser } from "../../modules/Game/entities";
 import CollidersPositions from "./CollidersPositions";
 import Hitscan from "./Hitscan";
-import Inventory from "./Inventory";
 import LightMap from "./LightMap";
 import Map from "./Map";
 import MapObjects from "./MapObjects";
-import Obstacle from "./Obstacle";
 import Player from "./Player";
 import Projectile from "./Projectile";
 import Robot from "./Robot";
 import Zone from "./Zone";
+import Inventory from "./Inventory";
+import { Animator } from "./sprites/Animator";
+import FishTank from "./Fishtank";
+import { Gun, Item } from "../../modules/Game/items";
+import Obstacle from "./Obstacle";
+import Inventory2 from "../../modules/Game/misc/Inventory";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -141,8 +143,11 @@ const Scene = ({ vSize }: ISceneProps) => {
     };
     return (
         <group>
+
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
                 <LightMap />
+
+                <FishTank />
 
                 <fog />
 
