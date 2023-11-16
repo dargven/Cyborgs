@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import "./Chat.css"
 import { ServerContext } from "../../App";
+import "./Chat.css"
 
 interface IMessage {
     name: string,
@@ -9,10 +9,25 @@ interface IMessage {
 }
 
 const Chat = () => {
+    
     const chatRef = useRef<HTMLInputElement | null>(null);
     const server = useContext(ServerContext);
     let interval: NodeJS.Timer | null = null;
     const [messages, setMessages] = useState<IMessage[]>([]);
+
+    const KEY_ENTER = 13;
+    const handleKeyPress = (event: KeyboardEvent) => {
+        if (event.keyCode === KEY_ENTER) {
+            handleChat();
+        }
+      };
+
+      useEffect(() => {
+        document.addEventListener("keydown", handleKeyPress);
+            return () => {
+                    document.removeEventListener("keydown", handleKeyPress);
+                };
+        });
 
     const updateChat = async () => {
         const messagesFromServer = await server.getMessage()

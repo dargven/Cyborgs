@@ -3,7 +3,6 @@ import { Navigate } from "react-router-dom";
 import { ServerContext } from "../App";
 import md5 from 'md5-ts';
 import NavBar from "../components/navBar";
-
 import "../Auth.css";
 
 const openEyeIcon = process.env.PUBLIC_URL + '/assets/image/eye-open.png';
@@ -43,9 +42,7 @@ const LoginPage = () => {
         <>
             <NavBar />
             <div className="title">
-                <p>
-                    КИБОРГИ <br /> ТЕПЕРЬ В 2D
-                </p>
+                   КИБОРГИ <br /> ТЕПЕРЬ В 2D
             </div>
             <div className="content">
                 <h1>Вход</h1>

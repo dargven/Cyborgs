@@ -1,5 +1,5 @@
 import { Vector3 } from "three";
-import Bullet, { IBullet } from "../Bullet";
+import Bullet, { IBullet } from "../entities/Bullet";
 import Item, { IItem } from "./Item";
 
 interface IGun extends IItem {
@@ -9,6 +9,13 @@ interface IGun extends IItem {
     maxAmmo: number;
     currentAmmo: number;
     speed: number;
+}
+
+export interface IFireProps {
+    position: Vector3;
+    direction: Vector3;
+    key: string;
+    team: number;
 }
 
 class Gun extends Item {
@@ -29,7 +36,7 @@ class Gun extends Item {
         this.speed = speed;
     }
 
-    use(position: Vector3, direction: Vector3, key: string,team:number): Bullet | null {
+    fire({ position, direction, key, team }: IFireProps): Bullet | null {
         if (this.currentAmmo > 0) {
             this.currentAmmo--;
             return new Bullet(this.speed, position, direction, key, this.damage, team);

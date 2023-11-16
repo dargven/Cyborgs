@@ -77,17 +77,16 @@ class DB
         return $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $id]);
     }
 
+    public function addUser($login, $hash, $name, $email)
+    {
+        $this->execute(
+            "INSERT INTO users (login,password,name,email ) VALUES (?, ?, ?, ?)",
+            [$login, $hash, $name, $email]
+        );
+    }
     public function setPassword($id, $password)
     {
         return $this->execute("UPDATE users  SET password =? WHERE id = ?", [$password, $id]);
-    }
-
-    public function addUser($login, $password)
-    {
-        $this->execute(
-            "INSERT INTO users (login,password) VALUES (?, ?)",
-            [$login, $password]
-        );
     }
 
     public function addPlayerToTeam($id, $teamId)
@@ -140,6 +139,16 @@ class DB
     public function getSkinsInLobby()
     {
         return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id WHERE skins.role='lobby'");
+    }
+
+    public function getPlayers(){
+        return $this->queryAll("SELECT user_id, x,y,vx,vy FROM players");
+
+    }
+    public function setPlayer($id, $x, $y, $vx, $vy){
+        return $this->execute("INSERT INTO players (user_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) 
+ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy);
+",  [$id, $x, $y, $vx, $vy]);
     }
 }
 

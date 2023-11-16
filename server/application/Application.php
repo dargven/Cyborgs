@@ -37,9 +37,11 @@ class Application
     function register($params)
     {
         $login = $params['login'];
+        $name = $params ['name'];
+        $email = $params['email'];
         $hash = $params['hash'];
-        if ($login && $hash) {
-            return $this->user->register($login, $hash);
+        if ($login && $hash && $name && $email) {
+            return $this->user->register($login, $hash, $name, $email);
         }
         return ['error' => 242];
     }
@@ -105,6 +107,47 @@ class Application
         }
         return ['error' => 242];
     }
+
+    function getPlayers($params)
+    {
+        $token = $params['token'];
+        if ($token) {
+            $user = $this->user->getUser($token);
+            if ($user) {
+                return $this->game->getPlayers();
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
+    }
+
+    function setPlayer($params)
+    {
+        $token = $params['token'];
+        $x = $params['x'];
+        $y = $params['y'];
+        $vx = $params['vx'];
+        $vy = $params['vy'];
+        if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0) && ($vy || $vy == 0)) {
+            $user = $this->user->getUser($token);
+            if ($user) {
+                return $this->game->setPlayer($user->id, $x, $y, $vx, $vy);
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
+
+
+    }
+
+
+
+
+    /******************/
+    /* ЖАЛКАЯ ПАРОДИЯ */
+    /******************/
+
+//..
 
     function getTeamsInfo($params)
     {

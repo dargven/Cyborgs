@@ -9,17 +9,18 @@ interface IProjectiileProps {
     initialPosition: Vector3;
     texture: Texture;
     damage: number;
-    team:number;
+    team: number;
 }
 
 const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture, team }: IProjectiileProps) => {
     const bulletRef = useRef<RapierRigidBody>(null!);
     const [isActive, setActive] = useState<boolean>(true);
+
     useEffect(() => {
         direction.setLength(initialSpeed)
         bulletRef.current.setLinvel(direction, true);
     }, []);
-console.log(team)
+
     return (
         <RigidBody
             ref={bulletRef}
@@ -40,9 +41,8 @@ console.log(team)
                     sensor
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
-                        if (data.type === "player" || data.type === "Collider") {
-                            // bulletRef.current.setLinvel(new Vector3(), true);
-                            bulletRef.current.sleep();
+                        if (data.type === "player" || data.type === "collider") {
+                            bulletRef.current.setEnabled(false);
                             setActive(false);
                         }
                     }} />

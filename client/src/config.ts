@@ -10,5 +10,5 @@
 // export const HOST = `${DOMAIN}:${PORT}`;
 
 // prod
-const DOMAIN = 'https://srv.cyborgs-game.ru/';
+const DOMAIN = 'https://cyborgs-game.ru/server/index.php';
 export const HOST = DOMAIN;

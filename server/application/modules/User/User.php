@@ -59,11 +59,11 @@ class User
         return ['error' => 1004];
     }
 
-    public function register($login, $hash)
+    public function register($login, $hash, $name, $email)
     {
         $user = $this->db->getUserByLogin($login);
         if (!$user) {
-            $this->db->addUser($login, $hash);
+            $this->db->addUser($login, $hash, $name, $email);
             return true;
         }
         return ['error' => 1003];
