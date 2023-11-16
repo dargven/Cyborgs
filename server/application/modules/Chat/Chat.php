@@ -1,5 +1,4 @@
 <?php
-
 class Chat
 {
     private DB $db;

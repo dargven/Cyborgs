@@ -84,6 +84,10 @@ class DB
             [$login, $hash, $name, $email]
         );
     }
+    public function setPassword($id, $password)
+    {
+        return $this->execute("UPDATE users  SET password =? WHERE id = ?", [$password, $id]);
+    }
 
     public function addPlayerToTeam($id, $teamId)
     {
