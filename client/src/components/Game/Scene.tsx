@@ -1,22 +1,22 @@
 import { Stars } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
-import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
-import { createRef, useEffect, useRef, useState } from "react";
-import { Group, Texture, TextureLoader, Vector2, Vector3 } from "three";
-import { Collider, Bullet, Laser } from "../../modules/Game/entities";
+import { useThree } from "@react-three/fiber";
+import { Physics } from "@react-three/rapier";
+import { useRef, useState } from "react";
+import { Group, Texture, TextureLoader, Vector3 } from "three";
+import { Bullet, Laser } from "../../modules/Game/entities";
+import { Gun } from "../../modules/Game/items";
+import Inventory2 from "../../modules/Game/misc/Inventory";
 import CollidersPositions from "./CollidersPositions";
 import Hitscan from "./Hitscan";
+import Inventory from "./Inventory";
 import LightMap from "./LightMap";
+import Map from "./Map";
 import MapObjects from "./MapObjects";
+import Obstacle from "./Obstacle";
 import Player from "./Player";
 import Projectile from "./Projectile";
 import Robot from "./Robot";
-import Map from "./Map";
 import Zone from "./Zone";
-import Inventory from "./Inventory";
-import { Gun, Item } from "../../modules/Game/items";
-import Obstacle from "./Obstacle";
-import Inventory2 from "../../modules/Game/misc/Inventory";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -120,6 +120,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                 setLast(current);
             }
         }
+    }
 
     const getWeapon = (slot: number, id: number) => {
         setWeapons(prevWeapons => {
@@ -131,54 +132,54 @@ const Scene = ({ vSize }: ISceneProps) => {
         });
     }
 
-        let colliderKeyCounter = 0;
+    let colliderKeyCounter = 0;
 
-        const generateColliderKey = () => {
-            const key = `collider-${colliderKeyCounter}`;
-            colliderKeyCounter++;
-            return key;
-        };
-        return (
-            <group>
-                <Physics gravity={[0, 0, 0]} colliders="hull" debug>
-                    <LightMap />
+    const generateColliderKey = () => {
+        const key = `collider-${colliderKeyCounter}`;
+        colliderKeyCounter++;
+        return key;
+    };
+    return (
+        <group>
+            <Physics gravity={[0, 0, 0]} colliders="hull" debug>
+                <LightMap />
 
-                    <fog />
+                <fog />
 
-                    <group position={[8, 5, 0]}>
-                        <Player
-                            id={1338}
-                            team={1}
-                            onFire={onFire}
-                            onMovement={onMovement}
-                            setWeaponSlot={setWeaponSlot}
-                            isControlled
-                        />
-                        <Player team={0} id={1002} />
-                        <Player team={1} id={1001} />
-                        <Robot />
-                    </group>
+                <group position={[8, 5, 0]}>
+                    <Player
+                        id={1338}
+                        team={1}
+                        onFire={onFire}
+                        onMovement={onMovement}
+                        setWeaponSlot={setWeaponSlot}
+                        isControlled
+                    />
+                    <Player team={0} id={1002} />
+                    <Player team={1} id={1001} />
+                    <Robot />
+                </group>
 
-                    <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons} />
+                <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons} />
 
-                    {colliders.map(collider =>
-                        <Obstacle
-                            key={generateColliderKey()}
-                            {...collider}
-                        />
-                    )}
+                {colliders.map(collider =>
+                    <Obstacle
+                        key={generateColliderKey()}
+                        {...collider}
+                    />
+                )}
 
-                    {bullets.map(bullet =>
-                        <Projectile
-                            damage={bullet.damage}
-                            key={bullet.key}
-                            initialSpeed={bullet.speed}
-                            initialPosition={bullet.position}
-                            direction={bullet.direction}
-                            texture={textures['bullet']}
-                            team={bullet.team}
-                        />
-                    )}
+                {bullets.map(bullet =>
+                    <Projectile
+                        damage={bullet.damage}
+                        key={bullet.key}
+                        initialSpeed={bullet.speed}
+                        initialPosition={bullet.position}
+                        direction={bullet.direction}
+                        texture={textures['bullet']}
+                        team={bullet.team}
+                    />
+                )}
 
                 {lasers.map(laser =>
                     <Hitscan
@@ -192,14 +193,13 @@ const Scene = ({ vSize }: ISceneProps) => {
                     <Map texture={textures['room']} />
                 </group>
 
-                    <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)} />
+                <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)} />
 
-                    <Zone position={new Vector3(5.5, 7.5, 0.5)} />
-                </Physics>
-                <Stars />
-            </group>
-        );
-    }
+                <Zone position={new Vector3(5.5, 7.5, 0.5)} />
+            </Physics>
+            <Stars />
+        </group>
+    );
 }
 
 export default Scene;

@@ -17,7 +17,7 @@ class LaserGun extends Item {
         this.currentAmmo = currentAmmo;
     }
 
-    use(position: Vector3, aimingPoint: Vector3, key: string): Laser | null {
+    fire(position: Vector3, aimingPoint: Vector3, key: string): Laser | null {
         if (this.currentAmmo > 0) {
             this.currentAmmo--;
             return new Laser(position, aimingPoint, key);
