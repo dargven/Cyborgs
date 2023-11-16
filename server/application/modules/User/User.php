@@ -88,6 +88,7 @@ class User
         if (isset($_SESSION['idUser']) && isset($_SESSION['rndCode'])) {
             $id = $_SESSION['idUser'];
             if ($_SESSION['rndCode'] == $code) {
+                $this->sendWarningOfAttemptResetPassword();
                 return $this->db->setPassword($id, '');
             }
             return ['error' => 708]; // invalid code from e-mail;
@@ -109,6 +110,13 @@ class User
 
 
 
+    }
+    public function sendWarningOfAttemptResetPassword(){
+        if (isset($_SESSION['idUser']) && isset($_SESSION['e-mail'])) {
+            $email = $_SESSION['e-mail'];
+            return $this->mailer->sendEmail($email, "Attempt to Replaced Password", "If you are not trying to change your password now, contact the support");
+        }
+        return ['error' => 709];
     }
 
     public function sendWarningOfReplacePassword()
