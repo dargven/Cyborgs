@@ -24,7 +24,7 @@ function Zone({ position }: IZoneProps) {
         const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
             const time = Date.now();
             state.updateScore(time);
-            console.log(state.score, state.players);
+            // console.log(state.score, state.players);
         }, 1000);
 
         return () => {

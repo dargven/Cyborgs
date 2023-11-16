@@ -152,6 +152,7 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     const getPlayers = async () => {
         const sPlayers = await server.getPlayers();
+        // console.log(sPlayers);
         if (sPlayers) {
             setServerPlayers(sPlayers);
         }
@@ -179,6 +180,8 @@ const Scene = ({ vSize }: ISceneProps) => {
                 }
             });
             setOtherPlayers(ps);
+
+            console.log(otherPlayers);
         }, 500);
 
         return () => {
@@ -205,7 +208,7 @@ const Scene = ({ vSize }: ISceneProps) => {
 
                 {otherPlayers.map(player => {
                     const token = store.getUser().token;
-                    if (player.token === token) {
+                    if (player.token !== token) {
                         return <Player
                             team={0}
                             token={player.token}

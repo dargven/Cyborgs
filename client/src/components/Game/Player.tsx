@@ -145,7 +145,7 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
     useEffect(() => {
         const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
             if (setPlayers) {
-                console.log(ref.current.translation(), ref.current.linvel());
+                // console.log(ref.current.translation(), ref.current.linvel());
                 setPlayers(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
             }
         }, 500);

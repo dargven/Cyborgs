@@ -16,7 +16,7 @@ const Chat = () => {
 
     const updateChat = async () => {
         const messagesFromServer = await server.getMessage()
-        console.log(messagesFromServer)
+        // console.log(messagesFromServer)
         if(messagesFromServer) {
             setMessages(messagesFromServer);
         }
