@@ -47,13 +47,13 @@ const LoginPage = () => {
             <div className="content">
                 <h1>Вход</h1>
                 <div className="input-form">
-                    <input
+                    <input 
                         type="text"
                         id="login"
                         name="login"
                         className="input"
                         placeholder="Логин"
-                        ref={loginRef}
+                        ref={loginRef} 
                     /><div className="password-input-container">
                     <input
                         type={showPassword ? 'text' : 'password'}
@@ -69,12 +69,11 @@ const LoginPage = () => {
                     >
                         <img
                             src={showPassword ? openEyeIcon : closeEyeIcon}
-                            alt={showPassword ? 'Show' : 'Hide'}
                             className="eyeIcon"
                         />
                     </button>
                 </div>
-                    <button onClick={() => handleLogin()}><h1>Войти</h1></button>
+                    <button className="input-form-button" onClick={() => handleLogin()}><h1>Войти</h1></button>
 
                 </div>
 

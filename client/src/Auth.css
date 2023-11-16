@@ -25,7 +25,7 @@ body {
     box-shadow: 0 0 0.25em rgba(0, 0, 25, 0.25);
     transform: translate(-50%, -50%);
     left: 50%;
-    padding: 4dvw;
+    padding: 4vw;
     margin-top: 0;
     position: fixed;
     top: 70vh;
@@ -35,25 +35,27 @@ body {
     max-width: 40dvh;
     width: 50dvw;
 }
+
 .input-form {
-    margin: 1dvw 0px;
-    text-align: center;
-    height: 120%;
-    font-size: 1dvw;
+    font-size: 3dvh;
 }
 
 .input-form input {
     text-align: center;
     width: 90%;
+    height: 3dvh;
+    padding: 0;
     border-radius: 10vw;
     border: 0.4vh solid rgb(70, 108, 134);
-    font-size: 2dvh;
+    font-size: 2vh;
     font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
     color: #ffffff;
     background: none;
     margin: 1dvh 0px;
-    align-items: center;
-    height: 3dvh;
+}
+
+.input-form input:focus {
+    outline: none;
 }
 
 .input-form .password-input-container {
@@ -63,8 +65,7 @@ body {
 .input-form .show-password-button {
     position: absolute;
     display: inline;
-    top: 15%;
-    right: -1dvw;
+    top: 3dvh;
     transform: translateY(-50%);
     background: none;
     border: none;
@@ -76,8 +77,9 @@ body {
 .input-form input[type="password"] {
     width: 90%;
 }
+
 .eyeIcon {
-    width: 1.5dvw;
+    width: 1dvw;
 }
 
 .input-form input:hover {
@@ -85,12 +87,10 @@ body {
 }
 
 .input-form button {
-    margin: 2em 0px;
     font-family: Zelek;
-    width: auto;
-    height: 5dvh;
+    padding: 0;
     text-align: center;
-    font-size: 2.5dvh;
+    font-size: 1dvh;
     color: #27cee9;
     background: none;
     outline: none;
@@ -151,6 +151,7 @@ h1 {
     border: none;
     background: none;
 }
+
 .TEST {
     color: rgba(211, 28, 28, 0.13);
     padding: 10px;
