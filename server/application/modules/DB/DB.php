@@ -134,7 +134,6 @@ class DB
         return $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
     }
     // ЖАЛКАЯ ПАРОДИЯ //
-    //Методы полностью переписаны по феншую, осталось их нормально протестить.
 
     public function getSkinsInLobby()
     {
@@ -142,7 +141,7 @@ class DB
     }
 
     public function getPlayers(){
-        return $this->queryAll("SELECT user_id, x,y,vx,vy FROM players");
+        return $this->queryAll("SELECT u.token, p.x, p.y, p.vx, p.vy FROM players as p INNER JOIN users as u on u.id = p.user_id");
 
     }
     public function setPlayer($id, $x, $y, $vx, $vy){
