@@ -3,6 +3,7 @@ import { ServerContext } from "../App";
 import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import { Navigate } from "react-router-dom";
+import "../Auth.css";
 
 const PasswordRecovery = () => {
     const server = useContext(ServerContext);
@@ -79,12 +80,12 @@ const PasswordRecovery = () => {
                         ref={loginRef}
                     />
                     <button
-                        className="PaswordRecoveryButton"
+                        className="PaswordRecovery"
                         onClick={() => Recovery()}
                     >
                         Востановить пароль
                     </button>
-                </div>
+                
                 {hideContent.recoveryPressed &&
                     <>
                         <input
@@ -122,13 +123,13 @@ const PasswordRecovery = () => {
                             ref={newPasswordRef2}
                         />
                         <button
-                            className="RecoveryButton" 
+                            className="RecoveryButton2" 
                             onClick={() => sendNewHash()}
                         >
                             Изменить пароль
                         </button>
                     </>
-                }
+                }</div>
             </div>
         </>
     );

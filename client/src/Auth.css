@@ -2,6 +2,7 @@ html {
     height: 100%;
 }
 
+
 body {
     -webkit-background-size: cover;
     background-size: cover;
@@ -24,7 +25,7 @@ body {
     box-shadow: 0 0 0.25em rgba(0, 0, 25, 0.25);
     transform: translate(-50%, -50%);
     left: 50%;
-    padding: 4dvw;
+    padding: 4vw;
     margin-top: 0;
     position: fixed;
     top: 70vh;
@@ -34,41 +35,36 @@ body {
     max-width: 40dvh;
     width: 50dvw;
 }
-.input-form {
-    margin: 1dvw 0px;
-    text-align: center;
-    height: 120%;
-    font-size: 1dvw;
-}
 
+.input-form {
+    font-size: 3dvh;
+}
 .input-form input {
     text-align: center;
     width: 90%;
+    height: 3dvh;
+    padding: 0;
     border-radius: 10vw;
     border: 0.4vh solid rgb(70, 108, 134);
-    font-size: 2dvh;
+    font-size: 2vh;
     font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
     color: #ffffff;
     background: none;
-    margin: 1dvh 0px;
-    align-items: center;
-    height: 3dvh;
+ 
+    margin-top:1dvh;
+}
+.input-form input:focus {
+    outline: none;
 }
 
 .input-form .password-input-container {
     position: relative;
 }
-.input-form.PasswordRecovery {
-    position: relative;
-    width: 100%;
-    height: 10%;
-    font-size: 1dvh;
-}
+
 .input-form .show-password-button {
     position: absolute;
     display: inline;
-    top: 15%;
-    right: -1dvw;
+    top: 3dvh;
     transform: translateY(-50%);
     background: none;
     border: none;
@@ -80,27 +76,24 @@ body {
 .input-form input[type="password"] {
     width: 90%;
 }
+
 .eyeIcon {
-    width: 1.5dvw;
+    width: 1dvw;
 }
 
 .input-form input:hover {
     border: 0.4vh solid #61dafb;
 }
-
-.input-form button {
-    margin: 2em 0px;
+.input-form button{
     font-family: Zelek;
-    width: auto;
-    height: 5dvh;
+    padding: 1.5dvh;
     text-align: center;
-    font-size: 2.5dvh;
+    font-size: 1dvh;
     color: #27cee9;
     background: none;
     outline: none;
     border: none;
 }
-
 .input-form button:hover {
     text-shadow: 0px 0px 3px #00aeff;
     color: #27cee9;
@@ -109,6 +102,16 @@ body {
     filter: contrast(30);
     border-color: #27cee9;
 }
+.PaswordRecovery{
+    transform: translateY(-40%);
+}.recoveryCode{
+    transform: translateY(-100%);
+}.RecoveryButton{
+    transform: translateY(-130%);
+}
+.password,.RecoveryButton2{
+    transform: translateY(-210%);
+}
 
 h1 {
     font-family: "Zelek";
@@ -116,6 +119,10 @@ h1 {
     text-shadow: 0px 1vh 4vh #00aeff;
     font-size: 1.5dvw;
 }
+.PasswordRecovery {
+    margin: -2dvh;
+}
+
 
 .App-header {
     overflow: hidden;
@@ -155,6 +162,7 @@ h1 {
     border: none;
     background: none;
 }
+
 .TEST {
     color: rgba(211, 28, 28, 0.13);
     padding: 10px;

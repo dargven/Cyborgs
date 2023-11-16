@@ -83,15 +83,16 @@ const LoginPage = () => {
                             />
                         </button>
                     </div>
-                    <button onClick={() => handleLogin()}>
-                        <h1>Войти</h1>
-                    </button>
                     <div className="PasswordRecovery">
                         <NavButton
                             to="/PaswordRecovery"
                             text="забыли пароль?"
                         ></NavButton>
                     </div>
+                    <button onClick={() => handleLogin()}>
+                        <h1>Войти</h1>
+                    </button>
+                    
                 </div>
 
                 {loginSuccess ? <Navigate to="/main" replace={true}/> : null}

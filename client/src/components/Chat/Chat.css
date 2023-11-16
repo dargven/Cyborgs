@@ -54,9 +54,9 @@
 	min-height:6dvw;
 }
 
-
-.chat-form__input {
-	font-family:'Courier New', Courier, monospace;
+.chat-form__input,.chat-form__submit {
+	padding: 0;
+	font-family:Arial, Helvetica, sans-serif;
 	font-size:1dvw;
 	background:rgba(18, 74, 138, 0.541);
 	border:none;
@@ -66,14 +66,11 @@
 	color: white;
 }
 .chat-form__submit{
-	font-family:arial;
-	font-size:1dvw;
 	vertical-align:middle;
 	background:rgba(29, 124, 231, 0.541);
-	border:0;
-	height:3vh;	
-	position:absolute;
 	right:0;
 	width:30%;
-	color: white;
+}
+.chat-form__input:focus{
+	outline: none;
 }
