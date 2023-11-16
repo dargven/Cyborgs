@@ -33,6 +33,7 @@ const Game = () => {
     return (
         <KeyboardControls map={inputMap}>
             <Canvas style={{ background: 'black' }}>
+                
                 <PerspectiveCamera position={[0, 0, 0]}>
                     <Scene vSize={vSize}/>
                     <axesHelper />
