@@ -7,10 +7,15 @@ import "../Main.css";
 const PasswordRecovery = () => {
     const server = useContext(ServerContext);
     const loginRef = useRef<HTMLInputElement | null>(null);
-    const [loginSuccess, setLoginSuccess] = useState(false);
+    const [recoverySuccess, setRecoverySuccess] = useState(false);
 
     const Recovery = async () => {
         if (loginRef.current) {
+            const login = loginRef.current.value;
+            const recov = await server.passRecovery(login);
+            if (recov) {
+                setRecoverySuccess(true);
+            }
         }
     };
     return (
@@ -32,7 +37,7 @@ const PasswordRecovery = () => {
                     />
                     <button
                         className="PaswordRecoveryButton"
-                        onClick={() => {}}
+                        onClick={() => Recovery}
                     >
                         Востановить пароль
                     </button>
