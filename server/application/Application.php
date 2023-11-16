@@ -4,6 +4,10 @@ require_once 'modules/Game/Game.php';
 require_once 'modules/DB/DB.php';
 require_once 'modules/Lobby/Lobby.php';
 require_once 'modules/Chat/Chat.php';
+require_once 'modules/Mailer/Mailer.php';
+
+use App\server\application\modules\Mailer\Mailer\Mailer;
+
 
 class Application
 {
@@ -11,6 +15,7 @@ class Application
     private $chat;
     private $game;
     private $lobby;
+    private $mailer;
 
     public function __construct()
     {
@@ -18,7 +23,13 @@ class Application
         $this->user = new User($db);
         $this->lobby = new Lobby($db);
         $this->chat = new Chat($db);
+        $this->game = new Game($db);
+        $this->mailer = new Mailer();
     }
+
+
+
+
 
     /*************************/
     /* НЕПОВТОРИМЫЙ ОРИГИНАЛ */
@@ -26,9 +37,11 @@ class Application
     function register($params)
     {
         $login = $params['login'];
+        $name = $params ['name'];
+        $email = $params['email'];
         $hash = $params['hash'];
-        if ($login && $hash) {
-            return $this->user->register($login, $hash);
+        if ($login && $hash && $name && $email) {
+            return $this->user->register($login, $hash, $name, $email);
         }
         return ['error' => 242];
     }
@@ -57,7 +70,7 @@ class Application
     {
         $token = $params['token'];
         if ($token) {
-            $user = $this->user->getUser($token);
+            $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->chat->getMessage();
             }
@@ -71,7 +84,7 @@ class Application
         $token = $params['token'];
         $message = $params['message'];
         if ($token && $message) {
-            $user = $this->user->getUser($token);
+            $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->chat->sendMessage($user->id, $message);
             }
@@ -80,17 +93,13 @@ class Application
         return ['error' => 242];
     }
 
-    /******************/
-    /* ЖАЛКАЯ ПАРОДИЯ */
-    /******************/
 
-//..
     function selectTeam($params)
     {
         $token = $params['token'];
         $teamId = $params['teamId'];
         if ($token && $teamId) {
-            $user = $this->user->getUser($token);
+            $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->lobby->selectTeam($user->id, $teamId);
             }
@@ -99,13 +108,55 @@ class Application
         return ['error' => 242];
     }
 
+    function getPlayers($params)
+    {
+        $token = $params['token'];
+        if ($token) {
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->game->getPlayers();
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
+    }
+
+    function setPlayer($params)
+    {
+        $token = $params['token'];
+        $x = $params['x'];
+        $y = $params['y'];
+        $vx = $params['vx'];
+        $vy = $params['vy'];
+        if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0) && ($vy || $vy == 0)) {
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->game->setPlayer($user->id, $x, $y, $vx, $vy);
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
+
+
+    }
+
+
+
+
+    /******************/
+    /* ЖАЛКАЯ ПАРОДИЯ */
+    /******************/
+
+//..
+
     function getTeamsInfo($params)
     {
         $token = $params['token'];
         if ($token) {
-            $user = $this->user->getUser($token);
+
+            $user = $this->user->getUserByToken($token);
             if ($user) {
-                $this->lobby->getTeamsInfo();
+                return $this->lobby->getTeamsInfo();
             }
             return ['error' => 1002];
 
@@ -114,12 +165,12 @@ class Application
 
     }
 
-
     function getSkins($params)
     {
         $token = $params['token'];
         if ($token) {
-            $user = $this->user->getUser($token);
+
+            $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->lobby->getSkins();
             }
@@ -134,7 +185,8 @@ class Application
         $token = $params['token'];
         $skinId = $params['skinId'];
         if ($token && $skinId) {
-            $user = $this->user->getUser($token);
+
+            $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->lobby->setSkin($user->id, $skinId);
 
@@ -144,6 +196,40 @@ class Application
         }
         return ['error' => 242];
 
+    }
+
+    function sendCodeToresetPassword($params)
+    {
+        $login = $params['login'];
+        if ($login) {
+            $user = $this->user->getUserByLogin($login);
+            if ($user) {
+                return $this->user->sendCodeToresetPassword($login, $user);
+            }
+            return ['error' => 1002];
+
+        }
+        return ['error' => 242];
+
+    }
+
+    function getCodeToResetPassword($params)
+    {
+        $code = $params['code'];
+        if ($code) {
+            return $this->user->getCodeToResetPassword($code);
+
+        }
+        return ['error' => 242];
+    }
+
+    function setPasswordAfterReset($params)
+    {
+        $hash = $params['hash'];
+        if ($hash) {
+            return $this->user->setPasswordAfterReset($hash);
+        }
+        return ['error' => 242];
     }
 
 

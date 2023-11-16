@@ -1,7 +1,12 @@
+import { useContext } from "react";
+import { ServerContext } from "../App";
 import NavButton from "../components/navButton";
 import "../Main.css";
 
 const MainPage = () => {
+
+  const server = useContext(ServerContext);
+
   return (
     <>
       <div className="slide-in">
@@ -11,8 +16,11 @@ const MainPage = () => {
         </div>
       <h2>КИБОРГИ 2D</h2>
       <div className="Main">
-        <NavButton to="/game" text="Играть" />
-        <NavButton to="/login" text="Выход" />
+        <NavButton to="/game" text="Играть"/>
+        <button className="Leave" onClick={() => {
+          server.logout();
+          window.location.reload();
+          }}>Выход</button>
       </div>
     </>
   );

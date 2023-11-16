@@ -1,11 +1,14 @@
 import { SpriteAnimator, useKeyboardControls } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+
 import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
+import { useFrame, useThree } from "@react-three/fiber";
+import { Laser } from "../../modules/Game/entities";
+import { IZonePlayer } from "./Zone";
 
-export interface IPlayerProps {
+interface IPlayerProps {
     id?: number;
     username?: string;
     position?: Vector3;
@@ -16,18 +19,24 @@ export interface IPlayerProps {
     setWeaponSlot?(newSlot: number): void;
 }
 
+// export interface IRigidBodyData {
+//     type: string
+// }
+
 const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlot, isControlled }: IPlayerProps) => {
-    
+
     const ref = useRef<RapierRigidBody>(null!);
+
+    const [isShooting, setShooting] = useState<boolean>(false);
 
     const [controlKeys, getKeys] = useKeyboardControls();
 
     const movementController = (up: boolean, down: boolean, left: boolean, right: boolean) => {
 
-        if (ref.current){
+        if (ref.current) {
 
             const speed = 4;
-            
+
             ref.current.setLinvel(new Vector3(), true);
             const velocity = new Vector3();
             if (left) {
@@ -48,6 +57,29 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             ref.current.setLinvel(velocity, true);
         }
     }
+
+    useEffect(() => {
+        if (isControlled) {
+            const mouseDownHandler = (e: MouseEvent) => {
+                if (e.button === 0) {
+                    setShooting(true);
+                }
+            }
+            const mouseUpHandler = (e: MouseEvent) => {
+                if (e.button === 0) {
+                    setShooting(false);
+                }
+            }
+
+            document.addEventListener("mousedown", mouseDownHandler);
+            document.addEventListener("mouseup", mouseUpHandler);
+
+            return () => {
+                document.removeEventListener("mousedown", mouseDownHandler);
+                document.removeEventListener("mouseup", mouseUpHandler);
+            }
+        }
+    }, []);
 
     useFrame(() => {
         if (isControlled) {
@@ -72,7 +104,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 onMovement(playerPosition);
             }
 
-            if (shoot) {
+            if (shoot || isShooting) {
                 if (onFire) {
                     onFire(playerPosition, team);
                 }
@@ -82,11 +114,19 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
 
 
     const [hp, setHp] = useState<number>(100);
-    const [score, setScore] = useState<number>(0);
-    const data = {
-        type: 'player',
-        team: team
-    }
+
+    useEffect(() => {
+        const data = {
+            type: 'player',
+            team: team,
+            hp: hp,
+            id: id
+        }
+        ref.current.userData = data;
+        if (hp===0){
+            ref.current.setEnabled(false);
+        }
+    }, [hp]);
 
     return (
         <>
@@ -99,7 +139,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 linearDamping={10}
                 angularDamping={1}
                 lockRotations
-                userData={data}
+            // userData={data}
             >
 
                 <SpriteAnimator
@@ -110,26 +150,25 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                     textureImageURL={'./assets/test/Sprite-0001.png'}
                     textureDataURL={'./assets/test/Sprite-0001.json'}
                     alphaTest={0.01}
-                // pause={!isMoving}
+                // pause={}
                 />
 
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
-
                         const data: any = e.other.rigidBody?.userData;
+                        const target = e.target.rigidBody;
                         if (data.type === "projectile") {
-                            if (data.team === team && hp - data.damage < 0) {
-                                setHp(0)
+                            const damage = data.team === team ? data.damage / 2 : data.damage;
+                            if (hp - damage < 0) {
+                                setHp(0);
+                                // target?.setEnabled(false);
+                                // ref.current.setEnabled(false);
+                            } else {
+                                setHp(hp - damage);
                             }
-                            else if (data.team === team) {
-                                setHp(hp - (data.damage / 10))
-                            }
-                            else if (hp - data.damage < 0) {
-                                setHp(0)
-                            }
-                            else {
-                                setHp(hp - data.damage)
-                            }
+                        }
+                        if (data.type === "zone") {
+                            // console.log(target.activeEvents())
                         }
                     }} />
                 <HealthBar value={hp} color={0xff0000} />

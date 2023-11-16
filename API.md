@@ -54,6 +54,30 @@
     * [Параметры](#параметры-7)
     * [Успешной ответ](#успешной-ответ)
     * [Ошибки](#ошибки-7)
+  * [Метод getMessage](#метод-getmessage)
+    * [Описание метода](#описание-метода-8)
+    * [Адрес](#адрес-8)
+    * [Параметры](#параметры-8)
+    * [Успешной ответ](#успешной-ответ-1)
+    * [Ошибки](#ошибки-8)
+  * [Метод sendCodeToResetPassword](#метод-sendcodetoresetpassword)
+    * [Описание](#описание)
+    * [Адрес](#адрес-9)
+    * [Параметры](#параметры-9)
+    * [Успешной ответ](#успешной-ответ-2)
+    * [Ошибки](#ошибки-9)
+  * [Метод getCodeToResetPassword](#метод-getcodetoresetpassword)
+    * [Описание](#описание-1)
+    * [Адрес](#адрес-10)
+    * [Параметры](#параметры-10)
+    * [Успешной ответ](#успешной-ответ-3)
+    * [Ошибки](#ошибки-10)
+  * [Метод setPasswordAfterReset](#метод-setpasswordafterreset)
+    * [Описание](#описание-2)
+    * [Адрес](#адрес-11)
+    * [Параметры](#параметры-11)
+    * [Успешной ответ](#успешной-ответ-4)
+    * [Ошибки](#ошибки-11)
 <!-- TOC -->
 
 ## Адрес домена
@@ -104,12 +128,12 @@ User = {
 
 ### Параметры
 
-| параметр | тип              | комментарий                   |
-|----------|------------------|-------------------------------|
-| login    | string           | логин юзера                   |
-| name     | string           | Имя пользователя              |
-| email    | string           | Почта пользователя            |
-| hash     | string           | md5(md5(login+password)+rnd)  |
+| параметр | тип    | комментарий                  |
+|----------|--------|------------------------------|
+| login    | string | логин юзера                  |
+| name     | string | Имя пользователя             |
+| email    | string | Почта пользователя           |
+| hash     | string | md5(md5(login+password)+rnd) |
 
 ### Ошибки
 
@@ -271,8 +295,9 @@ WrongAnswer(code:304, text: 'Team not found')
 
 ```
 CorrectAnswer=>data = {
-skins: skins{ },
-numberOfSkins:number
+{"skin_id":number,
+"text":str,
+"image":link or image}
 }
 ```
 
@@ -306,10 +331,7 @@ WrongAnswer(code: 242, text: 'params not set fully ')
 ### Успешный ответ
 
 ```
-CorrectAnswer=>data = {
-id: number,
-setSkin: string
-}
+CorrectAnswer => true
 ```
 
 ### Ошибки
@@ -334,10 +356,10 @@ WrongAnswer(code: 242, text: 'params not set fully ')
 
 ### Параметры
 
-| Параметры | Тип          | Комментарий                 |
-|-----------|--------------|-----------------------------|
-| token     | string       | Аутентификационный токен    |
-| message   | string       | Текст сообщения             |
+| Параметры | Тип    | Комментарий              |
+|-----------|--------|--------------------------|
+| token     | string | Аутентификационный токен |
+| message   | string | Текст сообщения          |
 
 ### Успешной ответ
 
@@ -366,17 +388,17 @@ WrongAnswer(code:706, text : 'text message is empty')
 
 ### Параметры
 
-| Параметры | Тип          | Комментарий                 |
-|-----------|--------------|-----------------------------|
-| token     | string       | Аутентификационный токен    |
+| Параметры | Тип    | Комментарий              |
+|-----------|--------|--------------------------|
+| token     | string | Аутентификационный токен |
 
 ### Успешной ответ
 
 ```
 CorrectAnswer => data = {
-    'name' => text
-    'created' => text(dataTime)
-    'messages' => text | array
+    {"name":str,
+    "message":str,
+    "created":data | timestamp}
 
 }
 
@@ -390,6 +412,96 @@ WrongAnswer(code:706, text : 'text message is empty')
 
 ```
 
+## Метод sendCodeToResetPassword
+
+### Описание
+После ввода логина пользака на его почту, указанную при регистрации,
+отправляется уникальный код. Смотри методы дальше.
+### Адрес
+
+```/?method = sendCodeToResetPassword```
+
+### Параметры
+
+| Параметры | Тип    | Комментарий                   |
+|-----------|--------|-------------------------------|
+| login     | string | Уникальный логин пользователя |
+
+### Успешной ответ
+
+```
+CorrectAnswer => true
+
+```
+
+### Ошибки
+
+```
+WrongAnswer(code:707, text: could not send message)
+WrongAnswer(code:1002, text: 'error in auth user')
+WrongAnswer(code: 242, text: 'params not set fully ')
+```
+
+## Метод getCodeToResetPassword
+### Описание
+После успешной отработки метода sendCodeToResetPassword, пользак вводит
+и передает на сервак код, если код сходится, его пускают на страничку
+ввода пароля, см метод дальше.
+
+### Адрес
+
+```/?method = getCodeToResetPassword```
+
+### Параметры
+
+| Параметры | Тип | Комментарий               |
+|-----------|-----|---------------------------|
+| code      | int | Код который пришел с мыла |
+
+### Успешной ответ
+
+```
+CorrectAnswer => true
+
+```
+
+### Ошибки
+
+```
+WrongAnswer(code:708, text:invalid code from E-mail)
+WrongAnswer(code: 242, text: 'params not set fully ')
+
+```
+
+## Метод setPasswordAfterReset
+### Описание
+После того как пользак успешно ввел код и успешно отработал метод
+getCodeToResetPassword, пользак вводит пароль(hash), пароль запоминается
+в базе данных.
+
+### Адрес
+
+```/?method = setPasswordAfterReset```
+
+### Параметры
+
+| Параметры | Тип | Комментарий      |
+|-----------|-----|------------------|
+| hash      | str | Хэш пользователя |
+
+### Успешной ответ
+
+```
+CorrectAnswer => true
+
+```
+
+### Ошибки
+
+```
+WrongAnswer(code:1002, text: 'error in auth user')
+WrongAnswer(code: 242, text: 'params not set fully')
+```
 
 
 

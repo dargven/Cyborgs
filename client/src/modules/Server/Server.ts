@@ -1,7 +1,7 @@
 import { Store } from "../Store/Store";
-import {TUser} from "./types";
+import {TMessage, TUser} from "./types";
 
-// https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV 
+// https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
 export default class Server {
     private HOST: string;
@@ -20,13 +20,23 @@ export default class Server {
                 params.token = this.token;
             }
             const str = Object.keys(params)
-                .map(key => `${key}=${params[key]}`)
-                .join('&');
+                .map((key) => `${key}=${params[key]}`)
+                .join("&");
             const res = await fetch(`${this.HOST}/?method=${method}&${str}`);
             const answer = await res.json();
-            if (answer.result === 'ok') {
+            if (answer.result === "ok") {
                 return answer.data;
             }
+            const errorContainer = document.createElement("div");
+            errorContainer.remove();
+            errorContainer.style.color = "red";
+            errorContainer.textContent = `${answer["error"]["text"]}`;
+            document.body.appendChild(errorContainer);
+            setTimeout(function () {
+                if (errorContainer) {
+                    errorContainer.remove();
+                }
+            }, 2000);
             console.log(
                 `Ошибка: ${answer["error"]["code"]}, text: ${answer["error"]["text"]}`
             );
@@ -36,27 +46,49 @@ export default class Server {
         }
     }
 
-    async login(login: string, hash: string, rnd: number): Promise<TUser | null> {
-        const result = await this.request<TUser>(
-            'login',
-            {login, hash, rnd}
-        );
+    async login(
+        login: string,
+        hash: string,
+        rnd: number
+    ): Promise<TUser | null> {
+        const result = await this.request<TUser>("login", { login, hash, rnd });
         if (result?.token) {
             this.token = result.token;
-            this.store.setUser(login);
+            this.store.setUser(login, this.token);
         }
         return result;
     }
 
     async logout(): Promise<boolean | null> {
-        const result = await this.request<boolean>('logout');
+        const result = await this.request<boolean>("logout");
         if (result) {
             this.token = null;
         }
         return result;
     }
 
-    register(login: string, password: string): Promise<TUser | null> {
-        return this.request<TUser>('register', {login, password});
+    async sendMessage(message: string): Promise<TMessage | null> {
+        const result = await this.request<TMessage>('sendMessage',{
+            token: this.token,
+            message,
+        });
+        if(result) {
+            return result;
+        }
+        return result;
+    }
+
+    async getMessage(): Promise<[] | null> {
+        const result = await this.request<[]>('getMessage',{
+            token: this.token,
+        });
+        if(result) {
+            return result;
+        }
+        return result;
+    }
+
+    register(login: string, hash: string, name: string, email: string): Promise<TUser | null> {
+        return this.request<TUser>("register", { login, hash, name,  email});
     }
 }
