@@ -11,7 +11,6 @@ interface IMessage {
 const Chat = () => {
     const chatRef = useRef<HTMLInputElement | null>(null);
     const server = useContext(ServerContext);
-    let interval: NodeJS.Timer | null = null;
     const [messages, setMessages] = useState<IMessage[]>([]);
 
     const updateChat = async () => {

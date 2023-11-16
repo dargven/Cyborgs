@@ -4,7 +4,6 @@ import { ServerContext } from "../App";
 import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import NavButton from "../components/navButton";
-import "../Auth.css";
 
 const openEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-open.png";
 const closeEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-close.png";
@@ -72,15 +71,15 @@ const LoginPage = () => {
                             />
                         </button>
                     </div>
-                    <div className="PasswordRecovery">
-                        <NavButton
-                            to="/PaswordRecovery"
-                            text="забыли логин или пароль?"
-                        ></NavButton>
-                    </div>
                     <button onClick={() => handleLogin()}>
                         <h1>Войти</h1>
                     </button>
+                    <div className="PasswordRecovery">
+                        <NavButton
+                            to="/PaswordRecovery"
+                            text="забыли пароль?"
+                        ></NavButton>
+                    </div>
                 </div>
 
                 {loginSuccess ? <Navigate to="/main" replace={true} /> : null}

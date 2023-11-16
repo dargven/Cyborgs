@@ -67,8 +67,16 @@ export default class Server {
         return result;
     }
 
-    async passRecovery(login: string): Promise<boolean | null> {
-        return await this.request<boolean>("login", { login });
+    async resetPasswordByEmail(login: string): Promise<boolean | null> {
+        return await this.request<boolean>("sendCodeToResetPassword", { login });
+    }
+
+    async getCodeToResetPassword(code: string): Promise <boolean | null> {
+        return await this.request<boolean>("getCodeToResetPassword", { code }) 
+    }
+
+    async setPasswordAfterReset(hash: string): Promise <boolean | null> {
+        return await this.request<boolean>("setPasswordAfterReset", { hash })
     }
 
     async sendMessage(message: string): Promise<TMessage | null> {
