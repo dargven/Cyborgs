@@ -148,7 +148,7 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
                 // console.log(ref.current.translation(), ref.current.linvel());
                 setPlayers(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
             }
-        }, 500);
+        }, 50);
 
         return () => {
             clearInterval(interval);
@@ -166,7 +166,6 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
                 linearDamping={10}
                 angularDamping={1}
                 lockRotations
-            // userData={data}
             >
 
                 <SpriteAnimator

@@ -181,8 +181,8 @@ const Scene = ({ vSize }: ISceneProps) => {
             });
             setOtherPlayers(ps);
 
-            console.log(otherPlayers);
-        }, 500);
+            // console.log(otherPlayers);
+        }, 50);
 
         return () => {
             clearInterval(interval);
@@ -214,7 +214,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                             token={player.token}
                             position={player.position}
                             velocity={player.velocity}
-                            key={token} />
+                            key={player.token} />
                     }
                 })}
 
