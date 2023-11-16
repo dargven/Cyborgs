@@ -198,13 +198,13 @@ class Application
 
     }
 
-    function sendCodeToresetPassword($params)
+    function sendCodeToResetPassword($params)
     {
         $login = $params['login'];
         if ($login) {
             $user = $this->user->getUserByLogin($login);
             if ($user) {
-                return $this->user->sendCodeToresetPassword($login, $user);
+                return $this->user->sendCodeToResetPassword($login, $user);
             }
             return ['error' => 1002];
 

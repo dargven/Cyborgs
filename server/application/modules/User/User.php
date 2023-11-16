@@ -69,7 +69,7 @@ class User
         return ['error' => 1003];
     }
 
-    public function sendCodeToresetPassword($login, $user)
+    public function sendCodeToResetPassword($login, $user)
     {
         $randomNumber = random_int(10000, 99999);
         $email = $user->email;

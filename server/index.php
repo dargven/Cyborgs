@@ -20,7 +20,7 @@ function result($params) {
             case 'setSkin': return $app->setSkin($params);//работает для тех пользователей, кто добавлен в userSkins
             case 'sendMessage':return $app->sendMessage($params);//Работает
             case 'getMessage':return $app->getMessage($params);//Работает
-            case 'resetPasswordByEmail':return $app->sendCodeToresetPassword($params);// ->> need to test
+            case 'sendCodeToResetPassword':return $app->sendCodeToResetPassword($params);// ->> need to test
             case 'getCodeToResetPassword':return $app->getCodeToResetPassword($params);// ->> need to test
             case 'setPasswordAfterReset':return $app->setPasswordAfterReset($params);// ->> need to test
             default: return ['error' => 102];
