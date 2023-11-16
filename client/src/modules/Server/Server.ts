@@ -1,5 +1,5 @@
 import { Store } from "../Store/Store";
-import {TMessage, TUser} from "./types";
+import { TMessage, TUser } from "./types";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
@@ -67,28 +67,45 @@ export default class Server {
         return result;
     }
 
+    async resetPasswordByEmail(login: string): Promise<boolean | null> {
+        return await this.request<boolean>("sendCodeToResetPassword", { login });
+    }
+
+    async getCodeToResetPassword(code: string): Promise <boolean | null> {
+        return await this.request<boolean>("getCodeToResetPassword", { code }) 
+    }
+
+    async setPasswordAfterReset(hash: string): Promise <boolean | null> {
+        return await this.request<boolean>("setPasswordAfterReset", { hash })
+    }
+
     async sendMessage(message: string): Promise<TMessage | null> {
-        const result = await this.request<TMessage>('sendMessage',{
+        const result = await this.request<TMessage>("sendMessage", {
             token: this.token,
             message,
         });
-        if(result) {
+        if (result) {
             return result;
         }
         return result;
     }
 
     async getMessage(): Promise<[] | null> {
-        const result = await this.request<[]>('getMessage',{
+        const result = await this.request<[]>("getMessage", {
             token: this.token,
         });
-        if(result) {
+        if (result) {
             return result;
         }
         return result;
     }
 
-    register(login: string, hash: string, name: string, email: string): Promise<TUser | null> {
-        return this.request<TUser>("register", { login, hash, name,  email});
+    register(
+        login: string,
+        hash: string,
+        name: string,
+        email: string
+    ): Promise<TUser | null> {
+        return this.request<TUser>("register", { login, hash, name, email });
     }
 }

@@ -1,7 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
     session_start();
-}
 
 use App\server\application\modules\Mailer\Mailer\Mailer;
 
@@ -69,15 +67,15 @@ class User
         return ['error' => 1003];
     }
 
-    public function sendCodeToresetPassword($login, $user)
+    public function sendCodeToResetPassword($login, $user)
     {
         $randomNumber = random_int(10000, 99999);
         $email = $user->email;
+        $_SESSION['login'] = $login;
+        $_SESSION['rndCode'] = $randomNumber;
+        $_SESSION['e-mail'] = $email;
+        $_SESSION['idUser'] = $user->id;
         if ($this->mailer->sendEmail($email, 'verifCode', 'your Verificitaion code is ' . $randomNumber)) {
-            $_SESSION['login'] = $login;
-            $_SESSION['rndCode'] = $randomNumber;
-            $_SESSION['e-mail'] = $email;
-            $_SESSION['idUser'] = $user->id;
             return true;
         }
         return ['error' => 707];// could not send message

@@ -112,7 +112,7 @@ class Application
     {
         $token = $params['token'];
         if ($token) {
-            $user = $this->user->getUserByToken($token);
+            $user = $this->user->getUser($token);
             if ($user) {
                 return $this->game->getPlayers();
             }
@@ -129,7 +129,7 @@ class Application
         $vx = $params['vx'];
         $vy = $params['vy'];
         if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0) && ($vy || $vy == 0)) {
-            $user = $this->user->getUserByToken($token);
+            $user = $this->user->getUser($token);
             if ($user) {
                 return $this->game->setPlayer($user->id, $x, $y, $vx, $vy);
             }
@@ -198,13 +198,13 @@ class Application
 
     }
 
-    function sendCodeToresetPassword($params)
+    function sendCodeToResetPassword($params)
     {
         $login = $params['login'];
         if ($login) {
             $user = $this->user->getUserByLogin($login);
             if ($user) {
-                return $this->user->sendCodeToresetPassword($login, $user);
+                return $this->user->sendCodeToResetPassword($login, $user);
             }
             return ['error' => 1002];
 
