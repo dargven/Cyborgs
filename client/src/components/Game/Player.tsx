@@ -27,10 +27,12 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
     const ref = useRef<RapierRigidBody>(null!);
 
     const [isShooting, setShooting] = useState<boolean>(false);
+    const [pos, setPos] = useState<Vector3>(new Vector3());
+    const [vel, setVel] = useState<Vector3>(new Vector3());
 
     const [controlKeys, getKeys] = useKeyboardControls();
 
-    const movementController = (up: boolean, down: boolean, left: boolean, right: boolean) => {
+    const movementController = (up?: boolean, down?: boolean, left?: boolean, right?: boolean) => {
 
         if (ref.current) {
 
@@ -51,7 +53,7 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
             }
 
             velocity.setLength(speed);
-            console.log(velocity);
+            console.log(velocity, token);
 
             ref.current.setLinvel(velocity, true);
         }
@@ -123,10 +125,17 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
                 // )
                 // setLasers((lasers) => [...lasers, laser])
             }
+        } else {
+            movementController();
         }
     });
 
     const [hp, setHp] = useState<number>(100);
+
+    // useEffect(() => {
+    //     setPos(ref.current.translation() as Vector3);
+    //     setVel(ref.current.linvel() as Vector3);
+    // }, [pos, vel]);
 
     useEffect(() => {
         const data = {
@@ -144,10 +153,9 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
     useEffect(() => {
         const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
             if (setPlayers) {
-                // console.log(ref.current.translation(), ref.current.linvel());
                 setPlayers(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
             }
-        }, 10000);
+        }, 50);
 
         return () => {
             clearInterval(interval);

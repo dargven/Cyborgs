@@ -178,7 +178,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                 }
             });
             setOtherPlayers(ps);
-        }, 10000);
+        }, 50);
 
         return () => {
             clearInterval(interval);
