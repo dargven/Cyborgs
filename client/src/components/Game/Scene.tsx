@@ -17,6 +17,7 @@ import Inventory from "./Inventory";
 import { Gun, Item } from "../../modules/Game/items";
 import Obstacle from "./Obstacle";
 import Inventory2 from "../../modules/Game/misc/Inventory";
+import Spawn from "./Spawn";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -145,7 +146,7 @@ const Scene = ({ vSize }: ISceneProps) => {
 
                 <fog />
 
-                <group position={[8, 5, 0]}>
+                <group position={[6.5, 3.5, 0]}>
                     <Player
                         id={1338}
                         team={1}
@@ -156,7 +157,6 @@ const Scene = ({ vSize }: ISceneProps) => {
                     />
                     <Player team={0} id={1002} />
                     <Player team={1} id={1001} />
-                    <Robot />
                 </group>
 
                 <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons} />
@@ -195,6 +195,8 @@ const Scene = ({ vSize }: ISceneProps) => {
                 <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)} />
 
                 <Zone position={new Vector3(5.5, 7.5, 0.5)} />
+                <Spawn position={new Vector3(5, 3, 0.5)}/>
+                <Spawn position={new Vector3(7, 3, 0.5)} />
             </Physics>
             <Stars />
         </group>

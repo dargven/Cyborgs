@@ -41,7 +41,7 @@ const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture,
                     sensor
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
-                        if (data.type === "player" || data.type === "collider") {
+                        if (data.type === "player" || data.type === "collider"|| data.type==="spawn") {
                             bulletRef.current.setEnabled(false);
                             setActive(false);
                         }

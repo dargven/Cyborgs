@@ -70,20 +70,17 @@ function Zone({ position }: IZoneProps) {
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         const target = e.target.collider;
-                        // console.log(data, target.handle);
                         if (data.type === "player" && data.hp) {
                             state.addPlayer(data.team);
-                            // setPlayers([...players, { team: data.team, hp: data.hp, id: data.id }]);
                         }
                     }}
                     onIntersectionExit={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "player" || data.hp === 0) {
                             state.removePlayer(data.team);
-                            // const filtered = players.filter(player => player.id !== data.id);
-                            // setPlayers(filtered);
                         }
-                    }} />
+                    }}
+                     />
             </group>
         </RigidBody>
     )

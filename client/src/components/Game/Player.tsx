@@ -6,7 +6,7 @@ import HealthBar from "./HealthBar";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
 import { IZonePlayer } from "./Zone";
-
+import ContestSpawn from "../../modules/Game/misc/Contestspawn";
 interface IPlayerProps {
     id?: number;
     username?: string;
@@ -50,9 +50,9 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             if (down) {
                 velocity.y -= 1;
             }
-            
+
             velocity.setLength(speed);
-            
+
             ref.current.setLinvel(velocity, true);
         }
     }
@@ -84,9 +84,9 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
         if (isControlled) {
             const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
             movementController(up, down, left, right);
-            
+
             const playerPosition = vec3(ref?.current?.translation());
-            
+
             if (select1 && setWeaponSlot) {
                 setWeaponSlot(1)
             }
@@ -99,10 +99,9 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 setWeaponSlot(3)
             }
 
-            if (onMovement){
+            if (onMovement) {
                 onMovement(playerPosition);
             }
-
             if (shoot || isShooting) {
                 if (onFire) {
                     onFire(playerPosition, team);
@@ -137,7 +136,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             id: id
         }
         ref.current.userData = data;
-        if (hp===0){
+        if (hp === 0) {
             ref.current.setEnabled(false);
         }
     }, [hp]);
@@ -164,7 +163,6 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                     textureImageURL={'./assets/test/Sprite-0001.png'}
                     textureDataURL={'./assets/test/Sprite-0001.json'}
                     alphaTest={0.01}
-                // pause={}
                 />
 
                 <BallCollider args={[0.5]} restitution={0}
@@ -173,16 +171,24 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                         const target = e.target.rigidBody;
                         if (data.type === "projectile") {
                             const damage = data.team === team ? data.damage / 2 : data.damage;
-                            if (hp - damage < 0) {
-                                setHp(0);
-                                // target?.setEnabled(false);
-                                // ref.current.setEnabled(false);
+                            if (hp - damage <= 0) {
+                                const time = Date.now()
+                                setHp(0)
+                                setTimeout(function () {
+                                    setHp(100);
+                                    if (team === 1) {
+                                        target?.setTranslation(new Vector3(7, 3, 0), true)
+                                        ref.current.setEnabled(true);
+                                    }
+                                    if (team === 0) {
+                                        target?.setTranslation(new Vector3(5, 3, 0), true)
+                                        ref.current.setEnabled(true);
+                                    }
+                                }, 5000);
+
                             } else {
                                 setHp(hp - damage);
                             }
-                        }
-                        if (data.type === "zone") {
-                            // console.log(target.activeEvents())
                         }
                     }} />
                 <HealthBar value={hp} color={0xff0000} />
