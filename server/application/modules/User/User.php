@@ -67,29 +67,34 @@ class User
         return ['error' => 1003];
     }
 
-    public function resetPasswordByEmail($login, $user)
+    public function sendCodeToresetPassword($login, $user)
     {
-
         $randomNumber = random_int(10000, 99999);
-        $_SESSION[$login] = $randomNumber;
         $email = $user->email;
+        $_SESSION['login'] = $login;
+        $_SESSION['rndCode'] = $randomNumber;
+        $_SESSION['e-mail'] = $email;
+        $_SESSION['idUser'] = $user->id;
         if ($this->mailer->sendEmail($email, 'verifCode', 'your Verificitaion code is ' . $randomNumber)) {
-           return true;
+            return true;
         }
         return ['error' => 707];// could not send message
     }
-public function getCodeToResetPassword($login, $code, $user)
-{
-    if ($_SESSION[$login] == $code) {
-        return $this->db->setPassword($user->id, '');
-    }
-    return ['error' => 708]; // invalid code from e-mail;
-}
-    public function setPasswordAfterReset($hash, $user)
+
+    public function getCodeToResetPassword($code)
     {
-        $login = $_SESSION[$user->login];
-        if ($user && $login) {
-            return $this->db->setPassword($user->id, $hash);
+        $id = $_SESSION['idUser'];
+        if ($_SESSION['rndCode'] == $code) {
+            return $this->db->setPassword($id, '');
+        }
+        return ['error' => 708]; // invalid code from e-mail;
+    }
+
+    public function setPasswordAfterReset($hash)
+    {
+        $id = $_SESSION['idUser'];
+        if ($id) {
+            return $this->db->setPassword($id, $hash);
         }
         return ['error' => 1002];
 

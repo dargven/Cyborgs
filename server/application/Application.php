@@ -155,13 +155,13 @@ class Application
 
     }
 
-    function resetPasswordByEmail($params)
+    function sendCodeToresetPassword($params)
     {
         $login = $params['login'];
         if ($login) {
             $user = $this->user->getUserByLogin($login);
             if ($user) {
-                return $this->user->resetPasswordByEmail($login, $user);
+                return $this->user->sendCodeToresetPassword($login, $user);
             }
             return ['error' => 1002];
 
@@ -172,15 +172,10 @@ class Application
 
     function getCodeToResetPassword($params)
     {
-        $login = $params['login'];
         $code = $params['code'];
-        if ($login && $code) {
-            $user = $this->user->getUserByLogin($login);
-            if ($user) {
-                return $this->user->getCodeToResetPassword($login, $code, $user);
+        if ($code) {
+            return $this->user->getCodeToResetPassword($code);
 
-            }
-            return ['error' => 1002];
         }
         return ['error' => 242];
     }
@@ -188,10 +183,8 @@ class Application
     function setPasswordAfterReset($params)
     {
         $hash = $params['hash'];
-        $login = $params['login'];
-        if ($login && $hash) {
-            $user = $this->user->getUserByLogin($login);
-                return $this->user->setPasswordAfterReset($hash, $user);
+        if ($hash) {
+            return $this->user->setPasswordAfterReset($hash);
         }
         return ['error' => 242];
     }
