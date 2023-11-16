@@ -19,7 +19,7 @@ const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture,
         direction.setLength(initialSpeed)
         bulletRef.current.setLinvel(direction, true);
     }, []);
-console.log(team)
+// console.log(team)
     return (
         <RigidBody
             ref={bulletRef}

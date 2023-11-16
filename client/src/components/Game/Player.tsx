@@ -82,6 +82,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
 
 
     const [hp, setHp] = useState<number>(100);
+    const [score, setScore] = useState<number>(0);
     const data = {
         type: 'player',
         team: team

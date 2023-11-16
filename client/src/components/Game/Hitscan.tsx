@@ -1,5 +1,4 @@
 import { ReactThreeFiber, extend } from '@react-three/fiber';
-import { BallCollider } from "@react-three/rapier";
 import { useEffect, useRef } from "react";
 import { Vector3 } from "three";
 import { Line } from "three/src/objects/Line";
@@ -15,7 +14,7 @@ declare global {
 
 interface IHitscanProps {
 	initialPosition: number[];
-	aimingPoint: number[];
+	aimingPoint: number[]
 }
 
 const Hitscan = ({ initialPosition, aimingPoint }: IHitscanProps) => {
@@ -25,12 +24,9 @@ const Hitscan = ({ initialPosition, aimingPoint }: IHitscanProps) => {
 	}, [initialPosition, aimingPoint]);
 
 	return (
-		// <sprite>
 			<line_ ref={laserRef}>
 				<lineBasicMaterial color={0x0000ff} />
-				<BallCollider args={[0.1]} />
 			</line_>
-		// </sprite>
 	)
 }
 

@@ -47,7 +47,7 @@ const Scene = ({ vSize }: ISceneProps) => {
         new Gun({
             name: 'tah gun',
             type: 1,
-            damage: 99,
+            damage: 20,
             rate: 20,
             magSize: 10,
             maxAmmo: 20,
@@ -58,11 +58,7 @@ const Scene = ({ vSize }: ISceneProps) => {
             name: 'tough guy',
             type: 2,
             damage: 99,
-            rate: 20,
-            magSize: 10,
-            maxAmmo: 20,
-            currentAmmo: 999,
-            speed: 6
+            currentAmmo: 999999,
         })
     ]);
 
