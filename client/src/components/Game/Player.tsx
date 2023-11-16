@@ -24,8 +24,6 @@ interface IPlayerProps {
 
 const Player = ({ velocity = new Vector3(), id, username, position, team, onFire, onMovement, setWeaponSlot, setPlayers, isControlled, token }: IPlayerProps) => {
 
-    const server = useContext(ServerContext);
-
     const ref = useRef<RapierRigidBody>(null!);
 
     const [isShooting, setShooting] = useState<boolean>(false);
@@ -53,6 +51,7 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
             }
 
             velocity.setLength(speed);
+            console.log(velocity);
 
             ref.current.setLinvel(velocity, true);
         }
@@ -79,7 +78,7 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
                 document.removeEventListener("mouseup", mouseUpHandler);
             }
         }
-    }, []);
+    });
 
     useFrame(() => {
         if (isControlled) {
@@ -140,7 +139,7 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
         if (hp === 0) {
             ref.current.setEnabled(false);
         }
-    }, [hp]);
+    }, [hp, id, team]);
 
     useEffect(() => {
         const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
@@ -148,12 +147,12 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
                 // console.log(ref.current.translation(), ref.current.linvel());
                 setPlayers(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
             }
-        }, 50);
+        }, 10000);
 
         return () => {
             clearInterval(interval);
         }
-    }, []);
+    }, [setPlayers]);
 
     return (
         <>

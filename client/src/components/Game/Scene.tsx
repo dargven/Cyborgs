@@ -135,9 +135,7 @@ const Scene = ({ vSize }: ISceneProps) => {
     // const getWeapon = (slot: number, id: number) => {
     //     setWeapons(prevWeapons => {
     //         const newWeapons = { ...prevWeapons };
-
     //         newWeapons[`slot${slot}`] = id;
-
     //         return newWeapons;
     //     });
     // }
@@ -180,9 +178,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                 }
             });
             setOtherPlayers(ps);
-
-            // console.log(otherPlayers);
-        }, 50);
+        }, 10000);
 
         return () => {
             clearInterval(interval);
