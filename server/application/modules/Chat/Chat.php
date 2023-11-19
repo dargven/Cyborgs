@@ -15,6 +15,7 @@ class Chat
             $this->db->sendMessage($id, $message);
             $hash = md5(rand(0, 1000000));
             $this->db->updateChatHash($hash);
+            return true;
         }
         return ['error' => 706];
     }
