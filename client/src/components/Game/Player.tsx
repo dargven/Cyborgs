@@ -7,6 +7,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
 import { Animator } from "./sprites/Animator";
 import { IZonePlayer } from "./Zone";
+import MakeSprite from "./MakeSprite";
 
 interface IPlayerProps {
     id?: number;
@@ -17,19 +18,18 @@ interface IPlayerProps {
     onFire?(position: Vector3, team: number): void;
     onMovement?(position: Vector3): void;
     setWeaponSlot?(newSlot: number): void;
+    getDirection?(): Vector3;
+    playerRotation?: number;
 }
 
-// export interface IRigidBodyData {
-//     type: string
-// }
-
-const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlot, isControlled }: IPlayerProps) => {
+const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlot, isControlled, playerRotation, getDirection }: IPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
-    const [isMoving, setMoving]=useState<boolean>(false)
+    const [isMoving, setMoving] = useState<boolean>(false)
 
     const [isShooting, setShooting] = useState<boolean>(false);
+    const [rot, setRot] = useState<number>(playerRotation ?? 0);
 
     const [controlKeys, getKeys] = useKeyboardControls();
 
@@ -53,9 +53,9 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             if (down) {
                 velocity.y -= 1;
             }
-            
+
             velocity.setLength(speed);
-            
+
             ref.current.setLinvel(velocity, true);
 
             setMoving(
@@ -89,11 +89,17 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
 
     useFrame(() => {
         if (isControlled) {
+
+            if (getDirection) {
+                const dir = getDirection();
+                setRot(Math.atan2(dir.y, dir.x));
+            }
+
             const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
             movementController(up, down, left, right);
-            
+
             const playerPosition = vec3(ref?.current?.translation());
-            
+
             if (select1 && setWeaponSlot) {
                 setWeaponSlot(1)
             }
@@ -106,7 +112,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 setWeaponSlot(3)
             }
 
-            if (onMovement){
+            if (onMovement) {
                 onMovement(playerPosition);
             }
 
@@ -144,7 +150,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             id: id
         }
         ref.current.userData = data;
-        if (hp===0){
+        if (hp === 0) {
             ref.current.setEnabled(false);
         }
     }, [hp]);
@@ -152,7 +158,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
 
 
 
-    
+
 
     // useEffect(() => {
     //     setMoving(
@@ -173,9 +179,8 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 lockRotations
             // userData={data}
             >
-                
+
                 <Animator
-                    
                     fps={13}
                     startFrame={0}
                     loop={true}
@@ -183,9 +188,10 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                     textureImageURL={'./assets/players/sprite metall cop move m .png'}
                     textureDataURL={'./assets/players/sprite metall cop move m .json'}
                     alphaTest={0.01}
+                    materialRotation={rot}
                     pause={!isMoving}
                 />
-            
+
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;

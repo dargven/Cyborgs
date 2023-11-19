@@ -22,6 +22,7 @@ export type TAnimatorProps = {
     pause?: boolean
     position?: Array<number>
     alphaTest?: number
+    materialRotation?: number
 } & JSX.IntrinsicElements['group']
 
 export const Animator: React.FC<TAnimatorProps> = (
@@ -45,6 +46,7 @@ export const Animator: React.FC<TAnimatorProps> = (
         pause,
         alphaTest,
         children,
+        materialRotation: radRotation,
         ...props
     },
     fref
@@ -335,6 +337,7 @@ export const Animator: React.FC<TAnimatorProps> = (
                         premultipliedAlpha={false}
                         transparent={true}
                         alphaTest={alphaTest ?? 0.0}
+                        rotation={radRotation}
                     />
                 </sprite>
             </React.Suspense>

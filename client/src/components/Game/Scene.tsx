@@ -80,7 +80,7 @@ const Scene = ({ vSize }: ISceneProps) => {
         mouseX.current = (event.clientX / window.innerWidth) * 2 - 1;
         mouseY.current = -(event.clientY / window.innerHeight) * 2 + 1;
     }
-    
+
     document.addEventListener("mousemove", handleMouseMove);
 
     const onMovement = (position: Vector3) => {
@@ -95,15 +95,19 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     const [inv, setInv] = useState<Inventory2>();
 
+    const getDirection = () => {
+        return new Vector3(pointer.x, pointer.y / viewport.aspect, 0).normalize();
+    }
+
     const onFire = (position: Vector3, team: number) => {
-        const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
+        const direction = getDirection();
 
         // смещение, чтобы игрок не мог расстрелять сам себя, придется фиксить под разные скорости
         direction.setLength(0.6);
         position.x += direction.x;
         position.y += direction.y;
         position.z = 0;
-        direction.setLength(1);
+        direction.normalize();
 
         const current = Date.now();
 
@@ -158,6 +162,10 @@ const Scene = ({ vSize }: ISceneProps) => {
                         onMovement={onMovement}
                         setWeaponSlot={setWeaponSlot}
                         isControlled
+                        playerRotation={
+                            0
+                        }
+                        getDirection={getDirection}
                     />
                     <Player team={0} id={1002} />
                     <Player team={1} id={1001} />
