@@ -1,7 +1,7 @@
 <?php
-    session_start();
+session_start();
 
-use App\server\application\modules\Mailer\Mailer\Mailer;
+require_once __DIR__ . '/../../modules/Mailer/Mailer.php';
 
 class User
 {
@@ -107,9 +107,10 @@ class User
         // or you need use previous method',
 
 
-
     }
-    public function sendWarningOfAttemptResetPassword(){
+
+    public function sendWarningOfAttemptResetPassword()
+    {
         if (isset($_SESSION['idUser']) && isset($_SESSION['e-mail'])) {
             $email = $_SESSION['e-mail'];
             return $this->mailer->sendEmail($email, "Attempt to Replaced Password", "If you are not trying to change your password now, contact the support");

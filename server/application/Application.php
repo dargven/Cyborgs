@@ -4,9 +4,6 @@ require_once 'modules/Game/Game.php';
 require_once 'modules/DB/DB.php';
 require_once 'modules/Lobby/Lobby.php';
 require_once 'modules/Chat/Chat.php';
-require_once 'modules/Mailer/Mailer.php';
-
-use App\server\application\modules\Mailer\Mailer\Mailer;
 
 
 class Application
@@ -15,7 +12,6 @@ class Application
     private $chat;
     private $game;
     private $lobby;
-    private $mailer;
 
     public function __construct()
     {
@@ -24,7 +20,6 @@ class Application
         $this->lobby = new Lobby($db);
         $this->chat = new Chat($db);
         $this->game = new Game($db);
-        $this->mailer = new Mailer();
     }
 
 
@@ -66,13 +61,14 @@ class Application
         return ['error' => 242];
     }
 
-    function getMessage($params)
+    function getMessages($params)
     {
         $token = $params['token'];
-        if ($token) {
+        $hash = $params['hash'];
+        if ($token && $hash) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
-                return $this->chat->getMessage();
+                return $this->chat->getMessage($hash);
             }
             return ['error' => 1002];
         }
