@@ -27,6 +27,8 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
 
     const ref = useRef<RapierRigidBody>(null!);
 
+    const [isMoving, setMoving]=useState<boolean>(false)
+
     const [isShooting, setShooting] = useState<boolean>(false);
 
     const [controlKeys, getKeys] = useKeyboardControls();
@@ -55,6 +57,10 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             velocity.setLength(speed);
             
             ref.current.setLinvel(velocity, true);
+
+            setMoving(
+                vec3(ref.current.linvel()).length() !== 0
+            )
         }
     }
 
@@ -143,11 +149,22 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
         }
     }, [hp]);
 
+
+
+
+    
+
+    // useEffect(() => {
+    //     setMoving(
+    //         vec3(ref.current.linvel()).length() === 0
+    //     )
+    //     console.log(isMoving)
+    // },[ref.current, isMoving])
     return (
         <>
             <RigidBody
                 ref={ref}
-                scale={0.5}
+                scale={1}
                 position={[-2, 0, 0]}
                 colliders="hull"
                 friction={1}
@@ -156,18 +173,19 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 lockRotations
             // userData={data}
             >
-
+                
                 <Animator
-                    fps={3}
+                    
+                    fps={13}
                     startFrame={0}
                     loop={true}
                     autoPlay={true}
-                    textureImageURL={'./assets/test/Sprite-0001.png'}
-                    textureDataURL={'./assets/test/Sprite-0001.json'}
+                    textureImageURL={'./assets/players/sprite metall cop move m .png'}
+                    textureDataURL={'./assets/players/sprite metall cop move m .json'}
                     alphaTest={0.01}
-                // pause={}
+                    pause={!isMoving}
                 />
-
+            
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
