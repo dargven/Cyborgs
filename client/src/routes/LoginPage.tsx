@@ -65,7 +65,7 @@ const LoginPage = () => {
                     />
                     <div className="password-input-container">
                         <input
-                            type={showPassword ? "text" : "password"}
+                            type="password"
                             id="password"
                             name="password"
                             className="input"
@@ -78,7 +78,6 @@ const LoginPage = () => {
                         >
                             <img
                                 src={showPassword ? openEyeIcon : closeEyeIcon}
-                                alt={showPassword ? "Show" : "Hide"}
                                 className="eyeIcon"
                             />
                         </button>
