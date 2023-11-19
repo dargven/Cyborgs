@@ -33,7 +33,7 @@ const PasswordRecovery = () => {
     const SetCode = async () => {
         if (codeRef.current) {
             const code = codeRef.current.value;
-            const codeTrue = await server.getCodeToResetPassword( code );
+            const codeTrue =await server.getCodeToResetPassword( code );
             if (codeTrue) {
                 setHideContent(prevState => ({
                     ...prevState,
