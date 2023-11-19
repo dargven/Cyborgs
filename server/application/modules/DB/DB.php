@@ -84,6 +84,7 @@ class DB
             [$login, $hash, $name, $email]
         );
     }
+
     public function setPassword($id, $password)
     {
         return $this->execute("UPDATE users  SET password =? WHERE id = ?", [$password, $id]);
@@ -101,7 +102,9 @@ class DB
 
     public function getMessage()
     {
-        return $this->queryAll('SELECT name, message, created FROM messages as m LEFT JOIN users as u on u.id = m.user_id ORDER BY m.created DESC');
+        return $this->queryAll('SELECT u.name AS name, m.message AS message, m.created AS created FROM messages as m LEFT JOIN 
+    users as u on u.id = m.user_id 
+                              ORDER BY m.created DESC');
     }
 
     public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
@@ -145,10 +148,22 @@ class DB
     {
         return $this->queryAll("SELECT u.token, p.x, p.y, p.vx, p.vy FROM players as p INNER JOIN users as u on u.id = p.user_id");
     }
-    public function setPlayer($id, $x, $y, $vx, $vy){
+
+    public function setPlayer($id, $x, $y, $vx, $vy)
+    {
         return $this->execute("INSERT INTO players (user_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) 
 ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy);
-",  [$id, $x, $y, $vx, $vy]);
+", [$id, $x, $y, $vx, $vy]);
+    }
+
+    public function getHashes()
+    {
+        return $this->query("SELECT * FROM game WHERE id=1");
+    }
+
+    public function updateChatHash($hash)
+    {
+        $this->execute("UPDATE game SET chat_hash=? WHERE id=1", [$hash]);
     }
 }
 

@@ -11,6 +11,14 @@ export type TUser = {
 }
 
 export type TMessage = {
-    token: string,
-    message: string,
+    name: string;
+    message: string;
+    created: string;
 };
+
+export type TMessages = Array<TMessage>;
+
+export type TGetMessages = {
+    messages: TMessages;
+    hash: string;
+}

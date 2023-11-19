@@ -30,15 +30,14 @@ const Chat = () => {
     });
 
     const updateChat = async () => {
-        const messagesFromServer = await server.getMessage()
-        console.log(messagesFromServer)
+        const messagesFromServer = await server.getMessages()
         if(messagesFromServer) {
             setMessages(messagesFromServer);
         }
     }
 
     useEffect(() => {
-        const interval = setInterval(updateChat, 5000);
+        const interval = setInterval(updateChat, 150);
 
         return () => {
             clearInterval(interval);

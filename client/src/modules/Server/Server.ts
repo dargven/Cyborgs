@@ -1,5 +1,5 @@
 import { Store } from "../Store/Store";
-import { TMessage, TUser } from "./types";
+import { TGetMessages, TUser, TMessages, TMessage } from "./types";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
@@ -7,6 +7,7 @@ export default class Server {
     private HOST: string;
     private store: Store;
     private token: string | null;
+    private chatHash: string = '123';
 
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
@@ -79,25 +80,23 @@ export default class Server {
         return await this.request<boolean>("setPasswordAfterReset", { hash })
     }
 
-    async sendMessage(message: string): Promise<TMessage | null> {
-        const result = await this.request<TMessage>("sendMessage", {
+    sendMessage(message: string): Promise<TMessage | null> {
+        return this.request<TMessage>("sendMessage", {
             token: this.token,
             message,
         });
-        if (result) {
-            return result;
-        }
-        return result;
     }
 
-    async getMessage(): Promise<[] | null> {
-        const result = await this.request<[]>("getMessage", {
+    async getMessages(): Promise<TMessages | null> {
+        const result = await this.request<TGetMessages>("getMessages", {
             token: this.token,
+            hash: this.chatHash
         });
-        if (result) {
-            return result;
+        if (result?.hash) {
+            this.chatHash = result.hash;
+            return result.messages;
         }
-        return result;
+        return null;
     }
 
     register(
