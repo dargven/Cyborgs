@@ -12,7 +12,7 @@ body {
 .title {
     font-family: "Zelek";
     color: rgb(0, 255, 255);
-    font-size: 7vw;
+    font-size: 7dvw;
     text-shadow: 0px 0px 3px #00aeff;
     text-align: center;
     position: relative;
@@ -21,37 +21,37 @@ body {
 }
 
 .content {
-    background-color: rgba(0, 0, 0, 0.6);
-    box-shadow: 0 0 0.25em rgba(0, 0, 25, 0.25);
+    background-color: rgba(0, 0, 0, 0.671);
     transform: translate(-50%, -50%);
     left: 50%;
-    padding: 4vw;
-    margin-top: 0;
     position: fixed;
     top: 70vh;
     text-align: center;
-    min-height: 30dvh;
-    max-height: 30dvh;
-    max-width: 40dvh;
+    min-height: 50dvh;
+    max-height: 50dvh;
+    max-width: 50dvh;
     width: 50dvw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .input-form {
-    font-size: 3dvh;
+    font-size: 2dvh;
+    display:contents;
 }
 .input-form input {
     text-align: center;
-    width: 90%;
+    width: 20dvw;
     height: 3dvh;
-    padding: 0;
     border-radius: 10vw;
     border: 0.4vh solid rgb(70, 108, 134);
-    font-size: 2vh;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    font-size: 1dvw;
     color: #ffffff;
     background: none;
- 
-    margin-top:1dvh;
+ padding: 0;
+    margin-top:0.5dvw;
 }
 .input-form input:focus {
     outline: none;
@@ -63,7 +63,6 @@ body {
 
 .input-form .show-password-button {
     position: absolute;
-    display: inline;
     top: 3dvh;
     transform: translateY(-50%);
     background: none;
@@ -71,10 +70,11 @@ body {
     color: #ffffff;
     cursor: pointer;
     font-size: 1.5vh;
+
 }
 
 .input-form input[type="password"] {
-    width: 90%;
+    width: 20dvw;
 }
 
 .eyeIcon {
@@ -102,26 +102,13 @@ body {
     filter: contrast(30);
     border-color: #27cee9;
 }
-.PaswordRecovery{
-    transform: translateY(-40%);
-}.recoveryCode{
-    transform: translateY(-100%);
-}.RecoveryButton{
-    transform: translateY(-130%);
-}
-.password,.RecoveryButton2{
-    transform: translateY(-210%);
-}
-
 h1 {
     font-family: "Zelek";
     color: rgb(0, 217, 255);
     text-shadow: 0px 1vh 4vh #00aeff;
-    font-size: 1.5dvw;
+    font-size: 3dvh;
 }
-.PasswordRecovery {
-    margin: -2dvh;
-}
+
 
 
 .App-header {

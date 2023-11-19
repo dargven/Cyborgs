@@ -99,7 +99,6 @@ const RegistrationPage = () => {
           >
           <img
               src={showPassword ? openEyeIcon : closeEyeIcon}
-              alt={showPassword ? 'Show' : 'Hide'}
               className="eyeIcon"
           />
         </button>
