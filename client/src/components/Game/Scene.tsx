@@ -21,7 +21,6 @@ import Inventory2 from "../../modules/Game/misc/Inventory";
 import PlayerEntity from "../../modules/Game/entities/PlayerEntity";
 import { ServerContext, StoreContext } from "../../App";
 import { Server } from "../../modules";
-import { TPlayer } from "../../modules/Server/types";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -57,7 +56,7 @@ const Scene = ({ vSize }: ISceneProps) => {
     });
     const [bullets, setBullets] = useState<Bullet[]>([]);
     const [players, setPlayers] = useState<PlayerEntity[]>([new PlayerEntity(store.getUser().token, new Vector3())]);
-    const [serverPlayers, setServerPlayers] = useState<TPlayer[]>([]);
+    // const [serverPlayers, setServerPlayers] = useState<TPlayer[]>([]);
 
     const [last, setLast] = useState<number>(0);
     // const [lasers, setLasers] = useState<Laser[]>([]);
@@ -153,16 +152,16 @@ const Scene = ({ vSize }: ISceneProps) => {
         return key;
     };
 
-    const getP = async () => {
-        const sPlayers = await server.getPlayers();
-        if (sPlayers) {
-            setServerPlayers(sPlayers);
-        }
-    }
+    // const getP = async () => {
+    //     const sPlayers = await server.getPlayers();
+    //     if (sPlayers) {
+    //         setServerPlayers(sPlayers);
+    //     }
+    // }
 
-    const setP = async (position: Vector3, velocity: Vector3) => {
-        await server.setPlayer(store.getUser().token, position.x, position.y, velocity.x, velocity.y);
-    }
+    // const setP = async (position: Vector3, velocity: Vector3) => {
+    //     await server.setPlayer(store.getUser().token, position.x, position.y, velocity.x, velocity.y);
+    // }
 
     const getPosVel = (position: Vector3, velocity: Vector3) => {
         setCharacter({
@@ -177,19 +176,19 @@ const Scene = ({ vSize }: ISceneProps) => {
 
         const interval = setInterval(() => {
 
-            setP(character.position, character.velocity);
+            // setP(character.position, character.velocity);
 
-            getP();
+            // getP();
 
-            const ps: PlayerEntity[] = [];
-            serverPlayers.forEach(sp => {
-                const position = new Vector3(sp.x, sp.y, 0);
-                const velocity = new Vector3(sp.vx, sp.vy, 0);
-                const player = new PlayerEntity(sp.token, position, velocity);
-                ps.push(player);
-            });
+            // const ps: PlayerEntity[] = [];
+            // serverPlayers.forEach(sp => {
+            //     const position = new Vector3(sp.x, sp.y, 0);
+            //     const velocity = new Vector3(sp.vx, sp.vy, 0);
+            //     const player = new PlayerEntity(sp.token, position, velocity);
+            //     ps.push(player);
+            // });
 
-            setPlayers(ps);
+            // setPlayers(ps);
             console.log(players);
 
         }, 1000);
