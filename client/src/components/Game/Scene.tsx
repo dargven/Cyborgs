@@ -19,6 +19,7 @@ import FishTank from "./Fishtank";
 import { Gun, Item } from "../../modules/Game/items";
 import Obstacle from "./Obstacle";
 import Inventory2 from "../../modules/Game/misc/Inventory";
+import CrossHair from "./CustomCursor/Crosshair";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -145,6 +146,8 @@ const Scene = ({ vSize }: ISceneProps) => {
 
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
                 <LightMap />
+
+                <CrossHair/>
 
                 <FishTank />
 

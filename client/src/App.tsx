@@ -36,9 +36,10 @@ const App: React.FC = () => {
                             element={<RegistrationPage />}
                         />
                         <Route element={<PrivateRoute />}>
-                            <Route path="/game" element={<GamePage />} />
+                            
                             <Route path="/main" element={<MainPage />} />
                         </Route>
+                        <Route path="/game" element={<GamePage />} />
                     </Routes>
                 </ServerContext.Provider>
             </StoreContext.Provider>
