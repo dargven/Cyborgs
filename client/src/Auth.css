@@ -12,7 +12,7 @@ body {
 .title {
     font-family: "Zelek";
     color: rgb(0, 255, 255);
-    font-size: 7vw;
+    font-size: 7dvw;
     text-shadow: 0px 0px 3px #00aeff;
     text-align: center;
     position: relative;
@@ -21,39 +21,40 @@ body {
 }
 
 .content {
-    background-color: rgba(0, 0, 0, 0.6);
-    box-shadow: 0 0 0.25em rgba(0, 0, 25, 0.25);
+    background-color: rgba(0, 0, 0, 0.671);
     transform: translate(-50%, -50%);
     left: 50%;
-    padding: 4dvw;
-    margin-top: 0;
     position: fixed;
     top: 70vh;
     text-align: center;
-    min-height: 30dvh;
-    max-height: 30dvh;
-    max-width: 40dvh;
+    min-height: 50dvh;
+    max-height: 50dvh;
+    max-width: 50dvh;
     width: 50dvw;
-}
-.input-form {
-    margin: 1dvw 0px;
-    text-align: center;
-    height: 120%;
-    font-size: 1dvw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
+.input-form {
+    font-size: 2dvh;
+    display:contents;
+}
 .input-form input {
     text-align: center;
-    width: 90%;
+    width: 20dvw;
+    height: 3dvh;
     border-radius: 10vw;
     border: 0.4vh solid rgb(70, 108, 134);
-    font-size: 2dvh;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    font-size: 1dvw;
     color: #ffffff;
     background: none;
-    margin: 1dvh 0px;
-    align-items: center;
-    height: 3dvh;
+ padding: 0;
+    margin-top:0.5dvw;
+}
+.input-form input:focus {
+    outline: none;
 }
 
 .input-form .password-input-container {
@@ -62,41 +63,37 @@ body {
 
 .input-form .show-password-button {
     position: absolute;
-    display: inline;
-    top: 15%;
-    right: -1dvw;
+    top: 3dvh;
     transform: translateY(-50%);
     background: none;
     border: none;
     color: #ffffff;
     cursor: pointer;
     font-size: 1.5vh;
+
 }
 
 .input-form input[type="password"] {
-    width: 90%;
+    width: 20dvw;
 }
+
 .eyeIcon {
-    width: 1.5dvw;
+    width: 1dvw;
 }
 
 .input-form input:hover {
     border: 0.4vh solid #61dafb;
 }
-
-.input-form button {
-    margin: 2em 0px;
+.input-form button{
     font-family: Zelek;
-    width: auto;
-    height: 5dvh;
+    padding: 1.5dvh;
     text-align: center;
-    font-size: 2.5dvh;
+    font-size: 1dvh;
     color: #27cee9;
     background: none;
     outline: none;
     border: none;
 }
-
 .input-form button:hover {
     text-shadow: 0px 0px 3px #00aeff;
     color: #27cee9;
@@ -105,13 +102,14 @@ body {
     filter: contrast(30);
     border-color: #27cee9;
 }
-
 h1 {
     font-family: "Zelek";
     color: rgb(0, 217, 255);
     text-shadow: 0px 1vh 4vh #00aeff;
-    font-size: 1.5dvw;
+    font-size: 3dvh;
 }
+
+
 
 .App-header {
     overflow: hidden;
@@ -151,6 +149,7 @@ h1 {
     border: none;
     background: none;
 }
+
 .TEST {
     color: rgba(211, 28, 28, 0.13);
     padding: 10px;

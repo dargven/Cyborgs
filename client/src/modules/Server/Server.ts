@@ -1,5 +1,5 @@
 import { Store } from "../Store/Store";
-import { TMessage, TPlayer, TUser } from "./types";
+import { TGetMessages, TUser, TMessages, TMessage } from "./types";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
@@ -7,6 +7,7 @@ export default class Server {
     private HOST: string;
     private store: Store;
     private token: string | null;
+    private chatHash: string = '123';
 
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
@@ -67,28 +68,43 @@ export default class Server {
         return result;
     }
 
-    async sendMessage(message: string): Promise<TMessage | null> {
-        return await this.request<TMessage>('sendMessage', {
+    async resetPasswordByEmail(login: string): Promise<boolean | null> {
+        return await this.request<boolean>("sendCodeToResetPassword", { login });
+    }
+
+    async getCodeToResetPassword(code: string): Promise <boolean | null> {
+        return await this.request<boolean>("getCodeToResetPassword", { code }) 
+    }
+
+    async setPasswordAfterReset(hash: string): Promise <boolean | null> {
+        return await this.request<boolean>("setPasswordAfterReset", { hash })
+    }
+
+    sendMessage(message: string): Promise<TMessage | null> {
+        return this.request<TMessage>("sendMessage", {
             token: this.token,
             message,
         });
     }
 
-    async getMessage(): Promise<[] | null> {
-        return await this.request<[]>('getMessage', {
+    async getMessages(): Promise<TMessages | null> {
+        const result = await this.request<TGetMessages>("getMessages", {
             token: this.token,
+            hash: this.chatHash
         });
+        if (result?.hash) {
+            this.chatHash = result.hash;
+            return result.messages;
+        }
+        return null;
     }
 
-    register(login: string, hash: string, name: string, email: string): Promise<TUser | null> {
+    register(
+        login: string,
+        hash: string,
+        name: string,
+        email: string
+    ): Promise<TUser | null> {
         return this.request<TUser>("register", { login, hash, name, email });
-    }
-
-    async getPlayers(): Promise<[] | null> {
-        return await this.request<[]>('getPlayers', { token: this.token });
-    }
-
-    async setPlayer(token: string, x: number, y: number, vx: number, vy: number): Promise<TPlayer | null> {
-        return await this.request<TPlayer>('setPlayer', { token, x, y, vx, vy });
     }
 }

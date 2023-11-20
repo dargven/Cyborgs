@@ -1,10 +1,11 @@
-import { SpriteAnimator, useKeyboardControls } from "@react-three/drei";
+import { useKeyboardControls } from "@react-three/drei";
 import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
+import { Animator } from "./sprites/Animator";
 import { IZonePlayer } from "./Zone";
 import { ServerContext } from "../../App";
 
@@ -173,8 +174,8 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
             // type={isControlled ? "dynamic" : "kinematicPosition"}
             >
 
-                <SpriteAnimator
-                    fps={2}
+                <Animator
+                    fps={3}
                     startFrame={0}
                     loop={true}
                     autoPlay={true}

@@ -12,7 +12,10 @@ class Answer
         '700' => 'No skins',
         '701' => 'Skin is not found',
         '705' => 'User is not found',
-        '706'=> 'text message is empty',
+        '706' => 'text message is empty',
+        '707' => 'could not send message', // e-mail;
+        '708' => 'invalid code from E-mail',
+        '709'=>'session did not start or you need use previous method',
         '999' => 'Is it Triangle?',
         '1001' => 'params login or password not set',
         '1002' => 'error in auth user',

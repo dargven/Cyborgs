@@ -1,4 +1,4 @@
-import { Stars } from "@react-three/drei";
+import { SpriteAnimator, Stars } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
 import { createRef, useContext, useEffect, useRef, useState } from "react";
@@ -13,6 +13,8 @@ import Projectile from "./Projectile";
 import Map from "./Map";
 import Zone from "./Zone";
 import Inventory from "./Inventory";
+import { Animator } from "./sprites/Animator";
+import FishTank from "./Fishtank";
 import { Gun, Item } from "../../modules/Game/items";
 import Obstacle from "./Obstacle";
 import Inventory2 from "../../modules/Game/misc/Inventory";
@@ -200,8 +202,13 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     return (
         <group>
+
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
                 <LightMap />
+
+                <FishTank />
+
+                <FishTank />
 
                 {players.map(player => {
                     const token = store.getUser().token;
