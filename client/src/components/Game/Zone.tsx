@@ -43,7 +43,6 @@ function Zone({ position }: IZoneProps) {
 
             // const filtered = players.filter(player => player.hp !== 0);
             // setPlayers(filtered);
-            console.log(state.score, state.players);
             // console.log(bodies)
             // }
 

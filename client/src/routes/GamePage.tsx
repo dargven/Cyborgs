@@ -6,10 +6,9 @@ import "../popUpMenu.css";
 import "../TeamSelect.css";
 
 const GamePage = () => {
+    const KEY_ESC = 27;
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [team, setTeam] = useState<number>(0);
-    
-    const KEY_ESC = 27;
     const handleKeyPress = (event: KeyboardEvent) => {
         if (event.keyCode === KEY_ESC) {
             setIsPopupVisible(!isPopupVisible);

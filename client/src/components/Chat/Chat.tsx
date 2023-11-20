@@ -5,11 +5,11 @@ import "./Chat.css"
 interface IMessage {
     name: string,
     message: string,
-    created: string, 
+    created: string,
 }
 
 const Chat = () => {
-    
+
     const chatRef = useRef<HTMLInputElement | null>(null);
     const server = useContext(ServerContext);
     let interval: NodeJS.Timer | null = null;
@@ -20,25 +20,24 @@ const Chat = () => {
         if (event.keyCode === KEY_ENTER) {
             handleChat();
         }
-      };
+    };
 
-      useEffect(() => {
+    useEffect(() => {
         document.addEventListener("keydown", handleKeyPress);
-            return () => {
-                    document.removeEventListener("keydown", handleKeyPress);
-                };
-        });
+        return () => {
+            document.removeEventListener("keydown", handleKeyPress);
+        };
+    });
 
     const updateChat = async () => {
-        const messagesFromServer = await server.getMessage()
-        console.log(messagesFromServer)
+        const messagesFromServer = await server.getMessages()
         if(messagesFromServer) {
             setMessages(messagesFromServer);
         }
     }
 
     useEffect(() => {
-        const interval = setInterval(updateChat, 5000);
+        const interval = setInterval(updateChat, 150);
 
         return () => {
             clearInterval(interval);
@@ -51,9 +50,9 @@ const Chat = () => {
             chatRef.current.value = "";
         }
     }
-    
+
     return (
-        <div className="chatComponent"> 
+        <div className="chatComponent">
             <div className='chat'>
                 <div className="chat-messages">
                     <div className="chat-messages__content" id="messages">

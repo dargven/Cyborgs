@@ -175,7 +175,6 @@ export const Animator: React.FC<TAnimatorProps> = (
         _spriteTexture.minFilter = THREE.NearestFilter;
         _spriteTexture.offset.set(0, 0);
 
-        console.log(aspect, _spriteTexture)
         setSpriteTexture(_spriteTexture)
     }
 
@@ -294,7 +293,6 @@ export const Animator: React.FC<TAnimatorProps> = (
         matRef.current.map.offset.x = finalValX
         matRef.current.map.offset.y = finalValY
 
-        console.log(finalValX);
 
         currentFrame.current += 1
     }

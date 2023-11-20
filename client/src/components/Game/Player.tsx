@@ -168,7 +168,6 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                             }
                         }
                         if (data.type === "zone") {
-                            // console.log(target.activeEvents())
                         }
                     }} />
                 <HealthBar value={hp} color={0xff0000} />
