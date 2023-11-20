@@ -74,7 +74,7 @@ class DB
 
     public function updateToken($id, $token)
     {
-        return $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $id]);
+        $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $id]);
     }
 
     public function addUser($login, $hash, $name, $email)
@@ -87,17 +87,17 @@ class DB
 
     public function setPassword($id, $password)
     {
-        return $this->execute("UPDATE users  SET password =? WHERE id = ?", [$password, $id]);
+        $this->execute("UPDATE users  SET password =? WHERE id = ?", [$password, $id]);
     }
 
     public function addPlayerToTeam($id, $teamId)
     {
-        return $this->execute("INSERT INTO userTeams (team_id, user_id) VALUES (?, ?)", [$teamId, $id]);
+        $this->execute("INSERT INTO userTeams (team_id, user_id) VALUES (?, ?)", [$teamId, $id]);
     }
 
     public function sendMessage($id, $message)
     {
-        return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
+        $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
     }
 
     public function getMessage()
@@ -109,19 +109,19 @@ class DB
 
     public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
     {
-        return $this->execute("INSERT INTO bullet (user_id, x, y, x1, y1, speed)
+        $this->execute("INSERT INTO bullet (user_id, x, y, x1, y1, speed)
         VALUES (?,?,?,?,?,?)", [$user_id, $x, $y, $x1, $y1, $speed]);
     }
 
     public function DeleteBullet($id)
     {
-        return $this->execute("DELETE  FROM bullet WHERE id=?", [$id]);
+        $this->execute("DELETE  FROM bullet WHERE id=?", [$id]);
     }
 
     public function updateScoreInTeam($teamId, $score)
     {
 
-        return $this->execute("UPDATE teams SET team_score=team_score+? WHERE  team_id=?", [$score, $teamId]);
+        $this->execute("UPDATE teams SET team_score=team_score+? WHERE  team_id=?", [$score, $teamId]);
 
     }
 
@@ -134,7 +134,7 @@ class DB
 
     public function setSkinInLobby($id, $skinId)
     {
-        return $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
+        $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
     }
     // ЖАЛКАЯ ПАРОДИЯ //
     //Методы полностью переписаны по феншую, осталось их нормально протестить.
@@ -151,7 +151,7 @@ class DB
 
     public function setPlayer($id, $x, $y, $vx, $vy)
     {
-        return $this->execute("INSERT INTO players (user_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) 
+        $this->execute("INSERT INTO players (user_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) 
 ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy);
 ", [$id, $x, $y, $vx, $vy]);
     }
