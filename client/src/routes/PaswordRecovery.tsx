@@ -108,7 +108,7 @@ const PasswordRecovery = () => {
                 <h1> Востановление пароля</h1>
                 {hideContent.timeout && (
                     <div className="timeout">
-                        времени до повторной отправки кода: {timer} сeкунд
+                        времени до повторной отправки кода: {timer} с
                     </div>
                 )}
                 <div className="input-form">
