@@ -58,6 +58,7 @@ const PasswordRecovery = () => {
             }
         }, 1000);
     };
+
     const SetCode = async () => {
         if (codeRef.current) {
             const code = codeRef.current.value;
@@ -95,9 +96,11 @@ const PasswordRecovery = () => {
             }
         }
     };
+
     useEffect(() => {
         setTimer(60);
     }, []);
+
     return (
         <>
             <NavBar />
