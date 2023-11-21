@@ -35,7 +35,7 @@ interface ISceneProps {
 const Scene = ({ vSize }: ISceneProps) => {
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load('./assets/Bullets/Projectile.png');
-    const room = textureLoader.load('./assets/rooms/map-office-plain.png');
+    const room = textureLoader.load('./assets/rooms/cyborgs-office.png');
     const glass = textureLoader.load('./assets/Map parts/Glass.png');
 
     const [textures] = useState<ITextureObject>({
@@ -144,37 +144,43 @@ const Scene = ({ vSize }: ISceneProps) => {
         <group>
 
             <Physics gravity={[0, 0, 0]} colliders="hull" debug>
-                <LightMap />
+                <group position={[-4.5, -6, 0]}>
 
-                <FishTank />
+                    <LightMap />
 
-                <fog />
+                    <FishTank />
 
-                <group position={[8, 5, 0]}>
-                    <Player
-                        id={1338}
-                        team={1}
-                        onFire={onFire}
-                        onMovement={onMovement}
-                        setWeaponSlot={setWeaponSlot}
-                        isControlled
-                    />
-                    <Player team={0} id={1002} />
-                    <Player team={1} id={1001} />
-                    <Robot />
-                </group>
+                    <fog />
 
-                <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons} />
+                    <group position={[0, 2, 0]}>
+                        <Player
+                            id={1338}
+                            team={1}
+                            onFire={onFire}
+                            onMovement={onMovement}
+                            setWeaponSlot={setWeaponSlot}
+                            isControlled
+                        />
+                        <Player team={0} id={1002} />
+                        <Player team={1} id={1001} />
+                        {/* <Robot /> */}
+                    </group>
 
-                {colliders.map(collider =>
-                    <Obstacle
+                    <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons} />
+                    {colliders.map(collider =>
+                        <Obstacle
                         key={generateColliderKey()}
                         {...collider}
-                    />
-                )}
+                        />
+                    )}
+                        
+                    <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.01)} />
 
-                {bullets.map(bullet =>
-                    <Projectile
+                    <Zone position={new Vector3(5.5, 7.5, 0.5)} />
+                </group>
+
+                    {bullets.map(bullet =>
+                        <Projectile
                         damage={bullet.damage}
                         key={bullet.key}
                         initialSpeed={bullet.speed}
@@ -182,24 +188,20 @@ const Scene = ({ vSize }: ISceneProps) => {
                         direction={bullet.direction}
                         texture={textures['bullet']}
                         team={bullet.team}
-                    />
-                )}
+                        />
+                    )}
 
-                {lasers.map(laser =>
-                    <Hitscan
+                    {lasers.map(laser =>
+                        <Hitscan
                         key={laser.key}
                         initialPosition={[laser.position.x, laser.position.y]}
                         aimingPoint={[laser.aimingPoint.x, laser.aimingPoint.y]}
-                    />
-                )}
+                        />
+                    )}
 
-                <group scale={[81, 61, 1]} position={[0, 0, 0]}>
+                <group scale={[56, 49, 1]} position={[0, 0, 0]}>
                     <Map texture={textures['room']} />
                 </group>
-
-                <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)} />
-
-                <Zone position={new Vector3(5.5, 7.5, 0.5)} />
             </Physics>
             <Stars />
         </group>

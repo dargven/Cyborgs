@@ -20,12 +20,6 @@ const MapObjects = (props: IMapObjects) => {
         { position: new Vector3(-21, 6, 0), key: 'frontOfficeGlass1', isDestructible: true },
         { position: new Vector3(-20, 6, 0), key: 'frontOfficeGlass2', isDestructible: true },
         { position: new Vector3(-19, 6, 0), key: 'frontOfficeGlass3', isDestructible: true },
-        { position: new Vector3(-28, 11, 0), key: 'frontOfficeGlass4', isDestructible: true },
-        { position: new Vector3(-28, 12, 0), key: 'frontOfficeGlass5', isDestructible: true },
-        { position: new Vector3(-28, 13, 0), key: 'frontOfficeGlass6', isDestructible: true },
-        { position: new Vector3(-28, 15, 0), key: 'frontOfficeGlass7', isDestructible: true },
-        { position: new Vector3(-28, 16, 0), key: 'frontOfficeGlass8', isDestructible: true },
-        { position: new Vector3(-28, 17, 0), key: 'frontOfficeGlass9', isDestructible: true },
 
         { position: new Vector3(12, -9, 0), key: 'windowGlass1', isDestructible: true },
         { position: new Vector3(13, -9, 0), key: 'windowGlass2', isDestructible: true },
@@ -37,7 +31,7 @@ const MapObjects = (props: IMapObjects) => {
     ];
 
     return (
-        <group>
+        <group position={props.position}>
             {sprites.map((sprite, key) => (
                 <MakeSprite
                     key={key}
