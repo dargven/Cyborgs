@@ -127,5 +127,9 @@ class User
         return ['error' => 709];
     }
 
+    public function DeletePlayer($user_id)
+    {
+        return $this->db->DeletePlayer($user_id);
+    }
 
 }

@@ -165,5 +165,11 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE game SET chat_hash=? WHERE id=1", [$hash]);
     }
+
+    public function DeletePlayer($user_id)
+    {
+        return $this->execute("DELETE FROM players WHERE user_id = ?", [$user_id]);
+    }
+
 }
 
