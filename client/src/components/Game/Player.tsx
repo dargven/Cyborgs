@@ -1,7 +1,7 @@
 import { useKeyboardControls } from "@react-three/drei";
 import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
-import { Vector3 } from "three";
+import { TextureLoader, Vector3 } from "three";
 import HealthBar from "./HealthBar";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
@@ -166,6 +166,8 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
     //     )
     //     console.log(isMoving)
     // },[ref.current, isMoving])
+    const textureLoader = new TextureLoader();
+    const Corpse = textureLoader.load('./assets/players/sprite corpse test.png');
     return (
         <>
             <RigidBody
@@ -179,8 +181,8 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 lockRotations
             // userData={data}
             >
-
-                <Animator
+                {hp?<Animator
+                    
                     fps={13}
                     startFrame={0}
                     loop={true}
@@ -190,8 +192,8 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                     alphaTest={0.01}
                     materialRotation={rot}
                     pause={!isMoving}
-                />
-
+                />:<MakeSprite texture={Corpse}></MakeSprite>}
+            
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
