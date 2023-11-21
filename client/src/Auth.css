@@ -71,7 +71,8 @@ body {
     font-size: 1.5vh;
 }
 .timeout {
-    color: red;
+    font-size: 1dvw;
+    color: #61dafb;
 }
 .PaswordRecovery:disabled {
     color: gray;
@@ -106,6 +107,9 @@ body {
     border-radius: 0;
     filter: contrast(30);
     border-color: #27cee9;
+}
+.content .RecoveryButton{
+    font-size: 0.8dvw;
 }
 h1 {
     font-family: "Zelek";

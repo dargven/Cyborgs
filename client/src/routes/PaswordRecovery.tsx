@@ -108,12 +108,8 @@ const PasswordRecovery = () => {
                 КИБОРГИ <br /> ТЕПЕРЬ В 2D
             </div>
             <div className="content">
-                <h1> Востановление пароля</h1>
-                {hideContent.timeout && (
-                    <div className="timeout">
-                        времени до повторной отправки кода: {timer} с
-                    </div>
-                )}
+                <h1> Восстановление пароля</h1>
+                
                 <div className="input-form">
                     <input
                         type="text"
@@ -122,13 +118,17 @@ const PasswordRecovery = () => {
                         className="input"
                         placeholder="Логин"
                         ref={loginRef}
-                    />
+                    />{hideContent.timeout && (
+                        <div className="timeout">
+                            Времени до повторной отправки кода: {timer} с
+                        </div>
+                    )}
                     <button
-                        className="PaswordRecovery"
+                        className="RecoveryButton"
                         onClick={() => Recovery()}
                         disabled={hideContent.isButtonDisabled}
                     >
-                        Востановить пароль
+                        Продолжить
                     </button>
 
                     {hideContent.recoveryPressed && (
@@ -145,7 +145,7 @@ const PasswordRecovery = () => {
                                 className="RecoveryButton"
                                 onClick={() => SetCode()}
                             >
-                                Отправить код
+                                Подтвердить
                             </button>
                         </>
                     )}
@@ -168,7 +168,7 @@ const PasswordRecovery = () => {
                                 ref={newPasswordRef2}
                             />
                             <button
-                                className="RecoveryButton2"
+                                className="RecoveryButton"
                                 onClick={() => sendNewHash()}
                             >
                                 Изменить пароль
