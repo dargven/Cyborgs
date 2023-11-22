@@ -96,12 +96,12 @@ class DB
 
     public function sendMessage($id, $message)
     {   
-        return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, CURRENT_TIME)', [$id, $message]);
+        return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
     }
 
     public function getMessage()
     {
-        return $this->queryAll('SELECT u.name AS name, m.message AS message, m.created AS created FROM messages as m LEFT JOIN 
+        return $this->queryAll('SELECT u.name AS name, m.message AS message, DATE_FORMAT(m.created,'%H:%i') AS created FROM messages as m LEFT JOIN 
     users as u on u.id = m.user_id 
                               ORDER BY m.created DESC');
     }
