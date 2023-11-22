@@ -136,6 +136,12 @@ class DB
     {
         return $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
     }
+
+    public function DeletePlayer($token)
+    {
+        return $this->execute("DELETE FROM players
+        WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
+    }
     // ЖАЛКАЯ ПАРОДИЯ //
     //Методы полностью переписаны по феншую, осталось их нормально протестить.
 
@@ -166,10 +172,7 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
         $this->execute("UPDATE game SET chat_hash=? WHERE id=1", [$hash]);
     }
 
-    public function DeletePlayer($user_id)
-    {
-        return $this->execute("DELETE FROM players WHERE user_id = ?", [$user_id]);
-    }
+    
 
 }
 
