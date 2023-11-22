@@ -74,9 +74,14 @@ body {
     font-size: 1dvw;
     color: #61dafb;
 }
-.PaswordRecovery:disabled {
+.content .PaswordRecovery{
+    font-size: 0.8dvw;
+}
+.PaswordRecovery:disabled,.PaswordRecovery:hover:disabled {
     color: gray;
-    text-shadow: 0px 0px 3px gray;
+    text-shadow: none;
+    filter: contrast(1);
+    box-shadow: none;
     border: gray;
 }
 .input-form input[type="password"] {
