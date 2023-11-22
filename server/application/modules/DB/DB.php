@@ -4,7 +4,6 @@ class DB
 {
     //сохраняет соединение с ДБ
     private $pdo;
-
     //вызов соединения с БД
     public function __construct()
     {
@@ -96,13 +95,13 @@ class DB
     }
 
     public function sendMessage($id, $message)
-    {
+    {   
         return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
     }
 
     public function getMessage()
     {
-        return $this->queryAll('SELECT u.name AS name, m.message AS message, m.created AS created 
+        return $this->queryAll('SELECT u.name AS name, m.message AS message, DATE_FORMAT(m.created,'%H:%i') AS created 
                                 FROM messages as m LEFT JOIN users as u on u.id = m.user_id 
                                 ORDER BY m.created DESC LIMIT 10');
     }
@@ -157,7 +156,9 @@ class DB
 
     public function setPlayer($id, $x, $y, $vx, $vy)
     {
-        return $this->execute("INSERT INTO players (user_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy); ", [$id, $x, $y, $vx, $vy]);
+        return $this->execute("INSERT INTO players (user_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) 
+ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy);
+", [$id, $x, $y, $vx, $vy]);
     }
 
     public function getHashes()
@@ -170,7 +171,7 @@ class DB
         $this->execute("UPDATE game SET chat_hash=? WHERE id=1", [$hash]);
     }
 
-    
+
 
 }
 
