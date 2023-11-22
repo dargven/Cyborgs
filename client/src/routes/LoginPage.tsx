@@ -4,6 +4,8 @@ import {Navigate} from "react-router-dom";
 import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import NavButton from "../components/navButton";
+import useEnterKeyHandler from "../hooks/useKeyHandler";
+
 
 const openEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-open.png";
 const closeEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-close.png";
@@ -27,24 +29,14 @@ const LoginPage = () => {
         }
     };
 
+    useEnterKeyHandler(13,handleLogin);
+
     const togglePasswordVisibility = () => {
         if (passwordRef.current) {
             passwordRef.current.type = showPassword ? "password" : "text";
             setShowPassword(!showPassword);
         }
     };
-    const KEY_ENTER = 13;
-    const handleKeyPress = (event: KeyboardEvent) => {
-        if (event.keyCode === KEY_ENTER) {
-            handleLogin();
-        }
-    };
-    useEffect(() => {
-        document.addEventListener("keydown", handleKeyPress);
-        return () => {
-            document.removeEventListener("keydown", handleKeyPress);
-        };
-    });
 
     return (
         <>
@@ -86,6 +78,7 @@ const LoginPage = () => {
                         <NavButton
                             to="/PaswordRecovery"
                             text="забыли пароль?"
+                            className="RecoveryButton"
                         ></NavButton>
                     </div>
                     <button onClick={() => handleLogin()}>

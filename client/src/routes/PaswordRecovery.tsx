@@ -4,6 +4,7 @@ import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import { Navigate } from "react-router-dom";
 import "../Auth.css";
+import useEnterKeyHandler from "../hooks/useKeyHandler";
 
 const PasswordRecovery = () => {
     const server = useContext(ServerContext);
@@ -12,6 +13,7 @@ const PasswordRecovery = () => {
     const newPasswordRef1 = useRef<HTMLInputElement | null>(null);
     const newPasswordRef2 = useRef<HTMLInputElement | null>(null);
 
+    const [timer, setTimer] = useState(60);
     const [hideContent, setHideContent] = useState({
         recoveryPressed: false,
         codeConfirm: false,
@@ -19,7 +21,6 @@ const PasswordRecovery = () => {
         isButtonDisabled: false,
     });
 
-    const [timer, setTimer] = useState(60);
 
     const Recovery = async () => {
         if (loginRef.current) {
@@ -34,6 +35,8 @@ const PasswordRecovery = () => {
             }
         }
     };
+
+    useEnterKeyHandler(13,Recovery);
 
     const startTimer = () => {
         setHideContent((prevState) => ({
@@ -111,6 +114,7 @@ const PasswordRecovery = () => {
                 <h1> Восстановление пароля</h1>
                 
                 <div className="input-form">
+                {!hideContent.codeConfirm && (<>
                     <input
                         type="text"
                         id="login"
@@ -128,10 +132,11 @@ const PasswordRecovery = () => {
                         onClick={() => Recovery()}
                         disabled={hideContent.isButtonDisabled}
                     >
-                        Продолжить
+                        Отправить код
                     </button>
-
-                    {hideContent.recoveryPressed && (
+                    </>
+                    )}
+                    {hideContent.recoveryPressed && !hideContent.codeConfirm && (
                         <>
                             <input
                                 type="text"
