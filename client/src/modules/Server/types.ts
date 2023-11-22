@@ -26,7 +26,6 @@ export type TGetMessages = {
 }
 
 export type TPlayer = {
-    token: string;
     teamId: number;
     hp: number;
     x: number;
@@ -38,7 +37,6 @@ export type TPlayer = {
 }
 
 export type TBullet = {
-    token: string;
     bulletId: number
     x: number;
     y: number;
