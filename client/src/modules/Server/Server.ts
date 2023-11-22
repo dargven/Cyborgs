@@ -1,5 +1,5 @@
 import { Store } from "../Store/Store";
-import { TGetMessages, TUser, TMessages, TMessage } from "./types";
+import { TGetMessages, TUser, TMessages, TMessage, TTeam } from "./types";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
@@ -95,6 +95,18 @@ export default class Server {
         if (result?.hash) {
             this.chatHash = result.hash;
             return result.messages;
+        }
+        return null;
+    }
+
+    async selectTeam(teamId: number): Promise<TTeam | null> {
+        const result = await this.request<TTeam>("selectTeam", {
+            token: this.token,
+            teamId: teamId
+        });
+
+        if(result) {
+            return result;
         }
         return null;
     }

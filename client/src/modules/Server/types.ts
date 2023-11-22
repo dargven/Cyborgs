@@ -24,3 +24,8 @@ export type TGetMessages = {
     messages: TMessages;
     hash: string;
 }
+
+export type TTeam = {
+    teamId: number,
+    token: string,
+}
