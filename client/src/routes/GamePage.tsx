@@ -4,16 +4,20 @@ import NavButton from "../components/navButton";
 import Chat from "../components/Chat/Chat";
 import "../popUpMenu.css";
 import "../TeamSelect.css";
+import useKeyHandler from "../hooks/useKeyHandler";
 
 const GamePage = () => {
     const KEY_ESC = 27;
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [team, setTeam] = useState<number>(0);
+
     const handleKeyPress = (event: KeyboardEvent) => {
         if (event.keyCode === KEY_ESC) {
             setIsPopupVisible(!isPopupVisible);
         }
       };
+
+      useKeyHandler(27)
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyPress);
