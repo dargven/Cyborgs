@@ -86,6 +86,7 @@ const LoginPage = () => {
                         <NavButton
                             to="/PaswordRecovery"
                             text="забыли пароль?"
+                            className="RecoveryButton"
                         ></NavButton>
                     </div>
                     <button onClick={() => handleLogin()}>

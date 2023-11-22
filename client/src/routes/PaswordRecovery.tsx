@@ -111,6 +111,7 @@ const PasswordRecovery = () => {
                 <h1> Восстановление пароля</h1>
                 
                 <div className="input-form">
+                {!hideContent.codeConfirm && (<>
                     <input
                         type="text"
                         id="login"
@@ -128,10 +129,11 @@ const PasswordRecovery = () => {
                         onClick={() => Recovery()}
                         disabled={hideContent.isButtonDisabled}
                     >
-                        Продолжить
+                        Отправить код
                     </button>
-
-                    {hideContent.recoveryPressed && (
+                    </>
+                    )}
+                    {hideContent.recoveryPressed && !hideContent.codeConfirm && (
                         <>
                             <input
                                 type="text"
