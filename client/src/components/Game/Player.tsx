@@ -111,21 +111,6 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
                     onFire(playerPosition, team);
                 }
             }
-
-            // стрельба проджектайлами и хитсканом должна быть прописана на одно и то же нажатие, что именно полетит - зависит от выбора в инвентаре
-
-            if (hitscan) {
-                // const aimingPoint = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
-                // aimingPoint.setLength(5);
-                // aimingPoint.x += playerPosition.x;
-                // aimingPoint.y += playerPosition.y;
-                // const laser = new Laser(
-                //     playerPosition,
-                //     aimingPoint,
-                //     `${1337}-${Date.now()}`
-                // )
-                // setLasers((lasers) => [...lasers, laser])
-            }
         } else {
             movementController();
         }

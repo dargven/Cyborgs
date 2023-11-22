@@ -57,11 +57,10 @@ const Scene = ({ vSize }: ISceneProps) => {
     });
     const [bullets, setBullets] = useState<Bullet[]>([]);
     const [players, setPlayers] = useState<PlayerEntity[]>([new PlayerEntity(store.getUser().token, new Vector3())]);
+    const [obstacles, setObstacles] = useState<ICollider[]>(CollidersPositions());
     // const [serverPlayers, setServerPlayers] = useState<TPlayer[]>([]);
 
     const [last, setLast] = useState<number>(0);
-    // const [lasers, setLasers] = useState<Laser[]>([]);
-    const [obstacles, setObstacles] = useState<ICollider[]>(CollidersPositions());
     const [weaponSlot, setWeaponSlot] = useState<number>(1);
     const [inventory, setInventory] = useState<any>([
         new Gun({
