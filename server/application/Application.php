@@ -56,7 +56,6 @@ class Application
     {
         $token = $params['token'];
         if ($token) {
-            $this->user->DeletePlayer($token);
             return $this->user->logout($token);
         }
         return ['error' => 242];
