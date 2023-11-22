@@ -61,6 +61,7 @@ class Application
         return ['error' => 242];
     }
 
+
     function getMessages($params)
     {
         $token = $params['token'];
