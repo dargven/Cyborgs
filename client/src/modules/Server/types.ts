@@ -1,4 +1,6 @@
-export {};
+import { type } from "os";
+
+export { };
 
 export type TError = {
     code: number,

@@ -1,29 +1,29 @@
 import { useKeyboardControls } from "@react-three/drei";
 import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
 import { Animator } from "./sprites/Animator";
 import { IZonePlayer } from "./Zone";
+import { ServerContext } from "../../App";
 
 interface IPlayerProps {
     id?: number;
+    token: string;
     username?: string;
     position?: Vector3;
+    velocity?: Vector3;
     team: number;
     isControlled?: boolean
     onFire?(position: Vector3, team: number): void;
     onMovement?(position: Vector3): void;
     setWeaponSlot?(newSlot: number): void;
+    getPosVel?(position: Vector3, velocity: Vector3): void;
 }
 
-// export interface IRigidBodyData {
-//     type: string
-// }
-
-const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlot, isControlled }: IPlayerProps) => {
+const Player = ({ velocity = new Vector3(), id, username, position, team, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token }: IPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
@@ -31,14 +31,12 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
 
     const [controlKeys, getKeys] = useKeyboardControls();
 
-    const movementController = (up: boolean, down: boolean, left: boolean, right: boolean) => {
+    const movementController = (up?: boolean, down?: boolean, left?: boolean, right?: boolean) => {
 
         if (ref.current) {
 
             const speed = 4;
 
-            ref.current.setLinvel(new Vector3(), true);
-            const velocity = new Vector3();
             if (left) {
                 velocity.x -= 1;
             }
@@ -51,10 +49,14 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             if (down) {
                 velocity.y -= 1;
             }
-            
+
             velocity.setLength(speed);
-            
+            // console.log(velocity, token);
+
             ref.current.setLinvel(velocity, true);
+            if (getPosVel && isControlled) {
+                getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
+            }
         }
     }
 
@@ -79,15 +81,15 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 document.removeEventListener("mouseup", mouseUpHandler);
             }
         }
-    }, []);
+    });
 
     useFrame(() => {
         if (isControlled) {
             const { up, down, left, right, select1, select2, select3, shoot } = getKeys();
             movementController(up, down, left, right);
-            
-            const playerPosition = vec3(ref?.current?.translation());
-            
+
+            const playerPosition = vec3(ref.current?.translation());
+
             if (select1 && setWeaponSlot) {
                 setWeaponSlot(1)
             }
@@ -100,7 +102,7 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 setWeaponSlot(3)
             }
 
-            if (onMovement){
+            if (onMovement) {
                 onMovement(playerPosition);
             }
 
@@ -109,13 +111,31 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                     onFire(playerPosition, team);
                 }
             }
+
+            // стрельба проджектайлами и хитсканом должна быть прописана на одно и то же нажатие, что именно полетит - зависит от выбора в инвентаре
+
+            if (hitscan) {
+                // const aimingPoint = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
+                // aimingPoint.setLength(5);
+                // aimingPoint.x += playerPosition.x;
+                // aimingPoint.y += playerPosition.y;
+                // const laser = new Laser(
+                //     playerPosition,
+                //     aimingPoint,
+                //     `${1337}-${Date.now()}`
+                // )
+                // setLasers((lasers) => [...lasers, laser])
+            }
+        } else {
+            movementController();
         }
     });
-
 
     const [hp, setHp] = useState<number>(100);
 
     useEffect(() => {
+        // setPos(ref.current.translation() as Vector3);
+        // setVel(ref.current.linvel() as Vector3);
         const data = {
             type: 'player',
             team: team,
@@ -123,23 +143,35 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
             id: id
         }
         ref.current.userData = data;
-        if (hp===0){
+        if (hp === 0) {
             ref.current.setEnabled(false);
         }
-    }, [hp]);
+    }, [hp, id, team]);
+
+    // useEffect(() => {
+    //     const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
+    //         if (setPlayers) {
+    //             setPlayers(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
+    //         }
+    //     }, 1000);
+
+    //     return () => {
+    //         clearInterval(interval);
+    //     }
+    // });
 
     return (
         <>
             <RigidBody
                 ref={ref}
                 scale={0.5}
-                position={[-2, 0, 0]}
+                position={position}
                 colliders="hull"
                 friction={1}
                 linearDamping={10}
                 angularDamping={1}
                 lockRotations
-            // userData={data}
+            // type={isControlled ? "dynamic" : "kinematicPosition"}
             >
 
                 <Animator
@@ -156,18 +188,13 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
-                        const target = e.target.rigidBody;
                         if (data.type === "projectile") {
                             const damage = data.team === team ? data.damage / 2 : data.damage;
                             if (hp - damage < 0) {
                                 setHp(0);
-                                // target?.setEnabled(false);
-                                // ref.current.setEnabled(false);
                             } else {
                                 setHp(hp - damage);
                             }
-                        }
-                        if (data.type === "zone") {
                         }
                     }} />
                 <HealthBar value={hp} color={0xff0000} />

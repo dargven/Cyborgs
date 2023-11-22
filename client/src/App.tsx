@@ -22,7 +22,7 @@ const App: React.FC = () => {
                 <ServerContext.Provider value={server}>
                     <Routes>
                         {store.isAuth() ? (
-                            <Route path="" element={<LoginPage />} />
+                            <Route path="" element={<MainPage />} />
                         ) : (
                             <Route path="" element={<LoginPage />} />
                         )}
