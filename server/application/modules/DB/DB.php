@@ -4,7 +4,6 @@ class DB
 {
     //сохраняет соединение с ДБ
     private $pdo;
-
     //вызов соединения с БД
     public function __construct()
     {
@@ -96,8 +95,8 @@ class DB
     }
 
     public function sendMessage($id, $message)
-    {
-        return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
+    {   
+        return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, CURRENT_TIME)', [$id, $message]);
     }
 
     public function getMessage()
