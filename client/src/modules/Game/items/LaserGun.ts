@@ -2,6 +2,13 @@ import { Vector3 } from "three";
 import Laser, { ILaser } from "../entities/Laser";
 import Item, { IItem } from "./Item";
 
+export interface IFireProps {
+    position: Vector3;
+    aimingPoint: Vector3;
+    key: string;
+    team: number;
+}
+
 interface ILaserGun extends IItem {
     damage: number;
     currentAmmo: number;
@@ -17,10 +24,10 @@ class LaserGun extends Item {
         this.currentAmmo = currentAmmo;
     }
 
-    fire(position: Vector3, aimingPoint: Vector3, key: string): Laser | null {
+    fire({position, aimingPoint, key,team}: IFireProps): Laser | null {
         if (this.currentAmmo > 0) {
             this.currentAmmo--;
-            return new Laser(position, aimingPoint, key);
+            return new Laser(position, aimingPoint, key, this.damage, team);
         }
         return null;
     }

@@ -19,6 +19,7 @@ import FishTank from "./Fishtank";
 import { Gun, Item } from "../../modules/Game/items";
 import Obstacle from "./Obstacle";
 import Inventory2 from "../../modules/Game/misc/Inventory";
+import { ICollider } from "../../modules/Game/entities/Collider";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -44,7 +45,8 @@ const Scene = ({ vSize }: ISceneProps) => {
         'glass': glass,
     });
     const [bullets, setBullets] = useState<Bullet[]>([]);
-    const [lasers, setLasers] = useState<Laser[]>([]);
+    const [playres, setPlayers] = useState();
+    const [obstacles, setObstacles] = useState<ICollider[]>(CollidersPositions());
     const [weaponSlot, setWeaponSlot] = useState<number>(1);
     const [inventory, setInventory] = useState<any>([
         new Gun({
@@ -59,18 +61,18 @@ const Scene = ({ vSize }: ISceneProps) => {
         })
     ]);
 
-    const [weapons, setWeapons] = useState<IWeapons>({
-        slot1: 2,
-        slot2: 1,
-        slot3: null,
-    });
+    // const [weapons, setWeapons] = useState<IWeapons>({
+    //     slot1: 2,
+    //     slot2: 1,
+    //     slot3: null,
+    // });
 
     const [gun, setGun] = useState<Gun>(inventory[0]);
     const [last, setLast] = useState<number>(0);
     const mouseX = useRef(0);
     const mouseY = useRef(0);
-
-    const colliders = CollidersPositions();
+    
+    
     const invRef = useRef<Group>();
     const positionToCamera = new Vector3(0, -2, -3);
 
@@ -96,51 +98,49 @@ const Scene = ({ vSize }: ISceneProps) => {
     const [inv, setInv] = useState<Inventory2>();
 
     const onFire = (position: Vector3, team: number) => {
-        if (weapons.slot1) {
-            const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
+        const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
 
-            // смещение, чтобы игрок не мог расстрелять сам себя, придется фиксить под разные скорости
-            direction.setLength(0.6);
-            position.x += direction.x;
-            position.y += direction.y;
-            position.z = 0;
-            direction.setLength(1);
+        // смещение, чтобы игрок не мог расстрелять сам себя, придется фиксить под разные скорости
+        direction.setLength(0.6);
+        position.x += direction.x;
+        position.y += direction.y;
+        position.z = 0;
+        direction.setLength(1);
 
-            const current = Date.now();
+        const current = Date.now();
 
-            if (.001 * (current - last) > 1 / gun.rate) {
-                const bullet = gun.fire({
-                    position,
-                    direction,
-                    key: `${1337}-${Date.now()}`,
-                    team
-                });
+        if (.001 * (current - last) > 1 / gun.rate) {
+            const bullet = gun.fire({
+                position,
+                direction,
+                key: `${1337}-${Date.now()}`,
+                team
+            });
 
-                if (bullet) {
-                    setBullets((bullets) => [...bullets, bullet]);
-                }
-                setLast(current);
+            if (bullet) {
+                setBullets((bullets) => [...bullets, bullet]);
             }
+            setLast(current);
         }
     }
 
-    const getWeapon = (slot: number, id: number) => {
-        setWeapons(prevWeapons => {
-            const newWeapons = { ...prevWeapons };
+    // const getWeapon = (slot: number, id: number) => {
+    //     setWeapons(prevWeapons => {
+    //         const newWeapons = { ...prevWeapons };
 
-            newWeapons[`slot${slot}`] = id;
+    //         newWeapons[`slot${slot}`] = id;
 
-            return newWeapons;
-        });
-    }
+    //         return newWeapons;
+    //     });
+    // }
 
-    let colliderKeyCounter = 0;
-
-    const generateColliderKey = () => {
-        const key = `collider-${colliderKeyCounter}`;
-        colliderKeyCounter++;
+    const generateObstacleKey = () => {
+        let obstacleKeyCounter = 0;
+        const key = `collider-${obstacleKeyCounter}`;
+        obstacleKeyCounter++;
         return key;
     };
+    
     return (
         <group>
 
@@ -167,21 +167,22 @@ const Scene = ({ vSize }: ISceneProps) => {
                         {/* <Robot /> */}
                     </group>
 
-                    <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons} />
-                    {colliders.map(collider =>
+                    {/* <Inventory invRef={invRef} setWeapon={weaponSlot} weapons={weapons} /> */}
+                    
+                    {obstacles.map(obstacle =>
                         <Obstacle
-                        key={generateColliderKey()}
-                        {...collider}
+                            key={generateObstacleKey()}
+                            {...obstacle}
                         />
                     )}
-                        
+
                     <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.01)} />
 
                     <Zone position={new Vector3(5.5, 7.5, 0.5)} />
                 </group>
 
-                    {bullets.map(bullet =>
-                        <Projectile
+                {bullets.map(bullet =>
+                    <Projectile
                         damage={bullet.damage}
                         key={bullet.key}
                         initialSpeed={bullet.speed}
@@ -189,16 +190,16 @@ const Scene = ({ vSize }: ISceneProps) => {
                         direction={bullet.direction}
                         texture={textures['bullet']}
                         team={bullet.team}
-                        />
-                    )}
+                    />
+                )}
 
-                    {lasers.map(laser =>
+                {/* {lasers.map(laser =>
                         <Hitscan
                         key={laser.key}
                         initialPosition={[laser.position.x, laser.position.y]}
                         aimingPoint={[laser.aimingPoint.x, laser.aimingPoint.y]}
                         />
-                    )}
+                    )} */}
 
                 <group scale={[56, 49, 1]} position={[0, 0, 0]}>
                     <Map texture={textures['room']} />
