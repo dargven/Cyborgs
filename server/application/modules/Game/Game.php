@@ -48,5 +48,22 @@ class Game
 
     }
 
+    public function setDestroyObject($objectId, $state)
+    {
+        $object = $this->db->getObjectById($objectId);
+        if ($object) {
+            if ($state === 0 || $state === 1) {
+                $this->db->setDestroyObject($objectId, $state);
+                return true;
+            }
+            return ['error' => 801];
+        }
+        return ['error' => 800];
+    }
+
+    public function getObjects()
+    {
+        return $this->db->getObjects();
+    }
 
 }
