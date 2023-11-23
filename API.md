@@ -453,7 +453,8 @@ CorrectAnswer=>true;
 
 ```
 WrongAnswer(code:1002, text: 'error in auth user')
-WrongAnswer(code:707, text: 'not found object')
+WrongAnswer(code:800, text: 'not found object')
+WrongAnswer(code:801, text: 'unknown state')
 
 ```
 
@@ -479,10 +480,14 @@ WrongAnswer(code:707, text: 'not found object')
 CorrectAnswer => data = {
 "objectId": number,
 "state": number
+}
+```
+### Ошибки
 
 ```
+WrongAnswer(code:1002, text: 'error in auth user')
 
-}
+```
 
 ## Метод setBullet
 

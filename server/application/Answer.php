@@ -16,6 +16,8 @@ class Answer
         '707' => 'could not send message', // e-mail;
         '708' => 'invalid code from E-mail',
         '709'=>'session did not start or you need use previous method',
+        '800' => 'not found object',
+        '801' => 'unknown state',
         '999' => 'Is it Triangle?',
         '1001' => 'params login or password not set',
         '1002' => 'error in auth user',
