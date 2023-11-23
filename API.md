@@ -79,6 +79,15 @@
         * [Ошибки](#ошибки-10)
     * [Метод getBullets](#метод-getbullets)
         * [Описание](#описание-2)
+        * [Адрес](#адрес-12)
+        * [Параметры](#параметры-12)
+        * [Успешный ответ](#успешный-ответ-7)
+        * [Ошибки](#ошибки-11)
+    * [Метод getScene](#метод-getscene)
+        * [Описание](#описание-3)
+        * [Адрес](#адрес-13)
+        * [Параметры](#параметры-13)
+        * [Успешный ответ:](#успешный-ответ-8)
 
 <!-- TOC -->
 
@@ -538,4 +547,91 @@ vy      :number
 ```
 WrongAnswer(code:1002, text: 'error in auth user')
 WrongAnswer(code:9000, text: 'Unknown error')
+```
+
+## Метод getScene
+
+### Описание
+
+Метод возвращает все данные о сцене(см ниже)
+
+### Адрес
+
+```/?method = getScene```
+
+### Параметры
+
+| Параметры   | Тип    | Комментарий              |
+|-------------|--------|--------------------------|
+| token       | string | Аутентификационный токен |
+| bulletsHash | string | Хэш                      |
+| playersHash | string | Хэш                      |
+| objectsHash | string | Хэш                      |
+
+### Успешный ответ:
+
+```
+CorrectAnswer => data = 
+hashs => {
+bulletsHash: string,
+playersHash: string,
+objectsHash: string,
+},
+players=>{
+teamId: number,
+hp:number,
+x:number,
+y:number,
+vx:number,
+vy:number,
+dx:number,
+dy:number
+},
+bullets =>{
+bulletId: number,
+x:number,
+y:number,
+vx:number,
+vy:number
+},
+objects =>
+{
+ObjectId: number,
+state: number ; 1 - destroyed; 0 - not destroyed
+}
+
+}
+```
+### Ошибки
+
+## Метод setPlayer
+
+### Описание
+
+Метод возвращает все данные о сцене(см ниже)
+
+### Адрес
+
+```/?method = setPlayer```
+
+### Параметры
+
+| Параметры | Тип    | Комментарий              |
+|-----------|--------|--------------------------|
+| token     | string | Аутентификационный токен |
+| x         | number | Координаты               |
+| y         | number | Координаты               |
+| vx        | number | Координаты               |
+| vy        | number | Координаты               |
+| dx        | number | Координаты               |
+| dy        | number | Координаты               |
+
+### Успешный ответ:
+
+```
+CorrectAnswer => true;
+```
+### Ошибки
+```
+WrongAnswer(code:1002, text: 'error in auth user')
 ```
