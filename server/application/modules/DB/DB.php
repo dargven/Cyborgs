@@ -101,9 +101,9 @@ class DB
 
     public function getMessage()
     {
-        return $this->queryAll('SELECT u.name AS name, m.message AS message, DATE_FORMAT(m.created,'%H:%i') AS created FROM messages as m LEFT JOIN 
+        return $this->queryAll("SELECT u.name AS name, m.message AS message, DATE_FORMAT(m.created,'%H:%i') AS created FROM messages as m LEFT JOIN 
     users as u on u.id = m.user_id 
-                              ORDER BY m.created DESC');
+                              ORDER BY m.created DESC");
     }
 
     public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
@@ -114,7 +114,7 @@ class DB
     
     public function getBullets()
     {
-        return $this->execute("SELECT  u.bullet_id AS bullet_id,u.user_id AS user_id, bullet.x AS x,bullet.y AS y,bullet.vx AS vx,bullet.vy AS vy
+        return $this->queryAll("SELECT  u.bullet_id AS bullet_id,u.user_id AS user_id, bullet.x AS x,bullet.y AS y,bullet.vx AS vx,bullet.vy AS vy
         FROM bullets as bullet LEFT JOIN usersBullets as u on u.bullet_id = bullet.bullet_id
         ORDER BY u.bullet_id");
     }
