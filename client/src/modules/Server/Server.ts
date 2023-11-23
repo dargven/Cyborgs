@@ -1,5 +1,5 @@
 import { Store } from "../Store/Store";
-import { TGetMessages, TUser, TMessages, TMessage, TDestructible, TBullet, TPlayer } from "./types";
+import { TGetMessages, TUser, TMessages, TMessage, TDestructible, TBullet, TPlayer, TScene, TSceneHashes, TGetScene } from "./types";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
@@ -8,6 +8,7 @@ export default class Server {
     private store: Store;
     private token: string | null;
     private chatHash: string = '123';
+    private sceneHashes: TSceneHashes = { bulletsHash: '0', playersHash: '0', objectsHash: '0' };
 
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
@@ -120,7 +121,7 @@ export default class Server {
         }
         return null;
     }
-    
+
     async getBullets(): Promise<TBullet[] | null> {
         const result = await this.request<TBullet[]>('getBullets', {
             token: this.token
@@ -143,5 +144,20 @@ export default class Server {
         return null;
     }
 
-    // хз че в них вообще проверять)
+    async getScene(): Promise<TScene | null> {
+        const result = await this.request<TGetScene>('getScene',
+            {
+                token: this.token,
+                bulletsHash: this.sceneHashes.bulletsHash,
+                playersHash: this.sceneHashes.playersHash,
+                objectsHash: this.sceneHashes.objectsHash,
+            });
+
+        if (result) {
+            this.sceneHashes = result.hashes;
+            return result.scene;
+        }
+
+        return null;
+    }
 }

@@ -48,3 +48,20 @@ export type TDestructible = {
     objectId: number;
     state: 0 | 1;
 }
+
+export type TSceneHashes = {
+    bulletsHash: string;
+    playersHash: string;
+    objectsHash: string;
+}
+
+export type TGetScene = {
+    hashes: TSceneHashes;
+    scene: TScene;
+}
+
+export type TScene = {
+    players: TPlayer[];
+    bullets: TBullet[];
+    objects: TDestructible[];
+}
