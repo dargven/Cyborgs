@@ -392,7 +392,7 @@ WrongAnswer(code:706, text : 'text message is empty')
 
 ```
 
-## Метод getMessage
+## Метод getMessages
 
 ### Описание метода
 
@@ -582,6 +582,7 @@ bulletsHash: string,
 playersHash: string,
 objectsHash: string,
 },
+scene =>{
 players=>{
 teamId: number,
 hp:number,
@@ -604,7 +605,7 @@ objects =>
 ObjectId: number,
 state: number ; 1 - destroyed; 0 - not destroyed
 }
-
+}
 }
 ```
 ### Ошибки
