@@ -235,7 +235,11 @@ class Application
         $objectId = $params['objectId'];
         $state = $params['state'];
         if ($token && $objectId && ($state || $state === "0")) { 
-            return $this->game->setDestroyObject($token, $objectId, $state);
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->game->setDestroyObject($objectId, $state);
+            }
+            return ['error' => 1002];
         }
         return ['error' => 242];
     }
@@ -244,7 +248,11 @@ class Application
     {
         $token = $params['token'];
         if ($token) {
-            return $this->game->getObjects($token);
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->game->getObjects();
+            }
+            return ['error' => 1002];
         }
         return ['error' => 242];
     }

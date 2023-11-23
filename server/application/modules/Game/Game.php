@@ -40,37 +40,22 @@ class Game
 
     }
 
-    public function setDestroyObject($token, $objectId, $state) 
+    public function setDestroyObject($objectId, $state) 
     {
-        $user = $this->db->getUserByToken($token);
-        if ($user) {
-            $object = $this->db->getObjectById($objectId); 
-            if ($object) {
-                if ($state === 0 || $state === 1) {
-                    $this->db->setDestroyObject($objectId, $state);
-                    return true;
-                }
-                return ['error' => 801];
+        $object = $this->db->getObjectById($objectId); 
+        if ($object) {
+            if ($state === 0 || $state === 1) {
+                $this->db->setDestroyObject($objectId, $state);
+                return true;
             }
-            return ['error' => 800];
+            return ['error' => 801];
         }
-        return ['error' => 1002];
+        return ['error' => 800];
     }
 
-    public function getObjects($token)
+    public function getObjects()
     {
-        $user = $this->db->getUserByToken($token);
-        if ($user) {
-            $data = $this->db->getObjects();
-            $objects = [];
-            $i = 0;
-            foreach($data as $object) {
-                $objects[$i] = ['objectId' => $object['id'], 'state' => $object['state']];
-                $i++;
-            }
-            return $objects;
-        }
-        return ['error' => 1002];
+        return $this->db->getObjects();
     }
 
 }
