@@ -61,6 +61,7 @@ class Application
         return ['error' => 242];
     }
 
+
     function getMessages($params)
     {
         $token = $params['token'];
@@ -192,6 +193,34 @@ class Application
         }
         return ['error' => 242];
 
+    }
+
+    function setDestroyObject($params)
+    {
+        $token = $params['token'];
+        $objectId = $params['objectId'];
+        $state = $params['state'];
+        if ($token && $objectId && ($state || $state === "0")) { 
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->game->setDestroyObject($objectId, $state);
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
+    }
+
+    function getObjects($params)
+    {
+        $token = $params['token'];
+        if ($token) {
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->game->getObjects();
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
     }
 
     function sendCodeToResetPassword($params)

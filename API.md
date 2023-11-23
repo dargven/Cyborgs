@@ -60,6 +60,40 @@
     * [Параметры](#параметры-8)
     * [Успешной ответ](#успешной-ответ-1)
     * [Ошибки](#ошибки-8)
+  * [Метод setDestroyObject](#метод-setdestroyobject)
+    * [Адрес](#адрес-9)
+    * [Параметры](#параметры-9)
+    * [Успешной ответ](#успешной-ответ-2)
+    * [Ошибки](#ошибки-9)
+  * [Метод getObjects](#метод-getobjects)
+    * [Адрес](#адрес-10)
+    * [Описание](#описание)
+    * [Параметры](#параметры-10)
+    * [Успешный ответ](#успешный-ответ-6)
+  * [Метод setBullet](#метод-setbullet)
+    * [Описание](#описание-1)
+    * [Адрес](#адрес-11)
+    * [Параметры](#параметры-11)
+    * [Успешной ответ](#успешной-ответ-3)
+    * [Ошибки](#ошибки-10)
+  * [Метод getBullets](#метод-getbullets)
+    * [Описание](#описание-2)
+    * [Адрес](#адрес-12)
+    * [Параметры](#параметры-12)
+    * [Успешный ответ](#успешный-ответ-7)
+    * [Ошибки](#ошибки-11)
+  * [Метод getScene](#метод-getscene)
+    * [Описание](#описание-3)
+    * [Адрес](#адрес-13)
+    * [Параметры](#параметры-13)
+    * [Успешный ответ:](#успешный-ответ-8)
+    * [Ошибки](#ошибки-12)
+  * [Метод setPlayer](#метод-setplayer)
+    * [Описание](#описание-4)
+    * [Адрес](#адрес-14)
+    * [Параметры](#параметры-14)
+    * [Успешный ответ:](#успешный-ответ-9)
+    * [Ошибки](#ошибки-13)
 <!-- TOC -->
 
 ## Адрес домена
@@ -358,7 +392,7 @@ WrongAnswer(code:706, text : 'text message is empty')
 
 ```
 
-## Метод getMessage
+## Метод getMessages
 
 ### Описание метода
 
@@ -394,6 +428,221 @@ WrongAnswer(code:706, text : 'text message is empty')
 
 ```
 
+## Метод setDestroyObject
 
+### Адрес
 
+```/?method = setDestroyObject```
 
+### Параметры
+
+| Параметры | Тип    | Комментарий                            |
+|-----------|--------|----------------------------------------|
+| token     | string | Аутентификационный токен               |
+| objectId  | number | Уникальный id объекта                  |
+| state     | number | 1 или 0. 1-destroyed, 0 -not destroyed |
+
+### Успешной ответ
+
+```
+CorrectAnswer=>true;
+
+```
+
+### Ошибки
+
+```
+WrongAnswer(code:1002, text: 'error in auth user')
+WrongAnswer(code:800, text: 'not found object')
+WrongAnswer(code:801, text: 'unknown state')
+
+```
+
+## Метод getObjects
+
+### Адрес
+
+```/?method = getObjects```
+
+### Описание
+
+Возвращает состояние всех не статичных объектов на карте
+
+### Параметры
+
+| Параметры | Тип    | Комментарий              |
+|-----------|--------|--------------------------|
+| token     | string | Аутентификационный токен |
+
+### Успешный ответ
+
+```
+CorrectAnswer => data = {
+"objectId": number,
+"state": number
+}
+```
+### Ошибки
+
+```
+WrongAnswer(code:1002, text: 'error in auth user')
+
+```
+
+## Метод setBullet
+
+### Описание
+
+...
+
+### Адрес
+
+```/?method = setBullet```
+
+### Параметры
+
+| Параметры | Тип    | Комментарий              |
+|-----------|--------|--------------------------|
+| token     | string | Аутентификационный токен |
+| bulletId  | number | Уникальный id объекта    |
+| x         | number | Координата пули          |
+| y         | number | Координата пули          |
+| vx        | number | Координата пули          |
+| vy        | number | Координата пули          |
+
+### Успешной ответ
+
+```
+CorrectAnswer=>true;
+
+```
+
+### Ошибки
+
+```
+WrongAnswer(code:1002, text: 'error in auth user')
+WrongAnswer(code:9000, text: 'Unknown error')
+
+```
+
+## Метод getBullets
+
+### Описание
+
+Возвращает все пули на сцене
+
+### Адрес
+
+```/?method = getBullets```
+
+### Параметры
+
+| Параметры | Тип    | Комментарий              |
+|-----------|--------|--------------------------|
+| token     | string | Аутентификационный токен |
+
+### Успешный ответ
+
+```
+CorrectAnswer => data = {
+bulletId:number
+x       :number
+y       :number
+vx      :number
+vy      :number
+```
+
+### Ошибки
+
+```
+WrongAnswer(code:1002, text: 'error in auth user')
+WrongAnswer(code:9000, text: 'Unknown error')
+```
+
+## Метод getScene
+
+### Описание
+
+Метод возвращает все данные о сцене(см ниже)
+
+### Адрес
+
+```/?method = getScene```
+
+### Параметры
+
+| Параметры   | Тип    | Комментарий              |
+|-------------|--------|--------------------------|
+| token       | string | Аутентификационный токен |
+| bulletsHash | string | Хэш                      |
+| playersHash | string | Хэш                      |
+| objectsHash | string | Хэш                      |
+
+### Успешный ответ:
+
+```
+CorrectAnswer => data = 
+hashs => {
+bulletsHash: string,
+playersHash: string,
+objectsHash: string,
+},
+scene =>{
+players=>{
+teamId: number,
+hp:number,
+x:number,
+y:number,
+vx:number,
+vy:number,
+dx:number,
+dy:number
+},
+bullets =>{
+bulletId: number,
+x:number,
+y:number,
+vx:number,
+vy:number
+},
+objects =>
+{
+ObjectId: number,
+state: number ; 1 - destroyed; 0 - not destroyed
+}
+}
+}
+```
+### Ошибки
+
+## Метод setPlayer
+
+### Описание
+
+Метод возвращает все данные о сцене(см ниже)
+
+### Адрес
+
+```/?method = setPlayer```
+
+### Параметры
+
+| Параметры | Тип    | Комментарий              |
+|-----------|--------|--------------------------|
+| token     | string | Аутентификационный токен |
+| x         | number | Координаты               |
+| y         | number | Координаты               |
+| vx        | number | Координаты               |
+| vy        | number | Координаты               |
+| dx        | number | Координаты               |
+| dy        | number | Координаты               |
+
+### Успешный ответ:
+
+```
+CorrectAnswer => true;
+```
+### Ошибки
+```
+WrongAnswer(code:1002, text: 'error in auth user')
+```

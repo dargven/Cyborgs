@@ -2,6 +2,7 @@ import {useContext, useEffect, useRef, useState} from "react";
 import { ServerContext } from "../App";
 import { Navigate } from "react-router-dom";
 import md5 from 'md5-ts';
+import useEnterKeyHandler from "../hooks/useKeyHandler";
 import NavBar from "../components/navBar";
 import "../Auth.css";
 
@@ -32,25 +33,16 @@ const RegistrationPage = () => {
       }
     }
   };
+
+    useEnterKeyHandler(13,handleRegistration);
+
     const togglePasswordVisibility = () => {
       if (passwordRef.current) {
           passwordRef.current.type = showPassword ? 'password' : 'text';
           setShowPassword(!showPassword);
       }
     };
-    const KEY_ENTER = 13;
-  const handleKeyPress = (event: KeyboardEvent) => {
-    if (event.keyCode === KEY_ENTER) {
-      handleRegistration();
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyPress);
-    return () => {
-      document.removeEventListener("keydown", handleKeyPress);
-    };
-  });
-
+    
   return (
     <>
       <NavBar/>

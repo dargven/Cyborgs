@@ -5,12 +5,12 @@
 
 // dev2
 //
-// const DOMAIN = 'http://localhost';
+// const DOMAIN :string = 'http://localhost';
 // const PORT = 8888;
-// export const HOST = `${DOMAIN}:${PORT}`;
+// export const HOST :string = `${DOMAIN}:${PORT}`;
 
 // prod
-const DOMAIN = 'https://cyborgs-game.ru/server/index.php';
-// const DOMAIN = 'https://srv.cyborgs-game.ru/index.php';
+// const DOMAIN = 'https://cyborgs-game.ru/server/index.php';
+const DOMAIN = 'https://srv.cyborgs-game.ru/server/index.php';
 
 export const HOST = DOMAIN;

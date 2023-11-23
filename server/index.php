@@ -3,7 +3,6 @@ header('Content-Type: Application/json; charset = utf-8');
 header('Access-Control-Allow-Origin: *');
 require_once 'application/Answer.php';
 require_once 'application/Application.php';
-require_once __DIR__. '/vendor/autoload.php';
 function result($params) {
     $method = $params['method'];
     if ($method) {
@@ -20,6 +19,8 @@ function result($params) {
             case 'setSkin': return $app->setSkin($params);//работает для тех пользователей, кто добавлен в userSkins
             case 'sendMessage':return $app->sendMessage($params);//Работает
             case 'getMessages':return $app->getMessages($params);//Работает
+            case 'setDestroyObject': return $app->setDestroyObject($params);//работает
+            case 'getObjects': return $app->getObjects($params);//работает
             case 'sendCodeToResetPassword':return $app->sendCodeToResetPassword($params);// ->> need to test
             case 'getCodeToResetPassword':return $app->getCodeToResetPassword($params);// ->> need to test
             case 'setPasswordAfterReset':return $app->setPasswordAfterReset($params);// ->> need to test
