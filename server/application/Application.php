@@ -228,5 +228,24 @@ class Application
         return ['error' => 242];
     }
 
+    function setDestroyObject($params)
+    {
+        $token = $params['token'];
+        $objectId = $params['objectId'];
+        $state = $params['state'];
+        if ($token && $objectId && ($state || $state === "0")) { 
+            return $this->game->setDestroyObject($token, $objectId, $state);
+        }
+        return ['error' => 242];
+    }
+
+    function getObjects($params)
+    {
+        $token = $params['token'];
+        if ($token) {
+            return $this->game->getObjects($token);
+        }
+        return ['error' => 242];
+    }
 
 }

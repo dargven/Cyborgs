@@ -51,7 +51,7 @@ class User
     {
         $user = $this->db->getUserByToken($token);
         if ($user) {
-            $this->db->updateToken($user->id, '');
+            $this->db->updateToken($user->id, NULL);
             return true;
         }
         return ['error' => 1004];
