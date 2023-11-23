@@ -2,9 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { ServerContext } from "../App";
 import md5 from "md5-ts";
 import NavBar from "../components/navBar";
-import { Navigate } from "react-router-dom";
 import "../Auth.css";
-import useEnterKeyHandler from "../hooks/useKeyHandler";
 
 const PasswordRecovery = () => {
     const server = useContext(ServerContext);
@@ -21,7 +19,6 @@ const PasswordRecovery = () => {
         isButtonDisabled: false,
     });
 
-
     const Recovery = async () => {
         if (loginRef.current) {
             const login = loginRef.current.value;
@@ -35,8 +32,6 @@ const PasswordRecovery = () => {
             }
         }
     };
-
-    useEnterKeyHandler(13,Recovery);
 
     const startTimer = () => {
         setHideContent((prevState) => ({
@@ -112,48 +107,52 @@ const PasswordRecovery = () => {
             </div>
             <div className="content">
                 <h1> Восстановление пароля</h1>
-                
+
                 <div className="input-form">
-                {!hideContent.codeConfirm && (<>
-                    <input
-                        type="text"
-                        id="login"
-                        name="login"
-                        className="input"
-                        placeholder="Логин"
-                        ref={loginRef}
-                    />{hideContent.timeout && (
-                        <div className="timeout">
-                            Времени до повторной отправки кода: {timer} с
-                        </div>
-                    )}
-                    <button
-                        className="RecoveryButton"
-                        onClick={() => Recovery()}
-                        disabled={hideContent.isButtonDisabled}
-                    >
-                        Отправить код
-                    </button>
-                    </>
-                    )}
-                    {hideContent.recoveryPressed && !hideContent.codeConfirm && (
+                    {!hideContent.codeConfirm && (
                         <>
                             <input
                                 type="text"
-                                id="recoveryCode"
-                                name="recoveryCode"
-                                className="recoveryCode"
-                                placeholder="Код"
-                                ref={codeRef}
+                                id="login"
+                                name="login"
+                                className="input"
+                                placeholder="Логин"
+                                ref={loginRef}
                             />
+                            {hideContent.timeout && (
+                                <div className="timeout">
+                                    Времени до повторной отправки кода: {timer}{" "}
+                                    с
+                                </div>
+                            )}
                             <button
                                 className="RecoveryButton"
-                                onClick={() => SetCode()}
+                                onClick={() => Recovery()}
+                                disabled={hideContent.isButtonDisabled}
                             >
-                                Подтвердить
+                                Отправить код
                             </button>
                         </>
                     )}
+                    {hideContent.recoveryPressed &&
+                        !hideContent.codeConfirm && (
+                            <>
+                                <input
+                                    type="text"
+                                    id="recoveryCode"
+                                    name="recoveryCode"
+                                    className="recoveryCode"
+                                    placeholder="Код"
+                                    ref={codeRef}
+                                />
+                                <button
+                                    className="RecoveryButton"
+                                    onClick={() => SetCode()}
+                                >
+                                    Подтвердить
+                                </button>
+                            </>
+                        )}
                     {hideContent.codeConfirm && (
                         <>
                             <input

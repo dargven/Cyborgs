@@ -11,20 +11,11 @@ const GamePage = () => {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [team, setTeam] = useState<number>(0);
 
-    const handleKeyPress = (event: KeyboardEvent) => {
-        if (event.keyCode === KEY_ESC) {
-            setIsPopupVisible(!isPopupVisible);
-        }
-      };
+    const handleKeyPress = () => {
+        setIsPopupVisible(!isPopupVisible);
+    };
 
-      useKeyHandler(27)
-
-    useEffect(() => {
-        document.addEventListener("keydown", handleKeyPress);
-        return () => {
-            document.removeEventListener("keydown", handleKeyPress);
-        };
-    });
+    useKeyHandler(27, handleKeyPress);
 
     return (
         <div>
