@@ -2,9 +2,9 @@ import {useContext, useEffect, useRef, useState} from "react";
 import { ServerContext } from "../App";
 import { Navigate } from "react-router-dom";
 import md5 from 'md5-ts';
+import useEnterKeyHandler from "../hooks/useKeyHandler";
 import NavBar from "../components/navBar";
 import "../Auth.css";
-import useEnterKeyHandler from "../hooks/useKeyHandler";
 
 const openEyeIcon = process.env.PUBLIC_URL + '/assets/image/eye-open.png';
 const closeEyeIcon = process.env.PUBLIC_URL + '/assets/image/eye-close.png';
