@@ -65,3 +65,8 @@ export type TScene = {
     bullets: TBullet[];
     objects: TDestructible[];
 }
+
+export type TTeam = {
+    teamId: number,
+    token: string,
+}
