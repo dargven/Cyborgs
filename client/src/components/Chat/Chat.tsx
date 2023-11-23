@@ -2,18 +2,13 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { ServerContext } from "../../App";
 import useEnterKeyHandler from "../../hooks/useKeyHandler";
 import "./Chat.css";
-
-interface IMessage {
-    name: string;
-    message: string;
-    created: string;
-}
+import { TMessage } from "../../modules/Server/types";
 
 const Chat = () => {
     const chatRef = useRef<HTMLInputElement | null>(null);
     const server = useContext(ServerContext);
     let interval: NodeJS.Timer | null = null;
-    const [messages, setMessages] = useState<IMessage[]>([]);
+    const [messages, setMessages] = useState<TMessage[]>([]);
 
     const updateChat = async () => {
         const messagesFromServer = await server.getMessages();
