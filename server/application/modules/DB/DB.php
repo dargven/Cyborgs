@@ -161,6 +161,21 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 ", [$id, $x, $y, $vx, $vy]);
     }
 
+    public function getObjectById($id)
+    {
+        return $this->query("SELECT * FROM objects WHERE id=?", [$id]);
+    }
+
+    public function getObjects()
+    {
+        return $this->queryAll("SELECT id, state FROM objects");
+    }
+
+    public function setDestroyObject($objectId, $state)
+    {
+        $this->execute("UPDATE objects SET state=? WHERE id=?", [$state, $objectId]);
+    }
+
     public function getHashes()
     {
         return $this->query("SELECT * FROM game WHERE id=1");
