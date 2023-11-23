@@ -13,6 +13,7 @@ class Game
     {
         return $this->db->getPlayers();
     }
+
     public function setPlayer($id, $x, $y, $vx, $vy)
     {
         return $this->db->setPlayer($id, $x, $y, $vx, $vy);
@@ -40,9 +41,16 @@ class Game
 
     }
 
-    public function setDestroyObject($objectId, $state) 
+    public function getBullets()
     {
-        $object = $this->db->getObjectById($objectId); 
+        return $this->db->getBullets();
+
+
+    }
+
+    public function setDestroyObject($objectId, $state)
+    {
+        $object = $this->db->getObjectById($objectId);
         if ($object) {
             if ($state === 0 || $state === 1) {
                 $this->db->setDestroyObject($objectId, $state);
