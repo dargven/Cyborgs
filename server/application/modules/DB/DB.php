@@ -101,9 +101,9 @@ class DB
 
     public function getMessage()
     {
-        return $this->queryAll('SELECT u.name AS name, m.message AS message, DATE_FORMAT(m.created,'%H:%i') AS created 
+        return $this->queryAll("SELECT u.name AS name, m.message AS message, DATE_FORMAT(m.created,'%H:%i') AS created 
                                 FROM messages as m LEFT JOIN users as u on u.id = m.user_id 
-                                ORDER BY m.created DESC LIMIT 10');
+                                ORDER BY m.created DESC LIMIT 10");
     }
 
     public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
