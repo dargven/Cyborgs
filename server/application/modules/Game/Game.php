@@ -13,6 +13,7 @@ class Game
     {
         return $this->db->getPlayers();
     }
+
     public function setPlayer($id, $x, $y, $vx, $vy)
     {
         return $this->db->setPlayer($id, $x, $y, $vx, $vy);
@@ -42,7 +43,8 @@ class Game
 
     public function getBullets()
     {
-        $this->db->getBullets(); 
+        return $this->db->getBullets();
+
 
     }
 

@@ -86,7 +86,7 @@ class DB
 
     public function setPassword($id, $password)
     {
-        return $this->execute("UPDATE users  SET password =? WHERE id = ?", [$password, $id]);
+        return $this->execute("UPDATE users SET password =? WHERE id = ?", [$password, $id]);
     }
 
     public function addPlayerToTeam($id, $teamId)
@@ -103,12 +103,12 @@ class DB
     {
         return $this->queryAll("SELECT u.name AS name, m.message AS message, DATE_FORMAT(m.created,'%H:%i') AS created FROM messages as m LEFT JOIN 
     users as u on u.id = m.user_id 
-                              ORDER BY m.created DESC");
+                              ORDER BY m.created DESC LIMIT 10");
     }
 
     public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
     {
-        return $this->execute("INSERT INTO bullet (user_id, x, y, x1, y1, speed)
+        return $this->execute("INSERT INTO bullets (user_id, x, y, x1, y1, speed)
         VALUES (?,?,?,?,?,?)", [$user_id, $x, $y, $x1, $y1, $speed]);
     }
     
