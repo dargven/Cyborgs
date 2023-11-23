@@ -7,7 +7,6 @@ import "../TeamSelect.css";
 import useKeyHandler from "../hooks/useKeyHandler";
 
 const GamePage = () => {
-    const KEY_ESC = 27;
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [team, setTeam] = useState<number>(0);
 

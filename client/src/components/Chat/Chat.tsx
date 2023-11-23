@@ -9,6 +9,17 @@ const Chat = () => {
     const server = useContext(ServerContext);
     let interval: NodeJS.Timer | null = null;
     const [messages, setMessages] = useState<TMessage[]>([]);
+    
+    const userTime = (created: string) => {
+            const userTimezoneTimezone = new Date().getTimezoneOffset() / 60;
+            const serverTimezone = -3;
+            const resultTimezone = serverTimezone - userTimezoneTimezone;
+            const substr = created.split(":")[0];
+            const resultHour = resultTimezone + parseInt(substr);
+
+            return `${resultHour}:${created.split(":")[1]}`;
+    };
+
 
     const updateChat = async () => {
         const messagesFromServer = await server.getMessages();
@@ -43,7 +54,7 @@ const Chat = () => {
                             .reverse()
                             .map((msg) => (
                                 <p>
-                                    {msg.created} {msg.name}:{msg.message}
+                                    {userTime(msg.created)} {msg.name}:{msg.message}
                                 </p>
                             ))}
                     </div>
