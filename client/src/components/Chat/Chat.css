@@ -74,3 +74,8 @@
 .chat-form__input:focus{
 	outline: none;
 }
+
+#scroll {
+    height:4000px;
+    overflow:scroll;
+}

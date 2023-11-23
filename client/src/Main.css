@@ -31,6 +31,7 @@ body{
   font-size: 0.3em;
   width: 120%;
   color: none;
+  padding: 0;
   background: none;
   outline: none;
  border: none;
@@ -41,7 +42,7 @@ body{
   border-radius: 0;
   filter: contrast(30);
   border-color: #27CEE9;
-  box-shadow: inset 0px 0px 30px rgba(0, 0, 0);
+  box-shadow: inset 0px 0px 5dvw rgba(0, 0, 0);
   clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
 
 }

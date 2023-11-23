@@ -51,6 +51,7 @@ class User
     {
         $user = $this->db->getUserByToken($token);
         if ($user) {
+            $this->db->DeletePlayer($token);
             $this->db->updateToken($user->id, NULL);
             return true;
         }
@@ -127,5 +128,9 @@ class User
         return ['error' => 709];
     }
 
+    public function DeletePlayer($token)
+    {
+        return $this->db->DeletePlayer($token);
+    }
 
 }

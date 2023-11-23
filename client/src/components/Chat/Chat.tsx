@@ -56,7 +56,7 @@ const Chat = () => {
             <div className='chat'>
                 <div className="chat-messages">
                     <div className="chat-messages__content" id="messages">
-                        {messages.map(msg => (
+                        {messages.slice(0).reverse().map(msg => (
                             <p>{msg.created} {msg.name}:{msg.message}</p>
                         ))}
                     </div>
@@ -70,6 +70,7 @@ const Chat = () => {
             </div>
         </div>
     );
+    
 }
 
 export default Chat;

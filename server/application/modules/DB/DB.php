@@ -4,7 +4,6 @@ class DB
 {
     //сохраняет соединение с ДБ
     private $pdo;
-
     //вызов соединения с БД
     public function __construct()
     {
@@ -96,15 +95,15 @@ class DB
     }
 
     public function sendMessage($id, $message)
-    {
+    {   
         return $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
     }
 
     public function getMessage()
     {
-        return $this->queryAll('SELECT u.name AS name, m.message AS message, m.created AS created FROM messages as m LEFT JOIN 
-    users as u on u.id = m.user_id 
-                              ORDER BY m.created DESC');
+        return $this->queryAll("SELECT u.name AS name, m.message AS message, DATE_FORMAT(m.created,'%H:%i') AS created 
+                                FROM messages as m LEFT JOIN users as u on u.id = m.user_id 
+                                ORDER BY m.created DESC LIMIT 10");
     }
 
     public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
@@ -135,6 +134,12 @@ class DB
     public function setSkinInLobby($id, $skinId)
     {
         return $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
+    }
+
+    public function DeletePlayer($token)
+    {
+        return $this->execute("DELETE FROM players
+        WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
     // ЖАЛКАЯ ПАРОДИЯ //
     //Методы полностью переписаны по феншую, осталось их нормально протестить.
@@ -180,5 +185,8 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE game SET chat_hash=? WHERE id=1", [$hash]);
     }
+
+
+
 }
 
