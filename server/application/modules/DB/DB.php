@@ -101,15 +101,22 @@ class DB
 
     public function getMessage()
     {
-        return $this->queryAll("SELECT u.name AS name, m.message AS message, DATE_FORMAT(m.created,'%H:%i') AS created 
-                                FROM messages as m LEFT JOIN users as u on u.id = m.user_id 
-                                ORDER BY m.created DESC LIMIT 10");
+        return $this->queryAll('SELECT u.name AS name, m.message AS message, DATE_FORMAT(m.created,'%H:%i') AS created FROM messages as m LEFT JOIN 
+    users as u on u.id = m.user_id 
+                              ORDER BY m.created DESC');
     }
 
     public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
     {
         return $this->execute("INSERT INTO bullet (user_id, x, y, x1, y1, speed)
         VALUES (?,?,?,?,?,?)", [$user_id, $x, $y, $x1, $y1, $speed]);
+    }
+    
+    public function getBullets()
+    {
+        return $this->execute("SELECT  u.bullet_id AS bullet_id,u.user_id AS user_id, bullet.x AS x,bullet.y AS y,bullet.vx AS vx,bullet.vy AS vy
+        FROM bullets as bullet LEFT JOIN usersBullets as u on u.bullet_id = bullet.bullet_id
+        ORDER BY u.bullet_id");
     }
 
     public function DeleteBullet($id)
@@ -134,12 +141,6 @@ class DB
     public function setSkinInLobby($id, $skinId)
     {
         return $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
-    }
-
-    public function DeletePlayer($token)
-    {
-        return $this->execute("DELETE FROM players
-        WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
     // ЖАЛКАЯ ПАРОДИЯ //
     //Методы полностью переписаны по феншую, осталось их нормально протестить.
@@ -170,8 +171,5 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE game SET chat_hash=? WHERE id=1", [$hash]);
     }
-
-
-
 }
 

@@ -40,5 +40,11 @@ class Game
 
     }
 
+    public function getBullets()
+    {
+        $this->db->getBullets(); 
+
+    }
+
 
 }
