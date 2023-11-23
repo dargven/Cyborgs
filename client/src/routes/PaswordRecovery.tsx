@@ -126,7 +126,7 @@ const PasswordRecovery = () => {
                                 </div>
                             )}
                             <button
-                                className="RecoveryButton"
+                                className="PasswordRecovery"
                                 onClick={() => Recovery()}
                                 disabled={hideContent.isButtonDisabled}
                             >

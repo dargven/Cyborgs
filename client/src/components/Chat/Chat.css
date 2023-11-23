@@ -78,4 +78,14 @@
 #scroll {
     height:4000px;
     overflow:scroll;
+}.chat-messages::-webkit-scrollbar {
+    width: 10px;
 }
+
+.chat-messages::-webkit-scrollbar-thumb {
+	background:rgba(29, 124, 231, 0.541);
+    border-radius: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+	background:rgba(44, 44, 44, 0.7);}
