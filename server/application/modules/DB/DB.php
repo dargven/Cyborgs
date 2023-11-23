@@ -157,8 +157,7 @@ class DB
     public function setPlayer($id, $x, $y, $vx, $vy)
     {
         return $this->execute("INSERT INTO players (user_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) 
-ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy);
-", [$id, $x, $y, $vx, $vy]);
+                               ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy); ", [$id, $x, $y, $vx, $vy]);
     }
 
     public function getHashes()
@@ -171,7 +170,9 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
         $this->execute("UPDATE game SET chat_hash=? WHERE id=1", [$hash]);
     }
 
-
-
+    public function setBullet($BulletId, $x, $y, $vx, $vy) {
+        return $this->execute("INSERT INTO bullets (bullet_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) 
+                               ON DUPLICATE KEY UPDATE x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy); ", [$BulletId, $x, $y, $vx, $vy]);
+    }
 }
 

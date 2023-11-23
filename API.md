@@ -516,7 +516,7 @@ CorrectAnswer=>true;
 
 ```
 WrongAnswer(code:1002, text: 'error in auth user')
-WrongAnswer(code:9000, text: 'Unknown error')
+WrongAnswer(code:242, text: 'params not set fully')
 
 ```
 

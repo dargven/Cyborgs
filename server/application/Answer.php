@@ -5,7 +5,7 @@ class Answer
     static $CODES = array(
         '101' => 'param method not setted',
         '102' => 'method not found',
-        '242' => 'params not set fully ',
+        '242' => 'params not set fully',
         '404' => 'not found',
         '555' => 'Is it Polygon?',
         '605' => ' In selected team more gamers than in the other. Please, select other team ',

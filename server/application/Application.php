@@ -229,5 +229,22 @@ class Application
         return ['error' => 242];
     }
 
+    function setBullet($params) {
+        $token = $params['token'];
+        $bulletId = $params['bulletId'];
+        $x = $params['x'];
+        $y = $params['y'];
+        $vx = $params['vx'];
+        $vy = $params['vy'];
+        if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0) && ($vy || $vy == 0)) {
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->game->setBullet($user->id, $x, $y, $vx, $vy);
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
+    }
+
 
 }

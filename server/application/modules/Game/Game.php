@@ -18,7 +18,7 @@ class Game
         return $this->db->setPlayer($id, $x, $y, $vx, $vy);
     }
 
-    public function getSkins($id)
+    /*public function getSkins($id)
     {
         $skins = $this->db->getSkins($id);
         if ($skins) {
@@ -31,14 +31,16 @@ class Game
             ];
         }
         return ['error' => 700];
-    }
+    }*/
 
 
-    public function setSkin($id, $skinId)
+    /*public function setSkin($id, $skinId)
     {
         $this->db->setSkin($id, $skinId); // Потребуется дополнительная проверка, если будут ещё какие-то скины
 
+    }*/
+
+    public function setBullet($id, $x, $y, $vx, $vy ) {
+        return $this->db->setBullet($id, $x, $y, $vx, $vy);
     }
-
-
 }
