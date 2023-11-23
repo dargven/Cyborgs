@@ -81,9 +81,7 @@ const PasswordRecovery = () => {
             const password2 = newPasswordRef2.current.value;
             if (password1 == password2) {
                 const hash = md5(login + password1);
-                const passwordChanged = await server.setPasswordAfterReset(
-                    hash
-                );
+                const passwordChanged = await server.setPasswordAfterReset(hash);
                 if (passwordChanged) {
                     setHideContent((prevState) => ({
                         ...prevState,
@@ -118,6 +116,7 @@ const PasswordRecovery = () => {
                                 className="input"
                                 placeholder="Логин"
                                 ref={loginRef}
+                                disabled={hideContent.recoveryPressed}
                             />
                             {hideContent.timeout && (
                                 <div className="timeout">
@@ -157,7 +156,7 @@ const PasswordRecovery = () => {
                         <>
                             <input
                                 type="password"
-                                id="password"
+                                id="password1"
                                 name="password"
                                 className="password"
                                 placeholder="Новый пароль"
@@ -165,7 +164,7 @@ const PasswordRecovery = () => {
                             />
                             <input
                                 type="password"
-                                id="password"
+                                id="password2"
                                 name="password"
                                 className="password"
                                 placeholder="Повторите пароль"
