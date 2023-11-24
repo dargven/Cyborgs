@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import {useContext, useState, useEffect } from "react";
+import {ServerContext} from "../App";
 import Game from "../components/Game/Game";
 import NavButton from "../components/navButton";
 import Chat from "../components/Chat/Chat";
@@ -6,6 +7,7 @@ import "../popUpMenu.css";
 import "../TeamSelect.css";
 
 const GamePage = () => {
+    const server = useContext(ServerContext);
     const KEY_ESC = 27;
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [team, setTeam] = useState<number>(0);
@@ -14,6 +16,13 @@ const GamePage = () => {
             setIsPopupVisible(!isPopupVisible);
         }
       };
+
+    const handleTeam = async (teamId: number) => {
+        const STeam = await server.selectTeam(teamId)
+        if(STeam) {
+            setTeam(teamId)
+        }
+    }
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyPress);
@@ -28,10 +37,10 @@ const GamePage = () => {
                 <Game />
             ) : (
                 <>
-                    <button onClick={() => setTeam(1)} className="Team1">
+                    <button onClick={() => handleTeam(1)} className="Team1">
                         команда 1
                     </button>
-                    <button onClick={() => setTeam(2)} className="Team2">
+                    <button onClick={() => handleTeam(2)} className="Team2">
                         команда 2
                     </button>
                 </>

@@ -1,18 +1,13 @@
-import { useKeyboardControls } from "@react-three/drei";
+import { SpriteAnimator, useKeyboardControls } from "@react-three/drei";
 import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
-import { useFrame, useThree } from "@react-three/fiber";
-import { Laser } from "../../modules/Game/entities";
-import { Animator } from "./sprites/Animator";
-import { IZonePlayer } from "./Zone";
-import { ServerContext } from "../../App";
+import { useFrame } from "@react-three/fiber";
 
 interface IPlayerProps {
     id?: number;
     token: string;
-    username?: string;
     position?: Vector3;
     velocity?: Vector3;
     team: number;
@@ -23,7 +18,7 @@ interface IPlayerProps {
     getPosVel?(position: Vector3, velocity: Vector3): void;
 }
 
-const Player = ({ velocity = new Vector3(), id, username, position, team, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token }: IPlayerProps) => {
+const Player = ({ velocity = new Vector3(), id,  position, team, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token }: IPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
@@ -112,20 +107,6 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
                 }
             }
 
-            // стрельба проджектайлами и хитсканом должна быть прописана на одно и то же нажатие, что именно полетит - зависит от выбора в инвентаре
-
-            if (hitscan) {
-                // const aimingPoint = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
-                // aimingPoint.setLength(5);
-                // aimingPoint.x += playerPosition.x;
-                // aimingPoint.y += playerPosition.y;
-                // const laser = new Laser(
-                //     playerPosition,
-                //     aimingPoint,
-                //     `${1337}-${Date.now()}`
-                // )
-                // setLasers((lasers) => [...lasers, laser])
-            }
         } else {
             movementController();
         }
@@ -134,8 +115,6 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
     const [hp, setHp] = useState<number>(100);
 
     useEffect(() => {
-        // setPos(ref.current.translation() as Vector3);
-        // setVel(ref.current.linvel() as Vector3);
         const data = {
             type: 'player',
             team: team,
@@ -148,18 +127,6 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
         }
     }, [hp, id, team]);
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => { // апдейт очков должен происходить раз в секунду, кроме тех случаев, когда игрок выходит из зоны
-    //         if (setPlayers) {
-    //             setPlayers(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
-    //         }
-    //     }, 1000);
-
-    //     return () => {
-    //         clearInterval(interval);
-    //     }
-    // });
-
     return (
         <>
             <RigidBody
@@ -171,18 +138,16 @@ const Player = ({ velocity = new Vector3(), id, username, position, team, onFire
                 linearDamping={10}
                 angularDamping={1}
                 lockRotations
-            // type={isControlled ? "dynamic" : "kinematicPosition"}
             >
 
-                <Animator
-                    fps={3}
+                <SpriteAnimator
+                    fps={2}
                     startFrame={0}
                     loop={true}
                     autoPlay={true}
                     textureImageURL={'./assets/test/Sprite-0001.png'}
                     textureDataURL={'./assets/test/Sprite-0001.json'}
                     alphaTest={0.01}
-                // pause={}
                 />
 
                 <BallCollider args={[0.5]} restitution={0}
