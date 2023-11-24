@@ -7,6 +7,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Laser } from "../../modules/Game/entities";
 import { Animator } from "./sprites/Animator";
 import { IZonePlayer } from "./Zone";
+import CrossHair from "./CustomCursor/Crosshair";
 
 interface IPlayerProps {
     id?: number;
@@ -156,6 +157,8 @@ const Player = ({ id, username, position, team, onFire, onMovement, setWeaponSlo
                 lockRotations
             // userData={data}
             >
+
+            
 
                 <Animator
                     fps={3}

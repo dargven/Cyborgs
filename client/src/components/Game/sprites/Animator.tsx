@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useFrame, useThree, Vector3 } from '@react-three/fiber'
 import * as THREE from 'three'
+import MakeSprite from '../MakeSprite'
 
 export type TAnimatorProps = {
     startFrame?: number
@@ -53,7 +54,7 @@ export const Animator: React.FC<TAnimatorProps> = (
     const spriteData = React.useRef<any>(null)
     const [isJsonReady, setJsonReady] = React.useState(false)
     const matRef = React.useRef<any>()
-    const spriteRef = React.useRef<any>()
+    //const spriteRef = React.useRef<any>()
     const timerOffset = React.useRef(window.performance.now())
     const textureData = React.useRef<any>()
     const currentFrame = React.useRef<number>(startFrame || 0)
@@ -328,7 +329,7 @@ export const Animator: React.FC<TAnimatorProps> = (
     return (
         <group {...props}>
             <React.Suspense fallback={null}>
-                <sprite ref={spriteRef} scale={aspect}>
+                <sprite scale={aspect} >
                     <spriteMaterial
                         ref={matRef}
                         map={spriteTexture}

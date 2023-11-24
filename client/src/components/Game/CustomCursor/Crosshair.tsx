@@ -1,16 +1,16 @@
-import { TextureLoader } from "three";
 import useMousePosition from "./MousePos"
-import MakeSprite from "../MakeSprite";
+import { Animator } from "../sprites/Animator";
 
 const CrossHair = () =>{
-    const {x,y} = useMousePosition();
-    const textureLoader = new TextureLoader();
-    const CursorTexture = textureLoader.load('./assets/crosshair.png')
-    
-    return (
-        <group position={[x,y,0.5]}>
-          <MakeSprite texture={CursorTexture}/>
-        </group>
-    );
+  const {x,y} = useMousePosition();
+  console.log(x,y);
+  return (
+      <>
+        <Animator
+          position={[x,y,0]}
+          textureImageURL={'./assets/crosshair.png'}
+        />
+      </>
+  );
 };
-export default CrossHair
+export default CrossHair;
