@@ -88,7 +88,8 @@ class User
             $id = $_SESSION['idUser'];
             if ($_SESSION['rndCode'] == $code) {
                 $this->sendWarningOfAttemptResetPassword();
-                return $this->db->setPassword($id, '');
+                $this->db->setPassword($id, '');
+                return true;
             }
             return ['error' => 708]; // invalid code from e-mail;
         }
@@ -102,7 +103,8 @@ class User
         if (isset($_SESSION['idUser'])) {
             $id = $_SESSION['idUser'];
             $this->sendWarningOfReplacePassword();
-            return $this->db->setPassword($id, $hash);
+            $this->db->setPassword($id, $hash);
+            return true;
         }
         return ['error' => 709];// 709'=>'session did not start
         // or you need use previous method',
