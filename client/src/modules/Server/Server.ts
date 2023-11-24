@@ -1,5 +1,6 @@
 import { Store } from "../Store/Store";
 import { TGetMessages, TUser, TMessages, TMessage } from "./types";
+import ErrorNotification from "../../components/erornotification";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
@@ -7,7 +8,7 @@ export default class Server {
     private HOST: string;
     private store: Store;
     private token: string | null;
-    private chatHash: string = '123';
+    private chatHash: string = "123";
 
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
@@ -28,19 +29,8 @@ export default class Server {
             if (answer.result === "ok") {
                 return answer.data;
             }
-            const errorContainer = document.createElement("div");
-            errorContainer.remove();
-            errorContainer.style.color = "red";
-            errorContainer.textContent = `${answer["error"]["text"]}`;
-            document.body.appendChild(errorContainer);
-            setTimeout(function () {
-                if (errorContainer) {
-                    errorContainer.remove();
-                }
-            }, 2000);
-            console.log(
-                `Ошибка: ${answer["error"]["code"]}, text: ${answer["error"]["text"]}`
-            );
+            ErrorNotification(`Ошибка:${answer["error"]["text"]}`);
+
             return null;
         } catch (e) {
             return null;
@@ -69,15 +59,17 @@ export default class Server {
     }
 
     async resetPasswordByEmail(login: string): Promise<boolean | null> {
-        return await this.request<boolean>("sendCodeToResetPassword", { login });
+        return await this.request<boolean>("sendCodeToResetPassword", {
+            login,
+        });
     }
 
-    async getCodeToResetPassword(code: string): Promise <boolean | null> {
-        return await this.request<boolean>("getCodeToResetPassword", { code }) 
+    async getCodeToResetPassword(code: string): Promise<boolean | null> {
+        return await this.request<boolean>("getCodeToResetPassword", { code });
     }
 
-    async setPasswordAfterReset(hash: string): Promise <boolean | null> {
-        return await this.request<boolean>("setPasswordAfterReset", { hash })
+    async setPasswordAfterReset(hash: string): Promise<boolean | null> {
+        return await this.request<boolean>("setPasswordAfterReset", { hash });
     }
 
     sendMessage(message: string): Promise<TMessage | null> {
@@ -90,7 +82,7 @@ export default class Server {
     async getMessages(): Promise<TMessages | null> {
         const result = await this.request<TGetMessages>("getMessages", {
             token: this.token,
-            hash: this.chatHash
+            hash: this.chatHash,
         });
         if (result?.hash) {
             this.chatHash = result.hash;
