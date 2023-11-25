@@ -1,6 +1,6 @@
 import { Store } from "../Store/Store";
 import { TGetMessages, TUser, TMessages, TMessage } from "./types";
-import ErrorNotification from "../../components/erornotification";
+import { error } from "console";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
@@ -9,11 +9,13 @@ export default class Server {
     private store: Store;
     private token: string | null;
     private chatHash: string = "123";
+    public error: any;
 
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
         this.store = store;
         this.token = null;
+        this.error = null;
     }
 
     async request<T>(method: string, params: any = {}): Promise<T | null> {
@@ -29,8 +31,7 @@ export default class Server {
             if (answer.result === "ok") {
                 return answer.data;
             }
-            ErrorNotification(`Ошибка:${answer["error"]["text"]}`);
-
+            this.error = answer.error;
             return null;
         } catch (e) {
             return null;

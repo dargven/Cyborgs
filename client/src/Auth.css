@@ -192,6 +192,9 @@ h1 {
 .App-link {
     color: #61dafb;
 }
+.errorDiv {
+    color: red;
+}
 
 @font-face {
     font-family: Zelek;

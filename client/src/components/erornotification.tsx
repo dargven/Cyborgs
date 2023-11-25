@@ -1,12 +1,11 @@
+import { useContext, useEffect, useRef, useState } from "react";
+import { ServerContext } from "../App";
 import "./erore.css";
-function ErrorNotification(message: string) {
-    const notification = document.createElement("div");
-    notification.className = "error-notification";
-    notification.textContent = message;
-    document.body.appendChild(notification);
 
-    setTimeout(() => {
-        document.body.removeChild(notification);
-    }, 1000);
-}
+const ErrorNotification = async () => {
+    const server = useContext(ServerContext);
+    const error = await server.request;
+    //     if(error==="ok"){
+    // };
+};
 export default ErrorNotification;
