@@ -5,6 +5,7 @@ import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import NavButton from "../components/navButton";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
+import useError from "../hooks/useError";
 import { Ref } from "react";
 
 const openEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-open.png";
@@ -26,10 +27,9 @@ const LoginPage = () => {
             const user = await server.login(login, hash, rnd);
             if (user) {
                 setLoginSuccess(true);
-            } else {
-                errorRef.current!.innerHTML = `${server.error.text}`;
-                console.log();
             }
+            errorRef.current!.innerText = `${server.error.text}`;
+            console.log(errorRef);
         }
     };
 

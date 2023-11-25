@@ -1,5 +1,5 @@
 import { Store } from "../Store/Store";
-import { TGetMessages, TUser, TMessages, TMessage } from "./types";
+import { TGetMessages, TUser, TMessages, TMessage, TError } from "./types";
 import { error } from "console";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
@@ -9,13 +9,13 @@ export default class Server {
     private store: Store;
     private token: string | null;
     private chatHash: string = "123";
-    public error: any;
+    public error: TError;
 
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
         this.store = store;
         this.token = null;
-        this.error = null;
+        this.error = { code: 202, text: "" };
     }
 
     async request<T>(method: string, params: any = {}): Promise<T | null> {
