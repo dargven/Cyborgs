@@ -1,6 +1,7 @@
 import { TError } from "../modules/Server/types";
 const getError = (error: TError) => {
     let errorMesage = "";
+    console.log(error.text);
     switch (error.code) {
         case 101:
             errorMesage = "Param method not set";
