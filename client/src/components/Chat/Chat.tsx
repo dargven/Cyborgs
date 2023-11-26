@@ -1,14 +1,13 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { ServerContext } from "../../App";
+import {useContext, useEffect, useRef, useState} from "react";
+import {ServerContext} from "../../App";
 import useEnterKeyHandler from "../../hooks/useKeyHandler";
 import getError from "../../hooks/getError";
-import { Ref } from "react";
 import "./Chat.css";
-import { TMessage } from "../../modules/Server/types";
-import { error } from "console";
-import { useNavigate } from "react-router-dom";
+import {TMessage} from "../../modules/Server/types";
+import {useNavigate} from "react-router-dom";
 
-const Chat = () => {    const chatMessagesRef = useRef<HTMLDivElement | null>(null);
+const Chat = () => {
+    const chatMessagesRef = useRef<HTMLDivElement | null>(null);
 
     const chatRef = useRef<HTMLInputElement | null>(null);
     const errorRef = useRef<HTMLDivElement | null>(null);
@@ -65,17 +64,17 @@ const Chat = () => {    const chatMessagesRef = useRef<HTMLDivElement | null>(nu
     return (
         <div className="chatComponent">
             <div className="chat">
-            <div className="chat-messages" ref={chatMessagesRef}>
+                <div className="chat-messages" ref={chatMessagesRef}>
                     <div className="chat-messages__content" id="messages">
                         {messages
                             .slice(0)
                             .reverse()
                             .map((msg) => (
                                 <p className="chat-message">
-        <span className="timestamp">{userTime(msg.created)}</span>
-        <span className="name">{msg.name}:</span>
-        <span className="message">{msg.message}</span>
-      </p>
+                                    <span className="timestamp">{userTime(msg.created)}</span>
+                                    <span className="name">{msg.name}:</span>
+                                    <span className="message">{msg.message}</span>
+                                </p>
                             ))}
                     </div>
                 </div>

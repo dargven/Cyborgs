@@ -1,4 +1,4 @@
-import { TError } from "../modules/Server/types";
+import {TError} from "../modules/Server/types";
 
 const getError = (error: TError) => {
     let errorMessage = "";

@@ -1,6 +1,5 @@
-import { Store } from "../Store/Store";
-import { TGetMessages, TUser, TMessages, TMessage, TError } from "./types";
-import { error } from "console";
+import {Store} from "../Store/Store";
+import {TError, TGetMessages, TMessage, TMessages, TUser} from "./types";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
@@ -15,7 +14,7 @@ export default class Server {
         this.HOST = HOST;
         this.store = store;
         this.token = null;
-        this.error = { code: 202, text: " " };
+        this.error = {code: 202, text: " "};
     }
 
     async request<T>(method: string, params: any = {}): Promise<T | null> {
@@ -43,7 +42,7 @@ export default class Server {
         hash: string,
         rnd: number
     ): Promise<TUser | null> {
-        const result = await this.request<TUser>("login", { login, hash, rnd });
+        const result = await this.request<TUser>("login", {login, hash, rnd});
         if (result?.token) {
             this.token = result.token;
             this.store.setUser(login, this.token);
@@ -66,11 +65,11 @@ export default class Server {
     }
 
     async getCodeToResetPassword(code: string): Promise<boolean | null> {
-        return await this.request<boolean>("getCodeToResetPassword", { code });
+        return await this.request<boolean>("getCodeToResetPassword", {code});
     }
 
     async setPasswordAfterReset(hash: string): Promise<boolean | null> {
-        return await this.request<boolean>("setPasswordAfterReset", { hash });
+        return await this.request<boolean>("setPasswordAfterReset", {hash});
     }
 
     sendMessage(message: string): Promise<TMessage | null> {
@@ -98,6 +97,6 @@ export default class Server {
         name: string,
         email: string
     ): Promise<TUser | null> {
-        return this.request<TUser>("register", { login, hash, name, email });
+        return this.request<TUser>("register", {login, hash, name, email});
     }
 }

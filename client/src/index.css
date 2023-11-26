@@ -17,5 +17,5 @@ canvas {
     width: 100vw;
     max-height: 0;
     min-height: 100vh;
-    display:flow-root;
+    display: flow-root;
 }

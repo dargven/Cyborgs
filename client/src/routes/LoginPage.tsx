@@ -1,12 +1,11 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { ServerContext } from "../App";
-import { Navigate } from "react-router-dom";
+import {useContext, useRef, useState} from "react";
+import {ServerContext} from "../App";
+import {Navigate} from "react-router-dom";
 import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import NavButton from "../components/navButton";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
 import getError from "../hooks/getError";
-import { Ref } from "react";
 
 const openEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-open.png";
 const closeEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-close.png";
@@ -43,9 +42,9 @@ const LoginPage = () => {
 
     return (
         <>
-            <NavBar />
+            <NavBar/>
             <div className="title">
-                КИБОРГИ <br /> ТЕПЕРЬ В 2D
+                КИБОРГИ <br/> ТЕПЕРЬ В 2D
             </div>
             <div className="content">
                 <h1>Вход</h1>
@@ -90,7 +89,7 @@ const LoginPage = () => {
                     </button>
                 </div>
 
-                {loginSuccess ? <Navigate to="/main" replace={true} /> : null}
+                {loginSuccess ? <Navigate to="/main" replace={true}/> : null}
             </div>
         </>
     );

@@ -1,9 +1,9 @@
-import { useContext } from 'react';
-import { Navigate, Outlet } from "react-router-dom";
-import { StoreContext } from '../App';
+import {useContext} from 'react';
+import {Navigate, Outlet} from "react-router-dom";
+import {StoreContext} from '../App';
 
 const PrivateRoute = () => {
-    
+
     const store = useContext(StoreContext);
 
     return (
