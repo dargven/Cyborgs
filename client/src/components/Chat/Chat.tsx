@@ -59,9 +59,11 @@ const Chat = () => {    const chatMessagesRef = useRef<HTMLDivElement | null>(nu
                             .slice(0)
                             .reverse()
                             .map((msg) => (
-                                <p>
-                                    {userTime(msg.created)} {msg.name}:{msg.message}
-                                </p>
+                                <p className="chat-message">
+        <span className="timestamp">{userTime(msg.created)}</span>
+        <span className="name">{msg.name}:</span>
+        <span className="message">{msg.message}</span>
+      </p>
                             ))}
                     </div>
                 </div>
