@@ -87,7 +87,7 @@ class Application
             }
             return ['error' => 1002];
         }
-        return ['error' => 242];
+        return ['error' => 706];
     }
 
 
