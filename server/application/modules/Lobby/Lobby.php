@@ -11,25 +11,24 @@ class Lobby
 
     public function selectTeam($id, $teamId)
     {
-        return $this->db->addPlayerToTeam($id, $teamId);
-
+        $this->db->addPlayerToTeam($id, $teamId);
+        return true;
     }
 
     public function getTeamsInfo()
     {
         return $this->db->getTeamsInfo();
-
     }
 
     public function getSkins()
     {
         return $this->db->getSkinsInLobby();
-
     }
 
     public function setSkin($id, $skinId)
     {
-        return $this->db->setSkinInLobby($id, $skinId);
+        $this->db->setSkinInLobby($id, $skinId);
+        return true;
     }
 
 

@@ -16,7 +16,8 @@ class Game
 
     public function setPlayer($id, $x, $y, $vx, $vy)
     {
-        return $this->db->setPlayer($id, $x, $y, $vx, $vy);
+        $this->db->setPlayer($id, $x, $y, $vx, $vy);
+        return true;
     }
 
     public function getSkins($id)
@@ -38,7 +39,7 @@ class Game
     public function setSkin($id, $skinId)
     {
         $this->db->setSkin($id, $skinId); // Потребуется дополнительная проверка, если будут ещё какие-то скины
-
+        return true;
     }
 
     public function getBullets()
