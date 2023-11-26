@@ -28,6 +28,7 @@ export default class Server {
             const res = await fetch(`${this.HOST}/?method=${method}&${str}`);
             const answer = await res.json();
             if (answer.result === "ok") {
+                this.error.code = 202;
                 return answer.data;
             }
             this.error = answer.error;
