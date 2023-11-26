@@ -1,10 +1,11 @@
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useRef, useState} from "react";
 import {ServerContext} from "../App";
 import {Navigate} from "react-router-dom";
 import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import NavButton from "../components/navButton";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
+import getError from "../hooks/getError";
 
 const openEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-open.png";
 const closeEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-close.png";
@@ -13,6 +14,7 @@ const LoginPage = () => {
     const server = useContext(ServerContext);
     const loginRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
+    const errorRef = useRef<HTMLDivElement | null>(null);
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
@@ -25,10 +27,11 @@ const LoginPage = () => {
             if (user) {
                 setLoginSuccess(true);
             }
+            errorRef.current!.innerText = `${getError(server.error)}`;
         }
     };
 
-    useEnterKeyHandler(13,handleLogin);
+    useEnterKeyHandler(13, handleLogin);
 
     const togglePasswordVisibility = () => {
         if (passwordRef.current) {
@@ -73,6 +76,7 @@ const LoginPage = () => {
                             />
                         </button>
                     </div>
+                    <div ref={errorRef} className="errorDiv"></div>
                     <div className="PasswordRecovery">
                         <NavButton
                             to="/PaswordRecovery"
@@ -83,7 +87,6 @@ const LoginPage = () => {
                     <button onClick={() => handleLogin()}>
                         <h1>Войти</h1>
                     </button>
-                    
                 </div>
 
                 {loginSuccess ? <Navigate to="/main" replace={true}/> : null}

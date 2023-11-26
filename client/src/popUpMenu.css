@@ -14,8 +14,8 @@
     width: 50dvw;
     height: 8dvh;
     padding: 1dvw;
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     border-radius: 2dvh;
     background-color: rgba(27, 43, 43, 0.8);
 }
@@ -23,21 +23,22 @@
 .popUpBtn {
     font-family: Zelek;
     text-align: center;
-    height:60%;
+    height: 60%;
     width: 60%;
     font-size: 1.5dvw;
     color: #27CEE9;
     background: none;
     outline: none;
-    border: none;margin: 1dvw;
+    border: none;
+    margin: 1dvw;
 }
 
-.popUpBtn:hover{
+.popUpBtn:hover {
     color: #27CEE9;
     border-width: 0.6dvh 0.6dvh;
     border-radius: 0;
     filter: contrast(30);
     border-color: #27CEE9;
     box-shadow: inset 0px 0px 2dvw rgba(0, 0, 0);
-    clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0); 
+    clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
 }

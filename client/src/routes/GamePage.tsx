@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {useState} from "react";
 import Game from "../components/Game/Game";
 import NavButton from "../components/navButton";
 import Chat from "../components/Chat/Chat";
@@ -19,7 +19,7 @@ const GamePage = () => {
     return (
         <div>
             {team ? (
-                <Game />
+                <Game/>
             ) : (
                 <>
                     <button onClick={() => setTeam(1)} className="Team1">
@@ -30,7 +30,7 @@ const GamePage = () => {
                     </button>
                 </>
             )}
-            <Chat />
+            <Chat/>
             {isPopupVisible && (
                 <div
                     className="popUpMenu"

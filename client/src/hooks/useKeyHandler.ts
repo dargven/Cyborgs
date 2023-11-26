@@ -1,14 +1,13 @@
-import { useEffect, useCallback } from 'react';
+import {useCallback, useEffect} from 'react';
 
 const useKeyHandler = (key: number, callback?: () => void) => {
 
     const handleKeyPress = useCallback(
         (event: KeyboardEvent) => {
             if (event.keyCode === key) {
-                if (callback == undefined){
+                if (callback == undefined) {
                     return null;
-                }
-                else
+                } else
                     callback();
             }
         },
