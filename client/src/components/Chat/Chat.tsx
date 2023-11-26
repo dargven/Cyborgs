@@ -4,7 +4,8 @@ import useEnterKeyHandler from "../../hooks/useKeyHandler";
 import "./Chat.css";
 import { TMessage } from "../../modules/Server/types";
 
-const Chat = () => {
+const Chat = () => {    const chatMessagesRef = useRef<HTMLDivElement | null>(null);
+
     const chatRef = useRef<HTMLInputElement | null>(null);
     const server = useContext(ServerContext);
     let interval: NodeJS.Timer | null = null;
@@ -35,7 +36,12 @@ const Chat = () => {
             clearInterval(interval);
         };
     }, []);
-
+    useEffect(() => {
+        // Scroll to the top of the chat messages when messages change
+        if (chatMessagesRef.current) {
+            chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+        }
+    }, [messages]);
     const handleChat = async () => {
         if (chatRef.current?.value) {
             await server.sendMessage(chatRef.current?.value);
@@ -47,15 +53,17 @@ const Chat = () => {
     return (
         <div className="chatComponent">
             <div className="chat">
-                <div className="chat-messages">
+            <div className="chat-messages" ref={chatMessagesRef}>
                     <div className="chat-messages__content" id="messages">
                         {messages
                             .slice(0)
                             .reverse()
                             .map((msg) => (
-                                <p>
-                                    {userTime(msg.created)} {msg.name}:{msg.message}
-                                </p>
+                                <p className="chat-message">
+        <span className="timestamp">{userTime(msg.created)}</span>
+        <span className="name">{msg.name}:</span>
+        <span className="message">{msg.message}</span>
+      </p>
                             ))}
                     </div>
                 </div>
