@@ -7,8 +7,7 @@ body{
   -webkit-background-size: cover;
   background-size: cover;
   background-attachment: fixed;
-  background-image: url("../public/assets/image/giff23.gif");
-  max-zoom: 50%;
+  background-image: url("../public/assets/image/giff23.gif");  max-zoom: 50%;
 }
 
 .Main {
