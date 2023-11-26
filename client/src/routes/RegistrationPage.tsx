@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import md5 from "md5-ts";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
 import NavBar from "../components/navBar";
-import getError from "../hooks/useError";
+import getError from "../hooks/getError";
 import { Ref } from "react";
 import "../Auth.css";
 

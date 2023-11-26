@@ -92,7 +92,7 @@ export default class Server {
         return null;
     }
 
-    register(
+   async register(
         login: string,
         hash: string,
         name: string,

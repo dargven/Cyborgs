@@ -3,11 +3,9 @@
 class Answer
 {
     static $CODES = array(
-        '101' => 'param method not setted',
         '102' => 'method not found',
         '242' => 'params not set fully ',
         '404' => 'not found',
-        '555' => 'Is it Polygon?',
         '605' => ' In selected team more gamers than in the other. Please, select other team ',
         '700' => 'No skins',
         '701' => 'Skin is not found',
@@ -18,7 +16,6 @@ class Answer
         '709'=>'session did not start or you need use previous method',
         '800' => 'not found object',
         '801' => 'unknown state',
-        '999' => 'Is it Triangle?',
         '1001' => 'params login or password not set',
         '1002' => 'error in auth user',
         '1003' => 'Is it unique login?',

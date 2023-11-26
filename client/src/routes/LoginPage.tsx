@@ -5,7 +5,7 @@ import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import NavButton from "../components/navButton";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
-import getError from "../hooks/useError";
+import getError from "../hooks/getError";
 import { Ref } from "react";
 
 const openEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-open.png";
