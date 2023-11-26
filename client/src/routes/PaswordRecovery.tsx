@@ -2,12 +2,15 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { ServerContext } from "../App";
 import md5 from "md5-ts";
 import NavBar from "../components/navBar";
+import getError from "../hooks/getError";
+import { Ref } from "react";
 import "../Auth.css";
 
 const PasswordRecovery = () => {
     const server = useContext(ServerContext);
     const loginRef = useRef<HTMLInputElement | null>(null);
     const codeRef = useRef<HTMLInputElement | null>(null);
+    const errorRef = useRef<HTMLDivElement | null>(null);
     const newPasswordRef1 = useRef<HTMLInputElement | null>(null);
     const newPasswordRef2 = useRef<HTMLInputElement | null>(null);
 
@@ -30,6 +33,7 @@ const PasswordRecovery = () => {
                 }));
                 startTimer();
             }
+            errorRef.current!.innerText = `${getError(server.error)}`;
         }
     };
 
@@ -67,6 +71,7 @@ const PasswordRecovery = () => {
                     codeConfirm: true,
                 }));
             }
+            errorRef.current!.innerText = `${getError(server.error)}`;
         }
     };
 
@@ -81,7 +86,9 @@ const PasswordRecovery = () => {
             const password2 = newPasswordRef2.current.value;
             if (password1 == password2) {
                 const hash = md5(login + password1);
-                const passwordChanged = await server.setPasswordAfterReset(hash);
+                const passwordChanged = await server.setPasswordAfterReset(
+                    hash
+                );
                 if (passwordChanged) {
                     setHideContent((prevState) => ({
                         ...prevState,
@@ -89,6 +96,7 @@ const PasswordRecovery = () => {
                         recoveryPressed: false,
                     }));
                 }
+                errorRef.current!.innerText = `${getError(server.error)}`;
             }
         }
     };
@@ -118,6 +126,7 @@ const PasswordRecovery = () => {
                                 ref={loginRef}
                                 disabled={hideContent.recoveryPressed}
                             />
+                            <div ref={errorRef} className="errorDiv"></div>
                             {hideContent.timeout && (
                                 <div className="timeout">
                                     Времени до повторной отправки кода: {timer}{" "}
@@ -144,6 +153,7 @@ const PasswordRecovery = () => {
                                     placeholder="Код"
                                     ref={codeRef}
                                 />
+                                <div ref={errorRef} className="errorDiv"></div>
                                 <button
                                     className="RecoveryButton"
                                     onClick={() => SetCode()}
@@ -170,6 +180,7 @@ const PasswordRecovery = () => {
                                 placeholder="Повторите пароль"
                                 ref={newPasswordRef2}
                             />
+                            <div ref={errorRef} className="errorDiv"></div>
                             <button
                                 className="RecoveryButton"
                                 onClick={() => sendNewHash()}
