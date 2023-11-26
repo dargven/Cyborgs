@@ -6,7 +6,6 @@ import NavBar from "../components/navBar";
 import NavButton from "../components/navButton";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
 
-
 const openEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-open.png";
 const closeEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-close.png";
 
