@@ -11,8 +11,13 @@ class Lobby
 
     public function selectTeam($id, $teamId)
     {
-        $this->db->addPlayerToTeam($id, $teamId);
-        return true;
+        if($teamId === 1 || $teamId === 0){
+            $this->db->addPlayerToTeam($id, $teamId);
+            if()
+            return true;
+        }
+        return ['error'=> 605];
+
     }
 
     public function getTeamsInfo()

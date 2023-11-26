@@ -28,6 +28,7 @@ class User
     {
         return $this->db->getUserByLogin($login);
     }
+    public function
 
     public function login($login, $hash, $rnd)
     {
@@ -35,12 +36,16 @@ class User
         if ($user) {
             $hashS = md5($user->password . $rnd);
             if ($hash === $hashS) {
-                $token = $this->genToken();
-                $this->db->updateToken($user->id, $token);
-                return array(
-                    'name' => $user->login,
-                    'token' => $token,
-                );
+                if (!$user->token) {
+                    $token = $this->genToken();
+                    $this->db->updateToken($user->id, $token);
+                    return array(
+                        'name' => $user->login,
+                        'token' => $token,
+                    );
+                }
+                return ['error' => 1005];
+
             }
             return ['error' => 1002];
         }
@@ -51,7 +56,8 @@ class User
     {
         $user = $this->db->getUserByToken($token);
         if ($user) {
-            $this->db->DeletePlayer($token);
+            $this->db->deletePlayerInPlayers($token);
+            $this->db->deletePlayerInTeams($token);
             $this->db->updateToken($user->id, NULL);
             return true;
         }
@@ -130,9 +136,5 @@ class User
         return ['error' => 709];
     }
 
-    public function DeletePlayer($token)
-    {
-        return $this->db->DeletePlayer($token);
-    }
 
 }

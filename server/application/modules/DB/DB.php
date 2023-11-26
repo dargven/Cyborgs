@@ -4,6 +4,7 @@ class DB
 {
     //сохраняет соединение с ДБ
     private $pdo;
+
     //вызов соединения с БД
     public function __construct()
     {
@@ -111,7 +112,7 @@ class DB
         return $this->execute("INSERT INTO bullets (user_id, x, y, x1, y1, speed)
         VALUES (?,?,?,?,?,?)", [$user_id, $x, $y, $x1, $y1, $speed]);
     }
-    
+
     public function getBullets()
     {
         return $this->queryAll("SELECT  u.bullet_id AS bullet_id,u.user_id AS user_id, bullet.x AS x,bullet.y AS y,bullet.vx AS vx,bullet.vy AS vy
@@ -186,5 +187,17 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE game SET chat_hash=? WHERE id=1", [$hash]);
     }
+
+    public function deletePlayerInPlayers($token)
+    {
+        $this->execute("DELETE FROM players
+WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
+    }
+    public function deletePlayerInTeams($token)
+    {
+        $this->execute("DELETE FROM userTeams
+WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
+    }
+
 }
 

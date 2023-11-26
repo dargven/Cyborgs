@@ -188,6 +188,7 @@ CorrectAnswer=>User
 ```
 WrongAnswer(code: 1001, text: 'params login or password not set')
 WrongAnswer(code: 1002, text: 'error in auth user')
+WrongAnswer(code:1005, text:'Other user is playing wright now. If you doesn`t, please change the password'')
 WrongAnswer(code: 1004, text: 'Unable to find user.')
 ```
 
