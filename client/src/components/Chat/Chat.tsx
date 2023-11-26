@@ -6,6 +6,7 @@ import { Ref } from "react";
 import "./Chat.css";
 import { TMessage } from "../../modules/Server/types";
 import { error } from "console";
+import { useNavigate } from "react-router-dom";
 
 const Chat = () => {    const chatMessagesRef = useRef<HTMLDivElement | null>(null);
 
@@ -24,11 +25,15 @@ const Chat = () => {    const chatMessagesRef = useRef<HTMLDivElement | null>(nu
 
         return `${resultHour}:${created.split(":")[1]}`;
     };
-
+    const navigate = useNavigate();
     const updateChat = async () => {
         const messagesFromServer = await server.getMessages();
         if (messagesFromServer) {
             setMessages(messagesFromServer);
+        } else {
+            if (server.error.code === 1002) {
+                navigate("/login");
+            }
         }
     };
 
