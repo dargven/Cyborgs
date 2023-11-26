@@ -9,6 +9,7 @@ import RegistrationPage from "./routes/RegistrationPage";
 import PrivateRoute from "./components/privateRoute";
 import GamePage from "./routes/GamePage";
 import PasswordRecovery from "./routes/PaswordRecovery";
+import StartPage from "./routes/StartPage";
 
 export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
@@ -27,7 +28,10 @@ const App: React.FC = () => {
                             <Route path="" element={<LoginPage />} />
                         )}
                         <Route path="/PaswordRecovery" element={<PasswordRecovery />}
-                        />
+                        /><Route
+                        path="/StartPage"
+                        element={<StartPage />}
+                    />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/registration" element={<RegistrationPage />}
                         />
