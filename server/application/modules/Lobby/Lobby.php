@@ -11,7 +11,7 @@ class Lobby
 
     public function selectTeam($id, $teamId)
     {
-        if($teamId === 1 || $teamId === 0){
+        if($teamId == 1 || $teamId == 0){
             $this->db->addPlayerToTeam($id, $teamId);
             return true;
         }
