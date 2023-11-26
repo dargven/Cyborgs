@@ -15,7 +15,7 @@ export default class Server {
         this.HOST = HOST;
         this.store = store;
         this.token = null;
-        this.error = { code: 202, text: "" };
+        this.error = { code: 202, text: " " };
     }
 
     async request<T>(method: string, params: any = {}): Promise<T | null> {

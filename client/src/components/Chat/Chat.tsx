@@ -5,6 +5,7 @@ import getError from "../../hooks/getError";
 import { Ref } from "react";
 import "./Chat.css";
 import { TMessage } from "../../modules/Server/types";
+import { error } from "console";
 
 const Chat = () => {    const chatMessagesRef = useRef<HTMLDivElement | null>(null);
 
@@ -49,6 +50,8 @@ const Chat = () => {    const chatMessagesRef = useRef<HTMLDivElement | null>(nu
             await server.sendMessage(chatRef.current?.value);
             chatRef.current.value = "";
         }
+        server.error.code = 706;
+        console.log(server.error.code);
         errorRef.current!.innerText = `${getError(server.error)}`;
     };
     useEnterKeyHandler(13, handleChat);
