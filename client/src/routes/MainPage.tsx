@@ -1,11 +1,26 @@
 import { useContext } from "react";
-import { ServerContext } from "../App";
+import { ServerContext, StoreContext } from "../App";
 import NavButton from "../components/navButton";
 import "../Main.css";
+import useKeyHandler from "../hooks/useKeyHandler";
+import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
 
   const server = useContext(ServerContext);
+  const store = useContext(StoreContext)
+  const navigate = useNavigate();
+
+  const checkUser = () => {
+
+  if (store.isAuth()) {
+    navigate('/game', { replace: true });
+  } else {
+    console.log("Пользователь не авторизован");
+  }
+  }
+
+  useKeyHandler(13,checkUser);
 
   return (
     <>
