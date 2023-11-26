@@ -22,22 +22,18 @@ const App: React.FC = () => {
                 <ServerContext.Provider value={server}>
                     <Routes>
                         {store.isAuth() ? (
-                            <Route path="" element={<LoginPage />} />
+                            <Route path="" element={<MainPage />} />
                         ) : (
                             <Route path="" element={<LoginPage />} />
                         )}
-                        <Route
-                            path="/PaswordRecovery"
-                            element={<PasswordRecovery />}
+                        <Route path="/PaswordRecovery" element={<PasswordRecovery />}
                         />
                         <Route path="/login" element={<LoginPage />} />
-                        <Route
-                            path="/registration"
-                            element={<RegistrationPage />}
+                        <Route path="/registration" element={<RegistrationPage />}
                         />
                         <Route element={<PrivateRoute />}>
-                            <Route path="/game" element={<GamePage />} />
                             <Route path="/main" element={<MainPage />} />
+                            <Route path="/game" element={<GamePage />} />
                         </Route>
                     </Routes>
                 </ServerContext.Provider>

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import useKeyHandler from "../hooks/useKeyHandler";
 type TnavButton = {
   to: string;
   text: string;
@@ -6,7 +7,7 @@ type TnavButton = {
   navFunction?(): string; 
 };
 
-function NavButton({ to, text, className, navFunction }: TnavButton) {
+function NavButton({ to, text, className }: TnavButton) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -15,7 +16,7 @@ function NavButton({ to, text, className, navFunction }: TnavButton) {
 
   return (
     <button className={className} onClick={handleClick}>
-      {text}
+        {text}
     </button>
   );
 }
