@@ -49,10 +49,13 @@ const Chat = () => {    const chatMessagesRef = useRef<HTMLDivElement | null>(nu
         if (chatRef.current?.value) {
             await server.sendMessage(chatRef.current?.value);
             chatRef.current.value = "";
+        } else {
+            server.error.code = 706;
+            errorRef.current!.innerText = `${getError(server.error)}`;
+            setTimeout(() => {
+                errorRef.current!.innerText = "";
+            }, 2000);
         }
-        server.error.code = 706;
-        console.log(server.error.code);
-        errorRef.current!.innerText = `${getError(server.error)}`;
     };
     useEnterKeyHandler(13, handleChat);
 
