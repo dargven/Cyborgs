@@ -5,7 +5,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Group, Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
 import { ICollider } from "../../modules/Game/entities/Collider";
-import { TBullet, TPlayer } from "../../modules/Server/types";
+import { TBullet, TDestructible, TPlayer } from "../../modules/Server/types";
 import CollidersPositions from "./CollidersPositions";
 import FishTank from "./Fishtank";
 import LightMap from "./LightMap";
@@ -48,7 +48,7 @@ const Scene = ({ vSize }: ISceneProps) => {
     // });
     const [bullets, setBullets] = useState<TBullet[]>([]);
     const [players] = useState<TPlayer[]>([]);
-    const [obstacles] = useState<ICollider[]>(CollidersPositions());
+    const [obstacles] = useState<TDestructible[]>();
     // const [serverPlayers, setServerPlayers] = useState<TPlayer[]>([]);
 
     // const [last, setLast] = useState<number>(0);
@@ -67,6 +67,7 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     const mouseX = useRef(0);
     const mouseY = useRef(0);
+    const colliders = CollidersPositions();
     const invRef = useRef<Group>();
     const positionToCamera = new Vector3(0, -2, -3);
 
@@ -124,11 +125,10 @@ const Scene = ({ vSize }: ISceneProps) => {
     //     });
     // }
 
-    let obstaclesKeyCounter = 0;
-    
-    const generateObstacleKey = () => {
-        const key = `collider-${obstaclesKeyCounter}`;
-        obstaclesKeyCounter++;
+    let colliderKeyCounter = 0;
+    const generateColliderKey = () => {
+        const key = `collider-${colliderKeyCounter}`;
+        colliderKeyCounter++;
         return key;
     };
 
@@ -211,10 +211,10 @@ const Scene = ({ vSize }: ISceneProps) => {
                     }
                 })} */}
 
-                {obstacles.map(obstacle =>
+                {colliders.map(collider =>
                     <Obstacle
-                        key={generateObstacleKey()}
-                        {...obstacle}
+                        key={generateColliderKey()}
+                        {...collider}
                     />
                 )}
 
