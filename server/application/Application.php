@@ -125,10 +125,13 @@ class Application
         $y = $params['y'];
         $vx = $params['vx'];
         $vy = $params['vy'];
-        if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0) && ($vy || $vy == 0)) {
+        $dx = $params['dx'];
+        $dy = $params['dy'];
+        if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0)
+            && ($vy || $vy == 0) && ($dx || $dx == 0) && ($dy || $dy == 0)) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
-                return $this->game->setPlayer($user->id, $x, $y, $vx, $vy);
+                return $this->game->setPlayer($user->id, $x, $y, $vx, $vy, $dx, $dy);
             }
             return ['error' => 1002];
         }
@@ -200,7 +203,7 @@ class Application
         $token = $params['token'];
         $objectId = $params['objectId'];
         $state = $params['state'];
-        if ($token && $objectId && ($state || $state === "0")) { 
+        if ($token && $objectId && ($state || $state === "0")) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->game->setDestroyObject($objectId, $state);

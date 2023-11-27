@@ -14,9 +14,9 @@ class Game
         return $this->db->getPlayers();
     }
 
-    public function setPlayer($id, $x, $y, $vx, $vy)
+    public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
     {
-        $this->db->setPlayer($id, $x, $y, $vx, $vy);
+        $this->db->setPlayer($id, $x, $y, $vx, $vy, $dx, $dy);
         return true;
     }
 

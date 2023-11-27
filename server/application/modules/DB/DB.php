@@ -80,7 +80,7 @@ class DB
     public function addUser($login, $hash, $name, $email)
     {
         $this->execute(
-            "INSERT INTO users (login,password,name,email ) VALUES (?, ?, ?, ?)",
+            "INSERT INTO users (login,password,name,email) VALUES (?, ?, ?, ?)",
             [$login, $hash, $name, $email]
         );
     }
@@ -107,10 +107,10 @@ class DB
                               ORDER BY m.created DESC LIMIT 10");
     }
 
-    public function addBullet($user_id, $x, $y, $x1, $y1, $speed)
+    public function addBullet($user_id, $x, $y, $vx, $vy)
     {
-        return $this->execute("INSERT INTO bullets (user_id, x, y, x1, y1, speed)
-        VALUES (?,?,?,?,?,?)", [$user_id, $x, $y, $x1, $y1, $speed]);
+        return $this->execute("INSERT INTO bullets (bullet_id, x, y, vx, vy)
+        VALUES (?,?,?,?,?)", [$user_id, $x, $y, $vx, $vy]);
     }
 
     public function getBullets()
@@ -122,7 +122,7 @@ class DB
 
     public function DeleteBullet($id)
     {
-        $this->execute("DELETE  FROM bullet WHERE id=?", [$id]);
+        $this->execute("DELETE  FROM bullets WHERE id=?", [$id]);
     }
 
     public function updateScoreInTeam($teamId, $score)
@@ -144,7 +144,6 @@ class DB
         $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
     }
     // ЖАЛКАЯ ПАРОДИЯ //
-    //Методы полностью переписаны по феншую, осталось их нормально протестить.
 
     public function getSkinsInLobby()
     {
@@ -153,14 +152,14 @@ class DB
 
     public function getPlayers()
     {
-        return $this->queryAll("SELECT u.token, p.x, p.y, p.vx, p.vy FROM players as p INNER JOIN users as u on u.id = p.user_id");
+        return $this->queryAll("SELECT u.token, p.x, p.y, p.vx, p.vy, p.dx, p.dy FROM players as p INNER JOIN users as u on u.id = p.user_id");
     }
 
-    public function setPlayer($id, $x, $y, $vx, $vy)
+    public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
     {
-        $this->execute("INSERT INTO players (user_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) 
-ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy);
-", [$id, $x, $y, $vx, $vy]);
+        $this->execute("INSERT INTO players (user_id, x, y, vx, vy, dx, dy) VALUES (?, ?, ?, ?, ?, ?, ?) 
+ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy), dx = VALUES(dx), dy = VALUES(dy);
+", [$id, $x, $y, $vx, $vy, $dx, $dy]);
     }
 
     public function getObjectById($id)
