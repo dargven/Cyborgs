@@ -6,11 +6,10 @@ import HealthBar from "./HealthBar";
 import { useFrame } from "@react-three/fiber";
 
 interface IPlayerProps {
-    id?: number;
     token: string;
     position?: Vector3;
     velocity?: Vector3;
-    team: number;
+    teamId: number;
     isControlled?: boolean
     onFire?(position: Vector3, team: number): void;
     onMovement?(position: Vector3): void;
@@ -18,7 +17,7 @@ interface IPlayerProps {
     getPosVel?(position: Vector3, velocity: Vector3): void;
 }
 
-const Player = ({ velocity = new Vector3(), id,  position, team, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token }: IPlayerProps) => {
+const Player = ({ velocity = new Vector3(),  position, teamId, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token }: IPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
@@ -103,7 +102,7 @@ const Player = ({ velocity = new Vector3(), id,  position, team, onFire, onMovem
 
             if (shoot || isShooting) {
                 if (onFire) {
-                    onFire(playerPosition, team);
+                    onFire(playerPosition, teamId);
                 }
             }
 
@@ -117,15 +116,14 @@ const Player = ({ velocity = new Vector3(), id,  position, team, onFire, onMovem
     useEffect(() => {
         const data = {
             type: 'player',
-            team: team,
+            team: teamId,
             hp: hp,
-            id: id
         }
         ref.current.userData = data;
         if (hp === 0) {
             ref.current.setEnabled(false);
         }
-    }, [hp, id, team]);
+    }, [hp, teamId]);
 
     return (
         <>
@@ -154,7 +152,7 @@ const Player = ({ velocity = new Vector3(), id,  position, team, onFire, onMovem
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "projectile") {
-                            const damage = data.team === team ? data.damage / 2 : data.damage;
+                            const damage = data.team === teamId ? data.damage / 2 : data.damage;
                             if (hp - damage < 0) {
                                 setHp(0);
                             } else {

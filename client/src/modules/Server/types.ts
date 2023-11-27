@@ -1,4 +1,5 @@
 import { type } from "os";
+import { Vector3 } from "three";
 
 export { };
 
@@ -26,6 +27,7 @@ export type TGetMessages = {
 }
 
 export type TPlayer = {
+    token: string;
     teamId: number;
     hp: number;
     x: number;
@@ -61,9 +63,9 @@ export type TGetScene = {
 }
 
 export type TScene = {
-    players: TPlayer[];
-    bullets: TBullet[];
-    objects: TDestructible[];
+    players: TPlayer[] | null;
+    bullets: TBullet[] | null;
+    objects: TDestructible[] | null;
 }
 
 export type TTeam = {
