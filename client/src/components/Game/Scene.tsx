@@ -4,7 +4,6 @@ import { Physics } from "@react-three/rapier";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Group, Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
-import { ICollider } from "../../modules/Game/entities/Collider";
 import { TBullet, TDestructible, TPlayer } from "../../modules/Server/types";
 import CollidersPositions from "./CollidersPositions";
 import FishTank from "./Fishtank";
@@ -12,7 +11,9 @@ import LightMap from "./LightMap";
 import Map from "./Map";
 import MapObjects from "./MapObjects";
 import Obstacle from "./Obstacle";
+import Player from "./Player";
 import Zone from "./Zone";
+import Projectile from "./Projectile";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -47,7 +48,7 @@ const Scene = ({ vSize }: ISceneProps) => {
     //     velocity: new Vector3()
     // });
     const [bullets, setBullets] = useState<TBullet[]>([]);
-    const [players] = useState<TPlayer[]>([]);
+    const [players] = useState<TPlayer[]>([{x: 0, y: 0, vx: 0, vy: 0, dx: 0, dy: 0, token: store.getUser().token, teamId: 1, hp: 100}]);
     const [obstacles] = useState<TDestructible[]>();
     // const [serverPlayers, setServerPlayers] = useState<TPlayer[]>([]);
 
@@ -67,10 +68,9 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     const mouseX = useRef(0);
     const mouseY = useRef(0);
-    const colliders = CollidersPositions();
     const invRef = useRef<Group>();
     const positionToCamera = new Vector3(0, -2, -3);
-
+    
     const { viewport, camera, pointer, scene } = useThree();
 
     const handleMouseMove = (event: MouseEvent) => {
@@ -84,7 +84,7 @@ const Scene = ({ vSize }: ISceneProps) => {
         const cameraPos = new Vector3(position.x + mouseX.current, position.y + mouseY.current, 7);
         camera.position.lerp(cameraPos, 0.05);
         camera.updateProjectionMatrix();
-
+        
         if (invRef.current) {
             invRef.current.position.copy(camera.position).add(positionToCamera);
         }
@@ -103,7 +103,7 @@ const Scene = ({ vSize }: ISceneProps) => {
         const current = Date.now();
 
         // if (.001 * (current - last) > 1 / inventory[0].rate) {
-        //     const bullet = inventory[0].fire({
+            //     const bullet = inventory[0].fire({
         //         position,
         //         direction,
         //         key: `${1337}-${Date.now()}`,
@@ -124,7 +124,8 @@ const Scene = ({ vSize }: ISceneProps) => {
     //         return newWeapons;
     //     });
     // }
-
+    
+    const colliders = CollidersPositions();
     let colliderKeyCounter = 0;
     const generateColliderKey = () => {
         const key = `collider-${colliderKeyCounter}`;
@@ -133,9 +134,9 @@ const Scene = ({ vSize }: ISceneProps) => {
     };
 
     // const getP = async () => {
-    //     const sPlayers = await server.getPlayers();
-    //     if (sPlayers) {
-    //         setServerPlayers(sPlayers);
+        //     const sPlayers = await server.getPlayers();
+        //     if (sPlayers) {
+            //         setServerPlayers(sPlayers);
     //     }
     // }
 
@@ -143,12 +144,12 @@ const Scene = ({ vSize }: ISceneProps) => {
     //     await server.setPlayer(store.getUser().token, position.x, position.y, velocity.x, velocity.y);
     // }
 
-    // const getPosVel = (position: Vector3, velocity: Vector3) => {
-    //     setCharacter({
-    //         position,
-    //         velocity
-    //     })
-    // }
+    const getPosVel = (position: Vector3, velocity: Vector3) => {
+        // setCharacter({
+        //     position,
+        //     velocity
+        // })
+    }
 
     // setP(new Vector3(0, 0, 0), new Vector3());
 
@@ -189,18 +190,18 @@ const Scene = ({ vSize }: ISceneProps) => {
 
                 <FishTank />
 
-                {/* {players.map(player => {
+                {players.map(player => {
                     const token = store.getUser().token;
                     if (player.token !== token) {
                         return <Player
-                            team={0}
+                            teamId={player.teamId}
                             token={player.token}
-                            position={player.position}
-                            velocity={player.velocity}
+                            position={new Vector3(player.x, player.y, 0)}
+                            velocity={new Vector3(player.vx, player.vy, 0)}
                             key={player.token} />
                     } else {
                         return <Player
-                            team={0}
+                            teamId={0}
                             token={player.token}
                             key={player.token}
                             onFire={onFire}
@@ -209,7 +210,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                             isControlled
                         />
                     }
-                })} */}
+                })}
 
                 {colliders.map(collider =>
                     <Obstacle
@@ -218,17 +219,17 @@ const Scene = ({ vSize }: ISceneProps) => {
                     />
                 )}
 
-                {/* {bullets.map(bullet =>
+                {bullets.map(bullet =>
                     <Projectile
-                        damage={bullet.damage}
-                        key={bullet.key}
-                        initialSpeed={bullet.speed}
-                        initialPosition={bullet.position}
-                        direction={bullet.direction}
+                        damage={100}
+                        key={bullet.bulletId}
+                        initialSpeed={10}
+                        initialPosition={new Vector3(bullet.x, bullet.y, 0)}
+                        direction={new Vector3(bullet.vx, bullet.vy)}
                         texture={textures['bullet']}
-                        team={bullet.team}
+                        team={1}
                     />
-                )} */}
+                )}
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
                     <Map texture={textures['room']} />
