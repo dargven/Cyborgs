@@ -28,29 +28,30 @@ class User
     {
         return $this->db->getUserByLogin($login);
     }
-    public function
+
+    public function check
 
     public function login($login, $hash, $rnd)
-    {
-        $user = $this->db->getUserByLogin($login);
-        if ($user) {
-            $hashS = md5($user->password . $rnd);
-            if ($hash === $hashS) {
-                if (!$user->token) {
-                    $token = $this->genToken();
-                    $this->db->updateToken($user->id, $token);
-                    return array(
-                        'name' => $user->login,
-                        'token' => $token,
-                    );
-                }
-                return ['error' => 1005];
-
+{
+    $user = $this->db->getUserByLogin($login);
+    if ($user) {
+        $hashS = md5($user->password . $rnd);
+        if ($hash === $hashS) {
+            if (!$user->token) {
+                $token = $this->genToken();
+                $this->db->updateToken($user->id, $token);
+                return array(
+                    'name' => $user->login,
+                    'token' => $token,
+                );
             }
-            return ['error' => 1002];
+            return ['error' => 1005];
+
         }
-        return ['error' => 1004];
+        return ['error' => 1002];
     }
+    return ['error' => 1004];
+}
 
     public function logout($token)
     {
