@@ -29,8 +29,6 @@ class User
         return $this->db->getUserByLogin($login);
     }
 
-    public function check
-
     public function login($login, $hash, $rnd)
 {
     $user = $this->db->getUserByLogin($login);
@@ -96,6 +94,7 @@ class User
             if ($_SESSION['rndCode'] == $code) {
                 $this->sendWarningOfAttemptResetPassword();
                 $this->db->setPassword($id, '');
+                $this->db->updateToken($id, NULL);
                 return true;
             }
             return ['error' => 708]; // invalid code from e-mail;
