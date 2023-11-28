@@ -47,11 +47,22 @@ class User
         return ['error' => 1004];
     }
 
+    public function autoLogin($user)
+    {
+        $token = $this->genToken();
+        $this->db->updateToken($user->id, $token);
+        return [
+            'name' => $user->login,
+            'token' => $token
+        ];
+
+    }
+
     public function logout($token)
     {
         $user = $this->db->getUserByToken($token);
         if ($user) {
-            $this->db->DeletePlayer($token);
+//            $this->db->DeletePlayer($token);
             $this->db->updateToken($user->id, NULL);
             return true;
         }
