@@ -15,11 +15,17 @@ export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
 
 
+
 const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
     // if(localStorage.getItem('token')) {
-    //     
+        //     
+    if (performance.navigation.type == 1) {
+        console.log( "Страница перезагружена" );
+    } else {
+        console.log( "Страница не перезагружена");
+    }
     // }
     console.log(store.isAuth())
     return (
