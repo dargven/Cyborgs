@@ -2,6 +2,7 @@ import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import { Texture } from "three/src/textures/Texture";
+import { Animator } from "./sprites/Animator";
 
 interface IProjectiileProps {
     initialSpeed: number;
@@ -15,6 +16,8 @@ interface IProjectiileProps {
 const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture, team }: IProjectiileProps) => {
     const bulletRef = useRef<RapierRigidBody>(null!);
     const [isActive, setActive] = useState<boolean>(true);
+    // const _texture = texture.clone();
+    // _texture.rotation = Math.atan2(direction.y, direction.x);
 
     useEffect(() => {
         direction.setLength(initialSpeed)
@@ -46,9 +49,11 @@ const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture,
                             setActive(false);
                         }
                     }} />
-                <sprite scale={0.5}>
-                    <spriteMaterial map={texture} />
-                </sprite>
+                <Animator
+                    textureImageURL={'./assets/bullets/Projectile.png'}
+                    scale={0.5}
+                    materialRotation={Math.atan2(direction.y, direction.x)}
+                />
             </group> : <></>}
         </RigidBody>
     );

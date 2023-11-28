@@ -34,7 +34,7 @@ interface ISceneProps {
 
 const Scene = ({ vSize }: ISceneProps) => {
     const textureLoader = new TextureLoader();
-    const TPROJECTILE = textureLoader.load('./assets/Bullets/Projectile.png');
+    const TPROJECTILE = textureLoader.load('./assets/bullets/Projectile.png');
     const room = textureLoader.load('./assets/rooms/map-office-plain.png');
     const glass = textureLoader.load('./assets/Map parts/Glass.png');
 
@@ -162,9 +162,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                         onMovement={onMovement}
                         setWeaponSlot={setWeaponSlot}
                         isControlled
-                        playerRotation={
-                            0
-                        }
+                        playerRotation={0}
                         getDirection={getDirection}
                     />
                     <Player team={0} id={1002} />
