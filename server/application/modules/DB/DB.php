@@ -143,6 +143,7 @@ class DB
     {
         $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
     }
+
     // ЖАЛКАЯ ПАРОДИЯ //
 
     public function getSkinsInLobby()
@@ -187,11 +188,25 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
         $this->execute("UPDATE game SET chat_hash=? WHERE id=1", [$hash]);
     }
 
+    public function updatePlayersHash($hash)
+    {
+        $this->execute("UPDATE game SET players_hash=? WHERE id=1", [$hash]);
+    }
+public function updateBulletsHash($hash)
+    {
+        $this->execute("UPDATE game SET bullets_hash=? WHERE id=1", [$hash]);
+    }
+public function updateObjectsHash($hash)
+    {
+        $this->execute("UPDATE game SET objects_hash=? WHERE id=1", [$hash]);
+    }
+
     public function deletePlayerInPlayers($token)
     {
         $this->execute("DELETE FROM players
 WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
+
     public function deletePlayerInTeams($token)
     {
         $this->execute("DELETE FROM userTeams

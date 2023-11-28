@@ -24,6 +24,7 @@ function result($params) {
             case 'sendCodeToResetPassword':return $app->sendCodeToResetPassword($params);// ->> need to test
             case 'getCodeToResetPassword':return $app->getCodeToResetPassword($params);// ->> need to test
             case 'setPasswordAfterReset':return $app->setPasswordAfterReset($params);// ->> need to test
+            case 'getScene':return $app->getScene($params);// ->> need to test
             default: return ['error' => 102];
         }
     }

@@ -35,15 +35,15 @@ class User
     if ($user) {
         $hashS = md5($user->password . $rnd);
         if ($hash === $hashS) {
-            if (!$user->token) {
+//            if (!$user->token) {
                 $token = $this->genToken();
                 $this->db->updateToken($user->id, $token);
                 return array(
                     'name' => $user->login,
                     'token' => $token,
                 );
-            }
-            return ['error' => 1005];
+//            }
+//            return ['error' => 1005];
 
         }
         return ['error' => 1002];

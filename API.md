@@ -591,6 +591,7 @@ objectsHash: string,
 },
 scene =>{
 players=>{
+token:string,
 teamId: number,
 hp:number,
 x:number,
@@ -609,7 +610,7 @@ vy:number
 },
 objects =>
 {
-ObjectId: number,
+objectId: number,
 state: number ; 1 - destroyed; 0 - not destroyed
 }
 }

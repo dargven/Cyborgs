@@ -105,6 +105,24 @@ class Application
         return ['error' => 242];
     }
 
+    function getScene($params)
+    {
+        $token = $params['token'];
+        $hashPlayers = $params['hashPlayers'];
+        $hashBullets = $params['hashBullets'];
+        $hashObjects = $params['hashObjects'];
+        if ($token && $hashPlayers && $hashBullets && $hashObjects) {
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->game->getScene($hashPlayers, $hashObjects, $hashBullets);
+            }
+            return ['error' => 1002];
+
+        }
+        return ['error' => 242];
+
+    }
+
     function getPlayers($params)
     {
         $token = $params['token'];
