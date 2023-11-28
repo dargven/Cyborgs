@@ -244,7 +244,6 @@ const Scene = ({ vSize }: ISceneProps) => {
                         direction={new Vector3(bullet.vx, bullet.vy)}
                         texture={textures['bullet']}
                         team={1}
-                        sendBullet={sendBullet}
                     />
                 )}
 
