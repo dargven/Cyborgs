@@ -19,14 +19,21 @@ export const ServerContext = React.createContext<Server>(null!);
 const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
-    // if(localStorage.getItem('token')) {
-        //     
-    if (performance.navigation.type == 1) {
-        console.log( "Страница перезагружена" );
-    } else {
-        console.log( "Страница не перезагружена");
+    
+    const handleAutoLogin = async () => {
+        if(localStorage.getItem('token')) {
+            const isAutoLogin = await server.autoLogin()
+            console.log(isAutoLogin)
+            console.log(store.isAuth())
+            if (isAutoLogin) {
+                store.setAuth()
+            }
+        }
     }
-    // }
+
+    if ((performance.navigation.type == 1 && localStorage.getItem('token')) || localStorage.getItem('token')) {
+        handleAutoLogin()
+    }
     console.log(store.isAuth())
     return (
         <BrowserRouter>

@@ -51,6 +51,15 @@ export default class Server {
         }
         return result;
     }
+    
+    async autoLogin(): Promise<TUser | null> {
+        const result = await this.request<TUser>("autoLogin", {token: localStorage.getItem('token')});
+        if (result) {
+            localStorage.setItem('token', result.token);
+            this.store.setUser(result.name, result.token);
+        }
+        return result;
+    }
 
     async logout(): Promise<boolean | null> {
         const result = await this.request<boolean>("logout", {token: localStorage.getItem('token')});

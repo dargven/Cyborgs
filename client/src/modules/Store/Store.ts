@@ -13,6 +13,10 @@ export class Store {
         // localStorage.setItem('token', token);
     }
 
+    setAuth() {
+        this.user.isAuth = true;
+    }
+
     isAuth(): boolean {
         return this.user.isAuth;
     }
