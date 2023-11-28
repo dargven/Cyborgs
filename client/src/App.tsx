@@ -14,15 +14,6 @@ import StartPage from "./routes/StartPage";
 export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
 
-if (window.performance) {
-    console.log("Perfomance not supported");
-}
-if (performance.navigation.type == 1) {
-    console.log( "Страница перезагружена" );
-} else {
-    console.log( "Страница не перезагружена");
-}
-
 const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
@@ -34,8 +25,8 @@ const App: React.FC = () => {
                         {store.isAuth() ? (
                             <Route path="" element={<MainPage/>}/>
                         ) : (
-                            <Route path="" element={<StartPage />} /> //Откомментировать когда будем показывать трусову
-                            //<Route path="" element={<LoginPage/>}/>
+                            // <Route path="" element={<StartPage />} /> //Откомментировать когда будем показывать трусову
+                            <Route path="" element={<LoginPage/>}/>
                         )}
                         <Route path="/PaswordRecovery" element={<PasswordRecovery/>}/>
                         <Route path="/StartPage" element={<StartPage/>}
