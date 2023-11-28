@@ -1,9 +1,9 @@
 import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {HOST} from "./config";
+import {Store} from "./modules/Store/Store";
 import Server from "./modules/Server/Server";
 import LoginPage from "./routes/LoginPage";
-import {Store} from "./modules/Store/Store";
 import MainPage from "./routes/MainPage";
 import RegistrationPage from "./routes/RegistrationPage";
 import PrivateRoute from "./components/privateRoute";
@@ -13,6 +13,7 @@ import StartPage from "./routes/StartPage";
 
 export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
+
 
 const App: React.FC = () => {
     const store = new Store();
