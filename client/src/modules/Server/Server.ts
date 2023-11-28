@@ -156,6 +156,20 @@ export default class Server {
         return null;
     }
 
+    async setPlayer(x: number, y: number, vx: number, vy: number,dx: number, dy: number): Promise<TPlayer[] | null> {
+        return this.request<TPlayer[]>('setPlayer', {
+            token: this.token,
+            x: x,
+            y: y,
+            vx: vx,
+            vy: vy,
+            dx: dx,
+            dy: dy,
+        });
+    }
+
+
+
     async getScene(): Promise<TScene | null> {
         const result = await this.request<TGetScene>('getScene',
             {

@@ -15,7 +15,9 @@ interface IPlayerProps {
     onMovement?(position: Vector3): void;
     setWeaponSlot?(newSlot: number): void;
     getPosVel?(position: Vector3, velocity: Vector3): void;
+    
 }
+
 
 const Player = ({ velocity = new Vector3(),  position, teamId, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token }: IPlayerProps) => {
 

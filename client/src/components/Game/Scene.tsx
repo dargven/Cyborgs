@@ -14,6 +14,7 @@ import Obstacle from "./Obstacle";
 import Player from "./Player";
 import Zone from "./Zone";
 import Projectile from "./Projectile";
+import PlayerEntity from "../../modules/Game/entities/PlayerEntity";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -50,7 +51,8 @@ const Scene = ({ vSize }: ISceneProps) => {
     const [bullets, setBullets] = useState<TBullet[]>([]);
     const [players] = useState<TPlayer[]>([{x: 0, y: 0, vx: 0, vy: 0, dx: 0, dy: 0, token: store.getUser().token, teamId: 1, hp: 100}]);
     const [obstacles] = useState<TDestructible[]>();
-    // const [serverPlayers, setServerPlayers] = useState<TPlayer[]>([]);
+    const [myPlayer, setMyPlayer]=useState<TPlayer>();
+    // const [serverPlayers, setServerPlayers] = useState<TPlayer[]>([]);*
 
     // const [last, setLast] = useState<number>(0);
     // const [inventory] = useState<Gun[]>([
@@ -133,52 +135,36 @@ const Scene = ({ vSize }: ISceneProps) => {
         return key;
     };
 
-    // const getP = async () => {
+    // const getP = async () => {*
         //     const sPlayers = await server.getPlayers();
         //     if (sPlayers) {
             //         setServerPlayers(sPlayers);
     //     }
     // }
 
-    // const setP = async (position: Vector3, velocity: Vector3) => {
+    // const setP = async (position: Vector3, velocity: Vector3) => {*
     //     await server.setPlayer(store.getUser().token, position.x, position.y, velocity.x, velocity.y);
     // }
 
-    const getPosVel = (position: Vector3, velocity: Vector3) => {
-        // setCharacter({
-        //     position,
-        //     velocity
-        // })
-    }
 
-    // setP(new Vector3(0, 0, 0), new Vector3());
-
+    // setP(new Vector3(0, 0, 0), new Vector3());*
+   
     useEffect(() => {
 
         const interval = setInterval(() => {
-
-            // setP(character.position, character.velocity);
-
-            // getP();
-
-            // const ps: PlayerEntity[] = [];
-            // serverPlayers.forEach(sp => {
-            //     const position = new Vector3(sp.x, sp.y, 0);
-            //     const velocity = new Vector3(sp.vx, sp.vy, 0);
-            //     const player = new PlayerEntity(sp.token, position, velocity);
-            //     ps.push(player);
-            // });
-
-            // setPlayers(ps);
-            console.log(players);
-
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
+           if(myPlayer){
+            sendmyPlayer(myPlayer)
         }
+        }, 50);
 
-    }, [players]);
+        return () => 
+            clearInterval(interval); 
+    }, [myPlayer]);
+
+    const sendmyPlayer= ((player:TPlayer)=>{
+        server.setPlayer(player.x, player.y,player.vx, player.vy,0,0)
+     } ) 
+
 
     return (
         <group>
@@ -194,19 +180,16 @@ const Scene = ({ vSize }: ISceneProps) => {
                     const token = store.getUser().token;
                     if (player.token !== token) {
                         return <Player
-                            teamId={player.teamId}
                             token={player.token}
+                            teamId={player.teamId}
                             position={new Vector3(player.x, player.y, 0)}
-                            velocity={new Vector3(player.vx, player.vy, 0)}
-                            key={player.token} />
+                            velocity={new Vector3(player.vx, player.vy, 0)} />
                     } else {
                         return <Player
-                            teamId={0}
                             token={player.token}
-                            key={player.token}
+                            teamId={0}
                             onFire={onFire}
                             onMovement={onMovement}
-                            getPosVel={getPosVel}
                             isControlled
                         />
                     }
@@ -228,6 +211,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                         direction={new Vector3(bullet.vx, bullet.vy)}
                         texture={textures['bullet']}
                         team={1}
+                        
                     />
                 )}
 
