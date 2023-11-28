@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/Config.php';
 
 class DB
 {
@@ -8,20 +9,22 @@ class DB
     //вызов соединения с БД
     public function __construct()
     {
+//        PROD
+        $host = Config::$configProd['host'];
+        $port = Config::$configProd['port'];
+        $user = Config::$configProd['user'];
+        $pass = Config::$configProd['pass'];
+        $db = Config::$configProd['db'];
 
-//        local
-//        $host = '127.0.0.1';
-//        $port = 3306;
-//        $user = 'root';
-//        $pass = '';
-//        $db = 'cyborgs';
 
-        $host = 'server187.hosting.reg.ru';
-        $port = '3306';
-        $user = 'u2333359_dargven';
-        $pass = 'bAq-UKv-YCK-fxx';
-        $db = 'u2333359_Cyborgs';
-
+//        LOCAL
+        /*
+        $host = Config::$configLocal['host'];
+        $port = Config::$configLocal['port'];
+        $user = Config::$configLocal['user'];
+        $pass = Config::$configLocal['pass'];
+        $db = Config::$configLocal['db'];
+        */
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
     }
@@ -192,11 +195,13 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE game SET players_hash=? WHERE id=1", [$hash]);
     }
-public function updateBulletsHash($hash)
+
+    public function updateBulletsHash($hash)
     {
         $this->execute("UPDATE game SET bullets_hash=? WHERE id=1", [$hash]);
     }
-public function updateObjectsHash($hash)
+
+    public function updateObjectsHash($hash)
     {
         $this->execute("UPDATE game SET objects_hash=? WHERE id=1", [$hash]);
     }
