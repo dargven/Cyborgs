@@ -11,10 +11,6 @@ export class Store {
         this.user.token = token;
     }
 
-    getUser() {
-        return this.user;
-    }
-
     isAuth(): boolean {
         return this.user.isAuth;
     }
