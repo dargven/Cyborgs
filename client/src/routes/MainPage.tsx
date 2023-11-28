@@ -3,7 +3,8 @@ import {ServerContext, StoreContext} from "../App";
 import NavButton from "../components/navButton";
 import "../Main.css";
 import useKeyHandler from "../hooks/useKeyHandler";
-import {useNavigate} from "react-router-dom";
+import {Route, useNavigate} from "react-router-dom";
+import LoginPage from "./LoginPage";
 
 const MainPage = () => {
 
@@ -38,7 +39,8 @@ const MainPage = () => {
                 <NavButton to="/game" text="Играть"/>
                 <button className="Leave" onClick={() => {
                     server.logout();
-                    window.location.reload();
+                    navigate('/login', {replace: true});
+                    // window.location.reload();
                 }}>Выход
                 </button>
             </div>

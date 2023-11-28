@@ -17,6 +17,10 @@ export const ServerContext = React.createContext<Server>(null!);
 const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
+    // if(localStorage.getItem('token')) {
+    //     
+    // }
+    console.log(store.isAuth())
     return (
         <BrowserRouter>
             <StoreContext.Provider value={store}>

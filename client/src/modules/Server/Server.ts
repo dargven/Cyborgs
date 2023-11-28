@@ -13,20 +13,21 @@ export default class Server {
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
         this.store = store;
-        this.token = null;
+        this.token = localStorage.getItem('token');
         this.error = {code: 202, text: " "};
     }
 
     async request<T>(method: string, params: any = {}): Promise<T | null> {
         try {
-            if (this.token) {
-                params.token = this.token;
-            }
+            // if (this.token) {
+            //     params.token = this.token;
+            // }
             const str = Object.keys(params)
                 .map((key) => `${key}=${params[key]}`)
                 .join("&");
             const res = await fetch(`${this.HOST}/?method=${method}&${str}`);
             const answer = await res.json();
+            console.log(answer)
             if (answer.result === "ok") {
                 this.error.code = 202;
                 return answer.data;
@@ -45,16 +46,17 @@ export default class Server {
     ): Promise<TUser | null> {
         const result = await this.request<TUser>("login", {login, hash, rnd});
         if (result?.token) {
-            this.token = result.token;
-            this.store.setUser(login, this.token);
+            localStorage.setItem('token', result.token);
+            this.store.setUser(login, result.token);
         }
         return result;
     }
 
     async logout(): Promise<boolean | null> {
-        const result = await this.request<boolean>("logout");
+        const result = await this.request<boolean>("logout", {token: localStorage.getItem('token')});
         if (result) {
-            this.token = null;
+            localStorage.clear()
+            // this.token = null;
         }
         return result;
     }
