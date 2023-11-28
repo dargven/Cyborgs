@@ -70,8 +70,8 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            myBulets.forEach((bullet, index) => {
-                server.setBullets(bullet.bulletId, bullet.x, bullet.y, bullet.vx, bullet.vy)
+            myBulets.forEach((bullet) => {
+                server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
             })
         }, 50)
 
@@ -79,7 +79,7 @@ const Scene = ({ vSize }: ISceneProps) => {
     }, [myBulets])
 
     const sendBullet = (bullet: TBullet) => {
-        server.setBullets(bullet.bulletId, bullet.x, bullet.y, bullet.vx, bullet.vy)
+        server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
     }
 
     const mouseX = useRef(0);
