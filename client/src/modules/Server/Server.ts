@@ -134,6 +134,16 @@ export default class Server {
         return null;
     }
 
+    setBullet(x: number, y: number, vx: number, vy: number): Promise<TBullet[] | null> {
+        return this.request<TBullet[]>('setBullet', {
+            token: this.token,
+            x: x,
+            y: y,
+            vx: vx,
+            vy: vy,
+        });
+    }
+
     async getBullets(): Promise<TBullet[] | null> {
         const result = await this.request<TBullet[]>('getBullets', {
             token: this.token

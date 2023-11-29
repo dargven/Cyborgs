@@ -47,6 +47,8 @@ const Scene = ({ vSize }: ISceneProps) => {
     //     position: new Vector3(),
     //     velocity: new Vector3()
     // });
+    const [myBulets, setMyBulets] = useState<TBullet[]>([])
+
     const [bullets, setBullets] = useState<TBullet[]>([]);
     const [players] = useState<TPlayer[]>([{x: 0, y: 0, vx: 0, vy: 0, dx: 0, dy: 0, token: store.getUser().token, teamId: 1, hp: 100}]);
     const [obstacles] = useState<TDestructible[]>();
@@ -65,6 +67,20 @@ const Scene = ({ vSize }: ISceneProps) => {
     //         speed: 6
     //     })
     // ]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            myBulets.forEach((bullet) => {
+                server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
+            })
+        }, 50)
+
+        return () => clearInterval(interval)
+    }, [myBulets])
+
+    const sendBullet = (bullet: TBullet) => {
+        server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
+    }
 
     const mouseX = useRef(0);
     const mouseY = useRef(0);
@@ -153,32 +169,32 @@ const Scene = ({ vSize }: ISceneProps) => {
 
     // setP(new Vector3(0, 0, 0), new Vector3());
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const interval = setInterval(() => {
+    //     const interval = setInterval(() => {
 
-            // setP(character.position, character.velocity);
+    //         // setP(character.position, character.velocity);
 
-            // getP();
+    //         // getP();
 
-            // const ps: PlayerEntity[] = [];
-            // serverPlayers.forEach(sp => {
-            //     const position = new Vector3(sp.x, sp.y, 0);
-            //     const velocity = new Vector3(sp.vx, sp.vy, 0);
-            //     const player = new PlayerEntity(sp.token, position, velocity);
-            //     ps.push(player);
-            // });
+    //         // const ps: PlayerEntity[] = [];
+    //         // serverPlayers.forEach(sp => {
+    //         //     const position = new Vector3(sp.x, sp.y, 0);
+    //         //     const velocity = new Vector3(sp.vx, sp.vy, 0);
+    //         //     const player = new PlayerEntity(sp.token, position, velocity);
+    //         //     ps.push(player);
+    //         // });
 
-            // setPlayers(ps);
-            console.log(players);
+    //         // setPlayers(ps);
+    //         // console.log(players);
 
-        }, 1000);
+    //     }, 1000);
 
-        return () => {
-            clearInterval(interval);
-        }
+    //     return () => {
+    //         clearInterval(interval);
+    //     }
 
-    }, [players]);
+    // }, [players]);
 
     return (
         <group>
