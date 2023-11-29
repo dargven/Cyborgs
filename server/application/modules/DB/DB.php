@@ -14,7 +14,7 @@ class DB
         $port = Config::$configProd['port'];
         $user = Config::$configProd['user'];
         $pass = Config::$configProd['pass'];
-        $db   = Config::$configProd['db'];
+        $db = Config::$configProd['db'];
 
 
 //        LOCAL
@@ -93,10 +93,6 @@ class DB
         $this->execute("UPDATE users SET password =? WHERE id = ?", [$password, $id]);
     }
 
-    public function addPlayerToTeam($id, $teamId)
-    {
-        $this->execute("INSERT INTO userTeams (team_id, user_id) VALUES (?, ?)", [$teamId, $id]);
-    }
 
     public function sendMessage($id, $message)
     {
@@ -110,11 +106,6 @@ class DB
                               ORDER BY m.created DESC LIMIT 10");
     }
 
-    public function addBullet($user_id, $x, $y, $vx, $vy)
-    {
-        return $this->execute("INSERT INTO bullets (bullet_id, x, y, vx, vy)
-        VALUES (?,?,?,?,?)", [$user_id, $x, $y, $vx, $vy]);
-    }
 
     public function getBullets()
     {
@@ -135,11 +126,24 @@ class DB
 
     }
 
+    public function addPlayerToTeam($id, $teamId)
+    {
+        $this->execute("INSERT INTO userTeams (user_id, team_id) VALUES (?,?) 
+ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), team_id = VALUES(team_id);
+", [$id, $teamId]);
+    }
+
     public function getTeamsInfo()
 
     {
         return $this->queryAll("SELECT t.team_id, user_id, team_score FROM teams as t INNER JOIN userTeams as u on t.team_id = u.team_id GROUP BY t.team_id");
 
+    }
+
+    public function deletePlayerInTeams($token)
+    {
+        $this->execute("DELETE FROM userTeams
+WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
 
     public function setSkinInLobby($id, $skinId)
@@ -212,15 +216,12 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
 
-    public function deletePlayerInTeams($token)
+
+    public function setBullet($x, $y, $vx, $vy)
     {
-        $this->execute("DELETE FROM userTeams
-WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
+
+        $this->execute("INSERT INTO  bullets (x,y,vx,vy) VALUES (?,?,?,?)", [$x, $y, $vx, $vy]);
     }
 
-    public function setBullet($BulletId, $x, $y, $vx, $vy) {
-        return $this->execute("INSERT INTO bullets (bullet_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) 
-                               ON DUPLICATE KEY UPDATE x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy); ", [$BulletId, $x, $y, $vx, $vy]);
-    }
 }
 
