@@ -9,6 +9,7 @@ function result($params) {
         $app = new Application();
         switch ($method) {
             case 'login': return $app->login($params); //Работает
+            case 'autoLogin':return $app->autoLogin($params); // Работает
             case 'logout': return $app->logout($params); //Работает
             case 'register': return $app->register($params);//Работает
             case 'selectTeam': return $app->selectTeam($params);//Работает

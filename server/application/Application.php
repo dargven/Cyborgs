@@ -41,6 +41,21 @@ class Application
         return ['error' => 242];
     }
 
+    function autoLogin($params)
+    {
+        $token = $params['token'];
+        if ($token) {
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->user->autoLogin($user);
+            }
+            return ['error' => 1002];
+
+        }
+        return ['error' => 242];
+
+    }
+
     function login($params)
     {
         $login = $params['login'];
