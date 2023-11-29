@@ -100,7 +100,7 @@ export default class Server {
         return null;
     }
 
-    async selectTeam(teamId: number): Promise<TTeam | null> {
+    async selectTeam(teamId: 0|1): Promise<TTeam | null> {
         const result = await this.request<TTeam>("selectTeam", {
             token: this.token,
             teamId: teamId

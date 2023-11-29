@@ -10,14 +10,14 @@ const GamePage = () => {
     const server = useContext(ServerContext);
     const KEY_ESC = 27;
     const [isPopupVisible, setIsPopupVisible] = useState(false);
-    const [team, setTeam] = useState<number>(0);
+    const [team, setTeam] = useState<0|1|null>(null);
     const handleKeyPress = (event: KeyboardEvent) => {
         if (event.keyCode === KEY_ESC) {
             setIsPopupVisible(!isPopupVisible);
         }
       };
 
-    const handleTeam = async (teamId: number) => {
+    const handleTeam = async (teamId: 0|1) => {
         const STeam = await server.selectTeam(teamId)
         if(STeam) {
             setTeam(teamId)
@@ -33,7 +33,7 @@ const GamePage = () => {
 
     return (
         <div>
-            {team ? (
+            {team!=null ? (
                 <Game />
             ) : (
                 <>
@@ -45,7 +45,7 @@ const GamePage = () => {
                     </button>
                 </>
             )}
-            <Chat />
+            {/* <Chat /> */}
             {isPopupVisible && (
                 <div
                     className="popUpMenu"

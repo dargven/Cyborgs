@@ -154,12 +154,13 @@ const Scene = ({ vSize }: ISceneProps) => {
         const interval = setInterval(() => {
            if(myPlayer){
             sendmyPlayer(myPlayer)
+            console.log(myPlayer)
         }
         }, 50);
 
         return () => 
             clearInterval(interval); 
-    }, [myPlayer]);
+    }, );
 
     const sendmyPlayer= ((player:TPlayer)=>{
         server.setPlayer(player.x, player.y,player.vx, player.vy,0,0)
