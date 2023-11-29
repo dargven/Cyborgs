@@ -16,12 +16,12 @@ class Game
                 [
                     'hashPlayers' => NULL,
                     'hashObjects' => NULL,
-                    'hashBullets' => NULL,
+                    'hashBullets' => NULL
                 ],
             'scene' => [
                 'players' => NULL,
                 'bullets' => NULL,
-                'objects' => NULL,
+                'objects' => NULL
 
             ],
         ];

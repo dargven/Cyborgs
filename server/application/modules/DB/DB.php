@@ -14,7 +14,7 @@ class DB
         $port = Config::$configProd['port'];
         $user = Config::$configProd['user'];
         $pass = Config::$configProd['pass'];
-        $db = Config::$configProd['db'];
+        $db   = Config::$configProd['db'];
 
 
 //        LOCAL
@@ -23,7 +23,7 @@ class DB
         $port = Config::$configLocal['port'];
         $user = Config::$configLocal['user'];
         $pass = Config::$configLocal['pass'];
-        $db = Config::$configLocal['db'];
+        $db   = Config::$configLocal['db'];
         */
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);

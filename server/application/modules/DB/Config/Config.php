@@ -2,6 +2,8 @@
 
 class Config
 {
+    //WEB
+    //  https://server187.hosting.reg.ru/phpmyadmin/
     static $configProd = [
         'host' => 'server187.hosting.reg.ru',
         'port' => '3306',
@@ -15,6 +17,6 @@ class Config
         'port' => 3306,
         'user' => 'root',
         'pass' => '',
-        'db' => 'cyborgs'
+        'db' => 'Cyborgs'
     ];
 }
