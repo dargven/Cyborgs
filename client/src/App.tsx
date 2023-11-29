@@ -25,8 +25,8 @@ const App: React.FC = () => {
                         {store.isAuth() ? (
                             <Route path="" element={<MainPage/>}/>
                         ) : (
-                            // <Route path="" element={<StartPage />} /> //Откомментировать когда будем показывать трусову
-                            <Route path="" element={<LoginPage/>}/>
+                            <Route path="" element={<StartPage />} /> //Откомментировать когда будем показывать трусову
+                            //<Route path="" element={<LoginPage/>}/>
                         )}
                         <Route path="/PaswordRecovery" element={<PasswordRecovery/>}/>
                         <Route path="/StartPage" element={<StartPage/>}
