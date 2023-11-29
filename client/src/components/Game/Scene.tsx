@@ -14,7 +14,6 @@ import Obstacle from "./Obstacle";
 import Player from "./Player";
 import Zone from "./Zone";
 import Projectile from "./Projectile";
-import PlayerEntity from "../../modules/Game/entities/PlayerEntity";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -44,14 +43,10 @@ const Scene = ({ vSize }: ISceneProps) => {
         'glass': glass,
     });
 
-    // const [character, setCharacter] = useState({
-    //     position: new Vector3(),
-    //     velocity: new Vector3()
-    // });
     const [bullets, setBullets] = useState<TBullet[]>([]);
-    const [players] = useState<TPlayer[]>([{x: 0, y: 0, vx: 0, vy: 0, dx: 0, dy: 0, token: store.getUser().token, teamId: 1, hp: 100}]);
+    const [players] = useState<TPlayer[]>([{ x: 0, y: 0, vx: 0, vy: 0, dx: 0, dy: 0, token: store.getUser().token, teamId: 1, hp: 100 }]);
     const [obstacles] = useState<TDestructible[]>();
-    const [myPlayer, setMyPlayer]=useState<TPlayer>();
+    const [myPlayer, setMyPlayer] = useState<TPlayer>();
     // const [serverPlayers, setServerPlayers] = useState<TPlayer[]>([]);*
 
     // const [last, setLast] = useState<number>(0);
@@ -72,7 +67,7 @@ const Scene = ({ vSize }: ISceneProps) => {
     const mouseY = useRef(0);
     const invRef = useRef<Group>();
     const positionToCamera = new Vector3(0, -2, -3);
-    
+
     const { viewport, camera, pointer, scene } = useThree();
 
     const handleMouseMove = (event: MouseEvent) => {
@@ -86,7 +81,7 @@ const Scene = ({ vSize }: ISceneProps) => {
         const cameraPos = new Vector3(position.x + mouseX.current, position.y + mouseY.current, 7);
         camera.position.lerp(cameraPos, 0.05);
         camera.updateProjectionMatrix();
-        
+
         if (invRef.current) {
             invRef.current.position.copy(camera.position).add(positionToCamera);
         }
@@ -105,7 +100,7 @@ const Scene = ({ vSize }: ISceneProps) => {
         const current = Date.now();
 
         // if (.001 * (current - last) > 1 / inventory[0].rate) {
-            //     const bullet = inventory[0].fire({
+        //     const bullet = inventory[0].fire({
         //         position,
         //         direction,
         //         key: `${1337}-${Date.now()}`,
@@ -126,7 +121,7 @@ const Scene = ({ vSize }: ISceneProps) => {
     //         return newWeapons;
     //     });
     // }
-    
+
     const colliders = CollidersPositions();
     let colliderKeyCounter = 0;
     const generateColliderKey = () => {
@@ -135,37 +130,18 @@ const Scene = ({ vSize }: ISceneProps) => {
         return key;
     };
 
-    // const getP = async () => {*
-        //     const sPlayers = await server.getPlayers();
-        //     if (sPlayers) {
-            //         setServerPlayers(sPlayers);
-    //     }
-    // }
-
-    // const setP = async (position: Vector3, velocity: Vector3) => {*
-    //     await server.setPlayer(store.getUser().token, position.x, position.y, velocity.x, velocity.y);
-    // }
-
-
-    // setP(new Vector3(0, 0, 0), new Vector3());*
-   
     useEffect(() => {
-
         const interval = setInterval(() => {
-           if(myPlayer){
-            sendmyPlayer(myPlayer)
-            console.log(myPlayer)
-        }
+            sendmyPlayer(myPlayer!);
         }, 50);
 
-        return () => 
-            clearInterval(interval); 
-    }, );
+        return () =>
+            clearInterval(interval);
+    }, []);
 
-    const sendmyPlayer= ((player:TPlayer)=>{
-        server.setPlayer(player.x, player.y,player.vx, player.vy,0,0)
-     } ) 
-
+    const sendmyPlayer = async (player: TPlayer) => {
+        await server.setPlayer(player.x, player.y, player.vx, player.vy, 0, 0)
+    };
 
     return (
         <group>
@@ -175,19 +151,19 @@ const Scene = ({ vSize }: ISceneProps) => {
 
                 <FishTank />
 
-                <FishTank />
-
                 {players.map(player => {
                     const token = store.getUser().token;
                     if (player.token !== token) {
                         return <Player
+                            key={player.token}
                             token={player.token}
                             teamId={player.teamId}
                             position={new Vector3(player.x, player.y, 0)}
                             velocity={new Vector3(player.vx, player.vy, 0)} />
                     } else {
                         return <Player
-                            token={player.token}
+                            key={token}
+                            token={token}
                             teamId={0}
                             onFire={onFire}
                             onMovement={onMovement}
@@ -213,7 +189,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                         direction={new Vector3(bullet.vx, bullet.vy)}
                         texture={textures['bullet']}
                         team={1}
-                        
+
                     />
                 )}
 

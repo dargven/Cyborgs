@@ -16,11 +16,11 @@ interface IPlayerProps {
     onMovement?(position: Vector3): void;
     setWeaponSlot?(newSlot: number): void;
     getPosVel?(position: Vector3, velocity: Vector3): void;
-    setMyPlayer?(player:TPlayer): void; 
+    setMyPlayer?(player: TPlayer): void;
 }
 
 
-const Player = ({ velocity = new Vector3(),  position, teamId, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token, setMyPlayer }: IPlayerProps) => {
+const Player = ({ velocity = new Vector3(), position, teamId, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token, setMyPlayer }: IPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
@@ -54,7 +54,7 @@ const Player = ({ velocity = new Vector3(),  position, teamId, onFire, onMovemen
             if (getPosVel && isControlled) {
                 getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
             }
-            
+
         }
     }
 
@@ -70,8 +70,18 @@ const Player = ({ velocity = new Vector3(),  position, teamId, onFire, onMovemen
                     setShooting(false);
                 }
             }
-            if(setMyPlayer){
-                setMyPlayer({x:vec3(ref.current.translation()).x,y:0,vx:0,vy:0,dx:0,dy:0,hp:100,token:" ",teamId:1})
+            if (setMyPlayer) {
+                setMyPlayer({
+                    x: vec3(ref.current.translation()).x,
+                    y: vec3(ref.current.translation()).y,
+                    vx: vec3(ref.current.linvel()).x,
+                    vy: vec3(ref.current.linvel()).y,
+                    dx: 0,
+                    dy: 0,
+                    hp,
+                    token,
+                    teamId
+                });
             }
 
             document.addEventListener("mousedown", mouseDownHandler);
@@ -86,22 +96,10 @@ const Player = ({ velocity = new Vector3(),  position, teamId, onFire, onMovemen
 
     useFrame(() => {
         if (isControlled) {
-            const { up, down, left, right, select1, select2, select3, shoot, hitscan } = getKeys();
+            const { up, down, left, right, shoot } = getKeys();
             movementController(up, down, left, right);
 
             const playerPosition = vec3(ref.current?.translation());
-
-            if (select1 && setWeaponSlot) {
-                setWeaponSlot(1)
-            }
-
-            if (select2 && setWeaponSlot) {
-                setWeaponSlot(2)
-            }
-
-            if (select3 && setWeaponSlot) {
-                setWeaponSlot(3)
-            }
 
             if (onMovement) {
                 onMovement(playerPosition);
@@ -126,10 +124,13 @@ const Player = ({ velocity = new Vector3(),  position, teamId, onFire, onMovemen
             team: teamId,
             hp: hp,
         }
+
         ref.current.userData = data;
+
         if (hp === 0) {
             ref.current.setEnabled(false);
         }
+
     }, [hp, teamId]);
 
     return (
