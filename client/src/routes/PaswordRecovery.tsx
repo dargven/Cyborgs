@@ -21,22 +21,6 @@ const PasswordRecovery = () => {
         isButtonDisabled: false,
     });
 
-    const Recovery = async () => {
-        if (loginRef.current) {
-            const login = loginRef.current.value;
-            localStorage.setItem("login", login);
-            const recovery = await server.resetPasswordByEmail(login);
-            if (recovery) {
-                setHideContent((prevState) => ({
-                    ...prevState,
-                    recoveryPressed: true,
-                }));
-                startTimer();
-            }
-            errorRef.current!.innerText = `${getError(server.error)}`;
-        }
-    };
-
     const startTimer = () => {
         setHideContent((prevState) => ({
             ...prevState,
@@ -61,6 +45,23 @@ const PasswordRecovery = () => {
         }, 1000);
     };
 
+    const Recovery = async () => {
+        if (loginRef.current) {
+            const login = loginRef.current.value;
+            localStorage.setItem("login", login);
+            const recovery = await server.resetPasswordByEmail(login);
+            if (recovery) {
+                setHideContent((prevState) => ({
+                    ...prevState,
+                    recoveryPressed: true,
+                }));
+                startTimer();
+            }
+            errorRef.current!.innerText = `${getError(server.error)}`;
+        }
+    };
+
+
     const SetCode = async () => {
         if (codeRef.current) {
             const code = codeRef.current.value;
@@ -78,20 +79,18 @@ const PasswordRecovery = () => {
     const sendNewHash = async () => {
         if (newPasswordRef1.current && newPasswordRef2.current) {
             const login = localStorage.getItem("login");
-            console.log(login);
             const password1 = newPasswordRef1.current.value;
             const password2 = newPasswordRef2.current.value;
             if (password1 == password2) {
                 const hash = md5(login + password1);
-                const passwordChanged = await server.setPasswordAfterReset(
-                    hash
-                );
+                localStorage.removeItem("login");
+                const passwordChanged = await server.setPasswordAfterReset( hash );
                 if (passwordChanged) {
                     setHideContent((prevState) => ({
                         ...prevState,
                         codeConfirm: false,
                         recoveryPressed: false,
-                    }));
+                    }))
                 }
                 errorRef.current!.innerText = `${getError(server.error)}`;
             }
