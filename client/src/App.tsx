@@ -1,6 +1,6 @@
 import React from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {HOST} from "./config";
+import { HashRouter, Route, Routes } from "react-router-dom";
+import { HOST } from "./config";
 import Server from "./modules/Server/Server";
 import LoginPage from "./routes/LoginPage";
 import {Store} from "./modules/Store/Store";
@@ -18,7 +18,7 @@ const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
     return (
-        <BrowserRouter>
+        <HashRouter>
             <StoreContext.Provider value={store}>
                 <ServerContext.Provider value={server}>
                     <Routes>
@@ -41,7 +41,7 @@ const App: React.FC = () => {
                     </Routes>
                 </ServerContext.Provider>
             </StoreContext.Provider>
-        </BrowserRouter>
+        </HashRouter>
     );
 };
 

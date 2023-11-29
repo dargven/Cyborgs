@@ -30,28 +30,44 @@ class User
     }
 
     public function login($login, $hash, $rnd)
-    {
-        $user = $this->db->getUserByLogin($login);
-        if ($user) {
-            $hashS = md5($user->password . $rnd);
-            if ($hash === $hashS) {
+{
+    $user = $this->db->getUserByLogin($login);
+    if ($user) {
+        $hashS = md5($user->password . $rnd);
+        if ($hash === $hashS) {
+//            if (!$user->token) { //Проверка на игру с двух устройств(скорее всего не понадобится)
                 $token = $this->genToken();
                 $this->db->updateToken($user->id, $token);
                 return array(
                     'name' => $user->login,
                     'token' => $token,
                 );
-            }
-            return ['error' => 1002];
+//            }
+//            return ['error' => 1005];
+
         }
-        return ['error' => 1004];
+        return ['error' => 1002];
+    }
+    return ['error' => 1004];
+}
+
+    public function autoLogin($user)
+    {
+        $token = $this->genToken();
+        $this->db->updateToken($user->id, $token);
+        return [
+            'name' => $user->login,
+            'token' => $token
+        ];
+
     }
 
     public function logout($token)
     {
         $user = $this->db->getUserByToken($token);
         if ($user) {
-            $this->db->DeletePlayer($token);
+            $this->db->deletePlayerInPlayers($token);
+            $this->db->deletePlayerInTeams($token);
             $this->db->updateToken($user->id, NULL);
             return true;
         }
@@ -89,6 +105,7 @@ class User
             if ($_SESSION['rndCode'] == $code) {
                 $this->sendWarningOfAttemptResetPassword();
                 $this->db->setPassword($id, '');
+                $this->db->updateToken($id, NULL);
                 return true;
             }
             return ['error' => 708]; // invalid code from e-mail;
@@ -130,9 +147,5 @@ class User
         return ['error' => 709];
     }
 
-    public function DeletePlayer($token)
-    {
-        return $this->db->DeletePlayer($token);
-    }
 
 }

@@ -23,7 +23,7 @@ class Chat
     public function getMessage($hash)
     {
         $hashes = $this->db->getHashes();
-        if($hash !== $hashes->chat_hash){
+        if ($hash !== $hashes->chat_hash) {
             $messages = $this->db->getMessage();
             return [
                 'messages' => $messages,

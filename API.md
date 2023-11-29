@@ -188,6 +188,7 @@ CorrectAnswer=>User
 ```
 WrongAnswer(code: 1001, text: 'params login or password not set')
 WrongAnswer(code: 1002, text: 'error in auth user')
+WrongAnswer(code:1005, text:'Other user is playing wright now. If you doesn`t, please change the password'')
 WrongAnswer(code: 1004, text: 'Unable to find user.')
 ```
 
@@ -522,7 +523,7 @@ CorrectAnswer=>true;
 
 ```
 WrongAnswer(code:1002, text: 'error in auth user')
-WrongAnswer(code:9000, text: 'Unknown error')
+WrongAnswer(code:242, text: 'params not set fully')
 
 ```
 
@@ -590,6 +591,7 @@ objectsHash: string,
 },
 scene =>{
 players=>{
+token:string,
 teamId: number,
 hp:number,
 x:number,
@@ -608,7 +610,7 @@ vy:number
 },
 objects =>
 {
-ObjectId: number,
+objectId: number,
 state: number ; 1 - destroyed; 0 - not destroyed
 }
 }

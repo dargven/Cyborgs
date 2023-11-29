@@ -3,20 +3,83 @@
 class Game
 {
     private DB $db;
+    private $spawnPoints = [
+        [
+            'x' => 1,
+            'y' => 1
+        ]
+    ];
 
     public function __construct($db)
     {
         $this->db = $db;
     }
 
-    public function getPlayers()
+    public function getScene($hashPlayers, $hashObjects, $hashBullets)
     {
-        return $this->db->getPlayers();
+        $scene = [
+            'hashes' =>
+                [
+                    'hashPlayers' => NULL,
+                    'hashObjects' => NULL,
+                    'hashBullets' => NULL
+                ],
+            'scene' => [
+                'players' => NULL,
+                'bullets' => NULL,
+                'objects' => NULL
+
+            ],
+        ];
+        $hashes = $this->db->getHashes();
+
+        if ($hashes->players_hash !== $hashPlayers) {
+            $players = $this->db->getPlayers();
+            $scene['scene']['players'] = $players;
+            $this->db->updatePlayersHash($hashPlayers);
+            $scene['hashes']['hashPlayers'] = $hashPlayers;
+        }
+        if ($hashes->objects_hash !== $hashObjects) {
+            $objects = $this->db->getObjects();
+            $scene['scene']['objects'] = $objects;
+            $this->db->updateObjectsHash($hashObjects);
+            $scene['hashes']['hashObjects'] = $hashObjects;
+        }
+        if ($hashes->bullets_hash !== $hashBullets) {
+            $bullets = $this->db->getBullets();
+            $scene['scene']['bullets'] = $bullets;
+            $this->db->updateBulletsHash($hashBullets);
+            $scene['hashes']['hashBullets'] = $hashBullets;
+        }
+
+        return $scene;
     }
 
-    public function setPlayer($id, $x, $y, $vx, $vy)
+    private function spawnPlayers($id, $x, $y)
     {
-        $this->db->setPlayer($id, $x, $y, $vx, $vy);
+
+    }
+
+    private function startMatch($MatchId, $time = 180)
+    {
+
+    }
+
+    private function setKill($id,)
+    {
+
+    }
+
+    public function setBullet($x, $y, $vx, $vy)
+    {
+        $this->db->setBullet($x, $y, $vx, $vy);
+        return true;
+    }
+
+
+    public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
+    {
+        $this->db->setPlayer($id, $x, $y, $vx, $vy, $dx, $dy);
         return true;
     }
 
@@ -42,12 +105,6 @@ class Game
         return true;
     }
 
-    public function getBullets()
-    {
-        return $this->db->getBullets();
-
-
-    }
 
     public function setDestroyObject($objectId, $state)
     {
@@ -62,9 +119,5 @@ class Game
         return ['error' => 800];
     }
 
-    public function getObjects()
-    {
-        return $this->db->getObjects();
-    }
 
 }
