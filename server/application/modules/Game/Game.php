@@ -55,17 +55,17 @@ class Game
         return $scene;
     }
 
-    public function spawnPlayers($id, $x, $y)
+    private function spawnPlayers($id, $x, $y)
     {
 
     }
 
-    public function startMatch($MatchId, $time = 180)
+    private function startMatch($MatchId, $time = 180)
     {
 
     }
 
-    public function setKill($id,)
+    private function setKill($id,)
     {
 
     }
