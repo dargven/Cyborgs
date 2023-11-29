@@ -27,7 +27,7 @@ const LoginPage = () => {
             if (user) {
                 setLoginSuccess(true);
             }
-            errorRef.current!.innerText = `${getError(server.error)}`;
+            errorRef.current!.innerText = getError(server.error);
         }
     };
 

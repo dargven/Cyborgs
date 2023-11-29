@@ -1,9 +1,10 @@
-import {useContext, useEffect, useRef, useState} from "react";
-import {ServerContext} from "../App";
+import { useContext, useEffect, useRef, useState } from "react";
+import { ServerContext } from "../App";
 import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import getError from "../hooks/getError";
 import "../Auth.css";
+import { useNavigate } from "react-router-dom";
 
 const PasswordRecovery = () => {
     const server = useContext(ServerContext);
@@ -12,7 +13,7 @@ const PasswordRecovery = () => {
     const errorRef = useRef<HTMLDivElement | null>(null);
     const newPasswordRef1 = useRef<HTMLInputElement | null>(null);
     const newPasswordRef2 = useRef<HTMLInputElement | null>(null);
-
+    const navigate = useNavigate();
     const [timer, setTimer] = useState(60);
     const [hideContent, setHideContent] = useState({
         recoveryPressed: false,
@@ -20,21 +21,6 @@ const PasswordRecovery = () => {
         timeout: false,
         isButtonDisabled: false,
     });
-
-    const Recovery = async () => {
-        if (loginRef.current) {
-            const login = loginRef.current.value;
-            const recovery = await server.resetPasswordByEmail(login);
-            if (recovery) {
-                setHideContent((prevState) => ({
-                    ...prevState,
-                    recoveryPressed: true,
-                }));
-                startTimer();
-            }
-            errorRef.current!.innerText = `${getError(server.error)}`;
-        }
-    };
 
     const startTimer = () => {
         setHideContent((prevState) => ({
@@ -60,6 +46,22 @@ const PasswordRecovery = () => {
         }, 1000);
     };
 
+    const Recovery = async () => {
+        if (loginRef.current) {
+            const login = loginRef.current.value;
+            localStorage.setItem("login", login);
+            const recovery = await server.resetPasswordByEmail(login);
+            if (recovery) {
+                setHideContent((prevState) => ({
+                    ...prevState,
+                    recoveryPressed: true,
+                }));
+                startTimer();
+            }
+            errorRef.current!.innerText = getError(server.error);
+        }
+    };
+
     const SetCode = async () => {
         if (codeRef.current) {
             const code = codeRef.current.value;
@@ -70,21 +72,18 @@ const PasswordRecovery = () => {
                     codeConfirm: true,
                 }));
             }
-            errorRef.current!.innerText = `${getError(server.error)}`;
+            errorRef.current!.innerText = getError(server.error);
         }
     };
 
     const sendNewHash = async () => {
-        if (
-            newPasswordRef1.current &&
-            newPasswordRef2.current &&
-            loginRef.current
-        ) {
-            const login = loginRef.current.value;
+        if (newPasswordRef1.current && newPasswordRef2.current) {
+            const login = localStorage.getItem("login");
             const password1 = newPasswordRef1.current.value;
             const password2 = newPasswordRef2.current.value;
             if (password1 == password2) {
                 const hash = md5(login + password1);
+                localStorage.removeItem("login");
                 const passwordChanged = await server.setPasswordAfterReset(
                     hash
                 );
@@ -94,8 +93,9 @@ const PasswordRecovery = () => {
                         codeConfirm: false,
                         recoveryPressed: false,
                     }));
+                    navigate("/login");
                 }
-                errorRef.current!.innerText = `${getError(server.error)}`;
+                errorRef.current!.innerText = getError(server.error);
             }
         }
     };
@@ -106,9 +106,9 @@ const PasswordRecovery = () => {
 
     return (
         <>
-            <NavBar/>
+            <NavBar />
             <div className="title">
-                КИБОРГИ <br/> ТЕПЕРЬ В 2D
+                КИБОРГИ <br /> ТЕПЕРЬ В 2D
             </div>
             <div className="content">
                 <h1> Восстановление пароля</h1>
