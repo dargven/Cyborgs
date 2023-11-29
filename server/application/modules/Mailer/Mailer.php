@@ -15,7 +15,6 @@ class Mailer
     {
         $this->mail = new PHPMailer(true);
 
-
     }
 
     public function sendEmail($to, $subject, $body)

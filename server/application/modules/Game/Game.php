@@ -3,6 +3,12 @@
 class Game
 {
     private DB $db;
+    private $spawnPoints = [
+        [
+            'x' => 1,
+            'y' => 1
+        ]
+    ];
 
     public function __construct($db)
     {
@@ -47,6 +53,21 @@ class Game
         }
 
         return $scene;
+    }
+
+    public function spawnPlayers($id, $x, $y)
+    {
+
+    }
+
+    public function startMatch($MatchId, $time = 180)
+    {
+
+    }
+
+    public function setKill($id,)
+    {
+
     }
 
 
