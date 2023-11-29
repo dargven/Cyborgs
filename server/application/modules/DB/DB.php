@@ -124,6 +124,21 @@ class DB
 
     }
 
+    public function getScoreInTeams()
+    {
+
+        return $this->query("SELECT team_id FROM teams WHERE team_score >= 25");
+
+    }
+
+    public function newGame()
+    {
+
+        return $this->execute("UPDATE teams SET team_score=0 WHERE  team_id");
+
+    }
+
+
     public function getTeamsInfo()
 
     {

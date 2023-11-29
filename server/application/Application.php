@@ -105,6 +105,17 @@ class Application
         return ['error' => 242];
     }
 
+    function updateScoreInTeam($params)
+    {
+        $teamId = $params['teamId'];
+        $score = $params['score'];
+        if ($teamId && $score) {
+            
+            return $this->game->updateScoreInTeam($teamId, $score);
+        }
+        return ['error' => 242];
+    }
+
     function getPlayers($params)
     {
         $token = $params['token'];

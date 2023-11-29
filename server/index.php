@@ -22,6 +22,7 @@ function result($params) {
             case 'sendCodeToResetPassword':return $app->sendCodeToResetPassword($params);// ->> need to test
             case 'getCodeToResetPassword':return $app->getCodeToResetPassword($params);// ->> need to test
             case 'setPasswordAfterReset':return $app->setPasswordAfterReset($params);// ->> need to test
+            case 'updateScoreInTeam': return $app->updateScoreInTeam($params);
             default: return ['error' => 102];
         }
     }

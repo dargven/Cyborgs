@@ -18,6 +18,18 @@ class Game
         return $this->db->setPlayer($id, $x, $y, $vx, $vy);
     }
 
+    public function updateScoreInTeam($teamId, $score)
+    {
+       // $this->db->updateScoreInTeam($teamId, $score);
+        $winnerTeamId=$this->db->getScoreInTeams();
+        if($winnerTeamId){
+            return $this->db->newGame();
+        } else{
+            return $this->db->updateScoreInTeam($teamId, $score);
+        }
+        
+    }
+
     public function getSkins($id)
     {
         $skins = $this->db->getSkins($id);
