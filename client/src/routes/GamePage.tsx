@@ -8,7 +8,6 @@ import useKeyHandler from "../hooks/useKeyHandler";
 import { Link } from "react-router-dom";
 
 const playButtonImage = process.env.PUBLIC_URL + "/assets/image/Robot_favikon.png";
-
 const GamePage = () => {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [team, setTeam] = useState<number>(0);
@@ -22,7 +21,47 @@ const GamePage = () => {
     return (
         <div>
             {team ? (
-                <Game />
+                <>
+                    <Game />
+                    <Chat />
+                    <button className="exit">
+                        <Link to="/StartPage">
+                            <img
+                                src={playButtonImage}
+                                alt="Play button"
+                                className="exit-image"
+                            />
+                        </Link>
+                    </button>
+                    {isPopupVisible && (
+                        <div
+                            className="popUpMenu"
+                            onClick={() => setIsPopupVisible(false)}
+                        >
+                            <div
+                                className="popUpMenu__content"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <button
+                                    onClick={() => setIsPopupVisible(false)}
+                                    className="popUpBtn"
+                                >
+                                    Возобновить
+                                </button>
+                                <NavButton
+                                    to="/game"
+                                    text="Настройки"
+                                    className="popUpBtn"
+                                />
+                                <NavButton
+                                    to="/main"
+                                    text="Выход"
+                                    className="popUpBtn"
+                                />
+                            </div>
+                        </div>
+                    )}
+                </>
             ) : (
                 <>
                     <button onClick={() => setTeam(1)} className="Team1">
@@ -32,44 +71,6 @@ const GamePage = () => {
                         команда 2
                     </button>
                 </>
-            )}
-            <Chat />
-            <button className="exit">
-                <Link to="/StartPage">
-                    <img
-                        src={playButtonImage}
-                        alt="Play button"
-                        className="exit-image"
-                    />
-                </Link>
-            </button>
-            {isPopupVisible && (
-                <div
-                    className="popUpMenu"
-                    onClick={() => setIsPopupVisible(false)}
-                >
-                    <div
-                        className="popUpMenu__content"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <button
-                            onClick={() => setIsPopupVisible(false)}
-                            className="popUpBtn"
-                        >
-                            Возобновить
-                        </button>
-                        <NavButton
-                            to="/game"
-                            text="Настройки"
-                            className="popUpBtn"
-                        />
-                        <NavButton
-                            to="/main"
-                            text="Выход"
-                            className="popUpBtn"
-                        />
-                    </div>
-                </div>
             )}
         </div>
     );
