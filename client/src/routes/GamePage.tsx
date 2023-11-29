@@ -1,67 +1,50 @@
-import { useState } from "react";
+import {useState} from "react";
 import Game from "../components/Game/Game";
 import NavButton from "../components/navButton";
 import Chat from "../components/Chat/Chat";
 import "../popUpMenu.css";
 import "../TeamSelect.css";
 import useKeyHandler from "../hooks/useKeyHandler";
-import { Link } from "react-router-dom";
 
-const playButtonImage = process.env.PUBLIC_URL + "/assets/image/Robot_favikon.png";
 const GamePage = () => {
-    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [stopMove, setStopMove] = useState({
+        isPopupVisible: false,
+        isChatClicked: false,
+        blockMove: false
+    });
+
     const [team, setTeam] = useState<number>(0);
 
+    const Test = () => {
+        setStopMove((prevState) => ({
+            ...prevState,
+            blockMove: true,
+            isChatClicked: true
+        }));
+    }
+
+    console.log(stopMove.isPopupVisible, "Меню")
+    console.log(stopMove.isChatClicked, "Чат")
+    console.log(stopMove.blockMove, "Управление")
+
     const handleKeyPress = () => {
-        setIsPopupVisible(!isPopupVisible);
+        setStopMove((prevState) => ({
+            ...prevState,
+            isPopupVisible: !stopMove.isPopupVisible,
+            blockMove: !stopMove.blockMove
+        }));
     };
+
+
 
     useKeyHandler(27, handleKeyPress);
 
     return (
         <div>
+            <Chat Test={Test}/>
+
             {team ? (
-                <>
-                    <Game />
-                    <Chat />
-                    <button className="exit">
-                        <Link to="/StartPage">
-                            <img
-                                src={playButtonImage}
-                                alt="Play button"
-                                className="exit-image"
-                            />
-                        </Link>
-                    </button>
-                    {isPopupVisible && (
-                        <div
-                            className="popUpMenu"
-                            onClick={() => setIsPopupVisible(false)}
-                        >
-                            <div
-                                className="popUpMenu__content"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                <button
-                                    onClick={() => setIsPopupVisible(false)}
-                                    className="popUpBtn"
-                                >
-                                    Возобновить
-                                </button>
-                                <NavButton
-                                    to="/game"
-                                    text="Настройки"
-                                    className="popUpBtn"
-                                />
-                                <NavButton
-                                    to="/main"
-                                    text="Выход"
-                                    className="popUpBtn"
-                                />
-                            </div>
-                        </div>
-                    )}
-                </>
+                <Game/>
             ) : (
                 <>
                     <button onClick={() => setTeam(1)} className="Team1">
@@ -72,6 +55,46 @@ const GamePage = () => {
                     </button>
                 </>
             )}
+
+            {stopMove.isPopupVisible && (
+                <div
+                    className="popUpMenu"
+                    onClick={() =>
+                        setStopMove((prevState) => ({
+                            ...prevState,
+                            isPopupVisible: false,
+                            blockMove: false
+                        }))}
+                >
+                    <div
+                        className="popUpMenu__content"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            onClick={() =>
+                                setStopMove((prevState) => ({
+                                    ...prevState,
+                                    isPopupVisible: false,
+                                    blockMove: false
+                                }))}
+                            className="popUpBtn"
+                        >
+                            Возобновить
+                        </button>
+                        <NavButton
+                            to="/game"
+                            text="Настройки"
+                            className="popUpBtn"
+                        />
+                        <NavButton
+                            to="/main"
+                            text="Выход"
+                            className="popUpBtn"
+                        />
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };

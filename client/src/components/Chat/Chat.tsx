@@ -6,14 +6,20 @@ import "./Chat.css";
 import { TMessage } from "../../modules/Server/types";
 import { useNavigate } from "react-router-dom";
 
-const Chat = () => {
-    const chatMessagesRef = useRef<HTMLDivElement | null>(null);
+interface IChat {
+    Test(): void
+}
 
+const Chat = ({Test}: IChat) => {
+    const chatMessagesRef = useRef<HTMLDivElement | null>(null);
     const chatRef = useRef<HTMLInputElement | null>(null);
     const errorRef = useRef<HTMLDivElement | null>(null);
     const server = useContext(ServerContext);
     let interval: NodeJS.Timer | null = null;
+
     const [messages, setMessages] = useState<TMessage[]>([]);
+
+    const navigate = useNavigate();
 
     const userTime = (created: string) => {
         const userTimezoneTimezone = new Date().getTimezoneOffset() / 60;
@@ -21,10 +27,9 @@ const Chat = () => {
         const resultTimezone = serverTimezone - userTimezoneTimezone;
         const substr = created.split(":")[0];
         const resultHour = resultTimezone + parseInt(substr);
-
         return `${resultHour}:${created.split(":")[1]}`;
     };
-    const navigate = useNavigate();
+
     const updateChat = async () => {
         const messagesFromServer = await server.getMessages();
         if (messagesFromServer) {
@@ -38,20 +43,21 @@ const Chat = () => {
 
     useEffect(() => {
         const interval = setInterval(updateChat, 150);
-
         return () => {
             clearInterval(interval);
         };
     }, []);
+
     useEffect(() => {
-        // Scroll to the top of the chat messages when messages change
         if (chatMessagesRef.current) {
             chatMessagesRef.current.scrollTop =
                 chatMessagesRef.current.scrollHeight;
         }
     }, [messages]);
+
     const handleChat = async () => {
         if (chatRef.current?.value) {
+            document.getElementById('mesage-text')?.blur();
             await server.sendMessage(chatRef.current?.value);
             chatRef.current.value = "";
             errorRef.current!.innerText = "";
@@ -60,9 +66,10 @@ const Chat = () => {
             errorRef.current!.innerText = getError(server.error);
         }
     };
+
     useEnterKeyHandler(13, handleChat);
 
-    return (
+    return(
         <div className="chatComponent">
             <div className="chat">
                 <div className="chat-messages" ref={chatMessagesRef}>
@@ -92,6 +99,9 @@ const Chat = () => {
                             id="mesage-text"
                             className="chat-form__input"
                             placeholder="Введите сообщение"
+                            onClick={() => {
+                                Test()
+                            }}
                         />
                         <button
                             className="chat-form__submit"
