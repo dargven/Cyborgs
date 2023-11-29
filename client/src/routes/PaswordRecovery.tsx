@@ -1,5 +1,5 @@
-import {useContext, useEffect, useRef, useState} from "react";
-import {ServerContext} from "../App";
+import { useContext, useEffect, useRef, useState } from "react";
+import { ServerContext } from "../App";
 import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import getError from "../hooks/getError";
@@ -24,6 +24,7 @@ const PasswordRecovery = () => {
     const Recovery = async () => {
         if (loginRef.current) {
             const login = loginRef.current.value;
+            localStorage.setItem("login", login);
             const recovery = await server.resetPasswordByEmail(login);
             if (recovery) {
                 setHideContent((prevState) => ({
@@ -75,12 +76,9 @@ const PasswordRecovery = () => {
     };
 
     const sendNewHash = async () => {
-        if (
-            newPasswordRef1.current &&
-            newPasswordRef2.current &&
-            loginRef.current
-        ) {
-            const login = loginRef.current.value;
+        if (newPasswordRef1.current && newPasswordRef2.current) {
+            const login = localStorage.getItem("login");
+            console.log(login);
             const password1 = newPasswordRef1.current.value;
             const password2 = newPasswordRef2.current.value;
             if (password1 == password2) {
@@ -106,9 +104,9 @@ const PasswordRecovery = () => {
 
     return (
         <>
-            <NavBar/>
+            <NavBar />
             <div className="title">
-                КИБОРГИ <br/> ТЕПЕРЬ В 2D
+                КИБОРГИ <br /> ТЕПЕРЬ В 2D
             </div>
             <div className="content">
                 <h1> Восстановление пароля</h1>
