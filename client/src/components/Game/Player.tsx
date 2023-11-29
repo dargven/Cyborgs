@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import HealthBar from "./HealthBar";
 import { useFrame } from "@react-three/fiber";
+import { TPlayer } from "../../modules/Server/types";
 
 interface IPlayerProps {
     token: string;
@@ -15,11 +16,11 @@ interface IPlayerProps {
     onMovement?(position: Vector3): void;
     setWeaponSlot?(newSlot: number): void;
     getPosVel?(position: Vector3, velocity: Vector3): void;
-    
+    setMyPlayer?(player:TPlayer): void; 
 }
 
 
-const Player = ({ velocity = new Vector3(),  position, teamId, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token }: IPlayerProps) => {
+const Player = ({ velocity = new Vector3(),  position, teamId, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token, setMyPlayer }: IPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
@@ -53,6 +54,7 @@ const Player = ({ velocity = new Vector3(),  position, teamId, onFire, onMovemen
             if (getPosVel && isControlled) {
                 getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
             }
+            
         }
     }
 
@@ -67,6 +69,9 @@ const Player = ({ velocity = new Vector3(),  position, teamId, onFire, onMovemen
                 if (e.button === 0) {
                     setShooting(false);
                 }
+            }
+            if(setMyPlayer){
+                setMyPlayer({x:vec3(ref.current.translation()).x,y:0,vx:0,vy:0,dx:0,dy:0,hp:100,token:" ",teamId:1})
             }
 
             document.addEventListener("mousedown", mouseDownHandler);

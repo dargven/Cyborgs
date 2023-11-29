@@ -191,6 +191,7 @@ const Scene = ({ vSize }: ISceneProps) => {
                             onFire={onFire}
                             onMovement={onMovement}
                             isControlled
+                            setMyPlayer={setMyPlayer}
                         />
                     }
                 })}

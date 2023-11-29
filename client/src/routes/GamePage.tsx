@@ -37,10 +37,10 @@ const GamePage = () => {
                 <Game />
             ) : (
                 <>
-                    <button onClick={() => handleTeam(1)} className="Team1">
+                    <button onClick={() => handleTeam(0)} className="Team1">
                         команда 1
                     </button>
-                    <button onClick={() => handleTeam(2)} className="Team2">
+                    <button onClick={() => handleTeam(1)} className="Team2">
                         команда 2
                     </button>
                 </>
