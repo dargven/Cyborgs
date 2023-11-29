@@ -1,10 +1,10 @@
-import {useContext, useEffect, useRef, useState} from "react";
-import {ServerContext} from "../../App";
+import { useContext, useEffect, useRef, useState } from "react";
+import { ServerContext } from "../../App";
 import useEnterKeyHandler from "../../hooks/useKeyHandler";
 import getError from "../../hooks/getError";
 import "./Chat.css";
-import {TMessage} from "../../modules/Server/types";
-import {useNavigate} from "react-router-dom";
+import { TMessage } from "../../modules/Server/types";
+import { useNavigate } from "react-router-dom";
 
 const Chat = () => {
     const chatMessagesRef = useRef<HTMLDivElement | null>(null);
@@ -46,7 +46,8 @@ const Chat = () => {
     useEffect(() => {
         // Scroll to the top of the chat messages when messages change
         if (chatMessagesRef.current) {
-            chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+            chatMessagesRef.current.scrollTop =
+                chatMessagesRef.current.scrollHeight;
         }
     }, [messages]);
     const handleChat = async () => {
@@ -56,7 +57,7 @@ const Chat = () => {
             errorRef.current!.innerText = "";
         } else {
             server.error.code = 706;
-            errorRef.current!.innerText = `${getError(server.error)}`;
+            errorRef.current!.innerText = getError(server.error);
         }
     };
     useEnterKeyHandler(13, handleChat);
@@ -71,9 +72,13 @@ const Chat = () => {
                             .reverse()
                             .map((msg) => (
                                 <p className="chat-message">
-                                    <span className="timestamp">{userTime(msg.created)}</span>
+                                    <span className="timestamp">
+                                        {userTime(msg.created)}
+                                    </span>
                                     <span className="name">{msg.name}:</span>
-                                    <span className="message">{msg.message}</span>
+                                    <span className="message">
+                                        {msg.message}
+                                    </span>
                                 </p>
                             ))}
                     </div>

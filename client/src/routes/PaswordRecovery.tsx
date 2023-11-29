@@ -4,6 +4,7 @@ import md5 from "md5-ts";
 import NavBar from "../components/navBar";
 import getError from "../hooks/getError";
 import "../Auth.css";
+import { useNavigate } from "react-router-dom";
 
 const PasswordRecovery = () => {
     const server = useContext(ServerContext);
@@ -12,7 +13,7 @@ const PasswordRecovery = () => {
     const errorRef = useRef<HTMLDivElement | null>(null);
     const newPasswordRef1 = useRef<HTMLInputElement | null>(null);
     const newPasswordRef2 = useRef<HTMLInputElement | null>(null);
-
+    const navigate = useNavigate();
     const [timer, setTimer] = useState(60);
     const [hideContent, setHideContent] = useState({
         recoveryPressed: false,
@@ -57,10 +58,9 @@ const PasswordRecovery = () => {
                 }));
                 startTimer();
             }
-            errorRef.current!.innerText = `${getError(server.error)}`;
+            errorRef.current!.innerText = getError(server.error);
         }
     };
-
 
     const SetCode = async () => {
         if (codeRef.current) {
@@ -72,7 +72,7 @@ const PasswordRecovery = () => {
                     codeConfirm: true,
                 }));
             }
-            errorRef.current!.innerText = `${getError(server.error)}`;
+            errorRef.current!.innerText = getError(server.error);
         }
     };
 
@@ -84,15 +84,18 @@ const PasswordRecovery = () => {
             if (password1 == password2) {
                 const hash = md5(login + password1);
                 localStorage.removeItem("login");
-                const passwordChanged = await server.setPasswordAfterReset( hash );
+                const passwordChanged = await server.setPasswordAfterReset(
+                    hash
+                );
                 if (passwordChanged) {
                     setHideContent((prevState) => ({
                         ...prevState,
                         codeConfirm: false,
                         recoveryPressed: false,
-                    }))
+                    }));
+                    navigate("/login");
                 }
-                errorRef.current!.innerText = `${getError(server.error)}`;
+                errorRef.current!.innerText = getError(server.error);
             }
         }
     };
