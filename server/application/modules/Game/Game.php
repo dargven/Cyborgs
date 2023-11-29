@@ -72,7 +72,8 @@ class Game
 
     public function setBullet($x, $y, $vx, $vy)
     {
-        return $this->db->setBullet($x, $y, $vx, $vy);
+        $this->db->setBullet($x, $y, $vx, $vy);
+        return true;
     }
 
 

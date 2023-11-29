@@ -220,7 +220,7 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     public function setBullet($x, $y, $vx, $vy)
     {
 
-        $this->execute("INSERT INTO  bullets (x,y,vx,vy) VALUES (?,?,?,?)", [$x, $y, $vx, $vy]);
+        $this->execute("INSERT INTO bullets (x,y,vx,vy) VALUES (?,?,?,?)", [$x, $y, $vx, $vy]);
     }
 
 }
