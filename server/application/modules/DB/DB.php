@@ -218,5 +218,9 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
 WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
 
+    public function setBullet($BulletId, $x, $y, $vx, $vy) {
+        return $this->execute("INSERT INTO bullets (bullet_id, x, y, vx, vy) VALUES (?, ?, ?, ?, ?) 
+                               ON DUPLICATE KEY UPDATE x = VALUES(x), y = VALUES(y), vx = VALUES(vx), vy = VALUES(vy); ", [$BulletId, $x, $y, $vx, $vy]);
+    }
 }
 

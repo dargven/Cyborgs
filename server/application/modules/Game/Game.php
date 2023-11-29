@@ -113,5 +113,7 @@ class Game
         return ['error' => 800];
     }
 
-
+    public function setBullet($id, $x, $y, $vx, $vy ) {
+        return $this->db->setBullet($id, $x, $y, $vx, $vy);
+    }
 }

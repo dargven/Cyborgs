@@ -5,7 +5,7 @@ class Answer
     static $CODES = array(
         '101' => 'param method not setted',
         '102' => 'method not found',
-        '242' => 'params not set fully ',
+        '242' => 'params not set fully',
         '404' => 'not found',
         '605' => 'invalid teamId',
         '700' => 'No skins',
