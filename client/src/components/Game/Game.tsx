@@ -38,7 +38,7 @@ const Game = () => {
                     <Scene />
                     <axesHelper />
                 </PerspectiveCamera>
-                <Preload all />
+                {/* <Preload all /> */}
             </Canvas>
         </KeyboardControls>
     );

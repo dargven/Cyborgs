@@ -12,13 +12,13 @@ interface IPlayerProps {
     velocity?: Vector3;
     teamId: number;
     isControlled?: boolean
+    hp: number;
     onFire?(position: Vector3, team: number): void;
     onMovement?(position: Vector3): void;
-    setWeaponSlot?(newSlot: number): void;
     getPosVel?(position: Vector3, velocity: Vector3): void;
-    // setPeePee?(player: TPlayer): void;
     getMyPlayer?(player: TPlayer): void;
 }
+
 
 
 const Player = ({
@@ -27,9 +27,9 @@ const Player = ({
     teamId,
     isControlled,
     token,
+    hp,
     onFire,
     onMovement,
-    setWeaponSlot,
     getPosVel,
     getMyPlayer,
 }: IPlayerProps) => {
@@ -39,6 +39,18 @@ const Player = ({
     const [isShooting, setShooting] = useState<boolean>(false);
 
     const [controlKeys, getKeys] = useKeyboardControls();
+
+    const [state, setState] = useState<TPlayer>({
+        x: vec3(ref.current?.translation()).x,
+        y: vec3(ref.current?.translation()).y,
+        vx: vec3(ref.current?.linvel()).x,
+        vy: vec3(ref.current?.linvel()).y,
+        dx: 0,
+        dy: 0,
+        hp,
+        token,
+        teamId
+    });
 
     const movementController = (up?: boolean, down?: boolean, left?: boolean, right?: boolean) => {
 
@@ -66,6 +78,8 @@ const Player = ({
                 getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
             }
 
+            
+
         }
     }
 
@@ -82,18 +96,10 @@ const Player = ({
                 }
             }
             if (getMyPlayer) {
+                
+                getMyPlayer(state);
 
-                getMyPlayer({
-                    x: vec3(ref.current.translation()).x,
-                    y: vec3(ref.current.translation()).y,
-                    vx: vec3(ref.current.linvel()).x,
-                    vy: vec3(ref.current.linvel()).y,
-                    dx: 0,
-                    dy: 0,
-                    hp,
-                    token,
-                    teamId
-                });
+                console.log(state);
             }
 
             document.addEventListener("mousedown", mouseDownHandler);
@@ -104,7 +110,7 @@ const Player = ({
                 document.removeEventListener("mouseup", mouseUpHandler);
             }
         }
-    });
+    }, [state]);
 
     useFrame(() => {
         if (isControlled) {
@@ -123,27 +129,32 @@ const Player = ({
                 }
             }
 
+            setState({
+                ...state, x: vec3(ref.current?.translation()).x,
+                y: vec3(ref.current?.translation()).y,
+                vx: vec3(ref.current?.linvel()).x,
+                vy: vec3(ref.current?.linvel()).y,
+            });
+
         } else {
             movementController();
         }
     });
 
-    const [hp, setHp] = useState<number>(100);
-
     useEffect(() => {
         const data = {
             type: 'player',
             team: teamId,
-            hp: hp,
+            hp: state.hp,
         }
 
         ref.current.userData = data;
 
-        if (hp === 0) {
+        if (state.hp === 0) {
             ref.current.setEnabled(false);
         }
 
-    }, [hp, teamId]);
+    }, [state]);
 
     return (
         <>
@@ -174,9 +185,9 @@ const Player = ({
                         if (data.type === "projectile") {
                             const damage = data.team === teamId ? data.damage / 2 : data.damage;
                             if (hp - damage < 0) {
-                                setHp(0);
+                                setState({ ...state, hp: 0 });
                             } else {
-                                setHp(hp - damage);
+                                setState({ ...state, hp: hp - damage });
                             }
                         }
                     }} />

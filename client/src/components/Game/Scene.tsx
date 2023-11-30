@@ -40,74 +40,47 @@ const Scene = () => {
         'glass': glass,
     });
 
-    const [myBullets, setMyBullets] = useState<TBullet[]>([])
-
+    const [myBullets, setMyBullets] = useState<TBullet[]>([]);
     const [bullets, setBullets] = useState<TBullet[]>([]);
     const [players, setPlayers] = useState<TPlayer[]>([{ x: 0, y: 0, vx: 0, vy: 0, dx: 0, dy: 0, token: store.getUser().token, teamId: 1, hp: 100 }]);
-    const [obstacles] = useState<TDestructible[]>();
+    const [obstacles, setObstacles] = useState<TDestructible[]>();
     const [myPlayer, setMyPlayer] = useState<TPlayer>();
 
-    // const peepee = useRef<TPlayer>();
+    const sendBullet = (bullet: TBullet) => {
+        server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
+    }
 
-    // const setPeePee = (player: TPlayer) => {
-    //     peepee.current = player;
-    // }
-
-    // const [inventory] = useState<Gun[]>([
-    //     new Gun({
-    //         name: 'tah gun',
-    //         type: 1,
-    //         damage: 50,
-    //         rate: 1,
-    //         magSize: 10,
-    //         maxAmmo: 200,
-    //         currentAmmo: 10000,
-    //         speed: 6
-    //     })
-    // ]);
-
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         myBullets.forEach((bullet) => {
-    //             server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
-    //         })
-    //     }, 50)
-
-    //     return () => clearInterval(interval)
-    // }, [myBullets]);
-
-    // const sendBullet = (bullet: TBullet) => {
+    // myBullets.forEach((bullet) => {
     //     server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
-    // }
+    // });
 
     const updatePlayer = useCallback((player: TPlayer) => {
         setMyPlayer(player);
 
     }, [myPlayer]);
 
-    const getMyPlayer = (player: TPlayer) => {
-        setMyPlayer(player);
-    }
-
     const sendMyPlayer = async (player: TPlayer) => {
         await server.setPlayer(player.x, player.y, player.vx, player.vy, 0, 0)
     };
 
+    const getScene = async () => {
+        const result = await server.getScene();
+        if (result?.bullets) {
+            setBullets(result.bullets);
+        }
+        if (result?.players) {
+            setPlayers(result.players);
+        }
+        if (result?.objects) {
+            setObstacles(result.objects);
+        }
+    }
+
     useInterval(() => {
-        console.log(myPlayer);
+        getScene();
+        console.log(players);
+
     }, 1000);
-
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         // if (myPlayer) {
-    //         //     sendMyPlayer(myPlayer);
-    //         // }
-    //         console.log(myPlayer);
-    //     }, 50);
-
-    //     return () =>
-    //         clearInterval(interval);
-    // }, []);
 
     const mouseX = useRef(0);
     const mouseY = useRef(0);
@@ -170,8 +143,7 @@ const Scene = () => {
 
     return (
         <group>
-
-            <Physics gravity={[0, 0, 0]} colliders="hull" debug>
+            <Physics gravity={[0, 0, 0]} colliders="hull">
                 <LightMap />
 
                 <FishTank />
@@ -184,16 +156,19 @@ const Scene = () => {
                             token={player.token}
                             teamId={player.teamId}
                             position={new Vector3(player.x, player.y, 0)}
-                            velocity={new Vector3(player.vx, player.vy, 0)} />
+                            velocity={new Vector3(player.vx, player.vy, 0)}
+                            hp={player.hp}
+                        />
                     } else {
                         return <Player
+                            isControlled
+                            hp={player.hp}
                             key={token}
                             token={token}
                             teamId={0}
                             onFire={onFire}
                             onMovement={onMovement}
-                            isControlled
-                            getMyPlayer={getMyPlayer}
+                            getMyPlayer={updatePlayer}
                         />
                     }
                 })}
