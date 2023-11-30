@@ -1,47 +1,52 @@
 <?php
 require_once __DIR__ . '/Config/SpawnPoints.php';
-require_once __DIR__ . '/Config/Scene.php';
 
 class Game
 {
     private DB $db;
 
-    $teamASpawnPoints = SpawnPoints::$spawnPoints[0];
-    $teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
-
     public function __construct($db)
     {
         $this->db = $db;
+        $teamASpawnPoints = SpawnPoints::$spawnPoints[0];
+        $teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
     }
 
     public function getScene($hashPlayers, $hashObjects, $hashBullets)
     {
-        $sceneHashPlayers = Scene::$scene['hashes']['hashPlayers'];
-        $sceneHashObjsects = Scene::$scene['hashes']['hashObjects'];
-        $sceneHashBullets = Scene::$scene['hashes']['hashBullets'];
-        $scenePlayers = Scene::$scene['scene']['players'];
-        $sceneObjects = Scene::$scene['scene']['objects'];
-        $sceneBullets = Scene::$scene['scene']['bullets'];
+        $scene = [
+            'hashes' =>
+                [
+                    'hashPlayers' => NULL,
+                    'hashObjects' => NULL,
+                    'hashBullets' => NULL
+                ],
+            'scene' => [
+                'players' => NULL,
+                'bullets' => NULL,
+                'objects' => NULL
 
+            ],
+        ];
         $hashes = $this->db->getHashes();
 
         if ($hashes->players_hash !== $hashPlayers) {
             $players = $this->getPlayers();
-            $scenePlayers = $players;
+            $scene['scene']['players'] = $players;
             $this->db->updatePlayersHash($hashPlayers);
-            $sceneHashPlayers = $hashPlayers;
+            $scene['hashes']['hashPlayers'] = $hashPlayers;
         }
         if ($hashes->objects_hash !== $hashObjects) {
             $objects = $this->getObjects();
-            $sceneObjects = $objects;
+            $scene['scene']['objects'] = $objects;
             $this->db->updateObjectsHash($hashObjects);
-            $sceneHashObjsects = $hashObjects;
+            $scene['hashes']['hashObjects'] = $hashObjects;
         }
         if ($hashes->bullets_hash !== $hashBullets) {
             $bullets = $this->getBullets();
-            $sceneBullets = $bullets;
+            $scene['scene']['bullets'] = $bullets;
             $this->db->updateBulletsHash($hashBullets);
-            $sceneHashBullets = $hashBullets;
+            $scene['hashes']['hashBullets'] = $hashBullets;
         }
 
         return $scene;
