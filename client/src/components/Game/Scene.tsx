@@ -87,11 +87,7 @@ const Scene = () => {
     useInterval(() => {
         getScene();
         if (myPlayer) {
-            const filtered = players.filter(p => p.token !== store.getUser().token);
-            filtered.push(myPlayer!);
-            setPlayers(filtered);
-            console.log(myPlayer);
-            sendMyPlayer(myPlayer!);
+            sendMyPlayer(myPlayer);
         }
     }, 50);
 
