@@ -2,15 +2,15 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { ServerContext } from "../../App";
 import useEnterKeyHandler from "../../hooks/useKeyHandler";
 import getError from "../../hooks/getError";
-import "./Chat.css";
 import { TMessage } from "../../modules/Server/types";
 import { useNavigate } from "react-router-dom";
+import "./Chat.css";
 
 interface IChat {
-    Test(): void
+    StopMove(): void
 }
 
-const Chat = ({Test}: IChat) => {
+const Chat = ({StopMove}: IChat) => {
     const chatMessagesRef = useRef<HTMLDivElement | null>(null);
     const chatRef = useRef<HTMLInputElement | null>(null);
     const errorRef = useRef<HTMLDivElement | null>(null);
@@ -100,7 +100,7 @@ const Chat = ({Test}: IChat) => {
                             className="chat-form__input"
                             placeholder="Введите сообщение"
                             onClick={() => {
-                                Test()
+                                StopMove()
                             }}
                         />
                         <button
