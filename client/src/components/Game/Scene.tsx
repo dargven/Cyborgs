@@ -43,8 +43,8 @@ const Scene = () => {
 
     const [myBullets, setMyBullets] = useState<TBullet[]>([]);
     const [bullets, setBullets] = useState<TBullet[]>([]);
-    const [players, setPlayers] = useState<TPlayer[]>([{ x: 0, y: 0, vx: 0, vy: 0, dx: 0, dy: 0, token: store.getUser().token, teamId: 1, hp: 100 }]);
-    const [myPlayer, setMyPlayer] = useState<TPlayer>({ x: 0, y: 0, vx: 0, vy: 0, dx: 0, dy: 0, token: store.getUser().token, teamId: 1, hp: 100 }  );
+    const [players, setPlayers] = useState<TPlayer[]>([]);
+    const [myPlayer, setMyPlayer] = useState<TPlayer>();
     const [obstacles, setObstacles] = useState<TDestructible[]>();
 
     const sendBullet = (bullet: TBullet) => {
@@ -77,15 +77,27 @@ const Scene = () => {
         }
     }
 
+
+    useEffect(() => {
+        getScene();
+        const mp = players.filter(p => p.token === store.getUser().token)[0];
+        setMyPlayer(mp);
+    }, []);
+
     useInterval(() => {
         getScene();
-        console.log(players);
-
-    }, 1000);
+        if (myPlayer) {
+            const filtered = players.filter(p => p.token !== store.getUser().token);
+            filtered.push(myPlayer!);
+            setPlayers(filtered);
+            console.log(myPlayer);
+            sendMyPlayer(myPlayer!);
+        }
+    }, 50);
 
     const mouseX = useRef(0);
     const mouseY = useRef(0);
-    const invRef = useRef<Group>();
+    // const invRef = useRef<Group>();
     const debugRef = useRef<Group>();
     const positionToCamera = new Vector3(0, -2, -3);
 
@@ -154,10 +166,7 @@ const Scene = () => {
 
                 <FishTank />
 
-
-                <Debug player={myPlayer} debugRef={debugRef}/>
-
-                
+                {myPlayer && <Debug player={myPlayer} debugRef={debugRef} />}
 
                 {players.map(player => {
                     const token = store.getUser().token;

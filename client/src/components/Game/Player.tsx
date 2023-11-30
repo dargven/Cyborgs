@@ -96,10 +96,7 @@ const Player = ({
                 }
             }
             if (getMyPlayer) {
-                
                 getMyPlayer(state);
-
-                console.log(state);
             }
 
             document.addEventListener("mousedown", mouseDownHandler);
