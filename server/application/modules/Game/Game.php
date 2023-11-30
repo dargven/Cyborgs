@@ -4,12 +4,10 @@ class Game
 {
     private DB $db;
     private $spawnPoints = [
-        0 => [
         [
             'x' => 1,
             'y' => 1
-        ]
-    ];
+        ]];
 
     public function __construct($db)
     {
@@ -22,14 +20,14 @@ class Game
     }
 
 
-    public function getScene($hashPlayers, $hashObjects, $hashBullets)
+    public function getScene($playersHash, $objectsHash, $bulletsHash)
     {
         $scene = [
             'hashes' =>
                 [
-                    'hashPlayers' => NULL,
-                    'hashObjects' => NULL,
-                    'hashBullets' => NULL
+                    'playersHash' => NULL,
+                    'objectsHash' => NULL,
+                    'bulletsHash' => NULL
                 ],
             'scene' => [
                 'players' => NULL,
@@ -40,20 +38,20 @@ class Game
         ];
         $hashes = $this->db->getHashes();
 
-        if ($hashes->players_hash !== $hashPlayers) {
+        if ($hashes->players_hash !== $playersHash) {
             $players = $this->getPlayers();
             $scene['scene']['players'] = $players;
-            $scene['hashes']['hashPlayers'] = $hashPlayers;
+            $scene['hashes']['playersHash]'] = $playersHash;
         }
-        if ($hashes->objects_hash !== $hashObjects) {
+        if ($hashes->objects_hash !== $objectsHash) {
             $objects = $this->getObjects();
             $scene['scene']['objects'] = $objects;
-            $scene['hashes']['hashObjects'] = $hashObjects;
+            $scene['hashes']['objectsHash'] = $objectsHash;
         }
-        if ($hashes->bullets_hash !== $hashBullets) {
+        if ($hashes->bullets_hash !== $bulletsHash) {
             $bullets = $this->getBullets();
             $scene['scene']['bullets'] = $bullets;
-            $scene['hashes']['hashBullets'] = $hashBullets;
+            $scene['hashes']['bulletsHash'] = $bulletsHash;
         }
 
         return $scene;
