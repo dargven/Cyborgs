@@ -16,12 +16,23 @@ interface IPlayerProps {
     onMovement?(position: Vector3): void;
     setWeaponSlot?(newSlot: number): void;
     getPosVel?(position: Vector3, velocity: Vector3): void;
-    setPeePee?(player: TPlayer): void;
-    setMyPlayer?(player: TPlayer): void;
+    // setPeePee?(player: TPlayer): void;
+    getMyPlayer?(player: TPlayer): void;
 }
 
 
-const Player = ({ velocity = new Vector3(), position, teamId, onFire, onMovement, setWeaponSlot, getPosVel, isControlled, token, setMyPlayer, setPeePee }: IPlayerProps) => {
+const Player = ({
+    velocity = new Vector3(),
+    position,
+    teamId,
+    isControlled,
+    token,
+    onFire,
+    onMovement,
+    setWeaponSlot,
+    getPosVel,
+    getMyPlayer,
+}: IPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
@@ -70,21 +81,9 @@ const Player = ({ velocity = new Vector3(), position, teamId, onFire, onMovement
                     setShooting(false);
                 }
             }
-            if (setMyPlayer && setPeePee) {
+            if (getMyPlayer) {
 
-                setMyPlayer({
-                    x: vec3(ref.current.translation()).x,
-                    y: vec3(ref.current.translation()).y,
-                    vx: vec3(ref.current.linvel()).x,
-                    vy: vec3(ref.current.linvel()).y,
-                    dx: 0,
-                    dy: 0,
-                    hp,
-                    token,
-                    teamId
-                });
-
-                setPeePee({
+                getMyPlayer({
                     x: vec3(ref.current.translation()).x,
                     y: vec3(ref.current.translation()).y,
                     vx: vec3(ref.current.linvel()).x,

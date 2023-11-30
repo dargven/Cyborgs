@@ -1,7 +1,7 @@
 import { Stars } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Group, Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
 import { TBullet, TDestructible, TPlayer } from "../../modules/Server/types";
@@ -14,6 +14,7 @@ import Obstacle from "./Obstacle";
 import Player from "./Player";
 import Zone from "./Zone";
 import Projectile from "./Projectile";
+import { useInterval } from "usehooks-ts";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -46,11 +47,11 @@ const Scene = () => {
     const [obstacles] = useState<TDestructible[]>();
     const [myPlayer, setMyPlayer] = useState<TPlayer>();
 
-    const peepee = useRef<TPlayer>();
+    // const peepee = useRef<TPlayer>();
 
-    const setPeePee = (player: TPlayer) => {
-        peepee.current = player;
-    }
+    // const setPeePee = (player: TPlayer) => {
+    //     peepee.current = player;
+    // }
 
     // const [inventory] = useState<Gun[]>([
     //     new Gun({
@@ -79,23 +80,34 @@ const Scene = () => {
     //     server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
     // }
 
+    const updatePlayer = useCallback((player: TPlayer) => {
+        setMyPlayer(player);
+
+    }, [myPlayer]);
+
+    const getMyPlayer = (player: TPlayer) => {
+        setMyPlayer(player);
+    }
+
     const sendMyPlayer = async (player: TPlayer) => {
         await server.setPlayer(player.x, player.y, player.vx, player.vy, 0, 0)
     };
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            // if (myPlayer) {
-            //     sendMyPlayer(myPlayer);
-            // }
-            console.log(peepee.current);
-        }, 50);
+    useInterval(() => {
+        console.log(myPlayer);
+    }, 1000);
 
-        return () =>
-            clearInterval(interval);
-    }, [peepee.current, myPlayer]);
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         // if (myPlayer) {
+    //         //     sendMyPlayer(myPlayer);
+    //         // }
+    //         console.log(myPlayer);
+    //     }, 50);
 
-    // console.log(myPlayer);
+    //     return () =>
+    //         clearInterval(interval);
+    // }, []);
 
     const mouseX = useRef(0);
     const mouseY = useRef(0);
@@ -181,8 +193,7 @@ const Scene = () => {
                             onFire={onFire}
                             onMovement={onMovement}
                             isControlled
-                            setMyPlayer={setMyPlayer}
-                            setPeePee={setPeePee}
+                            getMyPlayer={getMyPlayer}
                         />
                     }
                 })}
