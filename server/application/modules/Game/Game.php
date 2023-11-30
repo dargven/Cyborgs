@@ -15,6 +15,12 @@ class Game
         $this->db = $db;
     }
 
+    private function genHash()
+    {
+        return md5(rand(0, 1000000));
+    }
+
+
     public function getScene($hashPlayers, $hashObjects, $hashBullets)
     {
         $scene = [
@@ -82,10 +88,6 @@ class Game
 
     }
 
-    public function genHash()
-    {
-        return md5(rand(0, 1000000));
-    }
 
     public function setBullet($x, $y, $vx, $vy)
     {
@@ -138,7 +140,9 @@ class Game
 
     public function setSkin($id, $skinId)
     {
-        $this->db->setSkin($id, $skinId); // Потребуется дополнительная проверка, если будут ещё какие-то скины
+        $this->db->setSkin($id, $skinId);
+        $hash = $this->genHash();
+        $this->db->update
         return true;
     }
 

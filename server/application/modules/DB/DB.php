@@ -93,17 +93,16 @@ class DB
         $this->execute("UPDATE users SET password =? WHERE id = ?", [$password, $id]);
     }
 
-
-    public function sendMessage($id, $message)
-    {
-        $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
-    }
-
     public function getMessage()
     {
         return $this->queryAll("SELECT u.name AS name, m.message AS message, DATE_FORMAT(m.created,'%H:%i') AS created FROM messages as m LEFT JOIN 
     users as u on u.id = m.user_id 
                               ORDER BY m.created DESC LIMIT 10");
+    }
+
+    public function sendMessage($id, $message)
+    {
+        $this->execute('INSERT INTO messages (user_id, message, created) VALUES (?,?, now())', [$id, $message]);
     }
 
 
@@ -114,9 +113,22 @@ class DB
         ORDER BY u.bullet_id");
     }
 
+    public function setBullet($x, $y, $vx, $vy)
+    {
+
+        $this->execute("INSERT INTO bullets (x,y,vx,vy) VALUES (?,?,?,?)", [$x, $y, $vx, $vy]);
+    }
+
     public function DeleteBullet($id)
     {
         $this->execute("DELETE  FROM bullets WHERE id=?", [$id]);
+    }
+
+    public function getTeamsInfo()
+
+    {
+        return $this->queryAll("SELECT t.team_id, user_id, team_score FROM teams as t INNER JOIN userTeams as u on t.team_id = u.team_id GROUP BY t.team_id");
+
     }
 
     public function updateScoreInTeam($teamId, $score)
@@ -133,12 +145,6 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), team_id = VALUES(team_id);
 ", [$id, $teamId]);
     }
 
-    public function getTeamsInfo()
-
-    {
-        return $this->queryAll("SELECT t.team_id, user_id, team_score FROM teams as t INNER JOIN userTeams as u on t.team_id = u.team_id GROUP BY t.team_id");
-
-    }
 
     public function deletePlayerInTeams($token)
     {
@@ -146,17 +152,22 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), team_id = VALUES(team_id);
 WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
 
-    public function setSkinInLobby($id, $skinId)
+    public function deletePlayerInPlayers($token)
     {
-        $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
+        $this->execute("DELETE FROM players
+WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
-
-    // ЖАЛКАЯ ПАРОДИЯ //
 
     public function getSkinsInLobby()
     {
         return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id WHERE skins.role='lobby'");
     }
+
+    public function setSkinInLobby($id, $skinId)
+    {
+        $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
+    }
+
 
     public function getPlayers()
     {
@@ -170,15 +181,17 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 ", [$id, $x, $y, $vx, $vy, $dx, $dy]);
     }
 
-    public function getObjectById($id)
-    {
-        return $this->query("SELECT * FROM objects WHERE id=?", [$id]);
-    }
 
     public function getObjects()
     {
         return $this->queryAll("SELECT id, state FROM objects");
     }
+
+    public function getObjectById($id)
+    {
+        return $this->query("SELECT * FROM objects WHERE id=?", [$id]);
+    }
+
 
     public function setDestroyObject($objectId, $state)
     {
@@ -209,19 +222,9 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE game SET objects_hash=? WHERE id=1", [$hash]);
     }
-
-    public function deletePlayerInPlayers($token)
-    {
-        $this->execute("DELETE FROM players
-WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
-    }
-
-
-    public function setBullet($x, $y, $vx, $vy)
-    {
-
-        $this->execute("INSERT INTO bullets (x,y,vx,vy) VALUES (?,?,?,?)", [$x, $y, $vx, $vy]);
-    }
+public function updateSkinsHash($hash){
+        $this->execute("UPDATE game SET chat_hash = ? WHERE id = 1", [$hash]);
+}
 
 }
 
