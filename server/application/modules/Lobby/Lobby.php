@@ -13,17 +13,23 @@ class Lobby
     {
         if ($teamId == 1 || $teamId == 0) {
             $this->db->addPlayerToTeam($id, $teamId);
+            $hash = md5(rand(0, 1000000));
             return true;
         }
         return ['error' => 605];
-
-    }
-
-
-    public function getTeamsInfo()
+    } 
+    public function getTeamsInfo($hash)
     {
-        return $this->db->getTeamsInfo();
-    }
+        $hashes = $this->db->getHashes();
+        if ($hash !== $hashes->chat_hash) {
+            $count = $this->db->getTeamsInfo();
+            return [
+                'newPlayerCount' => $count,
+                'hash' => $hashes->chat_hash
+            ];
+        }
+        return true;  
+    } 
 
     public function getSkins()
     {

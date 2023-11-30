@@ -185,17 +185,15 @@ class Application
     function getTeamsInfo($params)
     {
         $token = $params['token'];
-        if ($token) {
-
+        $hash = $params['hash'];
+        if ($token && $hash) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
-                return $this->lobby->getTeamsInfo();
+                return $this->lobby->getTeamsInfo($hash);
             }
             return ['error' => 1002];
-
         }
         return ['error' => 242];
-
     }
 
     function setBullet($params)
