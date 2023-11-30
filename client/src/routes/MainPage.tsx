@@ -1,9 +1,9 @@
 import {useContext} from "react";
 import {ServerContext, StoreContext} from "../App";
+import {useNavigate} from "react-router-dom";
+import useKeyHandler from "../hooks/useKeyHandler";
 import NavButton from "../components/navButton";
 import "../Main.css";
-import useKeyHandler from "../hooks/useKeyHandler";
-import {useNavigate} from "react-router-dom";
 
 const MainPage = () => {
 
@@ -12,7 +12,6 @@ const MainPage = () => {
     const navigate = useNavigate();
 
     const checkUser = () => {
-
         if (store.isAuth()) {
             navigate('/game', {replace: true});
         } else {
@@ -38,7 +37,7 @@ const MainPage = () => {
                 <NavButton to="/game" text="Играть"/>
                 <button className="Leave" onClick={() => {
                     server.logout();
-                    window.location.reload();
+                    navigate('/login', {replace: true});
                 }}>Выход
                 </button>
             </div>

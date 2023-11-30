@@ -1,10 +1,10 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { ServerContext } from "../App";
 import md5 from "md5-ts";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/navBar";
 import getError from "../hooks/getError";
 import "../Auth.css";
-import { useNavigate } from "react-router-dom";
 
 const PasswordRecovery = () => {
     const server = useContext(ServerContext);

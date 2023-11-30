@@ -13,14 +13,14 @@ export default class Server {
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
         this.store = store;
-        this.token = null;
+        this.token = localStorage.getItem('token');
         this.error = {code: 202, text: " "};
     }
 
     async request<T>(method: string, params: any = {}): Promise<T | null> {
         try {
             if (this.token) {
-                params.token = this.token;
+                params.token = localStorage.getItem('token');
             }
             const str = Object.keys(params)
                 .map((key) => `${key}=${params[key]}`)
@@ -45,24 +45,31 @@ export default class Server {
     ): Promise<TUser | null> {
         const result = await this.request<TUser>("login", {login, hash, rnd});
         if (result?.token) {
-            this.token = result.token;
-            this.store.setUser(login, this.token);
+            localStorage.setItem('token', result.token);
+            this.store.setUser(login, result.token);
+        }
+        return result;
+    }
+    
+    async autoLogin(): Promise<TUser | null> {
+        const result = await this.request<TUser>("autoLogin", {token: this.token});
+        if (result) {
+            localStorage.setItem('token', result.token);
+            this.store.setUser(result.name, result.token);
         }
         return result;
     }
 
     async logout(): Promise<boolean | null> {
-        const result = await this.request<boolean>("logout");
+        const result = await this.request<boolean>("logout", {token: this.token});
         if (result) {
-            this.token = null;
+            localStorage.removeItem('token')
         }
         return result;
     }
 
     async resetPasswordByEmail(login: string): Promise<boolean | null> {
-        return await this.request<boolean>("sendCodeToResetPassword", {
-            login,
-        });
+        return await this.request<boolean>("sendCodeToResetPassword", {login});
     }
 
     async getCodeToResetPassword(code: string): Promise<boolean | null> {
