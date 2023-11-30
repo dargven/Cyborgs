@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {HOST} from "./config";
+import { HashRouter, Route, Routes } from "react-router-dom";
+import { HOST } from "./config";
 import {Store} from "./modules/Store/Store";
 import Server from "./modules/Server/Server";
 import LoginPage from "./routes/LoginPage";
@@ -35,7 +35,7 @@ const App: React.FC = () => {
 
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <StoreContext.Provider value={store}>
                 <ServerContext.Provider value={server}>
                     <Routes>
@@ -57,7 +57,7 @@ const App: React.FC = () => {
                     </Routes>
                 </ServerContext.Provider>
             </StoreContext.Provider>
-        </BrowserRouter>
+        </HashRouter>
     );
 };
 

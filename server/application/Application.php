@@ -41,6 +41,21 @@ class Application
         return ['error' => 242];
     }
 
+    function autoLogin($params)
+    {
+        $token = $params['token'];
+        if ($token) {
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->user->autoLogin($user);
+            }
+            return ['error' => 1002];
+
+        }
+        return ['error' => 242];
+
+    }
+
     function login($params)
     {
         $login = $params['login'];
@@ -95,7 +110,7 @@ class Application
     {
         $token = $params['token'];
         $teamId = $params['teamId'];
-        if ($token && $teamId) {
+        if ($token && ($teamId || $teamId == 0 )) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->lobby->selectTeam($user->id, $teamId);
@@ -103,6 +118,24 @@ class Application
             return ['error' => 1002];
         }
         return ['error' => 242];
+    }
+
+    function getScene($params)
+    {
+        $token = $params['token'];
+        $hashPlayers = $params['hashPlayers'];
+        $hashBullets = $params['hashBullets'];
+        $hashObjects = $params['hashObjects'];
+        if ($token && $hashPlayers && $hashBullets && $hashObjects) {
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->game->getScene($hashPlayers, $hashObjects, $hashBullets);
+            }
+            return ['error' => 1002];
+
+        }
+        return ['error' => 242];
+
     }
 
     function getPlayers($params)
@@ -125,10 +158,13 @@ class Application
         $y = $params['y'];
         $vx = $params['vx'];
         $vy = $params['vy'];
-        if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0) && ($vy || $vy == 0)) {
+        $dx = $params['dx'];
+        $dy = $params['dy'];
+        if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0)
+            && ($vy || $vy == 0) && ($dx || $dx == 0) && ($dy || $dy == 0)) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
-                return $this->game->setPlayer($user->id, $x, $y, $vx, $vy);
+                return $this->game->setPlayer($user->id, $x, $y, $vx, $vy, $dx, $dy);
             }
             return ['error' => 1002];
         }
@@ -160,6 +196,23 @@ class Application
         }
         return ['error' => 242];
 
+    }
+
+    function setBullet($params)
+    {
+        $token = $params['token'];
+        $x = $params['x'];
+        $y = $params['y'];
+        $vx = $params['vx'];
+        $vy = $params['vy'];
+        if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0) && ($vy || $vy == 0)) {
+            $user = $this->user->getUserByToken($token);
+            if ($user) {
+                return $this->game->setBullet($x, $y, $vx, $vy);
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 242];
     }
 
     function getSkins($params)
@@ -200,7 +253,7 @@ class Application
         $token = $params['token'];
         $objectId = $params['objectId'];
         $state = $params['state'];
-        if ($token && $objectId && ($state || $state === "0")) { 
+        if ($token && $objectId && ($state || $state === "0")) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->game->setDestroyObject($objectId, $state);

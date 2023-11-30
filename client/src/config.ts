@@ -5,8 +5,8 @@
 
 // dev2
 //
-// const DOMAIN :string = 'http://localhost';
-// const PORT = 8888;
+//const DOMAIN :string = 'http://localhost';
+//const PORT = 8888;
 // export const HOST :string = `${DOMAIN}:${PORT}`;
 
 // prod

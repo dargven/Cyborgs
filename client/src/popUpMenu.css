@@ -42,3 +42,16 @@
     box-shadow: inset 0px 0px 2dvw rgba(0, 0, 0);
     clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
 }
+
+.exit {
+    position: absolute;
+    z-index: 1;
+    top: 1dvh;
+    left: 1dvw;
+    border: none;
+    background: none;
+    padding: 0;
+ }
+ .exit-image{
+    width: 3dvw;
+}

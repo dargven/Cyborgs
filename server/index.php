@@ -9,6 +9,7 @@ function result($params) {
         $app = new Application();
         switch ($method) {
             case 'login': return $app->login($params); //Работает
+            case 'autoLogin':return $app->autoLogin($params); // Работает
             case 'logout': return $app->logout($params); //Работает
             case 'register': return $app->register($params);//Работает
             case 'selectTeam': return $app->selectTeam($params);//Работает
@@ -24,6 +25,8 @@ function result($params) {
             case 'sendCodeToResetPassword':return $app->sendCodeToResetPassword($params);// ->> need to test
             case 'getCodeToResetPassword':return $app->getCodeToResetPassword($params);// ->> need to test
             case 'setPasswordAfterReset':return $app->setPasswordAfterReset($params);// ->> need to test
+            case 'getScene':return $app->getScene($params);// ->> need to test
+            case 'setBullet': return $app->setBullet($params);
             default: return ['error' => 102];
         }
     }

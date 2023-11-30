@@ -1,19 +1,25 @@
-import {useContext, useEffect, useRef, useState} from "react";
-import {ServerContext} from "../../App";
+import { useContext, useEffect, useRef, useState } from "react";
+import { ServerContext } from "../../App";
 import useEnterKeyHandler from "../../hooks/useKeyHandler";
 import getError from "../../hooks/getError";
 import "./Chat.css";
-import {TMessage} from "../../modules/Server/types";
-import {useNavigate} from "react-router-dom";
+import { TMessage } from "../../modules/Server/types";
+import { useNavigate } from "react-router-dom";
 
-const Chat = () => {
+interface IChat {
+    Test(): void
+}
+
+const Chat = ({Test}: IChat) => {
     const chatMessagesRef = useRef<HTMLDivElement | null>(null);
-
     const chatRef = useRef<HTMLInputElement | null>(null);
     const errorRef = useRef<HTMLDivElement | null>(null);
     const server = useContext(ServerContext);
     let interval: NodeJS.Timer | null = null;
+
     const [messages, setMessages] = useState<TMessage[]>([]);
+
+    const navigate = useNavigate();
 
     const userTime = (created: string) => {
         const userTimezoneTimezone = new Date().getTimezoneOffset() / 60;
@@ -21,10 +27,9 @@ const Chat = () => {
         const resultTimezone = serverTimezone - userTimezoneTimezone;
         const substr = created.split(":")[0];
         const resultHour = resultTimezone + parseInt(substr);
-
         return `${resultHour}:${created.split(":")[1]}`;
     };
-    const navigate = useNavigate();
+
     const updateChat = async () => {
         const messagesFromServer = await server.getMessages();
         if (messagesFromServer) {
@@ -38,7 +43,6 @@ const Chat = () => {
 
     useEffect(() => {
         const interval = setInterval(updateChat, 150);
-
         return () => {
             clearInterval(interval);
         };
@@ -46,23 +50,26 @@ const Chat = () => {
 
     useEffect(() => {
         if (chatMessagesRef.current) {
-            chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+            chatMessagesRef.current.scrollTop =
+                chatMessagesRef.current.scrollHeight;
         }
     }, [messages]);
 
     const handleChat = async () => {
         if (chatRef.current?.value) {
+            document.getElementById('mesage-text')?.blur();
             await server.sendMessage(chatRef.current?.value);
             chatRef.current.value = "";
             errorRef.current!.innerText = "";
         } else {
             server.error.code = 706;
-            errorRef.current!.innerText = `${getError(server.error)}`;
+            errorRef.current!.innerText = getError(server.error);
         }
     };
+
     useEnterKeyHandler(13, handleChat);
 
-    return (
+    return(
         <div className="chatComponent">
             <div className="chat">
                 <div className="chat-messages" ref={chatMessagesRef}>
@@ -72,9 +79,13 @@ const Chat = () => {
                             .reverse()
                             .map((msg) => (
                                 <p className="chat-message">
-                                    <span className="timestamp">{userTime(msg.created)}</span>
+                                    <span className="timestamp">
+                                        {userTime(msg.created)}
+                                    </span>
                                     <span className="name">{msg.name}:</span>
-                                    <span className="message">{msg.message}</span>
+                                    <span className="message">
+                                        {msg.message}
+                                    </span>
                                 </p>
                             ))}
                     </div>
@@ -88,6 +99,9 @@ const Chat = () => {
                             id="mesage-text"
                             className="chat-form__input"
                             placeholder="Введите сообщение"
+                            onClick={() => {
+                                Test()
+                            }}
                         />
                         <button
                             className="chat-form__submit"

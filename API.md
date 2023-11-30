@@ -54,7 +54,7 @@
     * [Параметры](#параметры-7)
     * [Успешной ответ](#успешной-ответ)
     * [Ошибки](#ошибки-7)
-  * [Метод getMessage](#метод-getmessage)
+  * [Метод getMessages](#метод-getmessages)
     * [Описание метода](#описание-метода-8)
     * [Адрес](#адрес-8)
     * [Параметры](#параметры-8)
@@ -70,30 +70,31 @@
     * [Описание](#описание)
     * [Параметры](#параметры-10)
     * [Успешный ответ](#успешный-ответ-6)
+    * [Ошибки](#ошибки-10)
   * [Метод setBullet](#метод-setbullet)
     * [Описание](#описание-1)
     * [Адрес](#адрес-11)
     * [Параметры](#параметры-11)
     * [Успешной ответ](#успешной-ответ-3)
-    * [Ошибки](#ошибки-10)
+    * [Ошибки](#ошибки-11)
   * [Метод getBullets](#метод-getbullets)
     * [Описание](#описание-2)
     * [Адрес](#адрес-12)
     * [Параметры](#параметры-12)
     * [Успешный ответ](#успешный-ответ-7)
-    * [Ошибки](#ошибки-11)
+    * [Ошибки](#ошибки-12)
   * [Метод getScene](#метод-getscene)
     * [Описание](#описание-3)
     * [Адрес](#адрес-13)
     * [Параметры](#параметры-13)
     * [Успешный ответ:](#успешный-ответ-8)
-    * [Ошибки](#ошибки-12)
+    * [Ошибки](#ошибки-13)
   * [Метод setPlayer](#метод-setplayer)
     * [Описание](#описание-4)
     * [Адрес](#адрес-14)
     * [Параметры](#параметры-14)
     * [Успешный ответ:](#успешный-ответ-9)
-    * [Ошибки](#ошибки-13)
+    * [Ошибки](#ошибки-14)
 <!-- TOC -->
 
 ## Адрес домена
@@ -187,6 +188,7 @@ CorrectAnswer=>User
 ```
 WrongAnswer(code: 1001, text: 'params login or password not set')
 WrongAnswer(code: 1002, text: 'error in auth user')
+WrongAnswer(code:1005, text:'Other user is playing wright now. If you doesn`t, please change the password'')
 WrongAnswer(code: 1004, text: 'Unable to find user.')
 ```
 
@@ -270,9 +272,9 @@ WrongAnswer(code: 242, text: 'params not set fully ')
 
 ### Параметры
 
-| Параметры | Тип    | Комментарий            |
-|-----------|--------|------------------------|
-| teamId    | number | Уникальный код команды |
+| Параметры | Тип    | Комментарий              |
+|-----------|--------|--------------------------|
+| token     | number | Аутентификационный токен |
 
 ### Успешный ответ
 
@@ -482,6 +484,7 @@ CorrectAnswer => data = {
 "state": number
 }
 ```
+
 ### Ошибки
 
 ```
@@ -504,7 +507,6 @@ WrongAnswer(code:1002, text: 'error in auth user')
 | Параметры | Тип    | Комментарий              |
 |-----------|--------|--------------------------|
 | token     | string | Аутентификационный токен |
-| bulletId  | number | Уникальный id объекта    |
 | x         | number | Координата пули          |
 | y         | number | Координата пули          |
 | vx        | number | Координата пули          |
@@ -521,7 +523,7 @@ CorrectAnswer=>true;
 
 ```
 WrongAnswer(code:1002, text: 'error in auth user')
-WrongAnswer(code:9000, text: 'Unknown error')
+WrongAnswer(code:242, text: 'params not set fully')
 
 ```
 
@@ -589,6 +591,7 @@ objectsHash: string,
 },
 scene =>{
 players=>{
+token:string,
 teamId: number,
 hp:number,
 x:number,
@@ -607,12 +610,13 @@ vy:number
 },
 objects =>
 {
-ObjectId: number,
+objectId: number,
 state: number ; 1 - destroyed; 0 - not destroyed
 }
 }
 }
 ```
+
 ### Ошибки
 
 ## Метод setPlayer
@@ -642,7 +646,9 @@ state: number ; 1 - destroyed; 0 - not destroyed
 ```
 CorrectAnswer => true;
 ```
+
 ### Ошибки
+
 ```
 WrongAnswer(code:1002, text: 'error in auth user')
 ```

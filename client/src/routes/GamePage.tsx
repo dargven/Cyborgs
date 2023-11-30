@@ -7,17 +7,42 @@ import "../TeamSelect.css";
 import useKeyHandler from "../hooks/useKeyHandler";
 
 const GamePage = () => {
-    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [stopMove, setStopMove] = useState({
+        isPopupVisible: false,
+        isChatClicked: false,
+        blockMove: false
+    });
+
     const [team, setTeam] = useState<number>(0);
 
+    const Test = () => {
+        setStopMove((prevState) => ({
+            ...prevState,
+            blockMove: true,
+            isChatClicked: true
+        }));
+    }
+
+    console.log(stopMove.isPopupVisible, "Меню")
+    console.log(stopMove.isChatClicked, "Чат")
+    console.log(stopMove.blockMove, "Управление")
+
     const handleKeyPress = () => {
-        setIsPopupVisible(!isPopupVisible);
+        setStopMove((prevState) => ({
+            ...prevState,
+            isPopupVisible: !stopMove.isPopupVisible,
+            blockMove: !stopMove.blockMove
+        }));
     };
+
+
 
     useKeyHandler(27, handleKeyPress);
 
     return (
         <div>
+            <Chat Test={Test}/>
+
             {team ? (
                 <Game/>
             ) : (
@@ -30,18 +55,28 @@ const GamePage = () => {
                     </button>
                 </>
             )}
-            <Chat/>
-            {isPopupVisible && (
+
+            {stopMove.isPopupVisible && (
                 <div
                     className="popUpMenu"
-                    onClick={() => setIsPopupVisible(false)}
+                    onClick={() =>
+                        setStopMove((prevState) => ({
+                            ...prevState,
+                            isPopupVisible: false,
+                            blockMove: false
+                        }))}
                 >
                     <div
                         className="popUpMenu__content"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
-                            onClick={() => setIsPopupVisible(false)}
+                            onClick={() =>
+                                setStopMove((prevState) => ({
+                                    ...prevState,
+                                    isPopupVisible: false,
+                                    blockMove: false
+                                }))}
                             className="popUpBtn"
                         >
                             Возобновить
@@ -59,6 +94,7 @@ const GamePage = () => {
                     </div>
                 </div>
             )}
+
         </div>
     );
 };
