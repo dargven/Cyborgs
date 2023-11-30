@@ -2,7 +2,7 @@
 
 class Config
 {
-    //WEB
+    //  WEB
     //  https://server187.hosting.reg.ru/phpmyadmin/
     static $configProd = [
         'host' => 'server187.hosting.reg.ru',

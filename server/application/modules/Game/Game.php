@@ -34,19 +34,19 @@ class Game
         $hashes = $this->db->getHashes();
 
         if ($hashes->players_hash !== $hashPlayers) {
-            $players = $this->db->getPlayers();
+            $players = $this->getPlayers();
             $scene['scene']['players'] = $players;
             $this->db->updatePlayersHash($hashPlayers);
             $scene['hashes']['hashPlayers'] = $hashPlayers;
         }
         if ($hashes->objects_hash !== $hashObjects) {
-            $objects = $this->db->getObjects();
+            $objects = $this->getObjects();
             $scene['scene']['objects'] = $objects;
             $this->db->updateObjectsHash($hashObjects);
             $scene['hashes']['hashObjects'] = $hashObjects;
         }
         if ($hashes->bullets_hash !== $hashBullets) {
-            $bullets = $this->db->getBullets();
+            $bullets = $this->getBullets();
             $scene['scene']['bullets'] = $bullets;
             $this->db->updateBulletsHash($hashBullets);
             $scene['hashes']['hashBullets'] = $hashBullets;
@@ -54,18 +54,27 @@ class Game
 
         return $scene;
     }
+public function getBullets(){
+        return $this->db->getBullets();
+}
+public function getObjects(){
+        return $this->db->getObjects();
+}
+public function getPlayers(){
+        return $this->db->getPlayers();
+}
 
-    private function spawnPlayers($id, $x, $y)
+    public function spawnPlayers($id, $x, $y)
     {
 
     }
 
-    private function startMatch($MatchId, $time = 180)
+    public function startMatch($MatchId, $time = 180)
     {
 
     }
 
-    private function setKill($id,)
+    public function setKill($id,)
     {
 
     }
