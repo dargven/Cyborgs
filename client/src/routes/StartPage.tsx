@@ -1,8 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import NavBar from "../components/navBar";
-import NavButton from "../components/navButton";
 import "../StartPage.css";
+
 const playButtonImage = process.env.PUBLIC_URL + "/assets/image/Robot_favikon.png";
 
 const StartPage = () => {

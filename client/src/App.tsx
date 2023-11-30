@@ -33,7 +33,6 @@ const App: React.FC = () => {
         }
     }, [])
 
-
     return (
         <HashRouter>
             <StoreContext.Provider value={store}>

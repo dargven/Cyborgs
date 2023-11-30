@@ -1,10 +1,10 @@
 import {useState} from "react";
 import Game from "../components/Game/Game";
+import useKeyHandler from "../hooks/useKeyHandler";
 import NavButton from "../components/navButton";
 import Chat from "../components/Chat/Chat";
 import "../popUpMenu.css";
 import "../TeamSelect.css";
-import useKeyHandler from "../hooks/useKeyHandler";
 
 const GamePage = () => {
     const [stopMove, setStopMove] = useState({
@@ -22,10 +22,6 @@ const GamePage = () => {
             isChatClicked: true
         }));
     }
-
-    console.log(stopMove.isPopupVisible, "Меню")
-    console.log(stopMove.isChatClicked, "Чат")
-    console.log(stopMove.blockMove, "Управление")
 
     const handleKeyPress = () => {
         setStopMove((prevState) => ({

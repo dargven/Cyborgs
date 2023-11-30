@@ -1,9 +1,9 @@
 import {useContext} from "react";
 import {ServerContext, StoreContext} from "../App";
 import {useNavigate} from "react-router-dom";
+import useKeyHandler from "../hooks/useKeyHandler";
 import NavButton from "../components/navButton";
 import "../Main.css";
-import useKeyHandler from "../hooks/useKeyHandler";
 
 const MainPage = () => {
 

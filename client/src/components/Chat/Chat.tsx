@@ -2,9 +2,9 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { ServerContext } from "../../App";
 import useEnterKeyHandler from "../../hooks/useKeyHandler";
 import getError from "../../hooks/getError";
-import "./Chat.css";
 import { TMessage } from "../../modules/Server/types";
 import { useNavigate } from "react-router-dom";
+import "./Chat.css";
 
 interface IChat {
     Test(): void
