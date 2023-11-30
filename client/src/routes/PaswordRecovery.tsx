@@ -1,7 +1,7 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { ServerContext } from "../App";
+import {useContext, useEffect, useRef, useState} from "react";
+import {ServerContext} from "../App";
 import md5 from "md5-ts";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import NavBar from "../components/navBar";
 import getError from "../hooks/getError";
 import "../Auth.css";
@@ -106,9 +106,9 @@ const PasswordRecovery = () => {
 
     return (
         <>
-            <NavBar />
+            <NavBar/>
             <div className="title">
-                КИБОРГИ <br /> ТЕПЕРЬ В 2D
+                КИБОРГИ <br/> ТЕПЕРЬ В 2D
             </div>
             <div className="content">
                 <h1> Восстановление пароля</h1>

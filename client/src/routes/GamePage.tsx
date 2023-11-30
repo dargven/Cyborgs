@@ -32,7 +32,6 @@ const GamePage = () => {
     };
 
 
-
     useKeyHandler(27, handleKeyPress);
 
     return (

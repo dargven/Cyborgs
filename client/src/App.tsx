@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { HashRouter, Route, Routes } from "react-router-dom";
-import { HOST } from "./config";
+import React, {useEffect} from "react";
+import {HashRouter, Route, Routes} from "react-router-dom";
+import {HOST} from "./config";
 import {Store} from "./modules/Store/Store";
 import Server from "./modules/Server/Server";
 import LoginPage from "./routes/LoginPage";
@@ -17,9 +17,9 @@ export const ServerContext = React.createContext<Server>(null!);
 const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
-    
+
     const handleAutoLogin = async () => {
-        if(localStorage.getItem('token')) {
+        if (localStorage.getItem('token')) {
             const isAutoLogin = await server.autoLogin()
             if (isAutoLogin) {
                 store.setAuth()
@@ -41,7 +41,7 @@ const App: React.FC = () => {
                         {localStorage.getItem('token') ? (
                             <Route path="" element={<MainPage/>}/>
                         ) : (
-                            <Route path="" element={<StartPage />} />
+                            <Route path="" element={<StartPage/>}/>
                         )}
                         <Route path="/PaswordRecovery" element={<PasswordRecovery/>}/>
                         <Route path="/StartPage" element={<StartPage/>}

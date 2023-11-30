@@ -1,6 +1,6 @@
-import { useContext, useRef, useState } from "react";
-import { ServerContext } from "../App";
-import { Navigate } from "react-router-dom";
+import {useContext, useRef, useState} from "react";
+import {ServerContext} from "../App";
+import {Navigate} from "react-router-dom";
 import md5 from "md5-ts";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
 import NavBar from "../components/navBar";
@@ -50,9 +50,9 @@ const RegistrationPage = () => {
 
     return (
         <>
-            <NavBar />
+            <NavBar/>
             <div className="title">
-                КИБОРГИ <br /> ТЕПЕРЬ В 2D
+                КИБОРГИ <br/> ТЕПЕРЬ В 2D
             </div>
             <div className="content">
                 <h1>Регистрация</h1>
@@ -106,7 +106,7 @@ const RegistrationPage = () => {
                     </button>
                 </div>
                 {registrationSuccess ? (
-                    <Navigate to="/login" replace={true} />
+                    <Navigate to="/login" replace={true}/>
                 ) : null}
             </div>
         </>
