@@ -45,7 +45,7 @@ const GamePage = () => {
                     </button>
                 </>
             )}
-            <Chat />
+            {/* <Chat /> */}
             {isPopupVisible && (
                 <div
                     className="popUpMenu"
