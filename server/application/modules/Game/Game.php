@@ -40,7 +40,7 @@ class Game
         if ($hashes->players_hash !== $playersHash) {
             $players = $this->getPlayers();
             $scene['scene']['players'] = $players;
-            $scene['hashes']['playersHash]'] = $playersHash;
+            $scene['hashes']['playersHash'] = $playersHash;
         }
         if ($hashes->objects_hash !== $objectsHash) {
             $objects = $this->getObjects();
