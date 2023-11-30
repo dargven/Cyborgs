@@ -4,12 +4,12 @@ require_once __DIR__ . '/Config/SpawnPoints.php';
 class Game
 {
     private DB $db;
+    $teamASpawnPoints = SpawnPoints::$spawnPoints[0];
+    $teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
 
     public function __construct($db)
     {
         $this->db = $db;
-        $teamASpawnPoints = SpawnPoints::$spawnPoints[0];
-        $teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
     }
 
     public function getScene($hashPlayers, $hashObjects, $hashBullets)
