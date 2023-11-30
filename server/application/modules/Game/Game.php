@@ -4,6 +4,7 @@ class Game
 {
     private DB $db;
     private $spawnPoints = [
+        0 => [
         [
             'x' => 1,
             'y' => 1
@@ -142,7 +143,7 @@ class Game
     {
         $this->db->setSkin($id, $skinId);
         $hash = $this->genHash();
-        $this->db->update
+        $this->db->updateSkinsHash($hash);
         return true;
     }
 
