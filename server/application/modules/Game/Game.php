@@ -37,7 +37,6 @@ class Game
             ],
         ];
         $hashes = $this->db->getHashes();
-
         if ($hashes->players_hash !== $playersHash) {
             $players = $this->getPlayers();
             $scene['scene']['players'] = $players;

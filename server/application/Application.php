@@ -123,9 +123,9 @@ class Application
     function getScene($params)
     {
         $token = $params['token'];
-        $hashPlayers = $params['hashPlayers'];
-        $hashBullets = $params['hashBullets'];
-        $hashObjects = $params['hashObjects'];
+        $hashPlayers = $params['playersHash'];
+        $hashBullets = $params['bulletsHash'];
+        $hashObjects = $params['objectsHash'];
         if ($token && $hashPlayers && $hashBullets && $hashObjects) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
