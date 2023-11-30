@@ -6,7 +6,7 @@ import HealthBar from "./HealthBar";
 import { useFrame } from "@react-three/fiber";
 import { TPlayer } from "../../modules/Server/types";
 
-interface IPlayerProps {
+export interface IPlayerProps {
     token: string;
     position?: Vector3;
     velocity?: Vector3;

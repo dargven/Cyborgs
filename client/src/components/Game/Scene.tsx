@@ -15,6 +15,7 @@ import Player from "./Player";
 import Zone from "./Zone";
 import Projectile from "./Projectile";
 import { useInterval } from "usehooks-ts";
+import Debug from "./DebugInfo";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -43,8 +44,8 @@ const Scene = () => {
     const [myBullets, setMyBullets] = useState<TBullet[]>([]);
     const [bullets, setBullets] = useState<TBullet[]>([]);
     const [players, setPlayers] = useState<TPlayer[]>([{ x: 0, y: 0, vx: 0, vy: 0, dx: 0, dy: 0, token: store.getUser().token, teamId: 1, hp: 100 }]);
+    const [myPlayer, setMyPlayer] = useState<TPlayer>({ x: 0, y: 0, vx: 0, vy: 0, dx: 0, dy: 0, token: store.getUser().token, teamId: 1, hp: 100 }  );
     const [obstacles, setObstacles] = useState<TDestructible[]>();
-    const [myPlayer, setMyPlayer] = useState<TPlayer>();
 
     const sendBullet = (bullet: TBullet) => {
         server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
@@ -85,6 +86,7 @@ const Scene = () => {
     const mouseX = useRef(0);
     const mouseY = useRef(0);
     const invRef = useRef<Group>();
+    const debugRef = useRef<Group>();
     const positionToCamera = new Vector3(0, -2, -3);
 
     const { viewport, camera, pointer } = useThree();
@@ -101,8 +103,12 @@ const Scene = () => {
         camera.position.lerp(cameraPos, 0.05);
         camera.updateProjectionMatrix();
 
-        if (invRef.current) {
-            invRef.current.position.copy(camera.position).add(positionToCamera);
+        // if (invRef.current) {
+        //     invRef.current.position.copy(camera.position).add(positionToCamera);
+        // }
+
+        if (debugRef.current) {
+            debugRef.current.position.copy(camera.position).add(positionToCamera);
         }
     }
 
@@ -147,6 +153,11 @@ const Scene = () => {
                 <LightMap />
 
                 <FishTank />
+
+
+                <Debug player={myPlayer} debugRef={debugRef}/>
+
+                
 
                 {players.map(player => {
                     const token = store.getUser().token;
