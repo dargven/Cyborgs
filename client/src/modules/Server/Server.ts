@@ -100,7 +100,7 @@ export default class Server {
         return null;
     }
 
-    async selectTeam(teamId: number): Promise<TTeam | null> {
+    async selectTeam(teamId: 0|1): Promise<TTeam | null> {
         const result = await this.request<TTeam>("selectTeam", {
             token: this.token,
             teamId: teamId
@@ -165,6 +165,20 @@ export default class Server {
         }
         return null;
     }
+
+    async setPlayer(x: number, y: number, vx: number, vy: number,dx: number, dy: number): Promise<TPlayer[] | null> {
+        return this.request<TPlayer[]>('setPlayer', {
+            token: this.token,
+            x: x,
+            y: y,
+            vx: vx,
+            vy: vy,
+            dx: dx,
+            dy: dy,
+        });
+    }
+
+
 
     async getScene(): Promise<TScene | null> {
         const result = await this.request<TGetScene>('getScene',
