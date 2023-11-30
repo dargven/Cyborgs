@@ -19,7 +19,7 @@ export default class Server {
 
     async request<T>(method: string, params: any = {}): Promise<T | null> {
         try {
-            if (localStorage.getItem('token')) {
+            if (this.token) {
                 params.token = localStorage.getItem('token');
             }
             const str = Object.keys(params)
@@ -52,7 +52,7 @@ export default class Server {
     }
     
     async autoLogin(): Promise<TUser | null> {
-        const result = await this.request<TUser>("autoLogin", {token: localStorage.getItem('token')});
+        const result = await this.request<TUser>("autoLogin", {token: this.token});
         if (result) {
             localStorage.setItem('token', result.token);
             this.store.setUser(result.name, result.token);
@@ -61,7 +61,7 @@ export default class Server {
     }
 
     async logout(): Promise<boolean | null> {
-        const result = await this.request<boolean>("logout", {token: localStorage.getItem('token')});
+        const result = await this.request<boolean>("logout", {token: this.token});
         if (result) {
             localStorage.removeItem('token')
         }
@@ -82,14 +82,14 @@ export default class Server {
 
     sendMessage(message: string): Promise<TMessage | null> {
         return this.request<TMessage>("sendMessage", {
-            token: localStorage.getItem('token'),
+            token: this.token,
             message,
         });
     }
 
     async getMessages(): Promise<TMessages | null> {
         const result = await this.request<TGetMessages>("getMessages", {
-            token: localStorage.getItem('token'),
+            token: this.token,
             hash: this.chatHash,
         });
         if (result?.hash) {

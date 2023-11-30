@@ -15,7 +15,7 @@ const GamePage = () => {
 
     const [team, setTeam] = useState<number>(0);
 
-    const Test = () => {
+    const StopMove = () => {
         setStopMove((prevState) => ({
             ...prevState,
             blockMove: true,
@@ -37,7 +37,7 @@ const GamePage = () => {
 
     return (
         <div>
-            <Chat Test={Test}/>
+            <Chat StopMove={StopMove}/>
 
             {team ? (
                 <Game/>
