@@ -10,8 +10,6 @@ const GamePage = () => {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [team, setTeam] = useState<number>(0);
 
-    console.log(localStorage.getItem('token'))
-
     const handleKeyPress = () => {
         setIsPopupVisible(!isPopupVisible);
     };
@@ -32,7 +30,7 @@ const GamePage = () => {
                     </button>
                 </>
             )}
-            {/* <Chat/> */}
+            <Chat/>
             {isPopupVisible && (
                 <div
                     className="popUpMenu"

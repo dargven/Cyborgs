@@ -9,8 +9,6 @@ export class Store {
         this.user.name = name;
         this.user.isAuth = true;
         this.user.token = token;
-
-        // localStorage.setItem('token', token);
     }
 
     setAuth() {

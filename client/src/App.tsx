@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {HOST} from "./config";
 import {Store} from "./modules/Store/Store";
@@ -14,8 +14,6 @@ import StartPage from "./routes/StartPage";
 export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
 
-
-
 const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
@@ -23,28 +21,28 @@ const App: React.FC = () => {
     const handleAutoLogin = async () => {
         if(localStorage.getItem('token')) {
             const isAutoLogin = await server.autoLogin()
-            console.log(isAutoLogin)
-            console.log(store.isAuth())
             if (isAutoLogin) {
                 store.setAuth()
             }
         }
     }
 
-    if ((performance.navigation.type == 1 && localStorage.getItem('token')) || localStorage.getItem('token')) {
-        handleAutoLogin()
-    }
-    console.log(store.isAuth())
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            handleAutoLogin()
+        }
+    }, [])
+
+
     return (
         <BrowserRouter>
             <StoreContext.Provider value={store}>
                 <ServerContext.Provider value={server}>
                     <Routes>
-                        {store.isAuth() ? (
+                        {localStorage.getItem('token') ? (
                             <Route path="" element={<MainPage/>}/>
                         ) : (
-                            // <Route path="" element={<StartPage />} /> //Откомментировать когда будем показывать трусову
-                            <Route path="" element={<LoginPage/>}/>
+                            <Route path="" element={<StartPage />} />
                         )}
                         <Route path="/PaswordRecovery" element={<PasswordRecovery/>}/>
                         <Route path="/StartPage" element={<StartPage/>}

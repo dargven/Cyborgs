@@ -19,15 +19,14 @@ export default class Server {
 
     async request<T>(method: string, params: any = {}): Promise<T | null> {
         try {
-            // if (this.token) {
-            //     params.token = this.token;
-            // }
+            if (localStorage.getItem('token')) {
+                params.token = localStorage.getItem('token');
+            }
             const str = Object.keys(params)
                 .map((key) => `${key}=${params[key]}`)
                 .join("&");
             const res = await fetch(`${this.HOST}/?method=${method}&${str}`);
             const answer = await res.json();
-            console.log(answer)
             if (answer.result === "ok") {
                 this.error.code = 202;
                 return answer.data;
@@ -64,16 +63,13 @@ export default class Server {
     async logout(): Promise<boolean | null> {
         const result = await this.request<boolean>("logout", {token: localStorage.getItem('token')});
         if (result) {
-            localStorage.clear()
-            // this.token = null;
+            localStorage.removeItem('token')
         }
         return result;
     }
 
     async resetPasswordByEmail(login: string): Promise<boolean | null> {
-        return await this.request<boolean>("sendCodeToResetPassword", {
-            login,
-        });
+        return await this.request<boolean>("sendCodeToResetPassword", {login});
     }
 
     async getCodeToResetPassword(code: string): Promise<boolean | null> {
@@ -86,14 +82,14 @@ export default class Server {
 
     sendMessage(message: string): Promise<TMessage | null> {
         return this.request<TMessage>("sendMessage", {
-            token: this.token,
+            token: localStorage.getItem('token'),
             message,
         });
     }
 
     async getMessages(): Promise<TMessages | null> {
         const result = await this.request<TGetMessages>("getMessages", {
-            token: this.token,
+            token: localStorage.getItem('token'),
             hash: this.chatHash,
         });
         if (result?.hash) {

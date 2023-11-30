@@ -43,12 +43,13 @@ const Chat = () => {
             clearInterval(interval);
         };
     }, []);
+
     useEffect(() => {
-        // Scroll to the top of the chat messages when messages change
         if (chatMessagesRef.current) {
             chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
         }
     }, [messages]);
+
     const handleChat = async () => {
         if (chatRef.current?.value) {
             await server.sendMessage(chatRef.current?.value);
