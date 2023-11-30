@@ -1,58 +1,15 @@
 <?php
+require_once __DIR__ . '/Config/SpawnPoints.php';
 
 class Game
 {
     private DB $db;
-    private $spawnPoints = [
-        0 => [
-            [
-                'x' => 22,
-                'y' => 22
-            ],
-            [
-                'x' => 21.5,
-                'y' => 21.5
-            ],
-            [
-                'x' => 22,
-                'y' => 21.5
-            ],
-            [
-                'x' => 21.5,
-                'y' => 22.5
-            ],
-            [
-                'x' => 22.5,
-                'y' => 22.5
-            ],
-        ],
-        1 => [
-            [
-                'x' => -18,
-                'y' => 14
-            ],
-            [
-                'x' => -17.5,
-                'y' => 13.5
-            ],
-            [
-                'x' => -18.5,
-                'y' => 13.5
-            ],
-            [
-                'x' => -18.5,
-                'y' => 14.5
-            ],
-            [
-                'x' => -17.5,
-                'y' => 14.5
-            ]
-        ]
-    ];
 
     public function __construct($db)
     {
         $this->db = $db;
+        $teamASpawnPoints = SpawnPoints::$spawnPoints[0];
+        $teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
     }
 
     public function getScene($hashPlayers, $hashObjects, $hashBullets)
