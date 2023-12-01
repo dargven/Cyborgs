@@ -101,7 +101,7 @@ export default class Server {
 
     async getMessages(): Promise<TMessages | null> {
         const result = await this.request<TGetMessages>("getMessages", {
-            token: this.token,
+            token: localStorage.getItem("token"),
             hash: this.chatHash,
         });
         if (result?.hash) {

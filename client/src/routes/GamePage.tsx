@@ -40,13 +40,13 @@ const GamePage = () => {
         <div>
             <Chat StopMove={StopMove}/>
             {team !== null ? (
-                <Game />
+                <Game/>
             ) : (
                 <>
-                    <button onClick={() => setTeam(1)} className="Team1">
+                    <button onClick={() => setTeam(0)} className="Team1">
                         команда 1
                     </button>
-                    <button onClick={() => setTeam(2)} className="Team2">
+                    <button onClick={() => setTeam(1)} className="Team2">
                         команда 2
                     </button>
                 </>
