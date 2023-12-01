@@ -1,5 +1,16 @@
-import { Store } from "../Store/Store";
-import { TGetMessages, TUser, TMessages, TMessage, TDestructible, TBullet, TPlayer, TScene, TSceneHashes, TGetScene, TTeam } from "./types";
+import {Store} from "../Store/Store";
+import {
+    TBullet,
+    TDestructible,
+    TError,
+    TGetMessages, TGetScene,
+    TMessage,
+    TMessages,
+    TPlayer, TScene,
+    TSceneHashes,
+    TTeam,
+    TUser
+} from "./types";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
@@ -7,19 +18,21 @@ export default class Server {
     private HOST: string;
     private store: Store;
     private token: string | null;
-    private chatHash: string = '123';
-    private sceneHashes: TSceneHashes = { bulletsHash: '0', playersHash: '0', objectsHash: '0' };
+    private chatHash: string = "123";
+    public error: TError;
+    private sceneHashes: TSceneHashes = {bulletsHash: '0', playersHash: '0', objectsHash: '0'};
 
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
         this.store = store;
-        this.token = null;
+        this.token = localStorage.getItem('token');
+        this.error = {code: 202, text: " "};
     }
 
     async request<T>(method: string, params: any = {}): Promise<T | null> {
         try {
             if (this.token) {
-                params.token = this.token;
+                params.token = localStorage.getItem('token');
             }
             const str = Object.keys(params)
                 .map((key) => `${key}=${params[key]}`)
@@ -27,21 +40,10 @@ export default class Server {
             const res = await fetch(`${this.HOST}/?method=${method}&${str}`);
             const answer = await res.json();
             if (answer.result === "ok") {
+                this.error.code = 202;
                 return answer.data;
             }
-            const errorContainer = document.createElement("div");
-            errorContainer.remove();
-            errorContainer.style.color = "red";
-            errorContainer.textContent = `${answer["error"]["text"]}`;
-            document.body.appendChild(errorContainer);
-            setTimeout(function () {
-                if (errorContainer) {
-                    errorContainer.remove();
-                }
-            }, 2000);
-            console.log(
-                `Ошибка: ${answer["error"]["code"]}, text: ${answer["error"]["text"]}`
-            );
+            this.error = answer.error;
             return null;
         } catch (e) {
             return null;
@@ -53,32 +55,41 @@ export default class Server {
         hash: string,
         rnd: number
     ): Promise<TUser | null> {
-        const result = await this.request<TUser>("login", { login, hash, rnd });
+        const result = await this.request<TUser>("login", {login, hash, rnd});
         if (result?.token) {
-            this.token = result.token;
-            this.store.setUser(login, this.token);
+            localStorage.setItem('token', result.token);
+            this.store.setUser(login, result.token);
+        }
+        return result;
+    }
+
+    async autoLogin(): Promise<TUser | null> {
+        const result = await this.request<TUser>("autoLogin", {token: this.token});
+        if (result) {
+            localStorage.setItem('token', result.token);
+            this.store.setUser(result.name, result.token);
         }
         return result;
     }
 
     async logout(): Promise<boolean | null> {
-        const result = await this.request<boolean>("logout");
+        const result = await this.request<boolean>("logout", {token: this.token});
         if (result) {
-            this.token = null;
+            localStorage.removeItem('token')
         }
         return result;
     }
 
     async resetPasswordByEmail(login: string): Promise<boolean | null> {
-        return await this.request<boolean>("sendCodeToResetPassword", { login });
+        return await this.request<boolean>("sendCodeToResetPassword", {login});
     }
 
     async getCodeToResetPassword(code: string): Promise<boolean | null> {
-        return await this.request<boolean>("getCodeToResetPassword", { code })
+        return await this.request<boolean>("getCodeToResetPassword", {code});
     }
 
     async setPasswordAfterReset(hash: string): Promise<boolean | null> {
-        return await this.request<boolean>("setPasswordAfterReset", { hash })
+        return await this.request<boolean>("setPasswordAfterReset", {hash});
     }
 
     sendMessage(message: string): Promise<TMessage | null> {
@@ -91,7 +102,7 @@ export default class Server {
     async getMessages(): Promise<TMessages | null> {
         const result = await this.request<TGetMessages>("getMessages", {
             token: this.token,
-            hash: this.chatHash
+            hash: this.chatHash,
         });
         if (result?.hash) {
             this.chatHash = result.hash;
@@ -100,29 +111,26 @@ export default class Server {
         return null;
     }
 
-    async selectTeam(teamId: 0|1): Promise<TTeam | null> {
-        const result = await this.request<TTeam>("selectTeam", {
-            token: this.token,
-            teamId: teamId
-        });
-
-        if(result) {
-            return result;
-        }
-        return null;
-    }
-
-    register(
+    async register(
         login: string,
         hash: string,
         name: string,
         email: string
     ): Promise<TUser | null> {
-        return this.request<TUser>("register", { login, hash, name, email });
+        return this.request<TUser>("register", {login, hash, name, email});
     }
 
-    // gamedev сюда
+    async selectTeam(teamId: 0 | 1): Promise<TTeam | null> {
+        const result = await this.request<TTeam>("selectTeam", {
+            token: this.token,
+            teamId: teamId
+        });
 
+        if (result) {
+            return result;
+        }
+        return null;
+    }
     async getObjects(): Promise<TDestructible[] | null> {
         const result = await this.request<TDestructible[]>('getObjects', {
             token: this.token

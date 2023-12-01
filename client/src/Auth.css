@@ -2,7 +2,6 @@ html {
     height: 100%;
 }
 
-
 body {
     -webkit-background-size: cover;
     background-size: cover;
@@ -39,8 +38,9 @@ body {
 
 .input-form {
     font-size: 2dvh;
-    display:contents;
+    display: contents;
 }
+
 .input-form input {
     text-align: center;
     width: 20dvw;
@@ -50,9 +50,10 @@ body {
     font-size: 1dvw;
     color: #ffffff;
     background: none;
- padding: 0;
-    margin-top:0.5dvw;
+    padding: 0;
+    margin-top: 0.5dvw;
 }
+
 .input-form input:focus {
     outline: none;
 }
@@ -70,7 +71,19 @@ body {
     color: #ffffff;
     cursor: pointer;
     font-size: 1.5vh;
+}
 
+.timeout {
+    font-size: 1dvw;
+    color: #61dafb;
+}
+
+.PasswordRecovery:disabled, .PasswordRecovery:disabled:hover {
+    color: gray;
+    text-shadow: none;
+    filter: contrast(1);
+    border: gray;
+    font-size: 0.8dvw;
 }
 
 .input-form input[type="password"] {
@@ -84,7 +97,8 @@ body {
 .input-form input:hover {
     border: 0.4vh solid #61dafb;
 }
-.input-form button{
+
+.input-form button {
     font-family: Zelek;
     padding: 1.5dvh;
     text-align: center;
@@ -94,6 +108,7 @@ body {
     outline: none;
     border: none;
 }
+
 .input-form button:hover {
     text-shadow: 0px 0px 3px #00aeff;
     color: #27cee9;
@@ -102,14 +117,17 @@ body {
     filter: contrast(30);
     border-color: #27cee9;
 }
+
+.content .RecoveryButton, .content .PasswordRecovery {
+    font-size: 0.8dvw;
+}
+
 h1 {
     font-family: "Zelek";
     color: rgb(0, 217, 255);
     text-shadow: 0px 1vh 4vh #00aeff;
     font-size: 3dvh;
 }
-
-
 
 .App-header {
     overflow: hidden;
@@ -182,6 +200,10 @@ h1 {
 
 .App-link {
     color: #61dafb;
+}
+
+.errorDiv {
+    color: red;
 }
 
 @font-face {

@@ -1,0 +1,34 @@
+.center-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align:center;
+  }
+  
+  .play-button-container {
+    display: inline-block;
+    padding: 0;
+  }
+  
+  .play-button {
+    border: none;
+    cursor: pointer;
+    padding: 0; background: none;
+  }
+  
+  .play-button-image {
+    width: 6dvw;
+    height: 6dvw;
+  }
+  
+  .game-description {
+    padding: 1dvw;
+    font-size: 0.9dvw;
+    width: 60dvw;
+    color:deeppink;
+    font-family: 'Courier New', Courier, monospace;
+    margin-top: 2dvh;
+    background-color: rgba(0, 0, 0, 0.815);
+    box-shadow: 0 0 3dvw #000000;
+  }

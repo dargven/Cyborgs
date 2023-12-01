@@ -11,8 +11,8 @@ export class Store {
         this.user.token = token;
     }
 
-    getUser() {
-        return this.user;
+    setAuth() {
+        this.user.isAuth = true;
     }
 
     isAuth(): boolean {
