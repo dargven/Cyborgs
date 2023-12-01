@@ -66,7 +66,7 @@ class User
     {
         $user = $this->db->getUserByToken($token);
         if ($user) {
-//            $this->db->deletePlayerInPlayers($token);
+//          $this->db->deletePlayerInPlayers($token);
             $this->db->deletePlayerInTeams($token);
             $this->db->updateToken($user->id, NULL);
             return true;
