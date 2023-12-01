@@ -14,6 +14,7 @@ class Lobby
         if ($teamId == 1 || $teamId == 0) {
             $this->db->addPlayerToTeam($id, $teamId);
             $hash = md5(rand(0, 1000000));
+            $this->db->updateChatHash($hash);
             return true;
         }
         return ['error' => 605];

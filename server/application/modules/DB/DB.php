@@ -215,8 +215,10 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
         $this->execute("DELETE FROM players
 WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
-
-
+    public function teamsHash($hash)
+    {
+        $this->execute("UPDATE game SET teams_hash=? WHERE id=1", [$hash]);
+    }
     public function setBullet($x, $y, $vx, $vy)
     {
 
