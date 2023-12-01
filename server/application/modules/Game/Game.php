@@ -2,7 +2,7 @@
 
 class Game
 {
-    private  $db;
+    private $db;
     private $spawnPoints = [
         [
             'x' => 1,
