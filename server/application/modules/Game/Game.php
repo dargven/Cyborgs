@@ -2,7 +2,7 @@
 
 class Game
 {
-    private $db;
+    private DB $db;
     private $spawnPoints = [
         [
             'x' => 1,
@@ -19,9 +19,34 @@ class Game
         return md5(rand(0, 1000000));
     }
 
+    private function updateScene($timeout, $timestamp) {
+        if (time() - $timestamp >= $timeout) {
+            $this->db->updateTimestamp(time());
+            // пробежаться по всем игрокам
+            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы
+
+            // пробежаться по всем пулям
+            // если у пули статус "куда-то попала" - удалить её
+
+            // пробежаться по всем игрокам
+            // если пуля убила игрока, то поменять его статус на "умер"
+            // поменять статус пули на "куда-то попала"
+            // записать запись об убийстве игрока в stats
+            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
+            //$players = $this->getPlayers();
+            //$bullets = $this->getBullets();
+            return true;
+        }
+        return false;
+    }
 
     public function getScene($playersHash, $objectsHash, $bulletsHash)
     {
+        $hashes = $this->db->getHashes();
+        if ($this->updateScene($hashes->update_timeout, $hashes->update_timestamp)) {
+            $this->db->updateBulletsHash($this->genHash());
+            $this->db->updatePlayersHash($this->genHash());
+        }
         $scene = [
             'hashes' =>
                 [
@@ -33,10 +58,8 @@ class Game
                 'players' => NULL,
                 'bullets' => NULL,
                 'objects' => NULL
-
             ],
         ];
-        $hashes = $this->db->getHashes();
         if ($hashes->players_hash !== $playersHash) {
             $players = $this->getPlayers();
             $scene['scene']['players'] = $players;
@@ -52,7 +75,6 @@ class Game
             $scene['scene']['bullets'] = $bullets;
             $scene['hashes']['bulletsHash'] = $bulletsHash;
         }
-
         return $scene;
     }
 
@@ -85,7 +107,6 @@ class Game
     {
 
     }
-
 
     public function setBullet($x, $y, $vx, $vy)
     {

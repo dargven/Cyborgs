@@ -10,20 +10,21 @@ class DB
     public function __construct()
     {
 //        PROD
-//        $host = Config::$configProd['host'];
-//        $port = Config::$configProd['port'];
-//        $user = Config::$configProd['user'];
-//        $pass = Config::$configProd['pass'];
-//        $db = Config::$configProd['db'];
+        $host = Config::$configProd['host'];
+        $port = Config::$configProd['port'];
+        $user = Config::$configProd['user'];
+        $pass = Config::$configProd['pass'];
+        $db =   Config::$configProd['db'];
 
 
 //        LOCAL
 
-        $host = Config::$configLocal['host'];
-        $port = Config::$configLocal['port'];
-        $user = Config::$configLocal['user'];
-        $pass = Config::$configLocal['pass'];
-        $db   = Config::$configLocal['db'];
+//        $host = Config::$configLocal['host'];
+//        $port = Config::$configLocal['port'];
+//        $user = Config::$configLocal['user'];
+//        $pass = Config::$configLocal['pass'];
+//        $db   = Config::$configLocal['db'];
+
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
     }
@@ -238,6 +239,10 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 public function updateSkinsHash($hash){
         $this->execute("UPDATE game SET chat_hash = ? WHERE id = 1", [$hash]);
 }
+
+    public function updateTimestamp($timestamp) {
+        $this->execute("UPDATE game SET update_timestamp=? WHERE id=1", [$timestamp]);
+    }
 
 }
 
