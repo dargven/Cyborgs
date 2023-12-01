@@ -1,4 +1,4 @@
-import { KeyboardControls, KeyboardControlsEntry, PerspectiveCamera } from "@react-three/drei";
+import { KeyboardControls, KeyboardControlsEntry, PerspectiveCamera, Preload } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { useMemo } from "react";
 import Scene from "./Scene";
@@ -33,11 +33,12 @@ const Game = () => {
     return (
         <KeyboardControls map={inputMap}>
             <Canvas style={{ background: 'black' }}>
-                
+
                 <PerspectiveCamera position={[0, 0, 0]}>
-                    <Scene vSize={vSize}/>
+                    <Scene />
                     <axesHelper />
                 </PerspectiveCamera>
+                {/* <Preload all /> */}
             </Canvas>
         </KeyboardControls>
     );

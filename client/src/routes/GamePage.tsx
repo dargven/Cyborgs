@@ -1,4 +1,5 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {ServerContext} from "../App";
 import Game from "../components/Game/Game";
 import useKeyHandler from "../hooks/useKeyHandler";
 import NavButton from "../components/navButton";
@@ -7,13 +8,14 @@ import "../popUpMenu.css";
 import "../TeamSelect.css";
 
 const GamePage = () => {
+    const server = useContext(ServerContext);
     const [stopMove, setStopMove] = useState({
         isPopupVisible: false,
         isChatClicked: false,
         blockMove: false
     });
 
-    const [team, setTeam] = useState<number>(0);
+    const [team, setTeam] = useState<0 | 1 | null>(null);
 
     const StopMove = () => {
         setStopMove((prevState) => ({
@@ -37,15 +39,14 @@ const GamePage = () => {
     return (
         <div>
             <Chat StopMove={StopMove}/>
-
-            {team ? (
+            {team !== null ? (
                 <Game/>
             ) : (
                 <>
-                    <button onClick={() => setTeam(1)} className="Team1">
+                    <button onClick={() => setTeam(0)} className="Team1">
                         команда 1
                     </button>
-                    <button onClick={() => setTeam(2)} className="Team2">
+                    <button onClick={() => setTeam(1)} className="Team2">
                         команда 2
                     </button>
                 </>

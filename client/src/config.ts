@@ -1,7 +1,7 @@
 //dev1
-// const DOMAIN = 'http://pi21low';
-// const PORT = 81;
-// export const HOST = `${DOMAIN}:${PORT}`;
+const DOMAIN = 'http://pi21low';
+const PORT = 81;
+export const HOST = `${DOMAIN}:${PORT}`;
 
 // dev2
 //
@@ -11,6 +11,6 @@
 
 // prod
 // const DOMAIN = 'https://cyborgs-game.ru/server/index.php';
-const DOMAIN = 'https://srv.cyborgs-game.ru/server/index.php';
+// const DOMAIN = 'https://srv.cyborgs-game.ru/server/index.php';
 
-export const HOST = DOMAIN;
+// export const HOST = DOMAIN;

@@ -1,4 +1,7 @@
-export {};
+import { type } from "os";
+import { Vector3 } from "three";
+
+export { };
 
 export type TError = {
     code: number,
@@ -21,4 +24,51 @@ export type TMessages = Array<TMessage>;
 export type TGetMessages = {
     messages: TMessages;
     hash: string;
+}
+
+export type TPlayer = {
+    token: string;
+    teamId: number;
+    hp: number;
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    dx: number;
+    dy: number;
+}
+
+export type TBullet = {
+    bulletId: number
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+}
+
+export type TDestructible = {
+    objectId: number;
+    state: 0 | 1;
+}
+
+export type TSceneHashes = {
+    bulletsHash: string;
+    playersHash: string;
+    objectsHash: string;
+}
+
+export type TGetScene = {
+    hashes: TSceneHashes;
+    scene: TScene;
+}
+
+export type TScene = {
+    players: TPlayer[] | null;
+    bullets: TBullet[] | null;
+    objects: TDestructible[] | null;
+}
+
+export type TTeam = {
+    teamId: number,
+    token: string,
 }

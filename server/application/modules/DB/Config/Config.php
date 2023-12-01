@@ -19,4 +19,12 @@ class Config
         'pass' => '',
         'db' => 'Cyborgs'
     ];
+
+//    static $configLocal = [
+//        'host' => 'localhost',
+//        'port' => 8889,
+//        'user' => 'root',
+//        'pass' => '123',
+//        'db' => 'Cyborgs'
+//    ];
 }
