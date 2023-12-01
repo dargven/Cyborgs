@@ -76,7 +76,7 @@ class DB
         return $this->query("SELECT * FROM users WHERE token=?", [$token]);
     }
 
-    public function sendEmail($email)
+    public function getUserByEmail($email)
     {
         return $this->query("SELECT * FROM users WHERE email=?", [$email]);
     }
