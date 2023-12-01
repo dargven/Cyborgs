@@ -2,7 +2,7 @@
 
 class Game
 {
-    private DB $db;
+    private  $db;
     private $spawnPoints = [
         [
             'x' => 1,
@@ -81,7 +81,7 @@ class Game
 
     }
 
-    public function setKill($id,)
+    public function setKill($id)
     {
 
     }
