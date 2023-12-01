@@ -78,8 +78,12 @@ class User
     {
         $user = $this->db->getUserByLogin($login);
         if (!$user) {
-            $this->db->addUser($login, $hash, $name, $email);
-            return true;
+            $user = $this->db->getUserByEmail($email);
+            if (!$user) {
+                $this->db->addUser($login, $hash, $name, $email);
+                return true;
+            }
+            return ['error' => 1006];
         }
         return ['error' => 1003];
     }

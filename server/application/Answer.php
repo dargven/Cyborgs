@@ -22,6 +22,7 @@ class Answer
         '1003' => 'Is it unique login?',
         '1004' => 'Unable to find user.',
         '1005' => 'Other user is playing wright now. If you doesn`t, please change the password',
+        '1006' => 'user with this email already exists',
         '9000' => 'unknown error'
     );
 
