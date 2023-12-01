@@ -18,7 +18,8 @@ class Lobby
             return true;
         }
         return ['error' => 605];
-    } 
+    }
+
     public function getTeamsInfo($hash)
     {
         $hashes = $this->db->getHashes();
@@ -29,8 +30,8 @@ class Lobby
                 'hash' => $hashes->chat_hash
             ];
         }
-        return true;  
-    } 
+        return true;
+    }
 
     public function getSkins()
     {

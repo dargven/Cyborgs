@@ -220,7 +220,7 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
         $this->execute("DELETE FROM players
 WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
-    public function teamsHash($hash)
+    public function updateTeamsHash($hash)
     {
         $this->execute("UPDATE game SET teams_hash=? WHERE id=1", [$hash]);
     }
