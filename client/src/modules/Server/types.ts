@@ -72,3 +72,12 @@ export type TTeam = {
     teamId: number,
     token: string,
 }
+
+export type TTeamUser = {
+    teamId: number,
+    token: string,
+    name: string,
+    score: string,
+    status: string,
+    deaths: string
+}
