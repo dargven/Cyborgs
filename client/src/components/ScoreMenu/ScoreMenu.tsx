@@ -16,7 +16,13 @@ const ScoreMenu = () => {
     }
 
     useKeyHandler(9, pressTab)
-
+    
+    // window.onkeydown = event => {
+    //     if(event.key  = 'TAB')
+    //     {
+    //         event.preventDefault();
+    //     }
+    // }
     //Прилетает массив игроков:
 
     //Игрок Статус Счёт Смертей
@@ -36,14 +42,11 @@ const ScoreMenu = () => {
         //}
     };
 
-
-
-
     return(
         <>
         {
             isScoreVisible && (
-                <div className="Back">
+                <div className="Back" onClick={() => {setIsScoreVisible(false)}}>
                         <h3>SCORE</h3>
                     <div className="firstTeam">
                         {users.map((user) => (

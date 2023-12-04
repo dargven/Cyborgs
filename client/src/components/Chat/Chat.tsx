@@ -26,7 +26,12 @@ const Chat = ({StopMove}: IChat) => {
         const serverTimezone = -3;
         const resultTimezone = serverTimezone - userTimezoneTimezone;
         const substr = created.split(":")[0];
-        const resultHour = resultTimezone + parseInt(substr);
+        let resultHour = resultTimezone + parseInt(substr);
+        
+        if (resultHour >= 24) {
+            resultHour -= 24;
+        }
+
         return `${resultHour}:${created.split(":")[1]}`;
     };
 
