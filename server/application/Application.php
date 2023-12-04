@@ -8,10 +8,10 @@ require_once 'modules/Chat/Chat.php';
 
 class Application
 {
-    private $user;
-    private $chat;
-    private $game;
-    private $lobby;
+    private User $user;
+    private Chat $chat;
+    private Game $game;
+    private Lobby $lobby;
 
     public function __construct()
     {
@@ -110,7 +110,7 @@ class Application
     {
         $token = $params['token'];
         $teamId = $params['teamId'];
-        if ($token && ($teamId || $teamId == 0 )) {
+        if ($token && ($teamId || $teamId == 0)) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->lobby->selectTeam($user->id, $teamId);
@@ -123,13 +123,14 @@ class Application
     function getScene($params)
     {
         $token = $params['token'];
-        $hashPlayers = $params['hashPlayers'];
-        $hashBullets = $params['hashBullets'];
-        $hashObjects = $params['hashObjects'];
-        if ($token && $hashPlayers && $hashBullets && $hashObjects) {
+        $playersHash = $params['playersHash'];
+        $bulletsHash = $params['bulletsHash'];
+        $objectsHash = $params['objectsHash'];
+        if ($token && ($playersHash || $playersHash == 0) && ($bulletsHash || $bulletsHash == 0)
+            && ($objectsHash || $objectsHash == 0)) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
-                return $this->game->getScene($hashPlayers, $hashObjects, $hashBullets);
+                return $this->game->getScene($playersHash, $objectsHash, $bulletsHash);
             }
             return ['error' => 1002];
 
