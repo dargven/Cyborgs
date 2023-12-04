@@ -2,8 +2,7 @@
 
 class SpawnPoints
 {
-    static $spawnPoints = [
-        0 => [
+    static $spawnPointsA = [
             [
                 'x' => 22,
                 'y' => 22
@@ -23,9 +22,9 @@ class SpawnPoints
             [
                 'x' => 22.5,
                 'y' => 22.5
-            ],
-        ],
-        1 => [
+            ]
+        ];
+        static $spawnPointsB = [
             [
                 'x' => -18,
                 'y' => 14
@@ -46,6 +45,5 @@ class SpawnPoints
                 'x' => -17.5,
                 'y' => 14.5
             ]
-        ]
-    ];
+        ];
 }

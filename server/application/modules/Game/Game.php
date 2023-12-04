@@ -1,11 +1,10 @@
 <?php
-require_once __DIR__ . '/Config/SpawnPoints.php';
-
+require_once __DIR__ .'/Config/SpawnPoints.php';
 class Game
 {
     private DB $db;
-    $teamASpawnPoints = SpawnPoints::$spawnPoints[0];
-    $teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
+    private array $teamASpawnPoints = SpawnPoints::$spawnPointsA;
+    private array $teamBSpawnPoints = SpawnPoints::$spawnPointsB;
 
     public function __construct($db)
     {
