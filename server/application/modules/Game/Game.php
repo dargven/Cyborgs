@@ -89,6 +89,7 @@ class Game
     public function getPlayers()
     {
         return $this->db->getPlayers();
+
     }
 
     public function spawnPlayers($id, $x, $y)
