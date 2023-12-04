@@ -1,5 +1,16 @@
 import {Store} from "../Store/Store";
-import {TError, TGetMessages, TMessage, TMessages, TUser} from "./types";
+import {
+    TBullet,
+    TDestructible,
+    TError,
+    TGetMessages, TGetScene,
+    TMessage,
+    TMessages,
+    TPlayer, TScene,
+    TSceneHashes,
+    TTeam,
+    TUser
+} from "./types";
 
 // https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
 
@@ -9,6 +20,7 @@ export default class Server {
     private token: string | null;
     private chatHash: string = "123";
     public error: TError;
+    private sceneHashes: TSceneHashes = {bulletsHash: '0', playersHash: '0', objectsHash: '0'};
 
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
@@ -50,7 +62,7 @@ export default class Server {
         }
         return result;
     }
-    
+
     async autoLogin(): Promise<TUser | null> {
         const result = await this.request<TUser>("autoLogin", {token: this.token});
         if (result) {
@@ -89,7 +101,7 @@ export default class Server {
 
     async getMessages(): Promise<TMessages | null> {
         const result = await this.request<TGetMessages>("getMessages", {
-            token: this.token,
+            token: localStorage.getItem("token"),
             hash: this.chatHash,
         });
         if (result?.hash) {
@@ -106,5 +118,90 @@ export default class Server {
         email: string
     ): Promise<TUser | null> {
         return this.request<TUser>("register", {login, hash, name, email});
+    }
+
+    async selectTeam(teamId: 0 | 1): Promise<TTeam | null> {
+        const result = await this.request<TTeam>("selectTeam", {
+            token: this.token,
+            teamId: teamId
+        });
+
+        if (result) {
+            return result;
+        }
+        return null;
+    }
+    async getObjects(): Promise<TDestructible[] | null> {
+        const result = await this.request<TDestructible[]>('getObjects', {
+            token: this.token
+        });
+
+        if (result) {
+            return result;
+        }
+        return null;
+    }
+
+    setBullet(x: number, y: number, vx: number, vy: number): Promise<TBullet[] | null> {
+        return this.request<TBullet[]>('setBullet', {
+            token: this.token,
+            x: x,
+            y: y,
+            vx: vx,
+            vy: vy,
+        });
+    }
+
+    async getBullets(): Promise<TBullet[] | null> {
+        const result = await this.request<TBullet[]>('getBullets', {
+            token: this.token
+        });
+
+        if (result) {
+            return result;
+        }
+        return null;
+    }
+
+    async getPlayers(): Promise<TPlayer[] | null> {
+        const result = await this.request<TPlayer[]>('getPlayers', {
+            token: this.token
+        });
+
+        if (result) {
+            return result;
+        }
+        return null;
+    }
+
+    async setPlayer(x: number, y: number, vx: number, vy: number,dx: number, dy: number): Promise<TPlayer[] | null> {
+        return this.request<TPlayer[]>('setPlayer', {
+            token: this.token,
+            x: x,
+            y: y,
+            vx: vx,
+            vy: vy,
+            dx: dx,
+            dy: dy,
+        });
+    }
+
+
+
+    async getScene(): Promise<TScene | null> {
+        const result = await this.request<TGetScene>('getScene',
+            {
+                token: this.token,
+                bulletsHash: this.sceneHashes.bulletsHash,
+                playersHash: this.sceneHashes.playersHash,
+                objectsHash: this.sceneHashes.objectsHash,
+            });
+
+        if (result) {
+            this.sceneHashes = result.hashes;
+            return result.scene;
+        }
+
+        return null;
     }
 }

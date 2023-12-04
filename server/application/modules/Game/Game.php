@@ -12,53 +12,83 @@ class Game
         $this->db = $db;
     }
 
-    public function getScene($hashPlayers, $hashObjects, $hashBullets)
+    private function genHash()
     {
+        return md5(rand(0, 1000000));
+    }
+
+//    private function updateScene($timeout, $timestamp) {
+//        if (time() - $timestamp >= $timeout) {
+//            $this->db->updateTimestamp(time());
+//            // пробежаться по всем игрокам
+//            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы
+//
+//            // пробежаться по всем пулям
+//            // если у пули статус "куда-то попала" - удалить её
+//
+//            // пробежаться по всем игрокам
+//            // если пуля убила игрока, то поменять его статус на "умер"
+//            // поменять статус пули на "куда-то попала"
+//            // записать запись об убийстве игрока в stats
+//            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
+//            //$players = $this->getPlayers();
+//            //$bullets = $this->getBullets();
+//            return true;
+//        }
+//        return false;
+//    }
+
+    public function getScene($playersHash, $objectsHash, $bulletsHash)
+    {
+        $hashes = $this->db->getHashes();
+//        if ($this->updateScene($hashes->update_timeout, $hashes->update_timestamp)) {
+//            $this->db->updateBulletsHash($this->genHash());
+//            $this->db->updatePlayersHash($this->genHash());
+//        }
         $scene = [
             'hashes' =>
                 [
-                    'hashPlayers' => NULL,
-                    'hashObjects' => NULL,
-                    'hashBullets' => NULL
+                    'playersHash' => NULL,
+                    'objectsHash' => NULL,
+                    'bulletsHash' => NULL
                 ],
             'scene' => [
                 'players' => NULL,
                 'bullets' => NULL,
                 'objects' => NULL
-
             ],
         ];
-        $hashes = $this->db->getHashes();
-
-        if ($hashes->players_hash !== $hashPlayers) {
+        if ($hashes->players_hash !== $playersHash) {
             $players = $this->getPlayers();
             $scene['scene']['players'] = $players;
-            $this->db->updatePlayersHash($hashPlayers);
-            $scene['hashes']['hashPlayers'] = $hashPlayers;
+            $scene['hashes']['playersHash'] = $playersHash;
         }
-        if ($hashes->objects_hash !== $hashObjects) {
+        if ($hashes->objects_hash !== $objectsHash) {
             $objects = $this->getObjects();
             $scene['scene']['objects'] = $objects;
-            $this->db->updateObjectsHash($hashObjects);
-            $scene['hashes']['hashObjects'] = $hashObjects;
+            $scene['hashes']['objectsHash'] = $objectsHash;
         }
-        if ($hashes->bullets_hash !== $hashBullets) {
+        if ($hashes->bullets_hash !== $bulletsHash) {
             $bullets = $this->getBullets();
             $scene['scene']['bullets'] = $bullets;
-            $this->db->updateBulletsHash($hashBullets);
-            $scene['hashes']['hashBullets'] = $hashBullets;
+            $scene['hashes']['bulletsHash'] = $bulletsHash;
         }
-
         return $scene;
     }
-    public function getBullets(){
-            return $this->db->getBullets();
+
+    public function getBullets()
+    {
+        return $this->db->getBullets();
     }
-    public function getObjects(){
-            return $this->db->getObjects();
+
+    public function getObjects()
+    {
+        return $this->db->getObjects();
     }
-    public function getPlayers(){
-            return $this->db->getPlayers();
+
+    public function getPlayers()
+    {
+        return $this->db->getPlayers();
     }
 
     public function spawnPlayers($id, $x, $y)
@@ -71,7 +101,7 @@ class Game
 
     }
 
-    public function setKill($id,)
+    public function setKill($id)
     {
 
     }
@@ -79,6 +109,8 @@ class Game
     public function setBullet($x, $y, $vx, $vy)
     {
         $this->db->setBullet($x, $y, $vx, $vy);
+        $hash = $this->genHash();
+        $this->db->updateBulletsHash($hash);
         return true;
     }
 
@@ -86,8 +118,26 @@ class Game
     public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
     {
         $this->db->setPlayer($id, $x, $y, $vx, $vy, $dx, $dy);
+        $hash = $this->genHash();
+        $this->db->updatePlayersHash($hash);
         return true;
     }
+
+    public function setDestroyObject($objectId, $state)
+    {
+        $object = $this->db->getObjectById($objectId);
+        if ($object) {
+            if ($state === 0 || $state === 1) {
+                $this->db->setDestroyObject($objectId, $state);
+                $hash = $this->genHash();
+                $this->db->updateObjectsHash($hash);
+                return true;
+            }
+            return ['error' => 801];
+        }
+        return ['error' => 800];
+    }
+
 
     public function getSkins($id)
     {
@@ -97,7 +147,7 @@ class Game
                 'skins' => [
                     'skin_id' => $skins->skin_id,
                     'text' => $skins->text
-                ], // Объект скинов
+                ],
                 'numberOfSkins' => $skins->cnt // Почти всегда будет два, пока не реализуем что-то дополнительное
             ];
         }
@@ -107,22 +157,10 @@ class Game
 
     public function setSkin($id, $skinId)
     {
-        $this->db->setSkin($id, $skinId); // Потребуется дополнительная проверка, если будут ещё какие-то скины
+        $this->db->setSkin($id, $skinId);
+        $hash = $this->genHash();
+        $this->db->updateSkinsHash($hash);
         return true;
-    }
-
-
-    public function setDestroyObject($objectId, $state)
-    {
-        $object = $this->db->getObjectById($objectId);
-        if ($object) {
-            if ($state === 0 || $state === 1) {
-                $this->db->setDestroyObject($objectId, $state);
-                return true;
-            }
-            return ['error' => 801];
-        }
-        return ['error' => 800];
     }
 
 
