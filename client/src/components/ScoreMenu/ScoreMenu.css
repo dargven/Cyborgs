@@ -12,14 +12,14 @@
 }
 
 .firstTeam {
-    height: 20vh;
+    height: 30vh;
     width: 40vw;
     background-color: rgba(109, 35, 35, 0.452);
     margin-bottom: 20px;
 }
 
 .secondTeam {
-    height: 20vh;
+    height: 30vh;
     width: 40vw;
     background-color: rgba(46, 31, 100, 0.473)
 }
@@ -28,4 +28,8 @@ h3 {
     font-family: "Zelek";
     color: rgba(0, 217, 255, 0.432);
     font-size: 3dvh;
+}
+
+.chat-message {
+    color: #ffffff;
 }
