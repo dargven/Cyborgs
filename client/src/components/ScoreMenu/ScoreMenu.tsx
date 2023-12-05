@@ -16,13 +16,7 @@ const ScoreMenu = () => {
     }
 
     useKeyHandler(9, pressTab)
-    
-    // window.onkeydown = event => {
-    //     if(event.key  = 'TAB')
-    //     {
-    //         event.preventDefault();
-    //     }
-    // }
+
     //Прилетает массив игроков:
 
     //Игрок Статус Счёт Смертей
