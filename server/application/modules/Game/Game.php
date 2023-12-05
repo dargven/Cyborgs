@@ -1,16 +1,16 @@
 <?php
 require_once __DIR__ . '/SpawnPoints/SpawnPoints.php';
-
 class Game
 {
     private DB $db;
+    private $teamASpawnPoints;
+    private $teamBSpawnPoints;
     
-    private array $teamASpawnPoints = SpawnPoints::$spawnPoints[0];
-    private array $teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
-
     public function __construct($db)
     {
         $this->db = $db;
+        $this->teamASpawnPoints = SpawnPoints::$spawnPoints[0];
+        $this->teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
     }
 
     private function genHash()
