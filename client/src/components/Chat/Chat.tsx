@@ -15,7 +15,6 @@ const Chat = ({StopMove}: IChat) => {
     const chatRef = useRef<HTMLInputElement | null>(null);
     const errorRef = useRef<HTMLDivElement | null>(null);
     const server = useContext(ServerContext);
-    let interval: NodeJS.Timer | null = null;
 
     const [messages, setMessages] = useState<TMessage[]>([]);
 
