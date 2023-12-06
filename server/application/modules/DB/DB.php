@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/Config/Config.php';
 
 class DB
 {
@@ -9,21 +8,28 @@ class DB
     //вызов соединения с БД
     public function __construct()
     {
-//        PROD
-        $host = Config::$configProd['host'];
-        $port = Config::$configProd['port'];
-        $user = Config::$configProd['user'];
-        $pass = Config::$configProd['pass'];
-        $db =   Config::$configProd['db'];
-
-
-//        LOCAL
-
-//        $host = Config::$configLocal['host'];
-//        $port = Config::$configLocal['port'];
-//        $user = Config::$configLocal['user'];
-//        $pass = Config::$configLocal['pass'];
-//        $db   = Config::$configLocal['db'];
+//----------------------------------------------------------------------------//
+//
+        $host = $_ENV['HOST_PROD'];
+        $port = $_ENV['PORT_PROD'];
+        $user = $_ENV['USER_PROD'];
+        $pass = $_ENV['PASS_PROD'];
+        $db =   $_ENV['DB_PROD'];
+//----------------------------------------------------------------------------//
+//
+//        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
+//        $port = $_ENV['PORT_LC1'];
+//        $user = $_ENV['USER_LC1'];
+//        $pass = $_ENV['PASS_LC1'];
+//        $db =   $_ENV['DB_LC1'];
+//
+//----------------------------------------------------------------------------//
+//
+//        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
+//        $port = $_ENV['PORT_LC2'];
+//        $user = $_ENV['USER_LC2'];
+//        $pass = $_ENV['PASS_LC2'];
+//        $db =   $_ENV['DB_LC2'];
 
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
