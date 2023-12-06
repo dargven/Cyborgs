@@ -138,7 +138,7 @@ const useAuth = () => {
             const login = localStorage.getItem("login");
             const password1 = newPasswordRef1.current.value;
             const password2 = newPasswordRef2.current.value;
-            if (password1 == password2) {
+            if (password1 === password2) {
                 const hash = md5(login + password1);
                 localStorage.removeItem("login");
                 const passwordChanged = await server.setPasswordAfterReset(
@@ -153,6 +153,17 @@ const useAuth = () => {
                     navigate("/login");
                 }
                 errorRef.current!.innerText = getError(server.error);
+            }
+            else if(password1 !== password2){
+                newPasswordRef1.current.classList.add("error-input");
+                newPasswordRef2.current.classList.add("error-input");
+                errorRef.current!.innerText = "Вы ввели разные пароли";
+
+                setTimeout(() => {
+                    newPasswordRef1.current?.classList.remove("error-input");
+                    newPasswordRef2.current?.classList.remove("error-input");
+                    errorRef.current!.innerText = "";
+                }, 5000);
             }
         }
     };
