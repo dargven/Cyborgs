@@ -82,7 +82,6 @@ const PasswordRecovery = () => {
                                 type="password"
                                 id="password1"
                                 name="password"
-                                className="password"
                                 placeholder="Новый пароль"
                                 ref={newPasswordRef1}
                             />
@@ -90,7 +89,6 @@ const PasswordRecovery = () => {
                                 type="password"
                                 id="password2"
                                 name="password"
-                                className="password"
                                 placeholder="Повторите пароль"
                                 ref={newPasswordRef2}
                             />
