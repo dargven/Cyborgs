@@ -244,5 +244,9 @@ public function updateSkinsHash($hash){
         $this->execute("UPDATE game SET update_timestamp=? WHERE id=1", [$timestamp]);
     }
 
+    public function addUserStatistics($user_id){
+        $this->execute("INSERT INTO statistics (user_id, kills, death, time_in_game, points)
+        VALUES (?, ?, ?, ?, ?)", [$user_id, 0,0,0,0]);
+    }
 }
 
