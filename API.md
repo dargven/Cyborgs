@@ -592,8 +592,12 @@ objectsHash: string,
 scene =>{
 players=>{
 token:string,
+name:string,
 teamId: number,
 hp:number,
+score:number,
+status:string,
+deaths:string,
 x:number,
 y:number,
 vx:number,
