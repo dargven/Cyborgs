@@ -94,7 +94,15 @@ class Game
 
     public function spawnPlayers($id, $x, $y)
     {
-
+        $spawnCoordinates = SpawnPoints::$spawnPoints[$id];
+        if (isset($spawnCoordinates)) {
+            $playerCoordinates = [
+            'x' => $x,
+            'y' => $y
+            ];
+            $playerCoordinates = $spawnCoordinates[array_rand($spawnCoordinates)];
+            return $playerCoordinates;
+        }
     }
 
     public function reSpawn($playerId)
