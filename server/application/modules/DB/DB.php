@@ -146,6 +146,12 @@ ORDER BY u.bullet_id");
 
     }
 
+    public function getTeamByPlayerId($playerId)
+    {
+        return $this->query("SELECT u.team_id as teamId FROM userTeams as u RIGHT JOIN 
+        players as p ON p.id=? AND p.user_id=u.user_id",[$playerId]);
+    }
+
     public function updateScoreInTeam($teamId, $score)
     {
 
@@ -200,6 +206,12 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
       vx = VALUES(vx), vy = VALUES(vy), dx = VALUES(dx), dy = VALUES(dy);
 ", [$id, $x, $y, $vx, $vy, $dx, $dy]);
     }
+    public function addUserStatistics($user_id,$kills,$death,$time_in_game,$points){
+        $this->execute("INSERT INTO stats (user_id, kills, death, time_in_game, points)
+        VALUES (?, 0, 0, 0, 0) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), kills = VALUES(kills), death = VALUES(death), 
+      time_in_game = VALUES(time_in_game), points = VALUES(points);
+", [$user_id,$kills,$death,$time_in_game,$points]);
+    }
 
 
     public function getObjects()
@@ -216,6 +228,11 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     public function setDestroyObject($objectId, $state)
     {
         $this->execute("UPDATE objects SET state=? WHERE id=?", [$state, $objectId]);
+    }
+
+    public function spawnPlayer($id, $x, $y)
+    {
+        $this->execute("UPDATE players SET x=?, y=?, hp=100, status='alive' WHERE id=?", [$x, $y, $id]);
     }
 
     public function getHashes()
@@ -253,5 +270,13 @@ public function updateSkinsHash($hash){
     public function endGame() {
         $this->execute("UPDATE teams SET team_score=? WHERE team_id", [0]);
     }
+    public function chekAndGetWinTeam()
+    {
+        return $this->query("SELECT team_id FROM teams WHERE team_score >= 25");
+    }
+
+
+
+
 }
 
