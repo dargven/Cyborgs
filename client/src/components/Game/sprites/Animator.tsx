@@ -61,8 +61,6 @@ export const Animator: React.FC<TAnimatorProps> = (
     const fpsInterval = 1000 / (fps || 30)
     const [spriteTexture, setSpriteTexture] = React.useState<THREE.Texture>(new THREE.Texture())
     const totalFrames = React.useRef<number>(0)
-    const [aspect, setAspect] = React.useState<Vector3 | undefined>([1, 1, 1])
-    const aspectFactor = scaleFactor || 0.1
 
     function loadJsonAndTextureAndExecuteCallback(
         jsonUrl: string,
@@ -80,21 +78,11 @@ export const Animator: React.FC<TAnimatorProps> = (
         })
     }
 
-    // const calculateAspectRatio = (width: number, height: number, factor: number): Vector3 => {
-    //     const adaptedHeight = height * (v.aspect > width / height ? v.width / width : v.height / height)
-    //     const adaptedWidth = width * (v.aspect > width / height ? v.width / width : v.height / height)
-
-    //     setAspect([adaptedWidth * factor, adaptedHeight * factor, 1])
-    //     //spriteRef.current.scale = [adaptedWidth * factor, adaptedHeight * factor, 1]
-    //     return [adaptedWidth * factor, adaptedHeight * factor, 1]
-    // }
-
     // initial loads
     React.useEffect(() => {
         if (textureDataURL && textureImageURL) {
             loadJsonAndTextureAndExecuteCallback(textureDataURL, textureImageURL, parseSpriteData)
         } else if (textureImageURL) {
-            // only load the texture, this is an image sprite only
             const textureLoader = new THREE.TextureLoader()
             new Promise<THREE.Texture>((resolve) => {
                 textureLoader.load(textureImageURL, resolve)
@@ -161,13 +149,6 @@ export const Animator: React.FC<TAnimatorProps> = (
             totalFrames.current = Array.isArray(json.frames) ? json.frames.length : Object.keys(json.frames).length
             textureData.current = _spriteTexture
 
-            const { w, h } = getFirstItem(json.frames).sourceSize;
-            //const aspect = calculateAspectRatio(w, h, aspectFactor);
-
-            setAspect(aspect)
-            if (matRef.current) {
-                matRef.current.map = _spriteTexture;
-            }
         }
 
         _spriteTexture.premultiplyAlpha = false
@@ -328,7 +309,7 @@ export const Animator: React.FC<TAnimatorProps> = (
     return (
         <group {...props}>
             <React.Suspense fallback={null}>
-                <sprite ref={spriteRef} scale={aspect}>
+                <sprite ref={spriteRef}>
                     <spriteMaterial
                         ref={matRef}
                         map={spriteTexture}
