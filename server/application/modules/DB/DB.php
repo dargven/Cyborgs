@@ -206,6 +206,12 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
       vx = VALUES(vx), vy = VALUES(vy), dx = VALUES(dx), dy = VALUES(dy);
 ", [$id, $x, $y, $vx, $vy, $dx, $dy]);
     }
+    public function addUserStatistics($user_id,$kills,$death,$time_in_game,$points){
+        $this->execute("INSERT INTO stats (user_id, kills, death, time_in_game, points)
+        VALUES (?, 0, 0, 0, 0) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), kills = VALUES(kills), death = VALUES(death), 
+      time_in_game = VALUES(time_in_game), points = VALUES(points);
+", [$user_id,$kills,$death,$time_in_game,$points]);
+    }
 
 
     public function getObjects()
@@ -260,6 +266,7 @@ public function updateSkinsHash($hash){
     public function updateTimestamp($timestamp) {
         $this->execute("UPDATE game SET update_timestamp=? WHERE id=1", [$timestamp]);
     }
+
 
 }
 
