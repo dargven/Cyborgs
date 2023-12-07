@@ -1,7 +1,8 @@
 import { KeyboardControls, KeyboardControlsEntry, PerspectiveCamera, Preload } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { useMemo } from "react";
+import { Suspense, lazy, useMemo } from "react";
 import Scene from "./Scene";
+import LoadingScreen from "./LoadingScreen";
 
 export enum EControls {
     up = 'up',
@@ -16,6 +17,8 @@ export enum EControls {
 }
 
 const Game = () => {
+    const SceneTest = lazy(() => import('./Scene'))
+
     const inputMap = useMemo<KeyboardControlsEntry[]>(() => [
         { name: EControls.up, keys: ['KeyW'] },
         { name: EControls.down, keys: ['KeyS'] },
@@ -31,16 +34,17 @@ const Game = () => {
     const vSize = 20;
 
     return (
-        <KeyboardControls map={inputMap}>
-            <Canvas style={{ background: 'black' }}>
-
-                <PerspectiveCamera position={[0, 0, 0]}>
-                    <Scene />
-                    <axesHelper />
-                </PerspectiveCamera>
-                {/* <Preload all /> */}
-            </Canvas>
-        </KeyboardControls>
+        <Suspense fallback={<LoadingScreen/>}>
+            <KeyboardControls map={inputMap}>
+                <Canvas style={{ background: 'black' }}>
+                    <PerspectiveCamera position={[0, 0, 0]}/>
+                        <SceneTest/>
+                        <Preload all /> 
+                        <axesHelper />
+                    {/* </PerspectiveCamera> */}
+                </Canvas>
+            </KeyboardControls>
+        </Suspense>
     );
 }
 
