@@ -23,28 +23,45 @@ const useAuth = () => {
         loginSuccess: false,
         registrationSuccess: false,
         showPassword: false,
-
         recoveryPressed: false,
         codeConfirm: false,
         timeout: false,
         isButtonDisabled: false,
+
+        isLoading: false
     })
 
     const handleLogin = async () => {
-    if (loginRef.current && passwordRef.current) {
-        const login = loginRef.current.value;
-        const rnd = Math.round(283 * Math.random());
-        const hash = md5(md5(login + passwordRef.current.value) + rnd);
-        const user = await server.login(login, hash, rnd);
-        if (user) {
+        if (loginRef.current && 
+            passwordRef.current
+        ) {
+            const login = loginRef.current.value;
+            const rnd = Math.round(283 * Math.random());
+            const hash = md5(md5(login + passwordRef.current.value) + rnd);
+            
             setUseAuth((prevState) => ({
                 ...prevState,
-                loginSuccess: true,
+                isLoading: true,
             }));
+
+            const user = await server.login(login, hash, rnd);
+            if (user) {
+                setUseAuth((prevState) => ({
+                    ...prevState,
+                    loginSuccess: true,
+                    isLoading: false
+                }));
+            }
+
+            setUseAuth((prevState) => ({
+                ...prevState,
+                isLoading: false,
+            }));
+
+            errorRef.current!.innerText = getError(server.error);
         }
-        errorRef.current!.innerText = getError(server.error);
-    }
     };
+
 
     const handleRegistration = async () => {
     if (
@@ -57,17 +74,28 @@ const useAuth = () => {
         const hash = md5(login + passwordRef.current.value);
         const name = nameRef.current.value;
         const email = emailRef.current.value;
-        const response = await server.register(login, hash, name, email);
-        if (response) {
+
+        setUseAuth((prevState) => ({
+            ...prevState,
+            isLoading: true,
+        }));
+
+            const response = await server.register(login, hash, name, email);
+            if (response) {
+                setUseAuth((prevState) => ({
+                    ...prevState,
+                    registrationSuccess: true,
+                }));
+            } 
             setUseAuth((prevState) => ({
                 ...prevState,
-                registrationSuccess: true,
-            }))
-        } else {
+                isLoading: false,
+            }));
+    
             errorRef.current!.innerText = getError(server.error);
-        }
-    }
-    };
+        }   
+};
+
 
     const togglePasswordVisibility = () => {
         if (passwordRef.current) {
@@ -189,6 +217,7 @@ const useAuth = () => {
         codeConfirm: useAuth.codeConfirm,
         timeout: useAuth.timeout,
         isButtonDisabled: useAuth.isButtonDisabled,
+        isLoading: useAuth.isLoading,
 
 
         handleLogin,

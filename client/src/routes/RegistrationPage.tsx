@@ -1,8 +1,9 @@
 import {Navigate} from "react-router-dom";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
 import NavBar from "../components/navBar";
-import "../Auth.css";
 import useAuth from "../hooks/useAuth";
+import Loading from "../components/loading";
+import "../Auth.css";
 
 const openEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-open.png";
 const closeEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-close.png";
@@ -16,6 +17,7 @@ const RegistrationPage = () => {
         nameRef,
         registrationSuccess,
         showPassword,
+        isLoading,
         handleRegistration,
         togglePasswordVisibility,
       } = useAuth();
@@ -25,6 +27,7 @@ const RegistrationPage = () => {
     return (
         <>
             <NavBar/>
+            {isLoading && <Loading/>}
             <div className="title">
                 КИБОРГИ <br/> ТЕПЕРЬ В 2D
             </div>
