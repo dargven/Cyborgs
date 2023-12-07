@@ -97,6 +97,15 @@ class Game
 
     }
 
+    public function reSpawn($playerId)
+    {
+        $teamId = $this->db->getTeamByPlayerId($playerId)->teamId;
+        if ($teamId === 0) $coords = $this->teamASpawnPoints[rand(0,4)];
+        else $coords = $this->teamBSpawnPoints[rand(0,4)];
+        $this->db->spawnPlayer($playerId, $coords['x'], $coords['y']);
+        return true;
+    }
+
     public function startMatch($MatchId, $time = 180)
     {
 
