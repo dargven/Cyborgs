@@ -267,7 +267,7 @@ public function updateSkinsHash($hash){
         $this->execute("UPDATE game SET update_timestamp=? WHERE id=1", [$timestamp]);
     }
 
-    public function getWinTeam()
+    public function chekAndGetWinTeam()
     {
         return $this->query("SELECT team_id FROM teams WHERE team_score >= 25");
     }

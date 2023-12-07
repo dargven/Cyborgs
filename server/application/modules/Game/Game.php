@@ -5,7 +5,7 @@ class Game
     private DB $db;
     private $teamASpawnPoints;
     private $teamBSpawnPoints;
-    
+
     public function __construct($db)
     {
         $this->db = $db;
@@ -95,7 +95,7 @@ class Game
     {
         return $this->db->setPlayer($id, $x, $y, $vx, $vy);
     }
-    
+
     public function spawnPlayers($id, $x, $y)
     {
         $spawnCoordinates = SpawnPoints::$spawnPoints[$id];
