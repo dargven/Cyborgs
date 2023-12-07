@@ -5,7 +5,7 @@ class Game
     private DB $db;
     private $teamASpawnPoints;
     private $teamBSpawnPoints;
-    
+
     public function __construct($db)
     {
         $this->db = $db;
@@ -91,6 +91,10 @@ class Game
     {
         return $this->db->getPlayers();
     }
+    public function setPlayer($id, $x, $y, $vx, $vy)
+    {
+        return $this->db->setPlayer($id, $x, $y, $vx, $vy);
+    }
 
     public function spawnPlayers($id, $x, $y)
     {
@@ -112,6 +116,20 @@ class Game
         else $coords = $this->teamBSpawnPoints[rand(0,4)];
         $this->db->spawnPlayer($playerId, $coords['x'], $coords['y']);
         return true;
+    }
+    public function updateScoreInTeam($teamId, $score)
+    {
+        $this->db->updateScoreInTeam($teamId, $score);
+        $team = $this->db-> getWinTeam($teamId);
+        if($team){
+            $this->db->endGame();
+            return array(
+                'team_id' => $team,
+            );
+        }
+        else{
+            return true;
+        }
     }
 
     public function startMatch($MatchId, $time = 180)
