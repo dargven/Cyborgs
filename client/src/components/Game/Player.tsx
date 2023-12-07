@@ -10,7 +10,7 @@ export interface IPlayerProps {
     token: string;
     position?: Vector3;
     velocity?: Vector3;
-    teamId: number;
+    teamId: 0 | 1 | null;
     isControlled?: boolean
     hp: number;
     onFire?(position: Vector3, team: number): void;
@@ -78,7 +78,7 @@ const Player = ({
                 getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
             }
 
-            
+
 
         }
     }
@@ -122,7 +122,7 @@ const Player = ({
 
             if (shoot || isShooting) {
                 if (onFire) {
-                    onFire(playerPosition, teamId);
+                    onFire(playerPosition, 0);
                 }
             }
 

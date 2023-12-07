@@ -14,7 +14,7 @@ import Obstacle from "./Obstacle";
 import Player from "./Player";
 import Zone from "./Zone";
 import Projectile from "./Projectile";
-import { useInterval } from "usehooks-ts";
+// import { useInterval } from "usehooks-ts";
 import Debug from "./DebugInfo";
 
 interface ITextureObject {
@@ -84,12 +84,12 @@ const Scene = () => {
         setMyPlayer(mp);
     }, []);
 
-    useInterval(() => {
-        getScene();
-        if (myPlayer) {
-            sendMyPlayer(myPlayer);
-        }
-    }, 50);
+    // useInterval(() => {
+    //     getScene();
+    //     if (myPlayer) {
+    //         sendMyPlayer(myPlayer);
+    //     }
+    // }, 50);
 
     const mouseX = useRef(0);
     const mouseY = useRef(0);

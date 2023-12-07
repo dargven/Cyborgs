@@ -1,6 +1,3 @@
-import { type } from "os";
-import { Vector3 } from "three";
-
 export { };
 
 export type TError = {
@@ -28,7 +25,7 @@ export type TGetMessages = {
 
 export type TPlayer = {
     token: string;
-    teamId: number;
+    teamId: null | 0 | 1;
     hp: number;
     x: number;
     y: number;
