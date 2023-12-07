@@ -174,6 +174,20 @@ class Game
         return ['error' => 800];
     }
 
+    public function updateScoreInTeam($teamId, $score)
+    {
+        $this->db->updateScoreInTeam($teamId, $score);
+        $team = $this->db-> chekAndGetWinTeam($teamId);
+        if($team){
+            $this->db->endGame();
+            return array(
+                'team_id' => $team,
+            );
+        }
+        else{
+            return true;
+        }
+    }
 
     public function getSkins($id)
     {
