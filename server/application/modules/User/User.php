@@ -78,7 +78,8 @@ class User
     {
         $user = $this->db->getUserByLogin($login);
         if (!$user) {
-            $this->db->addUser($login, $hash, $name, $email);
+            $uuid = uniqid();
+            $this->db->addUser($login, $hash, $name, $email, $uuid);
             return true;
         }
         return ['error' => 1003];
