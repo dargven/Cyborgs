@@ -312,11 +312,6 @@ class Application
         return ['error' => 242];
     }
 
-    function SpawnPlayers($params){
-        $id = $params['id'];
-        $x = $params['x'];
-        $y = $params['y'];
-        return $this->game->spawnPlayers($id, $x, $y);
-    }
+
 
 }
