@@ -120,7 +120,7 @@ VALUES (?,?, now())', [$id, $message]);
     }
 
 
-    public function getBullets()
+    public function getBullets() //
     {
         return $this->queryAll("SELECT  u.bullet_id AS bullet_id,u.user_id AS user_id, 
         b.x AS x,b.y AS y,b.vx AS vx,b.vy AS vy
@@ -140,7 +140,7 @@ VALUES (?,?, now())', [$id, $message]);
         $this->execute("DELETE FROM bullets WHERE id=?", [$id]);
     }
 
-    public function getTeamsInfo()
+    public function getTeamsInfo() // Переписать
 
     {
         return $this->queryAll("SELECT u.id AS bullet_id, u.user_id AS user_id,
@@ -152,7 +152,7 @@ ORDER BY u.bullet_id");
 
     }
 
-    public function getTeamByPlayerId($playerId)
+    public function getTeamByPlayerId($playerId) // Скорее всего метод не нужен
     {
         return $this->query("SELECT u.team_id as teamId FROM userTeams as u RIGHT JOIN 
         players as p ON p.id=? AND p.user_id=u.user_id", [$playerId]);
@@ -186,14 +186,14 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
 WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
 
-    public function getSkinsInLobby()
+    public function getSkinsInLobby() // переписать
     {
         return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, 
        skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id 
                    WHERE skins.role='lobby'");
     }
 
-    public function setSkinInLobby($id, $skinId)
+    public function setSkinInLobby($id, $skinId) // переписать
     {
         $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
     }
@@ -213,7 +213,7 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 ", [$id, $x, $y, $vx, $vy, $dx, $dy]);
     }
 
-    public function addUserStatistics($user_id, $kills, $death, $time_in_game, $points)
+    public function addUserStats($user_id, $kills, $death, $time_in_game, $points)
     {
         $this->execute("INSERT INTO stats (user_id, kills, death, time_in_game, points)
         VALUES (?, 0, 0, 0, 0) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), kills = VALUES(kills), death = VALUES(death), 
@@ -276,11 +276,6 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     public function updateTimestamp($timestamp)
     {
         $this->execute("UPDATE game SET update_timestamp=? WHERE id=1", [$timestamp]);
-    }
-
-    public function endGame()
-    {
-        $this->execute("UPDATE teams SET team_score=? WHERE team_id", [0]);
     }
 
     public function chekAndGetWinTeam()

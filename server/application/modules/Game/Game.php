@@ -3,8 +3,8 @@ require_once __DIR__ . '/SpawnPoints/SpawnPoints.php';
 class Game
 {
     private DB $db;
-    private $teamASpawnPoints;
-    private $teamBSpawnPoints;
+    private array $teamASpawnPoints;
+    private array $teamBSpawnPoints;
 
     public function __construct($db)
     {
@@ -18,9 +18,9 @@ class Game
         return md5(rand(0, 1000000));
     }
 
-//    private function updateScene($timeout, $timestamp) {
-//        if (time() - $timestamp >= $timeout) {
-//            $this->db->updateTimestamp(time());
+    private function updateScene($timeout, $timestamp) {
+        if (time() - $timestamp >= $timeout) {
+            $this->db->updateTimestamp(time());
 //            // пробежаться по всем игрокам
 //            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы
 //
@@ -34,18 +34,18 @@ class Game
 //            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
 //            //$players = $this->getPlayers();
 //            //$bullets = $this->getBullets();
-//            return true;
-//        }
-//        return false;
-//    }
+            return true;
+        }
+        return false;
+    }
 
     public function getScene($playersHash, $objectsHash, $bulletsHash)
     {
         $hashes = $this->db->getHashes();
-//        if ($this->updateScene($hashes->update_timeout, $hashes->update_timestamp)) {
-//            $this->db->updateBulletsHash($this->genHash());
-//            $this->db->updatePlayersHash($this->genHash());
-//        }
+        if ($this->updateScene($hashes->update_timeout, $hashes->update_timestamp)) {
+            $this->db->updateBulletsHash($this->genHash());
+            $this->db->updatePlayersHash($this->genHash());
+        }
         $scene = [
             'hashes' =>
                 [
@@ -91,10 +91,10 @@ class Game
     {
         return $this->db->getPlayers();
     }
-    public function setPlayer($id, $x, $y, $vx, $vy)
-    {
-        return $this->db->setPlayer($id, $x, $y, $vx, $vy);
-    }
+//    public function setPlayer($id, $x, $y, $vx, $vy)
+//    {
+//        return $this->db->setPlayer($id, $x, $y, $vx, $vy);
+//    }
 
     public function spawnPlayers($id, $x, $y)
     {
@@ -117,20 +117,7 @@ class Game
         $this->db->spawnPlayer($playerId, $coords['x'], $coords['y']);
         return true;
     }
-    public function updateScoreInTeam($teamId, $score)
-    {
-        $this->db->updateScoreInTeam($teamId, $score);
-        $team = $this->db-> getWinTeam($teamId);
-        if($team){
-            $this->db->endGame();
-            return array(
-                'team_id' => $team,
-            );
-        }
-        else{
-            return true;
-        }
-    }
+
 
     public function startMatch($MatchId, $time = 180)
     {
@@ -173,45 +160,42 @@ class Game
         }
         return ['error' => 800];
     }
+//    private function updateScoreInTeam($teamId, $score): true|array
+//    {
+//        $this->db->updateScoreInTeam($teamId, $score);
+//        $team = $this->db-> chekAndGetWinTeam($teamId);
+//        if($team){
+//          //  $this->db->endGame();
+//            return array(
+//                'team_id' => $team,
+//            );
+//        }
+//        else{
+//            return true;
+//        }
+//    }
 
-    public function updateScoreInTeam($teamId, $score)
-    {
-        $this->db->updateScoreInTeam($teamId, $score);
-        $team = $this->db-> chekAndGetWinTeam($teamId);
-        if($team){
-            $this->db->endGame();
-            return array(
-                'team_id' => $team,
-            );
-        }
-        else{
-            return true;
-        }
-    }
-
-    public function getSkins($id)
-    {
-        $skins = $this->db->getSkins($id);
-        if ($skins) {
-            return [
-                'skins' => [
-                    'skin_id' => $skins->skin_id,
-                    'text' => $skins->text
-                ],
-                'numberOfSkins' => $skins->cnt // Почти всегда будет два, пока не реализуем что-то дополнительное
-            ];
-        }
-        return ['error' => 700];
-    }
+//    public function getSkins($id)
+//    {
+//        $skins = $this->db->getSkins($id);
+//        if ($skins) {
+//            return [
+//                'skins' => [
+//                    'skin_id' => $skins->skin_id,
+//                    'text' => $skins->text
+//                ],
+//                'numberOfSkins' => $skins->cnt // Почти всегда будет два, пока не реализуем что-то дополнительное
+//            ];
+//        }
+//        return ['error' => 700];
+//    }
 
 
-    public function setSkin($id, $skinId)
-    {
-        $this->db->setSkin($id, $skinId);
-        $hash = $this->genHash();
-        $this->db->updateSkinsHash($hash);
-        return true;
-    }
+//    public function setSkin($id, $skinId)
+//    {
+//        $this->db->setSkin($id, $skinId);
+//        return true;
+//    }
 
 
 }
