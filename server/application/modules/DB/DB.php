@@ -14,7 +14,7 @@ class DB
         $port = $_ENV['PORT_PROD'];
         $user = $_ENV['USER_PROD'];
         $pass = $_ENV['PASS_PROD'];
-        $db =   $_ENV['DB_PROD'];
+        $db = $_ENV['DB_PROD'];
 //----------------------------------------------------------------------------//
 //
 //        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
@@ -81,16 +81,22 @@ class DB
         return $this->query("SELECT * FROM users WHERE id=?", [$id]);
     }
 
+    public function getUserByUuid($uuid)
+    {
+        return $this->query("SELECT * FROM users WHERE uuid=?", [$uuid]);
+    }
+
+
     public function updateToken($id, $token)
     {
         $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $id]);
     }
 
-    public function addUser($login, $hash, $name, $email)
+    public function addUser($login, $hash, $name, $email, $uuid)
     {
         $this->execute(
-            "INSERT INTO users (login,password,name,email) VALUES (?, ?, ?, ?)",
-            [$login, $hash, $name, $email]
+            "INSERT INTO users (login,password,name,email, $uuid) VALUES (?, ?, ?, ?, ?)",
+            [$login, $hash, $name, $email, $uuid]
         );
     }
 
@@ -114,7 +120,7 @@ VALUES (?,?, now())', [$id, $message]);
     }
 
 
-    public function getBullets()
+    public function getBullets() //
     {
         return $this->queryAll("SELECT  u.bullet_id AS bullet_id,u.user_id AS user_id, 
         b.x AS x,b.y AS y,b.vx AS vx,b.vy AS vy
@@ -131,10 +137,10 @@ VALUES (?,?, now())', [$id, $message]);
 
     public function DeleteBullet($id)
     {
-        $this->execute("DELETE  FROM bullets WHERE id=?", [$id]);
+        $this->execute("DELETE FROM bullets WHERE id=?", [$id]);
     }
 
-    public function getTeamsInfo()
+    public function getTeamsInfo() // Переписать
 
     {
         return $this->queryAll("SELECT u.id AS bullet_id, u.user_id AS user_id,
@@ -146,10 +152,10 @@ ORDER BY u.bullet_id");
 
     }
 
-    public function getTeamByPlayerId($playerId)
+    public function getTeamByPlayerId($playerId) // Скорее всего метод не нужен
     {
         return $this->query("SELECT u.team_id as teamId FROM userTeams as u RIGHT JOIN 
-        players as p ON p.id=? AND p.user_id=u.user_id",[$playerId]);
+        players as p ON p.id=? AND p.user_id=u.user_id", [$playerId]);
     }
 
     public function updateScoreInTeam($teamId, $score)
@@ -164,7 +170,7 @@ ORDER BY u.bullet_id");
     {
         $this->execute("INSERT INTO userTeams (user_id, team_id)
 VALUES (?, ?)
-ON DUPLICATE KEY UPDATE team_id = VALUES(team_id)", [$id,$teamId]);
+ON DUPLICATE KEY UPDATE team_id = VALUES(team_id)", [$id, $teamId]);
     }
 
 
@@ -180,14 +186,14 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
 WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
 
-    public function getSkinsInLobby()
+    public function getSkinsInLobby() // переписать
     {
         return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, 
        skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id 
                    WHERE skins.role='lobby'");
     }
 
-    public function setSkinInLobby($id, $skinId)
+    public function setSkinInLobby($id, $skinId) // переписать
     {
         $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
     }
@@ -206,11 +212,13 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
       vx = VALUES(vx), vy = VALUES(vy), dx = VALUES(dx), dy = VALUES(dy);
 ", [$id, $x, $y, $vx, $vy, $dx, $dy]);
     }
-    public function addUserStatistics($user_id,$kills,$death,$time_in_game,$points){
+
+    public function addUserStats($user_id, $kills, $death, $time_in_game, $points)
+    {
         $this->execute("INSERT INTO stats (user_id, kills, death, time_in_game, points)
         VALUES (?, 0, 0, 0, 0) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), kills = VALUES(kills), death = VALUES(death), 
       time_in_game = VALUES(time_in_game), points = VALUES(points);
-", [$user_id,$kills,$death,$time_in_game,$points]);
+", [$user_id, $kills, $death, $time_in_game, $points]);
     }
 
 
@@ -259,23 +267,21 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE game SET objects_hash=? WHERE id=1", [$hash]);
     }
-public function updateSkinsHash($hash){
-        $this->execute("UPDATE game SET chat_hash = ? WHERE id = 1", [$hash]);
-}
 
-    public function updateTimestamp($timestamp) {
+    public function updateSkinsHash($hash)
+    {
+        $this->execute("UPDATE game SET chat_hash = ? WHERE id = 1", [$hash]);
+    }
+
+    public function updateTimestamp($timestamp)
+    {
         $this->execute("UPDATE game SET update_timestamp=? WHERE id=1", [$timestamp]);
     }
 
-    public function endGame() {
-        $this->execute("UPDATE teams SET team_score=? WHERE team_id", [0]);
-    }
     public function chekAndGetWinTeam()
     {
         return $this->query("SELECT team_id FROM teams WHERE team_score >= 25");
     }
-
-
 
 
 }
