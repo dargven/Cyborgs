@@ -14,8 +14,6 @@ const MainPage = () => {
     const checkUser = () => {
         if (store.isAuth()) {
             navigate('/game', {replace: true});
-        } else {
-            console.log("Пользователь не авторизован");
         }
     }
 
