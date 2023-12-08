@@ -157,8 +157,11 @@ User = {
 | name     | string | Имя пользователя                      |
 | email    | string | Почта пользователя                    |
 | hash     | string | md5(md5(login+password)+rnd)          |
-| uuid     | string | Уникальный идентификатор пользователя |
 
+## Верный ответ
+```
+CorrectAnswer=>true
+```
 ### Ошибки
 
 ```
@@ -187,7 +190,7 @@ WrongAnswer(code: 1003, text: 'Is it unique login?')
 ### Успешный ответ
 
 ```
-CorrectAnswer=>User
+CorrectAnswer=>User + uuid:string(Уникальный ид пользователя)
 ```
 
 ### Ошибки
