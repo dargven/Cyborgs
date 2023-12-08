@@ -156,11 +156,11 @@ ORDER BY u.bullet_id");
 
     }
 
-    public function getTeamByPlayerId($playerId) // Скорее всего метод не нужен
-    {
-        return $this->query("SELECT u.team_id as teamId FROM userTeams as u RIGHT JOIN 
-        players as p ON p.id=? AND p.user_id=u.user_id", [$playerId]);
-    }
+//    public function getTeamByPlayerId($playerId) // Скорее всего метод не нужен
+//    {
+//        return $this->query("SELECT u.team_id as teamId FROM userTeams as u RIGHT JOIN
+//        players as p ON p.id=? AND p.user_id=u.user_id", [$playerId]);
+//    }
 
     public function updateScoreInTeam($teamId, $score)
     {
@@ -205,7 +205,7 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
 
     public function getPlayers()
     {
-        return $this->queryAll("SELECT u.token, p.x, p.y, p.vx, p.vy, p.dx, p.dy 
+        return $this->queryAll("SELECT u.token, p.hp p.team_id, p.skin_id,p.x, p.y, p.vx, p.vy, p.dx, p.dy, 
 FROM players as p INNER JOIN users as u on u.id = p.user_id");
     }
 
@@ -215,6 +215,10 @@ FROM players as p INNER JOIN users as u on u.id = p.user_id");
 ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), 
       vx = VALUES(vx), vy = VALUES(vy), dx = VALUES(dx), dy = VALUES(dy);
 ", [$id, $x, $y, $vx, $vy, $dx, $dy]);
+    }
+
+    public function getFreeSpawnPlace($x,$y){
+        $this->query("SELECT COUNT(x, y) as count from players where x = ? & y = ?", [$x, $y]);
     }
 
     public function addUserStats($user_id, $kills, $death, $time_in_game, $points)
