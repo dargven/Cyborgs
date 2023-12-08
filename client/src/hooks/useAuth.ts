@@ -31,7 +31,7 @@ const useAuth = () => {
     })
 
     const handleLogin = async () => {
-    if (loginRef.current && passwordRef.current) {
+    if (loginRef.current?.value && passwordRef.current?.value) {
         const login = loginRef.current.value;
         const rnd = Math.round(283 * Math.random());
         const hash = md5(md5(login + passwordRef.current.value) + rnd);
@@ -43,15 +43,18 @@ const useAuth = () => {
             }));
         }
         errorRef.current!.innerText = getError(server.error);
+    }else{
+        server.error.code=1001
+        errorRef.current!.innerText=getError(server.error)
     }
     };
 
     const handleRegistration = async () => {
     if (
-        loginRef.current &&
-        passwordRef.current &&
-        nameRef.current &&
-        emailRef.current
+        loginRef.current?.value &&
+        passwordRef.current?.value &&
+        nameRef.current?.value &&
+        emailRef.current?.value
     ) {
         const login = loginRef.current.value;
         const hash = md5(login + passwordRef.current.value);
@@ -66,6 +69,9 @@ const useAuth = () => {
         } else {
             errorRef.current!.innerText = getError(server.error);
         }
+    }else{
+        server.error.code=242
+        errorRef.current!.innerText=getError(server.error)
     }
     };
 
@@ -104,7 +110,7 @@ const useAuth = () => {
     };
 
     const Recovery = async () => {
-        if (loginRef.current) {
+        if (loginRef.current?.value) {
             const login = loginRef.current.value;
             localStorage.setItem("login", login);
             const recovery = await server.resetPasswordByEmail(login);
@@ -117,10 +123,14 @@ const useAuth = () => {
             }
             errorRef.current!.innerText = getError(server.error);
         }
+        else{
+            server.error.code=242
+            errorRef.current!.innerText = getError(server.error);
+        }
     };
 
     const SetCode = async () => {
-        if (codeRef.current) {
+        if (codeRef.current?.value) {
             const code = codeRef.current.value;
             const codeTrue = await server.getCodeToResetPassword(code);
             if (codeTrue) {
@@ -130,11 +140,14 @@ const useAuth = () => {
                 }));
             }
             errorRef.current!.innerText = getError(server.error);
+        }else{
+            server.error.code=709
+            errorRef.current!.innerText = getError(server.error);
         }
     };
 
     const sendNewHash = async () => {
-        if (newPasswordRef1.current && newPasswordRef2.current) {
+        if (newPasswordRef1.current?.value && newPasswordRef2.current?.value) {
             const login = localStorage.getItem("login");
             const password1 = newPasswordRef1.current.value;
             const password2 = newPasswordRef2.current.value;
@@ -165,6 +178,9 @@ const useAuth = () => {
                     errorRef.current!.innerText = "";
                 }, 5000);
             }
+        }else{
+            server.error.code=242
+            errorRef.current!.innerText = getError(server.error);
         }
     };
 
