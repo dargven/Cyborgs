@@ -17,6 +17,7 @@ import {
 export default class Server {
     private HOST: string;
     private store: Store;
+    private uuid: string | null;
     private token: string | null;
     private chatHash: string = "123";
     public error: TError;
@@ -25,6 +26,7 @@ export default class Server {
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
         this.store = store;
+        this.uuid = localStorage.getItem('uuid');
         this.token = localStorage.getItem('token');
         this.error = {code: 202, text: " "};
     }
@@ -48,6 +50,7 @@ export default class Server {
         } catch (e) {
             return null;
         }
+
     }
 
     async login(
@@ -56,28 +59,30 @@ export default class Server {
         rnd: number
     ): Promise<TUser | null> {
         const result = await this.request<TUser>("login", {login, hash, rnd});
-        if (result?.token) {
+        if (result?.token && result?.uuid) 
+        {
             localStorage.setItem('token', result.token);
-            this.store.setUser(login, result.token);
+            localStorage.setItem('uuid', result.uuid)
+            this.store.setUser(login, result.token, result.uuid);
         }
         return result;
     }
 
     async autoLogin(): Promise<TUser | null> {
-        const result = await this.request<TUser>("autoLogin", {token: this.token});
-        if (result) {
+        const result = await this.request<TUser>("autoLogin", {uuid: this.uuid, token: this.token});
+        if (result?.token) {
             localStorage.setItem('token', result.token);
-            this.store.setUser(result.name, result.token);
+            this.store.setUser(result.name, result.token, result.uuid);
         }
         return result;
     }
 
-    async logout(): Promise<boolean | null> {
-        const result = await this.request<boolean>("logout", {token: this.token});
+    async logout() {
+        const result = await this.request<boolean>("logout", {token: localStorage.getItem('token')});
         if (result) {
             localStorage.removeItem('token')
+            localStorage.removeItem('uuid')
         }
-        return result;
     }
 
     async resetPasswordByEmail(login: string): Promise<boolean | null> {
@@ -185,8 +190,6 @@ export default class Server {
             dy: dy,
         });
     }
-
-
 
     async getScene(): Promise<TScene | null> {
         const result = await this.request<TGetScene>('getScene',

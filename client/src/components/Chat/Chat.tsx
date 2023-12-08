@@ -40,7 +40,6 @@ const Chat = ({StopMove}: IChat) => {
             setMessages(messagesFromServer);
         } else {
             if (server.error.code === 1002) {
-                console.log('nuku')
                 navigate("/login");
             }
         }
