@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/SpawnPoints/SpawnPoints.php';
+
 class Game
 {
     private DB $db;
@@ -17,8 +18,14 @@ class Game
     {
         return md5(rand(0, 1000000));
     }
+    private function spawnPlayers(){
+        $players = $this->db->getPlayers();
 
-    private function updateScene($timeout, $timestamp) {
+
+    }
+
+    private function updateScene($timeout, $timestamp)
+    {
         if (time() - $timestamp >= $timeout) {
             $this->db->updateTimestamp(time());
 //            // пробежаться по всем игрокам
@@ -91,29 +98,12 @@ class Game
     {
         return $this->db->getPlayers();
     }
-//    public function setPlayer($id, $x, $y, $vx, $vy)
-//    {
-//        return $this->db->setPlayer($id, $x, $y, $vx, $vy);
-//    }
-
-    public function spawnPlayers($id, $x, $y)
-    {
-        $spawnCoordinates = SpawnPoints::$spawnPoints[$id];
-        if (isset($spawnCoordinates)) {
-            $playerCoordinates = [
-            'x' => $x,
-            'y' => $y
-            ];
-            $playerCoordinates = $spawnCoordinates[array_rand($spawnCoordinates)];
-            return $playerCoordinates;
-        }
-    }
 
     public function reSpawn($playerId)
     {
         $teamId = $this->db->getTeamByPlayerId($playerId)->teamId;
-        if ($teamId === 0) $coords = $this->teamASpawnPoints[rand(0,4)];
-        else $coords = $this->teamBSpawnPoints[rand(0,4)];
+        if ($teamId === 0) $coords = $this->teamASpawnPoints[rand(0, 4)];
+        else $coords = $this->teamBSpawnPoints[rand(0, 4)];
         $this->db->spawnPlayer($playerId, $coords['x'], $coords['y']);
         return true;
     }
