@@ -160,6 +160,18 @@ class Game
         }
         return ['error' => 800];
     }
+
+    private function decreaseHp($playerId, $dHp)
+    {
+        $players = $this->db->checkDeath($playerId);
+        if (!$players) {
+            $dHp = max(0, $dHp);
+            $this->db->decreaseHp($playerId, $dHp);
+            return true; 
+        }
+        return false; 
+    }
+
 //    private function updateScoreInTeam($teamId, $score): true|array
 //    {
 //        $this->db->updateScoreInTeam($teamId, $score);
