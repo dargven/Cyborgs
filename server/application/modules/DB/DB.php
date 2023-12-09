@@ -178,13 +178,7 @@ ON DUPLICATE KEY UPDATE team_id = VALUES(team_id)", [$id, $teamId]);
     }
 
 
-    public function deletePlayerInTeams($token)
-    {
-        $this->execute("DELETE FROM userTeams
-WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
-    }
-
-    public function deletePlayerInPlayers($token)
+    public function deletePlayer($token)
     {
         $this->execute("DELETE FROM players
 WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
@@ -217,7 +211,8 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 ", [$id, $x, $y, $vx, $vy, $dx, $dy]);
     }
 
-    public function getFreeSpawnPlace($x,$y){
+    public function getFreeSpawnPlace($x, $y)
+    {
         $this->query("SELECT COUNT(x, y) as count from players where x = ? & y = ?", [$x, $y]);
     }
 
