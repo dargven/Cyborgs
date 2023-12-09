@@ -76,7 +76,7 @@ class User
     {
         $user = $this->db->getUserByToken($token);
         if ($user) {
-//          $this->db->deletePlayerInPlayers($token);  //Вернуть для Proda//
+//          $this->db->deletePlayer($token);  //Вернуть для Proda//
             $this->db->updateToken($user->id, NULL);
             return true;
         }
