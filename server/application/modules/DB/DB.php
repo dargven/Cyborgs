@@ -282,7 +282,13 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         return $this->query("SELECT team_id FROM teams WHERE team_score >= 25");
     }
-
-
+    public function checkDeath($playerId)
+    {
+        return $this->query("SELECT hp FROM players WHERE id=? and hp>=0"); 
+    }
+    public function decreaseHp($playerId, $dHp)
+    {
+        return $this->execute("UPDATE players SET hp=hp-? WHERE id=?", [$playerId, $dHp] );
+    }
 }
 
