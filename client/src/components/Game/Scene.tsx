@@ -75,21 +75,6 @@ const Scene = () => {
 
                 {myPlayer && <Debug player={myPlayer} debugRef={debugRef} />}
 
-                {myPlayer && (
-                    <Player
-                        isControlled
-                        hp={100}
-                        key={myPlayer.token}
-                        token={myPlayer.token}
-                        teamId={myPlayer.teamId}
-                        position={new Vector3(myPlayer.x, myPlayer.y, 0)}
-                        velocity={new Vector3(myPlayer.vx, myPlayer.vy, 0)}
-                        onFire={onFire}
-                        onMovement={onMovement}
-                        getMyPlayer={updatePlayer}
-                    />
-                )}
-
                 {players.map(player => {
                     const token = store.getUser().token;
                     if (player.token !== token) {
