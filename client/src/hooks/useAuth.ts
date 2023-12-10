@@ -36,29 +36,25 @@ const useAuth = () => {
         const login = loginRef.current.value;
         const rnd = Math.round(283 * Math.random());
         const hash = md5(md5(login + passwordRef.current.value) + rnd);
+        setUseAuth((prevState) => ({
+            ...prevState,
+            isLoading: true,
+        }));
+
         const user = await server.login(login, hash, rnd);
         if (user) {
             setUseAuth((prevState) => ({
                 ...prevState,
-                isLoading: true,
+                loginSuccess: true,
+                isLoading: false
             }));
-
-            const user = await server.login(login, hash, rnd);
-            if (user) {
-                setUseAuth((prevState) => ({
-                    ...prevState,
-                    loginSuccess: true,
-                    isLoading: false
-                }));
-            }
-
-            setUseAuth((prevState) => ({
-                ...prevState,
-                isLoading: false,
-            }));
-
-            errorRef.current!.innerText = getError(server.error);
         }
+
+        setUseAuth((prevState) => ({
+            ...prevState,
+            isLoading: false,
+        }));
+
         errorRef.current!.innerText = getError(server.error);
     }else{
         server.error.code=1001
@@ -95,7 +91,7 @@ const useAuth = () => {
                 ...prevState,
                 isLoading: false,
             }));
-    
+
             errorRef.current!.innerText = getError(server.error);
         } else {
         server.error.code=242
@@ -137,22 +133,6 @@ const useAuth = () => {
         }, 1000);
     };
 
-    // const Recovery = async () => {
-    //     if (loginRef.current) {
-    //         const login = loginRef.current.value;
-    //         localStorage.setItem("login", login);
-    //         const recovery = await server.resetPasswordByEmail(login);
-    //         if (recovery) {
-    //             setUseAuth((prevState) => ({
-    //                 ...prevState,
-    //                 recoveryPressed: true,
-    //             }));
-    //             startTimer();
-    //         }
-    //         errorRef.current!.innerText = getError(server.error);
-    //     }
-    // };
-
     const Recovery = async () => {
         if (loginRef.current?.value) {
             const login = loginRef.current.value;
@@ -182,20 +162,6 @@ const useAuth = () => {
         }
     };
 
-    // const SetCode = async () => {
-    //     if (codeRef.current) {
-    //         const code = codeRef.current.value;
-    //         const codeTrue = await server.getCodeToResetPassword(code);
-    //         if (codeTrue) {
-    //             setUseAuth((prevState) => ({
-    //                 ...prevState,
-    //                 codeConfirm: true,
-    //             }));
-    //         }
-    //         errorRef.current!.innerText = getError(server.error);
-    //     }
-    // };
-
     const SetCode = async () => {
         if (codeRef.current?.value) {
             const code = codeRef.current.value;
@@ -221,41 +187,6 @@ const useAuth = () => {
             errorRef.current!.innerText = getError(server.error);
         }
     };
-
-    // const sendNewHash = async () => {
-    //     if (newPasswordRef1.current && newPasswordRef2.current) {
-    //         const login = localStorage.getItem("login");
-    //         const password1 = newPasswordRef1.current.value;
-    //         const password2 = newPasswordRef2.current.value;
-    //         if (password1 === password2) {
-    //             const hash = md5(login + password1);
-    //             localStorage.removeItem("login");
-    //             const passwordChanged = await server.setPasswordAfterReset(
-    //                 hash
-    //             );
-    //             if (passwordChanged) {
-    //                 setUseAuth((prevState) => ({
-    //                     ...prevState,
-    //                     codeConfirm: false,
-    //                     recoveryPressed: false,
-    //                 }));
-    //                 navigate("/login");
-    //             }
-    //             errorRef.current!.innerText = getError(server.error);
-    //         }
-    //         else if(password1 !== password2){
-    //             newPasswordRef1.current.classList.add("error-input");
-    //             newPasswordRef2.current.classList.add("error-input");
-    //             errorRef.current!.innerText = "Вы ввели разные пароли";
-
-    //             setTimeout(() => {
-    //                 newPasswordRef1.current?.classList.remove("error-input");
-    //                 newPasswordRef2.current?.classList.remove("error-input");
-    //                 errorRef.current!.innerText = "";
-    //             }, 5000);
-    //         }
-    //     }
-    // };
 
     const sendNewHash = async () => {
         if (newPasswordRef1.current?.value && newPasswordRef2.current?.value) {
