@@ -197,6 +197,11 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
 FROM players as p INNER JOIN users as u on u.id = p.user_id");
     }
 
+    public function getAllInfoPlayers()
+    {
+        return $this->queryAll("SELECT * from players");
+    }
+
     public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
     {
         $this->execute("INSERT INTO players (user_id, x, y, vx, vy, dx, dy) VALUES (?, ?, ?, ?, ?, ?, ?) 
@@ -235,9 +240,9 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
         $this->execute("UPDATE objects SET state=? WHERE id=?", [$state, $objectId]);
     }
 
-    public function spawnPlayer($id, $x, $y)
+    public function spawnPlayer($userId, $x, $y)
     {
-        $this->execute("UPDATE players SET x=?, y=? WHERE id=?", [$x, $y, $id]);
+        $this->execute("UPDATE players SET x=?, y=? WHERE user_id=?", [$x, $y, $userId]);
     }
 
     public function getHashes()
