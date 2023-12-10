@@ -263,7 +263,7 @@ const useAuth = () => {
                         codeConfirm: false,
                         recoveryPressed: false,
                     }));
-                    navigate("/login");
+                    navigate("/login", {replace: true});
                 }
     
                 setUseAuth((prevState) => ({
