@@ -19,29 +19,51 @@ class Game
         return md5(rand(0, 1000000));
     }
 
+    private function checkFreePosition($playerX, $playerY, $spawnX, $spawnY)
+    {
+        if (
+            $playerX + 0.5 != $spawnX ||
+            $playerX - 0.5 != $spawnX ||
+            $playerY + 0.5 != $spawnY ||
+            $playerY - 0.5 != $spawnY
+        ) {
+            return true;
+        }
+        return false;
+
+    }
+
     public function spawnPlayers()
     {
-        $players = $this->db->getPlayers();
-        $playersA = [];
-        $playersB = [];
+        $players = $this->db->getAllInfoPlayers();
+        $usedSpawnPoints = [];
+
         foreach ($players as $player) {
             if ($player['team_id'] == 0) {
-                $playersA += $player;
-            } else $playersB += $player;
-        }
-        foreach ($this->teamASpawnPoints as $spawnP){
-            foreach ($playersA as $plA){
-                $this->db->spawnPlayer(intval($plA['user_id']), intval($spawnP['x']), intval($spawnP['y']));
-                break;
+                $spawnPoint = $this->getFreeSpawnPoint($player['x'], $player['y'], $this->teamASpawnPoints, $usedSpawnPoints);
+                if ($spawnPoint !== null) {
+                    $this->db->spawnPlayer($player['user_id'], $spawnPoint['x'], $spawnPoint['y']);
+                    $usedSpawnPoints[] = $spawnPoint;
+                }
+            } elseif ($player['team_id'] == 1) {
+                $spawnPoint = $this->getFreeSpawnPoint($player['x'], $player['y'], $this->teamBSpawnPoints, $usedSpawnPoints);
+                if ($spawnPoint !== null) {
+                    $this->db->spawnPlayer($player['user_id'], $spawnPoint['x'], $spawnPoint['y']);
+                    $usedSpawnPoints[] = $spawnPoint;
+                }
             }
         }
-        foreach ($this->teamBSpawnPoints as $spawnP){
-            foreach ($playersB as $plB){
-                $this->db->spawnPlayer(intval($plB['user_id']), intval($spawnP['x']), intval($spawnP['y']));
-                break;
+    }
+
+    private function getFreeSpawnPoint($playerX, $playerY, $spawnPoints, $usedSpawnPoints)
+    {
+        foreach ($spawnPoints as $spawnPoint) {
+            if (!in_array($spawnPoint, $usedSpawnPoints) && $this->checkFreePosition($playerX, $playerY, $spawnPoint['x'], $spawnPoint['y'])) {
+                return $spawnPoint;
             }
         }
 
+        return null;
     }
 
     private function updateScene($timeout, $timestamp)
@@ -66,7 +88,8 @@ class Game
         return false;
     }
 
-    public function getScene($playersHash, $objectsHash, $bulletsHash)
+    public
+    function getScene($playersHash, $objectsHash, $bulletsHash)
     {
         $hashes = $this->db->getHashes();
         if ($this->updateScene($hashes->update_timeout, $hashes->update_timestamp)) {
@@ -104,22 +127,26 @@ class Game
         return $scene;
     }
 
-    public function getBullets()
+    public
+    function getBullets()
     {
         return $this->db->getBullets();
     }
 
-    public function getObjects()
+    public
+    function getObjects()
     {
         return $this->db->getObjects();
     }
 
-    public function getPlayers()
+    public
+    function getPlayers()
     {
         return $this->db->getPlayers();
     }
 
-    public function reSpawn($playerId)
+    public
+    function reSpawn($playerId)
     {
         $teamId = $this->db->getTeamByPlayerId($playerId)->teamId;
         if ($teamId === 0) $coords = $this->teamASpawnPoints[rand(0, 4)];
@@ -129,17 +156,20 @@ class Game
     }
 
 
-    public function startMatch($MatchId, $time = 180)
+    public
+    function startMatch($MatchId, $time = 180)
     {
 
     }
 
-    public function setKill($id)
+    public
+    function setKill($id)
     {
 
     }
 
-    public function setBullet($x, $y, $vx, $vy)
+    public
+    function setBullet($x, $y, $vx, $vy)
     {
         $this->db->setBullet($x, $y, $vx, $vy);
         $hash = $this->genHash();
@@ -148,7 +178,8 @@ class Game
     }
 
 
-    public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
+    public
+    function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
     {
         $this->db->setPlayer($id, $x, $y, $vx, $vy, $dx, $dy);
         $hash = $this->genHash();
@@ -156,7 +187,8 @@ class Game
         return true;
     }
 
-    public function setDestroyObject($objectId, $state)
+    public
+    function setDestroyObject($objectId, $state)
     {
         $object = $this->db->getObjectById($objectId);
         if ($object) {
