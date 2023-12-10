@@ -18,9 +18,29 @@ class Game
     {
         return md5(rand(0, 1000000));
     }
-    private function spawnPlayers(){
-        $players = $this->db->getPlayers();
 
+    public function spawnPlayers()
+    {
+        $players = $this->db->getPlayers();
+        $playersA = [];
+        $playersB = [];
+        foreach ($players as $player) {
+            if ($player['team_id'] == 0) {
+                $playersA += $player;
+            } else $playersB += $player;
+        }
+        foreach ($this->teamASpawnPoints as $spawnP){
+            foreach ($playersA as $plA){
+                $this->db->spawnPlayer(intval($plA['user_id']), intval($spawnP['x']), intval($spawnP['y']));
+                break;
+            }
+        }
+        foreach ($this->teamBSpawnPoints as $spawnP){
+            foreach ($playersB as $plB){
+                $this->db->spawnPlayer(intval($plB['user_id']), intval($spawnP['x']), intval($spawnP['y']));
+                break;
+            }
+        }
 
     }
 
