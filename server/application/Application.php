@@ -44,12 +44,13 @@ class Application
     function autoLogin($params)
     {
         $token = $params['token'];
-        if ($token) {
-            $user = $this->user->getUserByToken($token);
+        $uuid = $params['uuid'];
+        if ($token && $uuid) {
+            $user = $this->user->getUserByUuid($uuid);
             if ($user) {
-                return $this->user->autoLogin($user);
+                return $this->user->autoLogin($user, $token);
             }
-            return ['error' => 1002];
+            return ['error' => 705];
 
         }
         return ['error' => 242];
@@ -311,5 +312,11 @@ class Application
         return ['error' => 242];
     }
 
+    function SpawnPlayers($params){
+        $id = $params['id'];
+        $x = $params['x'];
+        $y = $params['y'];
+        return $this->game->spawnPlayers($id, $x, $y);
+    }
 
 }
