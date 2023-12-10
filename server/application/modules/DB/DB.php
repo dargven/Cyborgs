@@ -85,8 +85,10 @@ class DB
     {
         return $this->query("SELECT * FROM users WHERE uuid=?", [$uuid]);
     }
-
-
+    public function getUserByEmail($email)
+    {
+        return $this->query("SELECT * FROM users WHERE email=?", [$email]);
+    }
     public function updateToken($id, $token)
     {
         $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $id]);
