@@ -32,13 +32,12 @@ const useAuth = () => {
     })
 
     const handleLogin = async () => {
-        if (loginRef.current && 
-            passwordRef.current
-        ) {
-            const login = loginRef.current.value;
-            const rnd = Math.round(283 * Math.random());
-            const hash = md5(md5(login + passwordRef.current.value) + rnd);
-            
+    if (loginRef.current?.value && passwordRef.current?.value) {
+        const login = loginRef.current.value;
+        const rnd = Math.round(283 * Math.random());
+        const hash = md5(md5(login + passwordRef.current.value) + rnd);
+        const user = await server.login(login, hash, rnd);
+        if (user) {
             setUseAuth((prevState) => ({
                 ...prevState,
                 isLoading: true,
@@ -60,15 +59,20 @@ const useAuth = () => {
 
             errorRef.current!.innerText = getError(server.error);
         }
+        errorRef.current!.innerText = getError(server.error);
+    }else{
+        server.error.code=1001
+        errorRef.current!.innerText=getError(server.error)
+    }
     };
 
 
     const handleRegistration = async () => {
     if (
-        loginRef.current &&
-        passwordRef.current &&
-        nameRef.current &&
-        emailRef.current
+        loginRef.current?.value &&
+        passwordRef.current?.value &&
+        nameRef.current?.value &&
+        emailRef.current?.value
     ) {
         const login = loginRef.current.value;
         const hash = md5(login + passwordRef.current.value);
@@ -93,8 +97,11 @@ const useAuth = () => {
             }));
     
             errorRef.current!.innerText = getError(server.error);
-        }   
-};
+        } else {
+        server.error.code=242
+        errorRef.current!.innerText=getError(server.error)
+    }
+    };
 
     const togglePasswordVisibility = () => {
         if (passwordRef.current) {
@@ -147,7 +154,7 @@ const useAuth = () => {
     // };
 
     const Recovery = async () => {
-        if (loginRef.current) {
+        if (loginRef.current?.value) {
             const login = loginRef.current.value;
             localStorage.setItem("login", login);
             setUseAuth((prevState) => ({
@@ -169,6 +176,10 @@ const useAuth = () => {
             }));
             errorRef.current!.innerText = getError(server.error);
         }
+        else{
+            server.error.code=242
+            errorRef.current!.innerText = getError(server.error);
+        }
     };
 
     // const SetCode = async () => {
@@ -186,7 +197,7 @@ const useAuth = () => {
     // };
 
     const SetCode = async () => {
-        if (codeRef.current) {
+        if (codeRef.current?.value) {
             const code = codeRef.current.value;
             setUseAuth((prevState) => ({
                 ...prevState,
@@ -204,6 +215,9 @@ const useAuth = () => {
                 ...prevState,
                 isLoading: false,
             }));
+            errorRef.current!.innerText = getError(server.error);
+        }else{
+            server.error.code=709
             errorRef.current!.innerText = getError(server.error);
         }
     };
@@ -244,7 +258,7 @@ const useAuth = () => {
     // };
 
     const sendNewHash = async () => {
-        if (newPasswordRef1.current && newPasswordRef2.current) {
+        if (newPasswordRef1.current?.value && newPasswordRef2.current?.value) {
             const login = localStorage.getItem("login");
             const password1 = newPasswordRef1.current.value;
             const password2 = newPasswordRef2.current.value;
@@ -285,6 +299,9 @@ const useAuth = () => {
                     isLoading: false,
                 }));
             }
+        }else{
+            server.error.code=242
+            errorRef.current!.innerText = getError(server.error);
         }
     };
     
