@@ -168,7 +168,7 @@ ORDER BY u.bullet_id");
 
     public function addPlayerToTeam($id, $teamId)
     {
-        $this->execute("INSERT INTO userTeams (user_id, team_id)
+        $this->execute("INSERT INTO players (user_id, team_id)
 VALUES (?, ?)
 ON DUPLICATE KEY UPDATE team_id = VALUES(team_id)", [$id, $teamId]);
     }
