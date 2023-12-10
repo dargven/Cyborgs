@@ -1,5 +1,6 @@
 import {Navigate} from "react-router-dom";
 import NavBar from "../components/navBar";
+import Loading from "../components/loading";
 import NavButton from "../components/navButton";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
 import useAuth from "../hooks/useAuth";
@@ -14,6 +15,7 @@ const LoginPage = () => {
         errorRef,
         loginSuccess,
         showPassword,
+        isLoading,
         handleLogin,
         togglePasswordVisibility,
       } = useAuth();
@@ -23,6 +25,7 @@ const LoginPage = () => {
     return (
         <>
             <NavBar/>
+            {isLoading && <Loading/>}
             <div className="title">
                 КИБОРГИ <br/> ТЕПЕРЬ В 2D
             </div>
