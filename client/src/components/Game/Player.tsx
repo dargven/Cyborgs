@@ -8,13 +8,14 @@ import { TPlayer } from "../../modules/Server/types";
 
 export interface IPlayerProps {
     token: string;
-    position?: Vector3;
     x: number;
     y: number;
-    velocity?: Vector3;
     teamId: number;
-    isControlled?: boolean
     hp: number;
+    position?: Vector3;
+    velocity?: Vector3;
+    isControlled?: boolean
+   
     // onFire?(position: Vector3, team: number): void;
     // onMovement?(position: Vector3): void;
     // getPosVel?(position: Vector3, velocity: Vector3): void;
@@ -54,7 +55,7 @@ const Player = ({
         dy: 0,
         hp : 0,
         token,
-        teamId: 0,
+        teamId,
         isControlled: true,
         velocity
     });
