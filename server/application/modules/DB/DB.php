@@ -2,10 +2,8 @@
 
 class DB
 {
-    //сохраняет соединение с ДБ
     private $pdo;
 
-    //вызов соединения с БД
     public function __construct()
     {
 //----------------------------------------------------------------------------//
@@ -99,7 +97,7 @@ class DB
     public function addUser($login, $hash, $name, $email, $uuid)
     {
         $this->execute(
-            "INSERT INTO users (login,password,name,email,uuid) VALUES (?, ?, ?, ?, ?)",
+            "INSERT INTO users (login,password,name,email, uuid) VALUES (?, ?, ?, ?, ?)",
             [$login, $hash, $name, $email, $uuid]
         );
     }
