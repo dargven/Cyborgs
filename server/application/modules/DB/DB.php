@@ -199,7 +199,7 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
 
     public function getPlayers()
     {
-        return $this->queryAll("SELECT u.token, p.hp p.team_id, p.skin_id,p.x, p.y, p.vx, p.vy, p.dx, p.dy, 
+        return $this->queryAll("SELECT u.token, p.hp, p.team_id, p.skin_id,p.x, p.y, p.vx, p.vy, p.dx, p.dy
 FROM players as p INNER JOIN users as u on u.id = p.user_id");
     }
 
@@ -211,9 +211,9 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 ", [$id, $x, $y, $vx, $vy, $dx, $dy]);
     }
 
-    public function getFreeSpawnPlace($x, $y)
+    public function getFreeSpawnPlace($x)
     {
-        $this->query("SELECT COUNT(x, y) as count from players where x = ? & y = ?", [$x, $y]);
+        $this->query("SELECT COUNT(x) as count from players where x = ?", [$x]);
     }
 
     public function addUserStats($user_id, $kills, $death, $time_in_game, $points)
@@ -243,7 +243,7 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 
     public function spawnPlayer($id, $x, $y)
     {
-        $this->execute("UPDATE players SET x=?, y=?, hp=100, status='alive' WHERE id=?", [$x, $y, $id]);
+        $this->execute("UPDATE players SET x=?, y=? WHERE id=?", [$x, $y, $id]);
     }
 
     public function getHashes()

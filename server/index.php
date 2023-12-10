@@ -32,6 +32,8 @@ function result($params) {
             case 'getObjects': return $app->getObjects($params);
             case 'getScene':return $app->getScene($params);
             case 'setBullet': return $app->setBullet($params);
+
+            case 'test': return $app->spawn();
             default: return ['error' => 102];
         }
     }
