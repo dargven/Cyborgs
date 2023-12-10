@@ -8,31 +8,37 @@ import { TPlayer } from "../../modules/Server/types";
 
 export interface IPlayerProps {
     token: string;
+    x: number;
+    y: number;
+    teamId: number;
+    hp: number;
     position?: Vector3;
     velocity?: Vector3;
-    teamId: number;
     isControlled?: boolean
-    hp: number;
-    onFire?(position: Vector3, team: number): void;
-    onMovement?(position: Vector3): void;
-    getPosVel?(position: Vector3, velocity: Vector3): void;
-    getMyPlayer?(player: TPlayer): void;
+   
+    // onFire?(position: Vector3, team: number): void;
+    // onMovement?(position: Vector3): void;
+    // getPosVel?(position: Vector3, velocity: Vector3): void;
+    // getMyPlayer?(player: TPlayer): void;
 }
 
 
 
 const Player = ({
-    velocity = new Vector3(),
-    position,
+    vx,
+    vy,
+    velocity = new Vector3(vx,vy,0),
+    x = 0,
+    y = 0,
     teamId,
-    isControlled,
     token,
     hp,
-    onFire,
-    onMovement,
-    getPosVel,
-    getMyPlayer,
-}: IPlayerProps) => {
+    isControlled
+    // onFire,
+    // onMovement,
+    // getPosVel,
+    // getMyPlayer,
+}: TPlayer) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
@@ -47,9 +53,11 @@ const Player = ({
         vy: vec3(ref.current?.linvel()).y,
         dx: 0,
         dy: 0,
-        hp,
+        hp : 0,
         token,
-        teamId
+        teamId,
+        isControlled: true,
+        velocity
     });
 
     const movementController = (up?: boolean, down?: boolean, left?: boolean, right?: boolean) => {
@@ -74,9 +82,9 @@ const Player = ({
             velocity.setLength(speed);
 
             ref.current.setLinvel(velocity, true);
-            if (getPosVel && isControlled) {
-                getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
-            }
+            // if (getPosVel && isControlled) {
+            //     getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
+            // }
 
             
 
@@ -95,9 +103,9 @@ const Player = ({
                     setShooting(false);
                 }
             }
-            if (getMyPlayer) {
-                getMyPlayer(state);
-            }
+            // if (getMyPlayer) {
+            //     getMyPlayer(state);
+            // }
 
             document.addEventListener("mousedown", mouseDownHandler);
             document.addEventListener("mouseup", mouseUpHandler);
@@ -116,15 +124,15 @@ const Player = ({
 
             const playerPosition = vec3(ref.current?.translation());
 
-            if (onMovement) {
-                onMovement(playerPosition);
-            }
+            // if (onMovement) {
+            //     onMovement(playerPosition);
+            // }
 
-            if (shoot || isShooting) {
-                if (onFire) {
-                    onFire(playerPosition, teamId);
-                }
-            }
+            // if (shoot || isShooting) {
+            //     if (onFire) {
+            //         onFire(playerPosition, teamId);
+            //     }
+            // }
 
             setState({
                 ...state, x: vec3(ref.current?.translation()).x,
@@ -158,7 +166,7 @@ const Player = ({
             <RigidBody
                 ref={ref}
                 scale={0.5}
-                position={position}
+                position={[x,y,0]}
                 colliders="hull"
                 friction={1}
                 linearDamping={10}

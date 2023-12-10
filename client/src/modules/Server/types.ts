@@ -31,12 +31,14 @@ export type TPlayer = {
     token: string;
     teamId: number;
     hp: number;
+    velocity: Vector3;
     x: number;
     y: number;
     vx: number;
     vy: number;
-    dx: number;
-    dy: number;
+    dx?: number;
+    dy?: number;
+    isControlled?:boolean;
 }
 
 export type TBullet = {
