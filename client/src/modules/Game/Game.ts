@@ -68,7 +68,9 @@ class Game implements IGame {
         };
         this.myBullets = [];
 
-        // this.loop();
+        this.loop();
+        this.handlePathChange();
+        window.addEventListener('popstate', this.handlePathChange)
     }
 
     async getScene() {
@@ -92,15 +94,31 @@ class Game implements IGame {
 
     }
 
+    someCode = () => {
+        return console.log('loop')
+    }
+
     loop() {
-        const interval = setInterval(() => {
+        const intervalId = setInterval(() => {
             console.log('loop');
         }, 1000);
 
-        return () => {
-            clearInterval(interval);
-        }
+        console.log(intervalId)
+        return intervalId
+        // return () => {
+        //     clearInterval(interval);
+        // }
     }
+
+    handlePathChange = () => {
+        const currentPath = window.location.pathname;
+        console.log(currentPath)
+
+        if (currentPath === '/main') {
+            clearInterval(this.loop());
+            // this.loop();
+        }
+    };
 
     updateScene() {
         this.getScene()
