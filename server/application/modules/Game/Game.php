@@ -163,13 +163,22 @@ class Game
 
     private function decreaseHp($playerId, $dHp)
     {
-        $players = $this->db->checkDeath($playerId);
-        if (!$players) {
+        $player = $this->db->checkDeath($playerId, $dHp);
+        if (!$player) {
             $dHp = max(0, $dHp);
             $this->db->decreaseHp($playerId, $dHp);
             return true; 
         }
         return false; 
+    }
+
+    private function checkDeath($playerId, $dHp)
+    {
+        $player = $this->db->getPlayers();
+        if ($player && $player['hp'] > $dHp) {
+            return true;
+        }
+        return false;
     }
 
 //    private function updateScoreInTeam($teamId, $score): true|array
