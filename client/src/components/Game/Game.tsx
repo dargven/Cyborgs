@@ -1,8 +1,11 @@
 import { KeyboardControls, KeyboardControlsEntry, PerspectiveCamera, Preload } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useMemo } from "react";
+import { Suspense, useContext, useEffect, useMemo, useRef } from "react";
 import Scene from "./Scene";
 import NewScene from "./NewScene";
+import { ServerContext, StoreContext } from "../../App";
+import Game from "../../modules/Game/Game";
+import Chat from "../Chat/Chat";
 
 export enum EControls {
     up = 'up',
@@ -16,7 +19,7 @@ export enum EControls {
     select3 = 'select3',
 }
 
-const Game = () => {
+const Game_0 = () => {
     const inputMap = useMemo<KeyboardControlsEntry[]>(() => [
         { name: EControls.up, keys: ['KeyW'] },
         { name: EControls.down, keys: ['KeyS'] },
@@ -29,11 +32,23 @@ const Game = () => {
         { name: EControls.select3, keys: ['3'] },
     ], []);
 
+    const server = useContext(ServerContext);
+    const store = useContext(StoreContext);
+
+    const game = useRef<Game>(new Game(server, store));
+
+    useEffect(()=>{
+        return() => {
+            clearInterval(game.current.intervalID)
+        }
+    },[]);
+
 
     return (
         <KeyboardControls map={inputMap}>
             <Canvas style={{ background: 'black' }} frameloop="demand">
                 <Suspense>
+                    <Chat/>
 
                     <PerspectiveCamera position={[0, 0, 0]}>
                         <NewScene />
@@ -47,4 +62,4 @@ const Game = () => {
     );
 }
 
-export default Game;
+export default Game_0;

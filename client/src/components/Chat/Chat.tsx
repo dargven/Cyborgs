@@ -6,11 +6,11 @@ import { TMessage } from "../../modules/Server/types";
 import { useNavigate } from "react-router-dom";
 import "./Chat.css";
 
-interface IChat {
-    StopMove(): void
-}
+// interface IChat {
+//     StopMove(): void
+// }
 
-const Chat = ({StopMove}: IChat) => {
+const Chat = () => {
     const chatMessagesRef = useRef<HTMLDivElement | null>(null);
     const chatRef = useRef<HTMLInputElement | null>(null);
     const errorRef = useRef<HTMLDivElement | null>(null);
@@ -100,9 +100,6 @@ const Chat = ({StopMove}: IChat) => {
                             id="mesage-text"
                             className="chat-form__input"
                             placeholder="Введите сообщение"
-                            onClick={() => {
-                                StopMove()
-                            }}
                         />
                         <button
                             className="chat-form__submit"

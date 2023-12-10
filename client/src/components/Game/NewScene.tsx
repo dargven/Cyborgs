@@ -1,25 +1,27 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ServerContext, StoreContext } from "../../App";
 import Game from "../../modules/Game/Game";
 import { Stars } from "@react-three/drei";
+import Game_0 from "./Game";
 
 const NewScene = () => {
 
-    const server = useContext(ServerContext);
-    const store = useContext(StoreContext);
-
-    const game = useRef<Game>(new Game(server, store));
-
-    useEffect(()=>{
-        // useGame что-то такое тут должно быть
-    },);
+    const [team,setTeam] = useState<number>(null!)
 
     return (
         <group>
-            {/* мапа
-            игроки
-            пули
-            и т.д. */}
+            {team !== null ? (
+                <Game_0/>
+            ) : (
+                <>
+                    <button onClick={() => setTeam(0)} className="Team1">
+                        команда 1
+                    </button>
+                    <button onClick={() => setTeam(1)} className="Team2">
+                        команда 2
+                    </button>
+                </>
+            )}
             <Stars />
         </group>
     );
