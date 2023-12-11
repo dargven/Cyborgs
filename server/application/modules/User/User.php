@@ -87,10 +87,16 @@ class User
     public function register($login, $hash, $name, $email)
     {
         $user = $this->db->getUserByLogin($login);
-        if (!$user) {
-            $uuid = uniqid();
-            $this->db->addUser($login, $hash, $name, $email, $uuid);
-            return true;
+        if (!$user)
+        {
+            $userByEmail = $this->db->getUserByEmail($email);
+            if (!$userByEmail)
+            {
+                $uuid = uniqid();
+                $this->db->addUser($login, $hash, $name, $email, $uuid); 
+                return true;
+            }
+            return ['error' => 1006];
         }
         return ['error' => 1003];
     }

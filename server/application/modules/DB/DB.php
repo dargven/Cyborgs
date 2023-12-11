@@ -76,6 +76,10 @@ class DB
         return $this->query("SELECT * FROM users WHERE token=?", [$token]);
     }
 
+    public function getUserByEmail($email)
+    {
+        return $this->query("SELECT * FROM users WHERE email=?", [$email]);
+    }
     public function getUserById($id)
     {
         return $this->query("SELECT * FROM users WHERE id=?", [$id]);
