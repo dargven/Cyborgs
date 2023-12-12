@@ -1,11 +1,12 @@
 import { Html, KeyboardControls, KeyboardControlsEntry, PerspectiveCamera, Preload } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useContext, useEffect, useMemo, useRef } from "react";
+import { Suspense, useContext, useEffect, useMemo, useRef, useState } from "react";
 import Scene from "../components/Game/Scene";
 import NewScene from "../components/Game/NewScene";
 import { ServerContext, StoreContext } from "../App";
 import Game from "../modules/Game/Game";
 import Chat from "../components/Chat/Chat";
+import "../TeamSelect.css";
 
 export enum EControls {
     up = 'up',
@@ -37,43 +38,45 @@ const GamePage = () => {
 
     const game = useRef<Game>(new Game(server, store));
 
-    const team = useRef<0 | 1 | null>(null)
+    const [team, setTeam] = useState<0 | 1 | null>(null);
 
-    useEffect(()=>{
-        return() => {
+    useEffect(() => {
+        console.log(team);
+
+        return () => {
             clearInterval(game.current.intervalID)
         }
-    },[]);
+    }, []);
 
 
     return (
-        <KeyboardControls map={inputMap}>
-            <Canvas style={{ background: 'black' }} frameloop="demand">
-                {/* <Suspense> */}
-                    {/* <Chat/> */}
-                    <PerspectiveCamera position={[0, 0, 0]}>
-                        <Html>
-                            {team.current !== null ? (
-                                <NewScene/>
-                            ) : (
-                            <>
-                                <button onClick={() => team.current = 0} className="Team1">
-                                    команда 1
-                                </button>
-                                <button onClick={() => team.current = 1} className="Team2">
-                                    команда 2
-                                </button> 
-                            </>
-                            )}
-                            {/* <NewScene /> */}
-                            {/* <Scene /> */}
-                            {/* <axesHelper /> */}
-                        </Html>
-                    </PerspectiveCamera>
-                {/* </Suspense> */}
-                <Preload all />
-            </Canvas>
-        </KeyboardControls>
+        <div>
+            <KeyboardControls map={inputMap}>
+                <Chat />
+                {team === null ? (
+                    <div>
+                        <button onClick={() => setTeam(0)} className="Team1">
+                            команда 1
+                        </button>
+                        <button onClick={() => setTeam(1)} className="Team2">
+                            команда 2
+                        </button>
+                    </div>
+                ) : (
+                    <div>
+                        <Canvas style={{ background: 'black' }} frameloop="demand">
+                            <Suspense>
+                                <PerspectiveCamera position={[0, 0, 0]}>
+                                    <NewScene />
+                                    <axesHelper />
+                                </PerspectiveCamera>
+                            </Suspense>
+                            <Preload all />
+                        </Canvas>
+                    </div >
+                )}
+            </KeyboardControls >
+        </div >
     );
 }
 

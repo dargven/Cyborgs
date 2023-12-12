@@ -12,7 +12,6 @@ import Map from "./Map";
 import MapObjects from "./MapObjects";
 import Obstacle from "./Obstacle";
 import Player from "./Player";
-import Zone from "./Zone";
 import Projectile from "./Projectile";
 // import { useInterval } from "usehooks-ts";
 import Debug from "./DebugInfo";
@@ -215,7 +214,6 @@ const Scene = () => {
 
                 <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)} />
 
-                <Zone position={new Vector3(5.5, 7.5, 0.5)} />
             </Physics>
             <Stars />
         </group>

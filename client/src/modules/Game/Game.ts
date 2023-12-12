@@ -74,9 +74,9 @@ class Game implements IGame {
         };
         this.myBullets = [];
 
-        this.loop();
-        this.handlePathChange();
-        window.addEventListener('popstate', this.handlePathChange)
+        // this.loop();
+        // this.handlePathChange();
+        // window.addEventListener('popstate', this.handlePathChange)
     }
 
     async getScene() {
