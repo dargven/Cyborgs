@@ -1,7 +1,6 @@
 import { Html, KeyboardControls, KeyboardControlsEntry, PerspectiveCamera, Preload } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useContext, useEffect, useMemo, useRef, useState } from "react";
-import Scene from "../components/Game/Scene";
 import NewScene from "../components/Game/NewScene";
 import { ServerContext, StoreContext } from "../App";
 import Game from "../modules/Game/Game";

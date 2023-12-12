@@ -8,7 +8,7 @@ interface IGame {
     objects: TDestructible[];
     players: TPlayer[];
 
-    myPlayer: TPlayer;
+    // myPlayer: TPlayer;
     myBullets: TBullet[];
 
     cameraPosition: Vector3;
@@ -28,7 +28,7 @@ class Game implements IGame {
     objects: TDestructible[];
     players: TPlayer[];
 
-    myPlayer: TPlayer;
+    // myPlayer: TPlayer;
     myBullets: TBullet[];
 
     cameraPosition: Vector3;
@@ -61,17 +61,17 @@ class Game implements IGame {
         this.getScene();
 
         const player = this.players.find(player => player.token === this.store.getUser().token); // здесь всегда должен найтись игрок, если ничего нету, то бэкендеры - долбоны
-        this.myPlayer = player ?? {
-            x: 0,
-            y: 0,
-            vx: 0,
-            vy: 0,
-            dx: 0,
-            dy: 0,
-            hp: 100,
-            teamId: null,
-            token: 'no token'
-        };
+        // this.myPlayer = player ?? {
+        //     x: 0,
+        //     y: 0,
+        //     vx: 0,
+        //     vy: 0,
+        //     dx: 0,
+        //     dy: 0,
+        //     hp: 100,
+        //     teamId: null,
+        //     token: 'no token'
+        // };
         this.myBullets = [];
 
         // this.loop();
