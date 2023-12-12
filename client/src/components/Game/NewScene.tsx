@@ -1,13 +1,10 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { ServerContext, StoreContext } from "../../App";
-import Game from "../../modules/Game/Game";
 import { Stars } from "@react-three/drei";
-import Game_0 from "../../routes/GamePage";
-import CollidersPositions from "./CollidersPositions";
 import { Physics } from "@react-three/rapier";
-import Map from "./Map";
 import { TextureLoader, Vector3 } from "three";
+import CollidersPositions from "./CollidersPositions";
+import Map from "./Map";
 import MapObjects from "./MapObjects";
+import FishTank from "./Fishtank";
 
 const NewScene = () => {
 
@@ -27,6 +24,8 @@ const NewScene = () => {
                 </group>
 
                 <MapObjects textures={glass} position={new Vector3(0, 0, 0.1)} />
+
+                <FishTank />
             </Physics>
 
             <Stars />
