@@ -28,7 +28,6 @@ export type TPlayer = {
     token: string;
     teamId: null | 0 | 1;
     hp: number;
-    velocity: Vector3;
     x: number;
     y: number;
     vx: number;

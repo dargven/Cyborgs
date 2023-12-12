@@ -1,6 +1,6 @@
 import { NearestFilter } from "three/src/constants";
 import { Vector3 } from "three";
-import { Texture } from "three/src/textures/Texture";
+import { Texture } from "three";
 
 export interface IMakeSprite {
     texture: Texture;

@@ -27,7 +27,7 @@ export interface IPlayerProps {
 const Player = ({
     vx,
     vy,
-    velocity = new Vector3(vx,vy,0),
+    // velocity = new Vector3(vx,vy,0),
     x = 0,
     y = 0,
     teamId,
@@ -57,7 +57,7 @@ const Player = ({
         token,
         teamId,
         isControlled: true,
-        velocity
+        // velocity
     });
 
     const movementController = (up?: boolean, down?: boolean, left?: boolean, right?: boolean) => {
@@ -66,22 +66,22 @@ const Player = ({
 
             const speed = 4;
 
-            if (left) {
-                velocity.x -= 1;
-            }
-            if (right) {
-                velocity.x += 1;
-            }
-            if (up) {
-                velocity.y += 1;
-            }
-            if (down) {
-                velocity.y -= 1;
-            }
+            // if (left) {
+            //     velocity.x -= 1;
+            // }
+            // if (right) {
+            //     velocity.x += 1;
+            // }
+            // if (up) {
+            //     velocity.y += 1;
+            // }
+            // if (down) {
+            //     velocity.y -= 1;
+            // }
 
-            velocity.setLength(speed);
+            // velocity.setLength(speed);
 
-            ref.current.setLinvel(velocity, true);
+            // ref.current.setLinvel(velocity, true);
             // if (getPosVel && isControlled) {
             //     getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
             // }
