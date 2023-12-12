@@ -1,83 +1,80 @@
-// import {useContext, useEffect, useState} from "react";
-// import {ServerContext} from "../App";
-// import Game_0 from "../components/Game/Game";
-// import useKeyHandler from "../hooks/useKeyHandler";
-// import NavButton from "../components/navButton";
-// import Chat from "../components/Chat/Chat";
-// import "../popUpMenu.css";
-// import "../TeamSelect.css";
+import { Html, KeyboardControls, KeyboardControlsEntry, PerspectiveCamera, Preload } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { Suspense, useContext, useEffect, useMemo, useRef } from "react";
+import Scene from "../components/Game/Scene";
+import NewScene from "../components/Game/NewScene";
+import { ServerContext, StoreContext } from "../App";
+import Game from "../modules/Game/Game";
+import Chat from "../components/Chat/Chat";
 
-// const GamePage = () => {
-   
-    // const [stopMove, setStopMove] = useState({
-    //     isPopupVisible: false,
-    //     isChatClicked: false,
-    //     blockMove: false
-    // });
+export enum EControls {
+    up = 'up',
+    down = 'down',
+    left = 'left',
+    right = 'right',
+    shoot = 'shoot',
+    hitscan = 'hitscan',
+    select1 = 'select1',
+    select2 = 'select2',
+    select3 = 'select3',
+}
 
-//     const [team, setTeam] = useState<0 | 1 | null>(null);
+const GamePage = () => {
+    const inputMap = useMemo<KeyboardControlsEntry[]>(() => [
+        { name: EControls.up, keys: ['KeyW'] },
+        { name: EControls.down, keys: ['KeyS'] },
+        { name: EControls.left, keys: ['KeyA'] },
+        { name: EControls.right, keys: ['KeyD'] },
+        { name: EControls.shoot, keys: ['Space'] },
+        { name: EControls.hitscan, keys: ['KeyH'] },
+        { name: EControls.select1, keys: ['1'] },
+        { name: EControls.select2, keys: ['2'] },
+        { name: EControls.select3, keys: ['3'] },
+    ], []);
 
-//     useEffect(() => {
-//         return() => {
-//             console.log('111')
-            
-//         }
-//     },[team,stopMove])
+    const server = useContext(ServerContext);
+    const store = useContext(StoreContext);
 
-//     const StopMove = () => {
-//         setStopMove((prevState) => ({
-//            ...prevState,
-//            blockMove: true,
-//            isChatClicked: true
-//       }));
-//     }
+    const game = useRef<Game>(new Game(server, store));
 
-//     return (
-//         <div>
-        
-           
-//             {/* Ебучая вылезающая менюшка */}
-//             {stopMove.isPopupVisible && (
-//                 <div
-//                     className="popUpMenu"
-//                     onClick={() =>
-//                         setStopMove((prevState) => ({
-//                             ...prevState,
-//                             isPopupVisible: false,
-//                             blockMove: false
-//                         }))}
-//                 >
-//                     <div
-//                         className="popUpMenu__content"
-//                         onClick={(e) => e.stopPropagation()}
-//                     >
-//                         <button
-//                             onClick={() =>
-//                                 setStopMove((prevState) => ({
-//                                     ...prevState,
-//                                     isPopupVisible: false,
-//                                     blockMove: false
-//                                 }))}
-//                             className="popUpBtn"
-//                         >
-//                             Возобновить
-//                         </button>
-//                         <NavButton
-//                             to="/game"
-//                             text="Настройки"
-//                             className="popUpBtn"
-//                         />
-//                         <NavButton
-//                             to="/main"
-//                             text="Выход"
-//                             className="popUpBtn"
-//                         />
-//                     </div>
-//                 </div>
-//             )}
+    const team = useRef<0 | 1 | null>(null)
 
-//         </div>
-//     );
-// };
+    useEffect(()=>{
+        return() => {
+            clearInterval(game.current.intervalID)
+        }
+    },[]);
 
-// export default GamePage;
+
+    return (
+        <KeyboardControls map={inputMap}>
+            <Canvas style={{ background: 'black' }} frameloop="demand">
+                {/* <Suspense> */}
+                    {/* <Chat/> */}
+                    <PerspectiveCamera position={[0, 0, 0]}>
+                        <Html>
+                            {team.current !== null ? (
+                                <NewScene/>
+                            ) : (
+                            <>
+                                <button onClick={() => team.current = 0} className="Team1">
+                                    команда 1
+                                </button>
+                                <button onClick={() => team.current = 1} className="Team2">
+                                    команда 2
+                                </button> 
+                            </>
+                            )}
+                            {/* <NewScene /> */}
+                            {/* <Scene /> */}
+                            {/* <axesHelper /> */}
+                        </Html>
+                    </PerspectiveCamera>
+                {/* </Suspense> */}
+                <Preload all />
+            </Canvas>
+        </KeyboardControls>
+    );
+}
+
+export default GamePage;
