@@ -110,8 +110,9 @@ const CollidersPositions = () => {
 
     return(
         <group>
-            {colliders.map((collider) => 
+            {colliders.map((collider, key) => 
                 <Obstacle
+                    key={key}
                     position={collider.position}
                     args={collider.args}
                 />
