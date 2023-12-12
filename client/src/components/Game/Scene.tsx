@@ -170,10 +170,12 @@ const Scene = () => {
                             key={player.token}
                             token={player.token}
                             teamId={player.teamId}
-                            position={new Vector3(player.x, player.y, 0)}
+                            x={0}
+                            y={0}
+                            vx={0}
+                            vy={0}    
                             velocity={new Vector3(player.vx, player.vy, 0)}
-                            hp={player.hp}
-                        />
+                            hp={player.hp}                     />
                     } else {
                         return <Player
                             isControlled
@@ -181,9 +183,14 @@ const Scene = () => {
                             key={token}
                             token={token}
                             teamId={0}
-                            onFire={onFire}
-                            onMovement={onMovement}
-                            getMyPlayer={updatePlayer}
+                            x={0}
+                            y={0}
+                            vx={0}
+                            vy={0}
+                            velocity={new Vector3(player.vx, player.vy, 0)}
+                            // onFire={onFire}                           
+                            // onMovement={onMovement}
+                            // getMyPlayer={updatePlayer}
                         />
                     }
                 })}

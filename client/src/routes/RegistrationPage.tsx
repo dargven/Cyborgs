@@ -1,56 +1,33 @@
-import {useContext, useRef, useState} from "react";
-import {ServerContext} from "../App";
 import {Navigate} from "react-router-dom";
-import md5 from "md5-ts";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
 import NavBar from "../components/navBar";
-import getError from "../hooks/getError";
+import useAuth from "../hooks/useAuth";
+import Loading from "../components/loading";
 import "../Auth.css";
 
 const openEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-open.png";
 const closeEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-close.png";
 const RegistrationPage = () => {
-    const server = useContext(ServerContext);
-    const loginRef = useRef<HTMLInputElement | null>(null);
-    const nameRef = useRef<HTMLInputElement | null>(null);
-    const passwordRef = useRef<HTMLInputElement | null>(null);
-    const emailRef = useRef<HTMLInputElement | null>(null);
-    const errorRef = useRef<HTMLDivElement | null>(null);
-    const [showPassword, setShowPassword] = useState(false);
-    const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
-    const handleRegistration = async () => {
-        if (
-            loginRef.current &&
-            passwordRef.current &&
-            nameRef.current &&
-            emailRef.current
-        ) {
-            const login = loginRef.current.value;
-            const hash = md5(login + passwordRef.current.value);
-            const name = nameRef.current.value;
-            const email = emailRef.current.value;
-            const response = await server.register(login, hash, name, email);
-            if (response) {
-                setRegistrationSuccess(true);
-            } else {
-                errorRef.current!.innerText = getError(server.error);
-            }
-        }
-    };
+    const {
+        loginRef,
+        passwordRef,
+        errorRef,
+        emailRef,
+        nameRef,
+        registrationSuccess,
+        showPassword,
+        isLoading,
+        handleRegistration,
+        togglePasswordVisibility,
+      } = useAuth();
 
     useEnterKeyHandler(13, handleRegistration);
-
-    const togglePasswordVisibility = () => {
-        if (passwordRef.current) {
-            passwordRef.current.type = showPassword ? "password" : "text";
-            setShowPassword(!showPassword);
-        }
-    };
 
     return (
         <>
             <NavBar/>
+            {isLoading && <Loading/>}
             <div className="title">
                 КИБОРГИ <br/> ТЕПЕРЬ В 2D
             </div>

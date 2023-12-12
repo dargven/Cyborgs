@@ -202,6 +202,10 @@ h1 {
     color: #61dafb;
 }
 
+.error-input {
+    border: 1px solid red;
+}
+
 .errorDiv {
     color: red;
 }

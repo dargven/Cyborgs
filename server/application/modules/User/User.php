@@ -5,8 +5,8 @@ require_once __DIR__ . '/../../modules/Mailer/Mailer.php';
 
 class User
 {
-    private  $db;
-    private  $mailer;
+    private DB $db;
+    private Mailer $mailer;
 
     function __construct($db)
     {
@@ -29,36 +29,46 @@ class User
         return $this->db->getUserByLogin($login);
     }
 
+    public function getUserByUuid($uuid)
+    {
+        return $this->db->getUserByUuid($uuid);
+    }
+
     public function login($login, $hash, $rnd)
-{
-    $user = $this->db->getUserByLogin($login);
-    if ($user) {
-        $hashS = md5($user->password . $rnd);
-        if ($hash === $hashS) {
+    {
+        $user = $this->db->getUserByLogin($login);
+        if ($user) {
+            $hashS = md5($user->password . $rnd);
+            if ($hash === $hashS) {
 //            if (!$user->token) { //Проверка на игру с двух устройств(скорее всего не понадобится)
                 $token = $this->genToken();
                 $this->db->updateToken($user->id, $token);
-                return array(
-                    'name' => $user->login,
+                return [
+                    'name'  => $user->login,
                     'token' => $token,
-                );
+                    'uuid'  => $user->uuid,
+                ];
 //            }
 //            return ['error' => 1005];
 
+            }
+            return ['error' => 1002];
+        }
+        return ['error' => 1004];
+    }
+
+    public function autoLogin($user, $token)
+    {
+        if ($user->token == $token) {
+            $token = $this->genToken();
+            $this->db->updateToken($user->id, $token);
+            return [
+                'name'  => $user->name,
+                'token' => $token,
+            ];
         }
         return ['error' => 1002];
-    }
-    return ['error' => 1004];
-}
 
-    public function autoLogin($user)
-    {
-        $token = $this->genToken();
-        $this->db->updateToken($user->id, $token);
-        return [
-            'name' => $user->login,
-            'token' => $token
-        ];
 
     }
 
@@ -66,7 +76,7 @@ class User
     {
         $user = $this->db->getUserByToken($token);
         if ($user) {
-//          $this->db->deletePlayerInPlayers($token);
+//            $this->db->deletePlayerInPlayers($token);           //Вернуть для Proda//
             $this->db->deletePlayerInTeams($token);
             $this->db->updateToken($user->id, NULL);
             return true;
@@ -77,20 +87,27 @@ class User
     public function register($login, $hash, $name, $email)
     {
         $user = $this->db->getUserByLogin($login);
-        if (!$user) {
-            $this->db->addUser($login, $hash, $name, $email);
-            return true;
+        if (!$user)
+        {
+            $userByEmail = $this->db->getUserByEmail($email);
+            if (!$userByEmail)
+            {
+                $uuid = uniqid();
+                $this->db->addUser($login, $hash, $name, $email, $uuid); 
+                return true;
+            }
+            return ['error' => 1006];
         }
         return ['error' => 1003];
     }
 
-    public function sendCodeToResetPassword($login, $user)
+    public function sendCodeToResetPassword($login, $user): array|true
     {
         $randomNumber = random_int(10000, 99999);
         $email = $user->email;
         $_SESSION['login'] = $login;
         $_SESSION['rndCode'] = $randomNumber;
-        $_SESSION['e-mail'] = $email;
+        $_SESSION['e-mail']  = $email;
         $_SESSION['idUser'] = $user->id;
         if ($this->mailer->sendEmail($email, 'verifCode', 'your Verificitaion code is ' . $randomNumber)) {
             return true;
@@ -98,7 +115,7 @@ class User
         return ['error' => 707];// could not send message
     }
 
-    public function getCodeToResetPassword($code)
+    public function getCodeToResetPassword($code): array|true
     {
         if (isset($_SESSION['idUser']) && isset($_SESSION['rndCode'])) {
             $id = $_SESSION['idUser'];
@@ -115,7 +132,7 @@ class User
 
     }
 
-    public function setPasswordAfterReset($hash)
+    public function setPasswordAfterReset($hash): array|true
     {
         if (isset($_SESSION['idUser'])) {
             $id = $_SESSION['idUser'];
@@ -129,7 +146,7 @@ class User
 
     }
 
-    public function sendWarningOfAttemptResetPassword()
+    public function sendWarningOfAttemptResetPassword(): array|bool
     {
         if (isset($_SESSION['idUser']) && isset($_SESSION['e-mail'])) {
             $email = $_SESSION['e-mail'];
@@ -138,7 +155,7 @@ class User
         return ['error' => 709];
     }
 
-    public function sendWarningOfReplacePassword()
+    public function sendWarningOfReplacePassword(): array|bool
     {
         if (isset($_SESSION['idUser']) && isset($_SESSION['e-mail'])) {
             $email = $_SESSION['e-mail'];

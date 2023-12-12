@@ -48,7 +48,6 @@ const GamePage = () => {
         }
     }, []);
 
-
     return (
         <div>
             <KeyboardControls map={inputMap}>

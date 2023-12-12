@@ -8,10 +8,10 @@ require_once 'modules/Chat/Chat.php';
 
 class Application
 {
-    private $user;
-    private $chat;
-    private $game;
-    private $lobby;
+    private User $user;
+    private Chat $chat;
+    private Game $game;
+    private Lobby $lobby;
 
     public function __construct()
     {
@@ -44,12 +44,13 @@ class Application
     function autoLogin($params)
     {
         $token = $params['token'];
-        if ($token) {
-            $user = $this->user->getUserByToken($token);
+        $uuid = $params['uuid'];
+        if ($token && $uuid) {
+            $user = $this->user->getUserByUuid($uuid);
             if ($user) {
-                return $this->user->autoLogin($user);
+                return $this->user->autoLogin($user, $token);
             }
-            return ['error' => 1002];
+            return ['error' => 705];
 
         }
         return ['error' => 242];
@@ -110,7 +111,7 @@ class Application
     {
         $token = $params['token'];
         $teamId = $params['teamId'];
-        if ($token && ($teamId || $teamId == 0 )) {
+        if ($token && ($teamId || $teamId == 0)) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->lobby->selectTeam($user->id, $teamId);
@@ -126,8 +127,8 @@ class Application
         $playersHash = $params['playersHash'];
         $bulletsHash = $params['bulletsHash'];
         $objectsHash = $params['objectsHash'];
-        if ($token && ($playersHash ||$playersHash == 0) && ($bulletsHash || $bulletsHash == 0)
-            && ($objectsHash ||$objectsHash == 0 )) {
+        if ($token && ($playersHash || $playersHash == 0) && ($bulletsHash || $bulletsHash == 0)
+            && ($objectsHash || $objectsHash == 0)) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->game->getScene($playersHash, $objectsHash, $bulletsHash);
@@ -311,5 +312,11 @@ class Application
         return ['error' => 242];
     }
 
+    function SpawnPlayers($params){
+        $id = $params['id'];
+        $x = $params['x'];
+        $y = $params['y'];
+        return $this->game->spawnPlayers($id, $x, $y);
+    }
 
 }

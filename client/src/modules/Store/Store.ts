@@ -3,12 +3,14 @@ export class Store {
         name: '',
         isAuth: false,
         token: '',
+        uuid: '',
     }
 
-    setUser(name: string, token: string): void {
+    setUser(name: string, token: string, uuid: string): void {
         this.user.name = name;
         this.user.isAuth = true;
         this.user.token = token;
+        this.user.uuid = uuid;
     }
 
     setAuth() {

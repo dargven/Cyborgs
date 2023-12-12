@@ -8,6 +8,7 @@ export type TError = {
 export type TUser = {
     name: string,
     token: string,
+    uuid: string,
 }
 
 export type TMessage = {
@@ -27,12 +28,14 @@ export type TPlayer = {
     token: string;
     teamId: null | 0 | 1;
     hp: number;
+    velocity: Vector3;
     x: number;
     y: number;
     vx: number;
     vy: number;
-    dx: number;
-    dy: number;
+    dx?: number;
+    dy?: number;
+    isControlled?:boolean;
 }
 
 export type TBullet = {

@@ -47,7 +47,7 @@ const getError = (error: TError) => {
             break;
 
         case 1001:
-            errorMessage = "Укажите логин или пароль";
+            errorMessage = "Укажите логин и пароль";
             break;
         case 1002:
             errorMessage = "Ошибка авторизации";

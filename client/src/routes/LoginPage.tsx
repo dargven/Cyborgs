@@ -1,48 +1,31 @@
-import {useContext, useRef, useState} from "react";
-import {ServerContext} from "../App";
 import {Navigate} from "react-router-dom";
-import md5 from "md5-ts";
 import NavBar from "../components/navBar";
+import Loading from "../components/loading";
 import NavButton from "../components/navButton";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
-import getError from "../hooks/getError";
+import useAuth from "../hooks/useAuth";
 
 const openEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-open.png";
 const closeEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-close.png";
 
 const LoginPage = () => {
-    const server = useContext(ServerContext);
-    const loginRef = useRef<HTMLInputElement | null>(null);
-    const passwordRef = useRef<HTMLInputElement | null>(null);
-    const errorRef = useRef<HTMLDivElement | null>(null);
-    const [loginSuccess, setLoginSuccess] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
-
-    const handleLogin = async () => {
-        if (loginRef.current && passwordRef.current) {
-            const login = loginRef.current.value;
-            const rnd = Math.round(283 * Math.random());
-            const hash = md5(md5(login + passwordRef.current.value) + rnd);
-            const user = await server.login(login, hash, rnd);
-            if (user) {
-                setLoginSuccess(true);
-            }
-            errorRef.current!.innerText = getError(server.error);
-        }
-    };
+    const {
+        loginRef,
+        passwordRef,
+        errorRef,
+        loginSuccess,
+        showPassword,
+        isLoading,
+        handleLogin,
+        togglePasswordVisibility,
+      } = useAuth();
 
     useEnterKeyHandler(13, handleLogin);
-
-    const togglePasswordVisibility = () => {
-        if (passwordRef.current) {
-            passwordRef.current.type = showPassword ? "password" : "text";
-            setShowPassword(!showPassword);
-        }
-    };
 
     return (
         <>
             <NavBar/>
+            {isLoading && <Loading/>}
             <div className="title">
                 КИБОРГИ <br/> ТЕПЕРЬ В 2D
             </div>

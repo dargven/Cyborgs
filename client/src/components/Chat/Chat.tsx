@@ -15,7 +15,6 @@ const Chat = () => {
     const chatRef = useRef<HTMLInputElement | null>(null);
     const errorRef = useRef<HTMLDivElement | null>(null);
     const server = useContext(ServerContext);
-    let interval: NodeJS.Timer | null = null;
 
     const [messages, setMessages] = useState<TMessage[]>([]);
 
@@ -26,7 +25,12 @@ const Chat = () => {
         const serverTimezone = -3;
         const resultTimezone = serverTimezone - userTimezoneTimezone;
         const substr = created.split(":")[0];
-        const resultHour = resultTimezone + parseInt(substr);
+        let resultHour = resultTimezone + parseInt(substr);
+        
+        if (resultHour >= 24) {
+            resultHour -= 24;
+        }
+
         return `${resultHour}:${created.split(":")[1]}`;
     };
 
@@ -36,8 +40,7 @@ const Chat = () => {
             setMessages(messagesFromServer);
         } else {
             if (server.error.code === 1002) {
-                console.log('nuku')
-                navigate("/login");
+                navigate("/login", {replace: true});
             }
         }
     };
