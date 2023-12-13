@@ -6,6 +6,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 require __DIR__ . '/../../../vendor/autoload.php';
 
+
+
 class Mailer
 {
     private PHPMailer $mail;
@@ -32,6 +34,10 @@ class Mailer
             $this->mail->setFrom('cyborgs@game.ru', 'Your Cyborgs');
             $this->mail->addAddress($to);
             $this->mail->Subject = $subject;
+            $this->mail->isHTML(true);
+            ob_start();
+            require_once __DIR__ . '/../../../src/Mail/PasswordRecovery/PasswordRecovery.html';
+            $body = ob_get_clean();
             $this->mail->Body = $body;
             $this->mail->send();
             return true;
