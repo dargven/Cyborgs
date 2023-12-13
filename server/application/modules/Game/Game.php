@@ -41,7 +41,7 @@ class Game
                         $usedSpawnPoints[] = $spawnPoint;
                     }
                 }
-            } else if ($player['status'] == 'WaitToRespawn') {
+            } else if ($player['status'] == 'Death') {
                 if ($player['team_id'] == 0) {
                     $spawnPoint = $this->teamASpawnPoints[array_rand($this->teamASpawnPoints)];
                     $this->db->spawnPlayer($player['user_id'], $spawnPoint['x'], $spawnPoint['y']);
@@ -84,10 +84,11 @@ class Game
     {
         $this->db->setStatus($player, 'Death');
         $teamId = $player->team_id;
-        if($teamId == 0){
-            
-        }else $this->db->updateScoreInTeam(1,);
+        if ($teamId == 0) {
+            $this->db->updateScoreInTeam(0,10);
+        } else $this->db->updateScoreInTeam(1, 10);
     }
+
     private function getBullets()
     {
         return $this->db->getBullets();
@@ -104,10 +105,13 @@ class Game
     }
 
 
-//    private function updateScene($timeout, $timestamp)
-//    {
-//        if (time() - $timestamp >= $timeout) {
-//            $this->db->updateTimestamp(time());
+    private function updateScene($timeout, $timestamp)
+    {
+        $time = time() - $timestamp;
+        if ($time >= $timeout) {
+            $this->db->updateTimestamp(time());
+            $this->spawnPlayers();
+
 ////            // пробежаться по всем игрокам
 ////            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы // или поменять статус на мертв
 ////
@@ -121,18 +125,18 @@ class Game
 ////            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
 ////            //$players = $this->getPlayers();
 ////            //$bullets = $this->getBullets();
-//            return true;
-//        }
-//        return false;
-//    }
+            return true;
+        }
+        return false;
+    }
 
     public function getScene($playersHash, $objectsHash, $bulletsHash)
     {
         $hashes = $this->db->getHashes();
-//        if ($this->updateScene($hashes->update_timeout, $hashes->update_timestamp)) {
-//            $this->db->updateBulletsHash($this->genHash());
-//            $this->db->updatePlayersHash($this->genHash());
-//        }
+        if ($this->updateScene($hashes->update_timeout, $hashes->update_timestamp)) {
+            $this->db->updateBulletsHash($this->genHash());
+            $this->db->updatePlayersHash($this->genHash());
+        }
         $scene = [
             'hashes' =>
                 [
@@ -164,12 +168,10 @@ class Game
         return $scene;
     }
 
-    
-
 
     public function startMatch($MatchId, $time = 180)
     {
-        
+
 
     }
 
