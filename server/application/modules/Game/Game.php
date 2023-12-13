@@ -18,7 +18,6 @@ class Game
     {
         return md5(rand(0, 1000000));
     }
-    
 
 
     private function spawnPlayers()
@@ -67,22 +66,41 @@ class Game
                 return $spawnPoint;
             }
         }
-
         return null;
     }
-    private function decreaseHp($playerId, $dHp)
+
+    private function decreaseHp($playerId, $dHp = 20)
     {
-        $player = $this->db->getp
-        
+        $player = $this->db->getUserByUserId($playerId);
+        if (!($player->hp - $dHp <= 0)) {
+            $this->db->decreaseHp($playerId, $dHp);
+        } else if ($player->hp - $dHp <= 0 || $player->hp == 0) {
+            $this->setDeath($player);
+        }
+
     }
 
-    private function checkDeath($playerId, $dHp)
+    private function setDeath($player)
     {
-        $player = $this->db->getPlayers();
-        if ($player && $player['hp'] > $dHp) {
-            return true;
-        }
-        return false;
+        $this->db->setStatus($player, 'Death');
+        $teamId = $player->team_id;
+        if($teamId == 0){
+            
+        }else $this->db->updateScoreInTeam(1,);
+    }
+    private function getBullets()
+    {
+        return $this->db->getBullets();
+    }
+
+    private function getObjects()
+    {
+        return $this->db->getObjects();
+    }
+
+    private function getPlayers() // deploy погуглить
+    {
+        return $this->db->getPlayers();
     }
 
 
@@ -146,30 +164,12 @@ class Game
         return $scene;
     }
 
-    public function getBullets()
-    {
-        return $this->db->getBullets();
-    }
-
-    public function getObjects()
-    {
-        return $this->db->getObjects();
-    }
-
-    public function getPlayers() // deploy погуглить
-    {
-        return $this->db->getPlayers();
-    }
-
+    
 
 
     public function startMatch($MatchId, $time = 180)
     {
-
-    }
-
-    public function setKill($id)
-    {
+        
 
     }
 
@@ -205,7 +205,7 @@ class Game
         return ['error' => 800];
     }
 
-   
+
 //    private function updateScoreInTeam($teamId, $score): true|array
 //    {
 //        $this->db->updateScoreInTeam($teamId, $score);
