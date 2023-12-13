@@ -188,8 +188,8 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
 
     public function getPlayers()
     {
-        return $this->queryAll("SELECT u.token, p.hp, p.team_id, p.skin_id,p.x, p.y, p.vx, p.vy, p.dx, p.dy
-FROM players as p INNER JOIN users as u on u.id = p.user_id");
+        return $this->queryAll("SELECT u.token, p.hp, p.team_id, p.skin_id, p.x, p.y, p.vx, p.vy, p.dx, p.dy
+FROM players as p INNER JOIN users as u on u.id=p.user_id");
     }
 
     public function getAllInfoPlayers()
