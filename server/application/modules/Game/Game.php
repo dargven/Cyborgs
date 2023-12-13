@@ -18,6 +18,7 @@ class Game
     {
         return md5(rand(0, 1000000));
     }
+    
 
 
     private function spawnPlayers()
@@ -69,6 +70,26 @@ class Game
 
         return null;
     }
+    private function decreaseHp($playerId, $dHp)
+    {
+        $player = $this->checkDeath($playerId, $dHp);
+        if (!$player) {
+            $dHp = max(0, $dHp);
+            $this->db->decreaseHp($playerId, $dHp);
+            return true;
+        }
+        return false;
+    }
+
+    private function checkDeath($playerId, $dHp)
+    {
+        $player = $this->db->getPlayers();
+        if ($player && $player['hp'] > $dHp) {
+            return true;
+        }
+        return false;
+    }
+
 
     private function updateScene($timeout, $timestamp)
     {
@@ -189,26 +210,7 @@ class Game
         return ['error' => 800];
     }
 
-    private function decreaseHp($playerId, $dHp)
-    {
-        $player = $this->db->checkDeath($playerId, $dHp);
-        if (!$player) {
-            $dHp = max(0, $dHp);
-            $this->db->decreaseHp($playerId, $dHp);
-            return true; 
-        }
-        return false; 
-    }
-
-    private function checkDeath($playerId, $dHp)
-    {
-        $player = $this->db->getPlayers();
-        if ($player && $player['hp'] > $dHp) {
-            return true;
-        }
-        return false;
-    }
-
+   
 //    private function updateScoreInTeam($teamId, $score): true|array
 //    {
 //        $this->db->updateScoreInTeam($teamId, $score);
