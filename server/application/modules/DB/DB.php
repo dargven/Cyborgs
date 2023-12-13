@@ -83,6 +83,11 @@ class DB
         return $this->query("SELECT * FROM users WHERE id=?", [$id]);
     }
 
+    public function getUserByUserId($id)
+    {
+        return $this->query("SELECT * FROM players WHERE user_id=?", [$id]);
+    }
+
     public function getUserByUuid($uuid)
     {
         return $this->query("SELECT * FROM users WHERE uuid=?", [$uuid]);
@@ -153,7 +158,7 @@ FROM bullets as b
 ORDER BY u.bullet_id");
 
     }
-    
+
 
     public function updateScoreInTeam($teamId, $score)
     {
@@ -163,11 +168,9 @@ ORDER BY u.bullet_id");
 
     }
 
-    public function addPlayerToTeam($id, $teamId)
+    public function addPlayer($id, $teamId)
     {
-        $this->execute("INSERT INTO players (user_id, team_id)
-VALUES (?, ?)
-ON DUPLICATE KEY UPDATE team_id = VALUES(team_id)", [$id, $teamId]);
+        $this->execute("INSERT INTO players (user_id, team_id) VALUES (?, ?)", [$id,$teamId]);
     }
 
 
@@ -208,10 +211,12 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
       vx = VALUES(vx), vy = VALUES(vy), dx = VALUES(dx), dy = VALUES(dy);
 ", [$id, $x, $y, $vx, $vy, $dx, $dy]);
     }
-    
-    public function setStatus($id, $status){
+
+    public function setStatus($id, $status)
+    {
         $this->execute("UPDATE players SET status = ? WHERE user_id = ?", [$status, $id]);
     }
+
     public function addUserStats($user_id, $kills, $death, $time_in_game, $points)
     {
         $this->execute("INSERT INTO stats (user_id, kills, death, time_in_game, points)
@@ -281,10 +286,11 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         return $this->query("SELECT team_id FROM teams WHERE team_score >= 25");
     }
+
     public function decreaseHp($playerId, $dHp)
     {
-        return $this->execute("UPDATE players SET hp =-? WHERE user_id=?", [$playerId, $dHp]);
+        $this->execute("UPDATE players SET hp =-? WHERE user_id=?", [$playerId, $dHp]);
     }
-    
+
 }
 
