@@ -1,10 +1,10 @@
 import {Navigate, useLocation} from "react-router-dom";
 
-interface PrivateRouteProps {
+interface IprivateRouteProps {
     children: React.ReactElement;
 }
 
-const PrivateRoute = ({children}: PrivateRouteProps ) => {
+const PrivateRoute = ({children}: IprivateRouteProps ) => {
 
     const location = useLocation();
 
@@ -19,10 +19,6 @@ const PrivateRoute = ({children}: PrivateRouteProps ) => {
     }
 
     return children;
-
-    // return (
-    //     localStorage.getItem('token') ? <Outlet/> : <Navigate to="/login"/>
-    // )
 }
 
 export default PrivateRoute;

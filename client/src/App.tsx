@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {BrowserRouter, HashRouter, Navigate, Route, Routes} from "react-router-dom";
+import { Navigate, Route, Routes} from "react-router-dom";
 import {HOST} from "./config";
 import {Store} from "./modules/Store/Store";
 import Server from "./modules/Server/Server";
@@ -34,30 +34,28 @@ const App: React.FC = () => {
     }, [])
 
     return (
-        <BrowserRouter>
-            <StoreContext.Provider value={store}>
-                <ServerContext.Provider value={server}>
-                    <Routes>
-                        <Route path="/" element={<Navigate to="/login" replace />}/>
-                        <Route path="recovery" element={<PasswordRecovery/>}/>
-                        <Route path="start" element={<StartPage/>}/>
-                        <Route path="login" element={<LoginPage/>}/>
-                        <Route path="registration" element={<RegistrationPage/>}/>
-                        <Route path="main" element={
-                            <PrivateRoute>
-                                <MainPage/>
-                            </PrivateRoute>
-                        }/>
-                        <Route path="game" element={
-                            <PrivateRoute>
-                                <GamePage/>
-                            </PrivateRoute>
-                        }/>
-                        <Route path="*" element={<Navigate to="/login" replace />} />
-                    </Routes>
-                </ServerContext.Provider>
-            </StoreContext.Provider>
-        </BrowserRouter>
+        <StoreContext.Provider value={store}>
+            <ServerContext.Provider value={server}>
+                <Routes>
+                    <Route path="/" element={<Navigate to="/login" replace />}/>
+                    <Route path="recovery" element={<PasswordRecovery/>}/>
+                    <Route path="start" element={<StartPage/>}/>
+                    <Route path="login" element={<LoginPage/>}/>
+                    <Route path="registration" element={<RegistrationPage/>}/>
+                    <Route path="main" element={
+                        <PrivateRoute>
+                            <MainPage/>
+                        </PrivateRoute>
+                    }/>
+                    <Route path="game" element={
+                        <PrivateRoute>
+                            <GamePage/>
+                        </PrivateRoute>
+                    }/>
+                    <Route path="*" element={<Navigate to="/login" replace />} />
+                </Routes>
+            </ServerContext.Provider>
+        </StoreContext.Provider>
     );
 };
 
