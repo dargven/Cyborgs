@@ -80,6 +80,37 @@ class Game
 
     }
 
+    public function checkHit()
+    {
+        $players = $this->db->getAllInfoPlayers();
+        $bullets = $this->getBullets();
+        $onPointIds = array();
+
+        foreach ($bullets as $bullet)
+        {
+            foreach ($players as $player)
+            {
+                if ($bullet['x'] == $player['x'] && $bullet['y'] == $player['y'])
+                {
+                    $onPointIds = array(
+                        'bullet_id' => $bullet["id"], 
+                        'player_id' => $player["user_id"]
+                    );
+                }
+            }
+        }
+        $this->setHit($onPointIds);
+    }
+
+    public function setHit($arrayPlayersBullets)
+    {        
+        foreach ($arrayPlayersBullets as $value)
+        {
+            $this->decreaseHp($value['player_id'], 20);
+            $this->db->DeleteBullet($value['bullet_id']);
+        }
+    }
+
     private function setDeath($player)
     {
         $this->db->setStatus($player, 'Death');
