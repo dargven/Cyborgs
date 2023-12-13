@@ -158,7 +158,7 @@ ORDER BY u.bullet_id");
     public function updateScoreInTeam($teamId, $score)
     {
 
-        $this->execute("UPDATE teams SET team_score=team_score+? WHERE  team_id=?",
+        $this->execute("UPDATE teams SET team_score=+? WHERE  team_id=?",
             [$score, $teamId]);
 
     }
@@ -283,11 +283,8 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     }
     public function decreaseHp($playerId, $dHp)
     {
-        return $this->execute("UPDATE players SET hp=hp-? WHERE id=?", [$playerId, $dHp]);
+        return $this->execute("UPDATE players SET hp =-? WHERE user_id=?", [$playerId, $dHp]);
     }
-    public function checkDeath($playerId, $dHp)
-    {
-        return $this->query("SELECT hp FROM players WHERE id=? and hp>=?", [$playerId, $dHp]); 
-    }
+    
 }
 
