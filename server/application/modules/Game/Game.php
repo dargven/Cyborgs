@@ -135,35 +135,35 @@ class Game
     }
 
 
-    private function updateScene($timeout, $timestamp)
-    {
-        if (time() - $timestamp >= $timeout) {
-            $this->db->updateTimestamp(time());
-//            // пробежаться по всем игрокам
-//            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы // или поменять статус на мертв
-//
-//            // пробежаться по всем пулям
-//            // если у пули статус "куда-то попала" - удалить её
-//
-//            // пробежаться по всем игрокам
-//            // если пуля убила игрока, то поменять его статус на "умер"
-//            // поменять статус пули на "куда-то попала"
-//            // записать запись об убийстве игрока в stats
-//            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
-//            //$players = $this->getPlayers();
-//            //$bullets = $this->getBullets();
-            return true;
-        }
-        return false;
-    }
+//    private function updateScene($timeout, $timestamp)
+//    {
+//        if (time() - $timestamp >= $timeout) {
+//            $this->db->updateTimestamp(time());
+////            // пробежаться по всем игрокам
+////            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы // или поменять статус на мертв
+////
+////            // пробежаться по всем пулям
+////            // если у пули статус "куда-то попала" - удалить её
+////
+////            // пробежаться по всем игрокам
+////            // если пуля убила игрока, то поменять его статус на "умер"
+////            // поменять статус пули на "куда-то попала"
+////            // записать запись об убийстве игрока в stats
+////            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
+////            //$players = $this->getPlayers();
+////            //$bullets = $this->getBullets();
+//            return true;
+//        }
+//        return false;
+//    }
 
     public function getScene($playersHash, $objectsHash, $bulletsHash)
     {
         $hashes = $this->db->getHashes();
-        if ($this->updateScene($hashes->update_timeout, $hashes->update_timestamp)) {
-            $this->db->updateBulletsHash($this->genHash());
-            $this->db->updatePlayersHash($this->genHash());
-        }
+//        if ($this->updateScene($hashes->update_timeout, $hashes->update_timestamp)) {
+//            $this->db->updateBulletsHash($this->genHash());
+//            $this->db->updatePlayersHash($this->genHash());
+//        }
         $scene = [
             'hashes' =>
                 [
@@ -180,17 +180,17 @@ class Game
         if ($hashes->players_hash !== $playersHash) {
             $players = $this->getPlayers();
             $scene['scene']['players'] = $players;
-            $scene['hashes']['playersHash'] = $playersHash;
+            $scene['hashes']['playersHash'] = $hashes->players_hash;
         }
         if ($hashes->objects_hash !== $objectsHash) {
             $objects = $this->getObjects();
             $scene['scene']['objects'] = $objects;
-            $scene['hashes']['objectsHash'] = $objectsHash;
+            $scene['hashes']['objectsHash'] = $hashes->objects_hash;
         }
         if ($hashes->bullets_hash !== $bulletsHash) {
             $bullets = $this->getBullets();
             $scene['scene']['bullets'] = $bullets;
-            $scene['hashes']['bulletsHash'] = $bulletsHash;
+            $scene['hashes']['bulletsHash'] = $hashes->bullets_hash;
         }
         return $scene;
     }
