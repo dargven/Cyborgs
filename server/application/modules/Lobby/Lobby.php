@@ -12,7 +12,7 @@ class Lobby
     public function selectTeam($id, $teamId)
     {
         if ($teamId == 1 || $teamId == 0) {
-            $this->db->addPlayerToTeam($id, $teamId);
+            $this->db->addPlayer($id, $teamId);
             $this->db->setStatus($id, 'WaitToSpawn');
             return true;
         }
