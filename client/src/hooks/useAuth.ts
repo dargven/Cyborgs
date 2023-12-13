@@ -71,10 +71,11 @@ const useAuth = () => {
         emailRef.current?.value
     ) {
         const login = loginRef.current.value;
-        const hash = md5(login + passwordRef.current.value);
         const name = nameRef.current.value;
+        if(emailRef.current.value.includes("@")){
         const email = emailRef.current.value;
-
+        if(passwordRef.current.value.length>4&&!/[а-яА-Я]/.test(passwordRef.current.value)){
+            const hash = md5(login + passwordRef.current.value);
         setUseAuth((prevState) => ({
             ...prevState,
             isLoading: true,
@@ -93,6 +94,16 @@ const useAuth = () => {
             }));
 
             errorRef.current!.innerText = getError(server.error);
+        }else{
+            server.error.code=1006
+            errorRef.current!.innerText=getError(server.error)
+        }
+        }
+        else{
+            server.error.code=1005
+            errorRef.current!.innerText=getError(server.error)
+        }
+       
         } else {
         server.error.code=242
         errorRef.current!.innerText=getError(server.error)
