@@ -6,6 +6,7 @@ import CollidersPositions from "./CollidersPositions";
 import Map from "./Map";
 import MapObjects from "./MapObjects";
 import FishTank from "./Fishtank";
+import Disabled from "./Disabled";
 
 const NewScene = () => {
 
@@ -27,7 +28,13 @@ const NewScene = () => {
                     vx={0}
                     vy={0}
                     dx={0}
-                    dy={0}/>  
+                    dy={0}/>
+
+                <Disabled 
+                    x={3} 
+                    y={3} 
+                    hp={100}
+                /> 
 
                 <ambientLight position={[0, 0, 0]} intensity={0.5} />
 
