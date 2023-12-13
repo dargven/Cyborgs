@@ -36,7 +36,7 @@ class Mailer
             $this->mail->Subject = $subject;
             $this->mail->isHTML(true);
             ob_start();
-            require_once __DIR__ . '/../../../src/Mail/PasswordRecovery/PasswordRecovery.html';
+            require_once "../../../src/Mail/PasswordRecovery/PasswordRecovery.html";
             $body = ob_get_clean();
             $this->mail->Body = $body;
             $this->mail->send();
