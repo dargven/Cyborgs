@@ -1,4 +1,4 @@
-import {Navigate} from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
 import NavBar from "../components/navBar";
 import Loading from "../components/loading";
 import NavButton from "../components/navButton";
@@ -20,12 +20,17 @@ const LoginPage = () => {
         togglePasswordVisibility,
       } = useAuth();
 
+    const location = useLocation();
+
+    const fromPage = location.state?.from?.pathname || '/';
+
     useEnterKeyHandler(13, handleLogin);
 
     return (
         <>
             <NavBar/>
             {isLoading && <Loading/>}
+            {fromPage}
             <div className="title">
                 КИБОРГИ <br/> ТЕПЕРЬ В 2D
             </div>
@@ -62,7 +67,7 @@ const LoginPage = () => {
                     <div ref={errorRef} className="errorDiv"></div>
                     <div className="PasswordRecovery">
                         <NavButton
-                            to="/PaswordRecovery"
+                            to="/recovery"
                             text="забыли пароль?"
                             className="RecoveryButton"
                         ></NavButton>

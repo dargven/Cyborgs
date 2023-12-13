@@ -8,12 +8,12 @@ import "../Main.css";
 const MainPage = () => {
 
     const server = useContext(ServerContext);
-    const store = useContext(StoreContext)
+    const store = useContext(StoreContext);
     const navigate = useNavigate();
 
     const checkUser = () => {
         if (store.isAuth()) {
-            navigate('/game', {replace: true});
+            navigate('/game');
         }
     }
 

@@ -208,7 +208,7 @@ const useAuth = () => {
                         codeConfirm: false,
                         recoveryPressed: false,
                     }));
-                    navigate("/login", {replace: true});
+                    navigate("/login");
                 }
     
                 setUseAuth((prevState) => ({
