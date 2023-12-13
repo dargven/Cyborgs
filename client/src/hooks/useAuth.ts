@@ -200,8 +200,7 @@ const useAuth = () => {
             if (password1 === password2) {
                 const hash = md5(login + password1);
                 localStorage.removeItem("login");
-                const passwordChanged = 
-                await server.setPasswordAfterReset(hash);
+                const passwordChanged = await server.setPasswordAfterReset(hash);
     
                 if (passwordChanged) {
                     setUseAuth((prevState) => ({
