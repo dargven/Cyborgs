@@ -7,52 +7,44 @@ import { useFrame } from "@react-three/fiber";
 import { TPlayer } from "../../modules/Server/types";
 import { TPlayerProps } from "./Player";
 
-export interface DisabledProps {
-    x: number;
-    y: number;
-    hp: number
-}
-
 const Disabled = ({
-    x = 0,
-    y = 0,
+    x,
+    y,
+    vx,
+    vy,
+    dx,
+    dy,
     hp = 100,
-}: DisabledProps) => {
+    token,
+    teamId,
+}: TPlayer) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
-    const [state, setState] = useState<DisabledProps>({
-        x: vec3(ref.current?.translation()).x,
-        y: vec3(ref.current?.translation()).y,
-        hp : 0,
-    });
+    // useEffect(() => {
+    //     if (ref.current) {
+    //         ref.current.setTranslation(new Vector3(x, y), true);
+    //         ref.current.setLinvel(new Vector3(vx, vy, 0), true);
+    //         console.log(ref.current.linvel());
+    //     }
 
-    useEffect(() => {
-        const data = {
-            type: 'Disabled',
-            hp: state.hp,
-        }
-
-        ref.current.userData = data;
-
-        if (state.hp === 0) {
-            ref.current.setEnabled(false);
-        }
-
-    }, [state]);
+    // }, []);
 
     return (
         <>
             <RigidBody
                 ref={ref}
                 scale={0.5}
-                position={[x,y,0]}
+                position={[x, y, 0]}
                 colliders="hull"
                 friction={1}
                 linearDamping={10}
                 angularDamping={1}
                 lockRotations
+                linearVelocity={[vx, 0, 4]}
             >
+
+                <BallCollider args={[0.5]} />
 
                 <SpriteAnimator
                     fps={10}

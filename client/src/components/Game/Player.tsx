@@ -11,19 +11,18 @@ export type TPlayerProps = {
     onMovement?(position: Vector3): void;
     getPosVel?(position: Vector3, velocity: Vector3): void;
     getMyPlayer?(player: TPlayer): void;
-} & TPlayer
-
-
+} & TPlayer;
 
 const Player = ({
+    x,
+    y,
     vx,
     vy,
-    x = 0,
-    y = 0,
+    dx,
+    dy,
     teamId,
     token,
     hp,
-    // isControlled
     onFire,
     onMovement,
     // getPosVel,
@@ -37,122 +36,99 @@ const Player = ({
     const [controlKeys, getKeys] = useKeyboardControls();
 
     const [state, setState] = useState<TPlayer>({
-        x: vec3(ref.current?.translation()).x,
-        y: vec3(ref.current?.translation()).y,
-        vx: vec3(ref.current?.linvel()).x,
-        vy: vec3(ref.current?.linvel()).y,
-        dx: 0,
-        dy: 0,
-        hp : 0,
+        x,
+        y,
+        vx,
+        vy,
+        dx,
+        dy,
+        hp,
         token,
         teamId,
-        // isControlled: true
     });
 
     const movementController = (up?: boolean, down?: boolean, left?: boolean, right?: boolean) => {
 
         if (ref.current) {
-
             const speed = 4;
+            const velocity = new Vector3(x, y);
 
-            if (left) {
-                new Vector3().x -= 1;
-            }
-            if (right) {
-                new Vector3().x += 1;
-            }
-            if (up) {
-                new Vector3().y += 1;
-            }
-            if (down) {
-                new Vector3().y -= 1;
-            }
+            if (left) { velocity.x -= 1; }
+            if (right) { velocity.x += 1; }
+            if (up) { velocity.y += 1; }
+            if (down) { velocity.y -= 1; }
 
-            new Vector3(vx,vy,0).setLength(speed);
+            velocity.setLength(speed);
 
-            ref.current.setLinvel(new Vector3(vx,vy,0), true);
-            // if (getPosVel && isControlled) {
-            //     getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
-            // }
-
-
-
-        }
-    }
-
-    useEffect(() => {
-            const mouseDownHandler = (e: MouseEvent) => {
-                if (e.button === 0) {
-                    shoting.current = true;
-                }
-            }
-            const mouseUpHandler = (e: MouseEvent) => {
-                if (e.button === 0) {
-                    shoting.current = false;
-                }
-            }
-
-            document.addEventListener("mousedown", mouseDownHandler);
-            document.addEventListener("mouseup", mouseUpHandler);
-
-            return () => {
-                document.removeEventListener("mousedown", mouseDownHandler);
-                document.removeEventListener("mouseup", mouseUpHandler);
-            }
-    }, [state]);
-
-    useFrame(() => {
-            const { up, down, left, right, shoot } = getKeys();
-            movementController(up, down, left, right);
-
-            const playerPosition = vec3(ref.current?.translation());
-
-            if (onMovement) {
-                onMovement(playerPosition);
-            }
-
-            if (shoot || shoting) {
-                 if (onFire) {
-                    onFire(playerPosition, teamId);
-                 }
-            }
+            ref.current.setLinvel(velocity, true);
 
             setState({
-                ...state, x: vec3(ref.current?.translation()).x,
+                ...state,
+                x: vec3(ref.current?.translation()).x,
                 y: vec3(ref.current?.translation()).y,
                 vx: vec3(ref.current?.linvel()).x,
                 vy: vec3(ref.current?.linvel()).y,
             });
-    });
+            // if (getPosVel && isControlled) {
+            //     getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
+            // }
+        }
+    }
 
     useEffect(() => {
-        const data = {
-            type: 'player',
-            team: teamId,
-            hp: state.hp,
+        const mouseDownHandler = (e: MouseEvent) => {
+            if (e.button === 0) {
+                shoting.current = true;
+                console.log("shooting")
+            }
+        }
+        const mouseUpHandler = (e: MouseEvent) => {
+            if (e.button === 0) {
+                shoting.current = false;
+            }
         }
 
-        ref.current.userData = data;
+        document.addEventListener("mousedown", mouseDownHandler);
+        document.addEventListener("mouseup", mouseUpHandler);
 
-        if (state.hp === 0) {
-            ref.current.setEnabled(false);
+        return () => {
+            document.removeEventListener("mousedown", mouseDownHandler);
+            document.removeEventListener("mouseup", mouseUpHandler);
+        }
+    }, []);
+
+    useFrame(() => {
+        const { up, down, left, right, shoot } = getKeys();
+        movementController(up, down, left, right);
+
+        const playerPosition = vec3(ref.current?.translation());
+
+        if (onMovement) {
+            onMovement(playerPosition);
         }
 
-    }, [state]);
+        if (shoot || shoting) {
+            if (onFire) {
+                onFire(playerPosition, teamId);
+            }
+        }
+
+        
+
+    });
 
     return (
-        <>
+        <group>
             <RigidBody
                 ref={ref}
                 scale={0.5}
-                position={[x,y,0]}
+                position={[x, y, 0]}
                 colliders="hull"
                 friction={1}
                 linearDamping={10}
                 angularDamping={1}
                 lockRotations
             >
-
                 <SpriteAnimator
                     fps={10}
                     startFrame={0}
@@ -165,19 +141,19 @@ const Player = ({
 
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
-                        const data: any = e.other.rigidBody?.userData;
-                        if (data.type === "projectile") {
-                            const damage = data.team === teamId ? data.damage / 2 : data.damage;
-                            if (hp - damage < 0) {
-                                setState({ ...state, hp: 0 });
-                            } else {
-                                setState({ ...state, hp: hp - damage });
-                            }
-                        }
+                        // const data: any = e.other.rigidBody?.userData;
+                        // if (data.type === "projectile") {
+                        //     const damage = data.team === teamId ? data.damage / 2 : data.damage;
+                        //     if (hp - damage < 0) {
+                        //         setState({ ...state, hp: 0 });
+                        //     } else {
+                        //         setState({ ...state, hp: hp - damage });
+                        //     }
+                        // }
                     }} />
                 <HealthBar value={hp} color={0xff0000} />
             </RigidBody>
-        </>
+        </group>
     );
 }
 

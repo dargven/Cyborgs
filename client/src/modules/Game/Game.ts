@@ -93,11 +93,11 @@ class Game implements IGame {
     }
 
     setPlayer() {
-
+        // запрос
     }
 
     setBullet() {
-
+        // запрос
     }
 
     someCode = () => {

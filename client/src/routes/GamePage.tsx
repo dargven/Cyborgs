@@ -43,7 +43,8 @@ const GamePage = () => {
         console.log(team);
 
         return () => {
-            clearInterval(game.current.intervalID)
+            console.log("quit");
+            clearInterval(game.current.intervalID);
         }
     }, []);
 
@@ -62,7 +63,7 @@ const GamePage = () => {
                     </div>
                 ) : (
                     <div>
-                        <Canvas style={{ background: 'black' }} frameloop="demand">
+                        <Canvas style={{ background: 'black' }}>
                             <Suspense>
                                 <PerspectiveCamera position={[0, 0, 0]}>
                                     <NewScene />
@@ -71,9 +72,9 @@ const GamePage = () => {
                             </Suspense>
                             <Preload all />
                         </Canvas>
-                    </div >
+                    </div>
                 )}
-            </KeyboardControls >
+            </KeyboardControls>
         </div >
     );
 }
