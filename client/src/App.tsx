@@ -10,6 +10,7 @@ import GamePage from "./routes/GamePage";
 import PasswordRecovery from "./routes/PaswordRecovery";
 import StartPage from "./routes/StartPage";
 import PrivateRoute from "./components/privateRoute";
+import NavBar from "./components/navBar";
 
 export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
@@ -37,11 +38,14 @@ const App: React.FC = () => {
         <StoreContext.Provider value={store}>
             <ServerContext.Provider value={server}>
                 <Routes>
-                    <Route path="/" element={<Navigate to="/login" replace />}/>
+                    <Route path="/" element={<NavBar/>}>
+                        <Route path="login" element={<LoginPage/>}/>
+                        <Route path="registration" element={<RegistrationPage/>}/>
+                        <Route path="*" element={<Navigate to="/login" replace />} />
+                        <Route path="/" element={<Navigate to="/login" replace />}/>
+                    </Route>
                     <Route path="recovery" element={<PasswordRecovery/>}/>
                     <Route path="start" element={<StartPage/>}/>
-                    <Route path="login" element={<LoginPage/>}/>
-                    <Route path="registration" element={<RegistrationPage/>}/>
                     <Route path="main" element={
                         <PrivateRoute>
                             <MainPage/>
@@ -52,7 +56,6 @@ const App: React.FC = () => {
                             <GamePage/>
                         </PrivateRoute>
                     }/>
-                    <Route path="*" element={<Navigate to="/login" replace />} />
                 </Routes>
             </ServerContext.Provider>
         </StoreContext.Provider>

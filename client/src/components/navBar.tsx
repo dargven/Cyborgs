@@ -1,26 +1,17 @@
-import { Link, NavLink } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import NavButton from "./navButton";
 
 const NavBar = () => {
     return (
-        <header className="App-header">
-            {/* <Link
-                to="/registration"
-                className="header-right"
-            >
-                Регистрация
-            </Link>;
+        <>
+            <header className="App-header">
+                <NavButton to="/registration" text="Регистрация" className="header-right"/>
+                <NavButton to="/login" text="Войти" className="header-right"/>
+            </header>
+            <Outlet/>
+        </>
 
-            <NavLink
-                to="/login"
-                className="header-right"
-            >
-                Войти
-            </NavLink>; */}
 
-            <NavButton to="/registration" text="Регистрация" className="header-right"/>
-            <NavButton to="/login" text="Войти" className="header-right"/>
-        </header>
     );
 };
 

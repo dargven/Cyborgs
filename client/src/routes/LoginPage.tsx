@@ -28,7 +28,6 @@ const LoginPage = () => {
 
     return (
         <>
-            <NavBar/>
             {isLoading && <Loading/>}
             {fromPage}
             <div className="title">

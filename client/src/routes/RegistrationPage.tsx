@@ -26,7 +26,6 @@ const RegistrationPage = () => {
 
     return (
         <>
-            <NavBar/>
             {isLoading && <Loading/>}
             <div className="title">
                 КИБОРГИ <br/> ТЕПЕРЬ В 2D
