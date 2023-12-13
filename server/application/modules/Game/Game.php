@@ -72,13 +72,8 @@ class Game
     }
     private function decreaseHp($playerId, $dHp)
     {
-        $player = $this->checkDeath($playerId, $dHp);
-        if (!$player) {
-            $dHp = max(0, $dHp);
-            $this->db->decreaseHp($playerId, $dHp);
-            return true;
-        }
-        return false;
+        $player = $this->db->getp
+        
     }
 
     private function checkDeath($playerId, $dHp)
