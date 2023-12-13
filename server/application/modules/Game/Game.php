@@ -149,17 +149,17 @@ class Game
         if ($hashes->players_hash !== $playersHash) {
             $players = $this->getPlayers();
             $scene['scene']['players'] = $players;
-            $scene['hashes']['playersHash'] = $playersHash;
+            $scene['hashes']['playersHash'] = $hashes->players_hash;
         }
         if ($hashes->objects_hash !== $objectsHash) {
             $objects = $this->getObjects();
             $scene['scene']['objects'] = $objects;
-            $scene['hashes']['objectsHash'] = $objectsHash;
+            $scene['hashes']['objectsHash'] = $hashes->objects_hash;
         }
         if ($hashes->bullets_hash !== $bulletsHash) {
             $bullets = $this->getBullets();
             $scene['scene']['bullets'] = $bullets;
-            $scene['hashes']['bulletsHash'] = $bulletsHash;
+            $scene['hashes']['bulletsHash'] = $hashes->bullets_hash;
         }
         return $scene;
     }
