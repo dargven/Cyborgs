@@ -97,7 +97,10 @@ body {
 .input-form input:hover {
     border: 0.4vh solid #61dafb;
 }
-
+.input-form input.error-input {
+    border: solid red;
+    background-color: #ff05051e;
+}
 .input-form button {
     font-family: Zelek;
     padding: 1.5dvh;
@@ -121,7 +124,9 @@ body {
 .content .RecoveryButton, .content .PasswordRecovery {
     font-size: 0.8dvw;
 }
-
+.error-input {
+    border: 10dvw solid red;
+}
 h1 {
     font-family: "Zelek";
     color: rgb(0, 217, 255);
