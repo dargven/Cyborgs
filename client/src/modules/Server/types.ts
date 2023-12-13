@@ -32,9 +32,8 @@ export type TPlayer = {
     y: number;
     vx: number;
     vy: number;
-    dx?: number;
-    dy?: number;
-    isControlled?:boolean;
+    dx: number;
+    dy: number;
 }
 
 export type TBullet = {

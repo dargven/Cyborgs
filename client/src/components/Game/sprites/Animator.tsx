@@ -259,7 +259,6 @@ export const Animator: React.FC<TAnimatorProps> = (
         if (diff <= fpsInterval) return
         timerOffset.current = now - (diff % fpsInterval)
 
-        //calculateAspectRatio(frameW, frameH, aspectFactor)
         const framesH = (metaInfo.w) / frameW
         const framesV = (metaInfo.h) / frameH
         const {

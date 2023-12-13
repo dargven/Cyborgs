@@ -176,7 +176,6 @@ export {}
 //                             y={0}
 //                             vx={0}
 //                             vy={0}    
-//                             velocity={new Vector3(player.vx, player.vy, 0)}
 //                             hp={player.hp}                     />
 //                     } else {
 //                         return <Player
@@ -189,7 +188,6 @@ export {}
 //                             y={0}
 //                             vx={0}
 //                             vy={0}
-//                             velocity={new Vector3(player.vx, player.vy, 0)}
 //                             // onFire={onFire}                           
 //                             // onMovement={onMovement}
 //                             // getMyPlayer={updatePlayer}

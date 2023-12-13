@@ -1,4 +1,5 @@
 import { Stars } from "@react-three/drei";
+import Player from "./Player";
 import { Physics } from "@react-three/rapier";
 import { TextureLoader, Vector3 } from "three";
 import CollidersPositions from "./CollidersPositions";
@@ -17,6 +18,17 @@ const NewScene = () => {
             <Physics colliders="hull" debug>
                 <CollidersPositions />
 
+                <Player 
+                    token={""}
+                    teamId={null}
+                    hp={0}
+                    x={0}
+                    y={0}
+                    vx={0}
+                    vy={0}
+                    dx={0}
+                    dy={0}/>  
+
                 <ambientLight position={[0, 0, 0]} intensity={0.5} />
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
@@ -27,7 +39,6 @@ const NewScene = () => {
 
                 <FishTank />
             </Physics>
-
             <Stars />
         </group>
     );
