@@ -2,43 +2,31 @@ import { SpriteAnimator, useKeyboardControls } from "@react-three/drei";
 import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
-import HealthBar from "./HealthBar";
+import HealthBar from "../HealthBar";
 import { useFrame } from "@react-three/fiber";
-import { TPlayer } from "../../modules/Server/types";
+import { TPlayer } from "../../../modules/Server/types";
 
-export interface IPlayerProps {
-    token: string;
-    x: number;
-    y: number;
-    teamId: number;
-    hp: number;
-    position?: Vector3;
-    velocity?: Vector3;
-    isControlled?: boolean
-   
-    // onFire?(position: Vector3, team: number): void;
-    // onMovement?(position: Vector3): void;
-    // getPosVel?(position: Vector3, velocity: Vector3): void;
-    // getMyPlayer?(player: TPlayer): void;
-}
-
-
+export type TPlayerProps = {
+    onFire?(position: Vector3, team: number): void;
+    onMovement(position: Vector3): void;
+    updatePlayer(updated: TPlayer): void
+} & TPlayer;
 
 const Player = ({
+    x,
+    y,
     vx,
     vy,
-    velocity = new Vector3(vx,vy,0),
-    x = 0,
-    y = 0,
+    dx,
+    dy,
     teamId,
     token,
     hp,
-    isControlled
+    onMovement,
     // onFire,
-    // onMovement,
     // getPosVel,
-    // getMyPlayer,
-}: TPlayer) => {
+    updatePlayer,
+}: TPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
@@ -47,17 +35,15 @@ const Player = ({
     const [controlKeys, getKeys] = useKeyboardControls();
 
     const [state, setState] = useState<TPlayer>({
-        x: vec3(ref.current?.translation()).x,
-        y: vec3(ref.current?.translation()).y,
-        vx: vec3(ref.current?.linvel()).x,
-        vy: vec3(ref.current?.linvel()).y,
-        dx: 0,
-        dy: 0,
-        hp : 0,
+        x,
+        y,
+        vx,
+        vy,
+        dx,
+        dy,
+        hp,
         token,
         teamId,
-        isControlled: true,
-        velocity
     });
 
     const movementController = (up?: boolean, down?: boolean, left?: boolean, right?: boolean) => {
@@ -65,6 +51,7 @@ const Player = ({
         if (ref.current) {
 
             const speed = 4;
+            const velocity = new Vector3();
 
             if (left) {
                 velocity.x -= 1;
@@ -82,68 +69,65 @@ const Player = ({
             velocity.setLength(speed);
 
             ref.current.setLinvel(velocity, true);
+
+            if (velocity.length()) {
+                setState({
+                    ...state, x: vec3(ref.current?.translation()).x,
+                    y: vec3(ref.current?.translation()).y,
+                    vx: vec3(ref.current?.linvel()).x,
+                    vy: vec3(ref.current?.linvel()).y,
+                });
+                updatePlayer(state);
+            }
+
             // if (getPosVel && isControlled) {
             //     getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
             // }
-
-            
-
         }
     }
 
     useEffect(() => {
-        if (isControlled) {
-            const mouseDownHandler = (e: MouseEvent) => {
-                if (e.button === 0) {
-                    setShooting(true);
-                }
-            }
-            const mouseUpHandler = (e: MouseEvent) => {
-                if (e.button === 0) {
-                    setShooting(false);
-                }
-            }
-            // if (getMyPlayer) {
-            //     getMyPlayer(state);
-            // }
-
-            document.addEventListener("mousedown", mouseDownHandler);
-            document.addEventListener("mouseup", mouseUpHandler);
-
-            return () => {
-                document.removeEventListener("mousedown", mouseDownHandler);
-                document.removeEventListener("mouseup", mouseUpHandler);
+        const mouseDownHandler = (e: MouseEvent) => {
+            if (e.button === 0) {
+                setShooting(true);
             }
         }
+        const mouseUpHandler = (e: MouseEvent) => {
+            if (e.button === 0) {
+                setShooting(false);
+            }
+        }
+        // if (getMyPlayer) {
+        //     getMyPlayer(state);
+        // }
+
+        document.addEventListener("mousedown", mouseDownHandler);
+        document.addEventListener("mouseup", mouseUpHandler);
+
+        return () => {
+            document.removeEventListener("mousedown", mouseDownHandler);
+            document.removeEventListener("mouseup", mouseUpHandler);
+        }
+
     }, [state]);
 
     useFrame(() => {
-        if (isControlled) {
-            const { up, down, left, right, shoot } = getKeys();
-            movementController(up, down, left, right);
+        const { up, down, left, right, shoot } = getKeys();
+        movementController(up, down, left, right);
 
-            const playerPosition = vec3(ref.current?.translation());
+        const playerPosition = vec3(ref.current?.translation());
 
-            // if (onMovement) {
-            //     onMovement(playerPosition);
-            // }
-
-            // if (shoot || isShooting) {
-            //     if (onFire) {
-            //         onFire(playerPosition, teamId);
-            //     }
-            // }
-
-            setState({
-                ...state, x: vec3(ref.current?.translation()).x,
-                y: vec3(ref.current?.translation()).y,
-                vx: vec3(ref.current?.linvel()).x,
-                vy: vec3(ref.current?.linvel()).y,
-            });
-
-        } else {
-            movementController();
+        if (onMovement) {
+            onMovement(playerPosition);
         }
+
+        // if (shoot || isShooting) {
+        //     if (onFire) {
+        //         onFire(playerPosition, teamId);
+        //     }
+        // }
+
+
     });
 
     useEffect(() => {
@@ -166,7 +150,7 @@ const Player = ({
             <RigidBody
                 ref={ref}
                 scale={0.5}
-                position={[x,y,0]}
+                position={[x, y, 0]}
                 colliders="hull"
                 friction={1}
                 linearDamping={10}

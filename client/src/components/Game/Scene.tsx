@@ -1,7 +1,7 @@
 import { Stars } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Group, Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
 import { TBullet, TDestructible, TPlayer } from "../../modules/Server/types";
@@ -11,11 +11,11 @@ import LightMap from "./LightMap";
 import Map from "./Map";
 import MapObjects from "./MapObjects";
 import Obstacle from "./Obstacle";
-import Player from "./Player";
-import Zone from "./Zone";
+import Player from "./Player/Player";
 import Projectile from "./Projectile";
 import { useInterval } from "usehooks-ts";
 import Debug from "./DebugInfo";
+import Dummy from "./Player/Dummy";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -41,10 +41,12 @@ const Scene = () => {
         'glass': glass,
     });
 
+    const player = useRef<TPlayer>();
+
     const [myBullets, setMyBullets] = useState<TBullet[]>([]);
     const [bullets, setBullets] = useState<TBullet[]>([]);
     const [players, setPlayers] = useState<TPlayer[]>([]);
-    const [myPlayer, setMyPlayer] = useState<TPlayer>();
+    // const [myPlayer, setMyPlayer] = useState<TPlayer>();
     const [obstacles, setObstacles] = useState<TDestructible[]>();
 
     const sendBullet = (bullet: TBullet) => {
@@ -55,10 +57,10 @@ const Scene = () => {
     //     server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
     // });
 
-    const updatePlayer = useCallback((player: TPlayer) => {
-        setMyPlayer(player);
+    // const updatePlayer = useCallback((player: TPlayer) => {
+    //     setMyPlayer(player);
 
-    }, [myPlayer]);
+    // }, [myPlayer]);
 
     const sendMyPlayer = async (player: TPlayer) => {
         await server.setPlayer(player.x, player.y, player.vx, player.vy, 0, 0)
@@ -81,19 +83,27 @@ const Scene = () => {
     useEffect(() => {
         getScene();
         const mp = players.filter(p => p.token === store.getUser().token)[0];
-        setMyPlayer(mp);
+        // setMyPlayer(mp);
+        player.current = mp;
     }, []);
 
-    useInterval(() => {
-        getScene();
-        if (myPlayer) {
-            sendMyPlayer(myPlayer);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            console.log(Date.now());
+            getScene();
+            if (player.current) {
+                console.log(player.current);
+                sendMyPlayer(player.current);
+            }
+        }, 500);
+
+        return () => {
+            clearInterval(interval);
         }
-    }, 50);
+    }, []);
 
     const mouseX = useRef(0);
     const mouseY = useRef(0);
-    // const invRef = useRef<Group>();
     const debugRef = useRef<Group>();
     const positionToCamera = new Vector3(0, -2, -3);
 
@@ -105,6 +115,10 @@ const Scene = () => {
     }
 
     document.addEventListener("mousemove", handleMouseMove);
+
+    const updatePlayer = (updated: TPlayer) => {
+        player.current = updated;
+    }
 
     const onMovement = (position: Vector3) => {
         const cameraPos = new Vector3(position.x + mouseX.current, position.y + mouseY.current, 7);
@@ -155,6 +169,8 @@ const Scene = () => {
         return key;
     };
 
+    
+
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull">
@@ -162,36 +178,39 @@ const Scene = () => {
 
                 <FishTank />
 
-                {myPlayer && <Debug player={myPlayer} debugRef={debugRef} />}
+                {player.current && <Debug player={player.current} debugRef={debugRef} />}
 
                 {players.map(player => {
                     const token = store.getUser().token;
                     if (player.token !== token) {
-                        return <Player
+                        return <Dummy
                             key={player.token}
                             token={player.token}
                             teamId={player.teamId}
-                            x={0}
-                            y={0}
-                            vx={0}
-                            vy={0}    
-                            velocity={new Vector3(player.vx, player.vy, 0)}
-                            hp={player.hp}                     />
+                            x={player.x}
+                            y={player.y}
+                            vx={player.vx}
+                            vy={player.vy}
+                            dx={player.dx}
+                            dy={player.dy}
+                            hp={player.hp}
+                        />
                     } else {
                         return <Player
-                            isControlled
                             hp={player.hp}
                             key={token}
                             token={token}
-                            teamId={0}
-                            x={0}
-                            y={0}
-                            vx={0}
-                            vy={0}
-                            velocity={new Vector3(player.vx, player.vy, 0)}
-                            // onFire={onFire}                           
-                            // onMovement={onMovement}
-                            // getMyPlayer={updatePlayer}
+                            teamId={player.teamId}
+                            x={player.x}
+                            y={player.y}
+                            vx={player.vx}
+                            vy={player.vy}
+                            dx={player.dx}
+                            dy={player.dy}
+                            onMovement={onMovement}
+                            updatePlayer={updatePlayer}
+                        // onFire={onFire}                           
+                        // getMyPlayer={updatePlayer}
                         />
                     }
                 })}
@@ -203,7 +222,7 @@ const Scene = () => {
                     />
                 )}
 
-                {bullets.map(bullet =>
+                {/* {bullets.map(bullet =>
                     <Projectile
                         damage={100}
                         key={bullet.bulletId}
@@ -214,15 +233,13 @@ const Scene = () => {
                         team={1}
 
                     />
-                )}
+                )} */}
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
                     <Map texture={textures['room']} />
                 </group>
 
                 <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)} />
-
-                <Zone position={new Vector3(5.5, 7.5, 0.5)} />
             </Physics>
             <Stars />
         </group>
