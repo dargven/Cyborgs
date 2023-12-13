@@ -175,9 +175,7 @@ class Application
 
     }
 
-
-
-
+    
     /******************/
     /* ЖАЛКАЯ ПАРОДИЯ */
     /******************/
@@ -312,9 +310,5 @@ class Application
         return ['error' => 242];
     }
 
-public function spawn() {
-        $this->game->spawnPlayers();
-        return true;
-}
 
 }

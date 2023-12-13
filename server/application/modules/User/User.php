@@ -43,6 +43,7 @@ class User
 //            if (!$user->token) { //Проверка на игру с двух устройств(скорее всего не понадобится)
                 $token = $this->genToken();
                 $this->db->updateToken($user->id, $token);
+                $this->db->setStatus($user->id, 'Auth');
                 return [
                     'name'  => $user->login,
                     'token' => $token,
