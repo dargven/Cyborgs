@@ -1,3 +1,5 @@
+import { TSceneHashes } from "../Server/types";
+
 export class Store {
     private user = {
         name: '',
@@ -5,6 +7,8 @@ export class Store {
         token: '',
         uuid: '',
     }
+
+    public sceneHashes: TSceneHashes = { bulletsHash: '2', playersHash: '3', objectsHash: '5' };
 
     setUser(name: string, token: string, uuid: string): void {
         this.user.name = name;
@@ -20,7 +24,7 @@ export class Store {
     isAuth(): boolean {
         return this.user.isAuth;
     }
-    getUser(){
+    getUser() {
         return this.user;
     }
 }

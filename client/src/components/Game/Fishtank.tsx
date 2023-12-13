@@ -1,4 +1,4 @@
-import { Animator } from "./sprites/Animator"
+import { Animator } from "./Sprites/Animator"
 import { RigidBody } from "@react-three/rapier";
 
 const  FishTank = () => {
