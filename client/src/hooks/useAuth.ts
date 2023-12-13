@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { ServerContext } from "../App";
 import md5 from "md5-ts";
 import getError from "./getError";
+import * as EmailValidator from 'email-validator';
 import { useNavigate } from "react-router-dom";
 
 const useAuth = () => {
@@ -71,10 +72,11 @@ const useAuth = () => {
         emailRef.current?.value
     ) {
         const login = loginRef.current.value;
-        const hash = md5(login + passwordRef.current.value);
         const name = nameRef.current.value;
+        if(EmailValidator.validate( emailRef.current.value)){
         const email = emailRef.current.value;
-
+        if(passwordRef.current.value.length>4&&!/[а-яА-Я]/.test(passwordRef.current.value)){
+            const hash = md5(login + passwordRef.current.value);
         setUseAuth((prevState) => ({
             ...prevState,
             isLoading: true,
@@ -93,6 +95,16 @@ const useAuth = () => {
             }));
 
             errorRef.current!.innerText = getError(server.error);
+        }else{
+            server.error.code=1006
+            errorRef.current!.innerText=getError(server.error)
+        }
+        }
+        else{
+            server.error.code=1005
+            errorRef.current!.innerText=getError(server.error)
+        }
+       
         } else {
         server.error.code=242
         errorRef.current!.innerText=getError(server.error)
