@@ -43,7 +43,6 @@ class User
 //            if (!$user->token) { //Проверка на игру с двух устройств(скорее всего не понадобится)
                 $token = $this->genToken();
                 $this->db->updateToken($user->id, $token);
-                $this->db->setStatus($user->id, 'Auth');
                 return [
                     'name'  => $user->login,
                     'token' => $token,
@@ -77,7 +76,7 @@ class User
     {
         $user = $this->db->getUserByToken($token);
         if ($user) {
-//          $this->db->deletePlayer($token);  //Вернуть для Proda//
+          $this->db->deletePlayer($token);  //Вернуть для Proda//
             $this->db->updateToken($user->id, NULL);
             return true;
         }

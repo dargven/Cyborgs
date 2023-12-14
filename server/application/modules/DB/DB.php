@@ -155,11 +155,11 @@ VALUES (?,?, now())', [$id, $message]);
         ORDER BY u.bullet_id");
     }
 
-    public function setBullet($x, $y, $vx, $vy)
+    public function setBullet($userId,$x, $y, $vx, $vy)
     {
 
-        $this->execute("INSERT INTO bullets (x,y,vx,vy) VALUES (?,?,?,?)",
-            [$x, $y, $vx, $vy]);
+        $this->execute("INSERT INTO bullets (bullets.user_id,x,y,vx,vy) VALUES (?,?,?,?,?)",
+            [$userId,$x, $y, $vx, $vy]);
     }
 
     public function DeleteBullet($id)
