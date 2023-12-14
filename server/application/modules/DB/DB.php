@@ -78,6 +78,7 @@ class DB
     {
         return $this->query("SELECT * FROM users WHERE email=?", [$email]);
     }
+
     public function getUserById($id)
     {
         return $this->query("SELECT * FROM users WHERE id=?", [$id]);
@@ -106,6 +107,7 @@ class DB
             [$login, $hash, $name, $email, $uuid]
         );
     }
+
     public function getInfoMatch($status)
     {
         return $this->query("SELECT * FROM `match` WHERE status = ?", [$status]);
@@ -153,17 +155,16 @@ VALUES (?,?, now())', [$id, $message]);
 
     public function getBullets() //
     {
-        return $this->queryAll("SELECT  u.bullet_id AS bullet_id,u.user_id AS user_id, 
-        b.x AS x,b.y AS y,b.vx AS vx,b.vy AS vy
-        FROM bullets as b LEFT JOIN usersBullets as u on u.bullet_id = b.id
-        ORDER BY u.bullet_id");
+        return $this->queryAll("
+                SELECT id, user_id ,
+                x, y, vx, vy FROM bullets");
     }
 
-    public function setBullet($userId,$x, $y, $vx, $vy)
+    public function setBullet($userId, $x, $y, $vx, $vy)
     {
 
         $this->execute("INSERT INTO bullets (bullets.user_id,x,y,vx,vy) VALUES (?,?,?,?,?)",
-            [$userId,$x, $y, $vx, $vy]);
+            [$userId, $x, $y, $vx, $vy]);
     }
 
     public function DeleteBullet($id)
@@ -199,7 +200,7 @@ ORDER BY u.bullet_id");
             "INSERT INTO players (user_id, team_id, status)
                  VALUES (?, ?, ?)
                  ON DUPLICATE KEY UPDATE user_id = VALUES(user_id)",
-                 [$id, $teamId, $status]);
+            [$id, $teamId, $status]);
     }
 
 
@@ -310,7 +311,7 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE game SET update_timestamp=? WHERE id=1", [$timestamp]);
     }
-    
+
 
     public function decreaseHp($playerId, $dHp)
     {
