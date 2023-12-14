@@ -2,8 +2,7 @@ import { Animator } from "../Sprites/Animator";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
 import HealthBar from "./HealthBar";
 import { TPlayer } from "../../../modules/Server/types";
-import { useEffect, useRef } from "react";
-import { Vector3 } from "three";
+import { useRef } from "react";
 
 const Dummy = ({
     x,
