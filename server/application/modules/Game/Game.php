@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '/SpawnPoints/SpawnPoints.php';
 
 class Game
@@ -109,11 +110,11 @@ class Game
 
     private function updateScene($timeout, $timestamp)
     {
-        $time = time() - $timestamp;
+
+        $time = microtime() - $timestamp;
         if ($time >= $timeout) {
             $this->db->updateTimestamp(time());
             $this->spawnPlayers();
-            $players = $this->db->getAllInfoPlayers();
 
 
 ////            // пробежаться по всем игрокам
@@ -178,27 +179,30 @@ class Game
         $timeStart = time();
         $timeEnd = $timeStart + $time;
         $this->db->startMatch($timeStart, $timeEnd);
-        return [
-            'timeStart' => $timeStart,
-            'timeEnd' => $timeEnd,
-        ];
+        return
+            [
+                'timeStart' => $timeStart,
+                'timeEnd' => $timeEnd,
+            ];
     }
 
-    private function endMatch($timeEnd, $status)
+    private function endMatch()
     {
-        $time = time();
-        if ($time == $timeEnd || $time + 5 == $timeEnd) {
-            $this->db->endMatch($timeEnd, 'EndMatch');
-            return [
-                'endMatch' => true
-            ];
+        $matchInfo = $this->db->getInfoMatch("Matching");
+        if ($matchInfo->status == "Matching") {
+            $timeEnd = $matchInfo->time_end;
+            $time = time();
+            if ($time == $timeEnd || $time + 5 == $timeEnd) {
+                return true;
+            }
         }
+
         return false;
     }
 
-    public function setBullet($x, $y, $vx, $vy)
+    public function setBullet($userId, $x, $y, $vx, $vy)
     {
-        $this->db->setBullet($x, $y, $vx, $vy);
+        $this->db->setBullet($userId, $x, $y, $vx, $vy);
         $hash = $this->genHash();
         $this->db->updateBulletsHash($hash);
         return true;
