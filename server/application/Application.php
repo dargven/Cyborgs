@@ -8,10 +8,10 @@ require_once 'modules/Chat/Chat.php';
 
 class Application
 {
-    private User $user;
-    private Chat $chat;
-    private Game $game;
-    private Lobby $lobby;
+    private $user;
+    private $chat;
+    private $game;
+    private $lobby;
 
     public function __construct()
     {
@@ -310,12 +310,13 @@ class Application
         return ['error' => 242];
     }
 
-    function setHit($params){
+    function setHit($params)
+    {
         $token = $params['playerId'];
         $bulletId = $params['bulletId'];
-        if($token && $bulletId){
+        if ($token && $bulletId) {
             $user = $this->user->getUserByToken($token);
-            if($user){
+            if ($user) {
                 return $this->game->setHit($user->id, $bulletId);
             }
         }

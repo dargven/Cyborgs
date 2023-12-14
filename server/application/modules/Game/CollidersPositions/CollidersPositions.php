@@ -2,7 +2,7 @@
 
 class CollidersPositions
 {
-    static array $collidersPositions = [
+    static  $collidersPositions = [
         ['x' => -17, 'y' => 27.25, 'width' => 13, 'height' => 6.5],
         ['x' => -23.25, 'y' => 11, 'width' => 0.5, 'height' => 13],
         ['x' => -16.75, 'y' => -11, 'width' => 13.5, 'height' => 5],

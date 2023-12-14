@@ -26,6 +26,9 @@ const App: React.FC = () => {
             const isAutoLogin = await server.autoLogin()
             if (isAutoLogin) {
                 store.setAuth()
+            }else
+            {
+                localStorage.removeItem('token')
             }
         }
     }

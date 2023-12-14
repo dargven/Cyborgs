@@ -2,7 +2,7 @@
 
 class Lobby
 {
-    private DB $db;
+    private  $db;
 
     public function __construct($db)
     {
