@@ -3,7 +3,7 @@
 
 
 import { Html, Text } from "@react-three/drei"
-import { TPlayer } from "../../modules/Server/types"
+import { TPlayer } from "../../../modules/Server/types"
 
 interface IDebug {
     player: TPlayer,

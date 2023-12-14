@@ -1,5 +1,5 @@
 import { Vector3 } from "three";
-import Collider, { ICollider } from "../../modules/Game/entities/Collider";
+import Collider, { ICollider } from "../../../modules/Game/entities/Collider";
 
 const CollidersPositions = () => {
     const colliders: ICollider[] = [

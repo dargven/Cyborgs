@@ -46,7 +46,7 @@ const Chat = ({StopMove}: IChat) => {
     };
 
     useEffect(() => {
-        const interval = setInterval(updateChat, 150);
+        const interval = setInterval(updateChat, 2500);
         return () => {
             clearInterval(interval);
         };

@@ -17,6 +17,15 @@ const GamePage = () => {
 
     const [team, setTeam] = useState<0 | 1 | null>(null);
 
+    const handleTeam = async (teamId: 0 | 1) => {
+        if(teamId == 0 || teamId == 1){
+            const STeam = await server.selectTeam(teamId)
+            if(STeam) {
+                setTeam(teamId)
+            }
+        }
+    }
+
     const StopMove = () => {
         setStopMove((prevState) => ({
             ...prevState,
@@ -42,10 +51,10 @@ const GamePage = () => {
                 <Game/>
             ) : (
                 <>
-                    <button onClick={() => setTeam(0)} className="Team1">
+                    <button onClick={() => handleTeam(0)} className="Team1">
                         команда 1
                     </button>
-                    <button onClick={() => setTeam(1)} className="Team2">
+                    <button onClick={() => handleTeam(1)} className="Team2">
                         команда 2
                     </button>
                 </>

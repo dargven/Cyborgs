@@ -29,16 +29,14 @@ export type TGetMessages = {
 
 export type TPlayer = {
     token: string;
-    teamId: number;
+    teamId: 0 | 1;
     hp: number;
-    velocity: Vector3;
     x: number;
     y: number;
     vx: number;
     vy: number;
-    dx?: number;
-    dy?: number;
-    isControlled?:boolean;
+    dx: number;
+    dy: number;
 }
 
 export type TBullet = {

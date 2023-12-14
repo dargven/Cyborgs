@@ -21,20 +21,20 @@ const App: React.FC = () => {
     const server = new Server(HOST, store);
     const token = getToken()
 
-    // const handleAutoLogin = async () => {
-    //     if (token) {
-    //         const isAutoLogin = await server.autoLogin()
-    //         if (isAutoLogin) {
-    //             store.setAuth()
-    //         }
-    //     }
-    // }
+    const handleAutoLogin = async () => {
+        if (token) {
+            const isAutoLogin = await server.autoLogin()
+            if (isAutoLogin) {
+                store.setAuth()
+            }
+        }
+    }
 
-    // useEffect(() => {
-    //     if (token) {
-    //         handleAutoLogin()
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (token) {
+            handleAutoLogin()
+        }
+    }, [])
 
     return (
         <StoreContext.Provider value={store}>
