@@ -95,10 +95,6 @@ class Game
         return $this->db->getBullets();
     }
 
-    private function endMatch(mixed $timeEnd, string $string)
-    {
-        $this->db->endMatch($timeEnd, 'EndMatch');
-    }
 
     public function getObjects()
     {
@@ -182,19 +178,23 @@ class Game
         $timeStart = time();
         $timeEnd = $timeStart + $time;
         $this->db->startMatch($timeStart, $timeEnd);
-        $time = time();
-        if ($time == $timeEnd || $time + 5 == $timeEnd) {
-            $this->endMatch($timeEnd, 'EndMatch');
-            return [
-                'endMatch' => true
-            ];
-        }
         return [
             'timeStart' => $timeStart,
             'timeEnd' => $timeEnd,
         ];
     }
 
+    private function endMatch($timeEnd, $status)
+    {
+        $time = time();
+        if ($time == $timeEnd || $time + 5 == $timeEnd) {
+            $this->db->endMatch($timeEnd, 'EndMatch');
+            return [
+                'endMatch' => true
+            ];
+        }
+        return false;
+    }
 
     public function setBullet($x, $y, $vx, $vy)
     {
