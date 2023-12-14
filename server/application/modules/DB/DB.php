@@ -186,9 +186,11 @@ ORDER BY u.bullet_id");
 
     }
 
-    public function addPlayer($id, $teamId)
+    public function addPlayer($id, $teamId, $status = 'WaitToSpawn')
     {
-        $this->execute("INSERT INTO players (user_id, team_id) VALUES (?, ?)", [$id, $teamId]);
+        $this->execute("INSERT INTO players (user_id, team_id) VALUES (?, ?);
+                            UPDATE players SET status = ? WHERE user_id = ?",             
+            [$id, $teamId, $status, $id]);
     }
 
 
