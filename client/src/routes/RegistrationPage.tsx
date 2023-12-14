@@ -1,6 +1,5 @@
 import {Navigate} from "react-router-dom";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
-import NavBar from "../components/navBar";
 import useAuth from "../hooks/useAuth";
 import Loading from "../components/loading";
 import "../Auth.css";
