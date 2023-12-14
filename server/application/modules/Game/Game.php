@@ -17,25 +17,26 @@ class Game
         $this->db = $db;
         $this->teamASpawnPoints = SpawnPoints::$spawnPoints[0];
         $this->teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
-        $this->colliders = CollidersPositions::$collidersPositions;
+//        $this->colliders = CollidersPositions::$collidersPositions;
     }
 
-    private function checkHitCollider()
-    {
-        $bullets = $this->getBullets();
-        $colliders = $this->colliders;
-        $bulletInCollider = [];
-
-        foreach ($bullets as $bullet) {
-            foreach ($colliders as $collider) {
-                if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
-                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
-                    $bulletInCollider[] = $bullet['id'];
-                }
-            }
-        }
-        return $bulletInCollider;
-    }
+//    private function checkHitCollider()
+//    {
+//        $bullets = $this->getBullets();
+//        $colliders = $this->colliders;
+//        $bulletInCollider = [];
+//
+//        foreach ($bullets as $bullet) {
+//            foreach ($colliders as $collider) {
+//                if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
+//                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
+//                    $bulletInCollider[] = $bullet['id'];
+//                }
+//            }
+//        }
+//        return $bulletInCollider;
+//    }
+//    
 
     private function genHash()
     {
@@ -82,7 +83,7 @@ class Game
     }
 
 
-    private function getFreeSpawnPoint($spawnPoints, $usedSpawnPoints)//$playerX, $playerY,)
+    private function getFreeSpawnPoint($spawnPoints, $usedSpawnPoints) //$playerX, $playerY,)
     {
         foreach ($spawnPoints as $spawnPoint) {
             if (!in_array($spawnPoint, $usedSpawnPoints)) {//&& $this->checkFreePosition($playerX, $playerY, $spawnPoint['x'], $spawnPoint['y'])) {
@@ -137,12 +138,12 @@ class Game
         if ($time >= $timeout) {
             $this->db->updateTimestamp(time());
             $this->spawnPlayers();
-            $hitsBulletsIdInWall = $this->checkHitCollider();
-            if ($hitsBulletsIdInWall) {
-                foreach ($hitsBulletsIdInWall as $hitBulletIdInWall) {
-                    $this->db->DeleteBullet($hitBulletIdInWall);
-                }
-            }
+//            $hitsBulletsIdInWall = $this->checkHitCollider();
+//            if ($hitsBulletsIdInWall) {
+//                foreach ($hitsBulletsIdInWall as $hitBulletIdInWall) {
+//                    $this->db->DeleteBullet($hitBulletIdInWall);
+//                }
+//            }
 
 
 ////            // пробежаться по всем игрокам

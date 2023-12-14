@@ -310,5 +310,17 @@ class Application
         return ['error' => 242];
     }
 
+    function test($params)
+    {
+        $bullets = '';
+            if ($bullets && is_array($bullets)) {
+                return $this->game->test($bullets);
+            }
+            
+        return ['error' => 20232324];
+
+
+    }
+
 
 }
