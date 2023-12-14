@@ -151,19 +151,21 @@ const Player = ({
                     materialRotation={rot}
                 />
 
-                <BallCollider args={[0.5]} restitution={0}
+                <BallCollider
+                    args={[0.5]}
+                    restitution={0}
                     onIntersectionEnter={(e) => {
-                        // const data: any = e.other.rigidBody?.userData;
-                        // if (data.type === "projectile") {
-                        //     const damage = data.team === teamId ? data.damage / 2 : data.damage;
-                        //     if (hp - damage < 0) {
-                        //         setState({ ...state, hp: 0 });
-                        //     } else {
-                        //         setState({ ...state, hp: hp - damage });
-                        //     }
-                        // }
+                        const data: any = e.other.rigidBody?.userData;
+                        if (data.type === "bullet") {
+                            if (state.hp - 20 < 0) {
+                                setState({ ...state, hp: 0 });
+                            } else {
+                                setState({ ...state, hp: hp - 20 });
+                                // в меня попали - отправь инфу на сервер
+                            }
+                        }
                     }} />
-                <HealthBar value={hp} color={0xff0000} />
+                <HealthBar value={state.hp} color={0xff0000} />
             </RigidBody>
         </group>
     );
