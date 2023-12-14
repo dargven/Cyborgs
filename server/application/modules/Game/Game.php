@@ -172,7 +172,6 @@ class Game
     public function startMatch($MatchId, $time = 180)
     {
 
-
     }
 
     public function setBullet($x, $y, $vx, $vy)
