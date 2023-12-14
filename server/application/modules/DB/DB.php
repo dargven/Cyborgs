@@ -115,7 +115,7 @@ VALUES (?,?)", [$timeStart, $timeEnd]);
         $this->execute("UPDATE `match` SET status =? WHERE time_end=?;
                             DELETE FROM players;
                             DELETE FROM bullets;",
-                            [$status, $timeEnd]
+                            [$status, $timeEnd]  //
                         );
     }
 
