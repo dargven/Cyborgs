@@ -15,7 +15,7 @@ import Bullet from "./Bullet/Bullet";
 import Dummy from "./Player/Dummy";
 import Game from "../../modules/Game/Game";
 
-interface ITextureObject {
+export interface ITextureObject {
     [key: string]: Texture
 }
 
@@ -30,7 +30,7 @@ const Scene = () => {
 
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load('./assets/Bullets/Projectile.png');
-    const room = textureLoader.load('./assets/rooms/map-office-plain.png');
+    const room = textureLoader.load('./assets/rooms/cyborgs-office.png');
     const glass = textureLoader.load('./assets/Map parts/Glass.png');
 
     const [textures] = useState<ITextureObject>({
@@ -138,7 +138,7 @@ const Scene = () => {
 
     return (
         <group>
-            <Physics gravity={[0, 0, 0]} colliders="hull" debug>
+            <Physics gravity={[0, 0, 0]} colliders="hull">
 
                 {/* {player.current && <Debug player={player.current} debugRef={debugRef} />} */}
 
