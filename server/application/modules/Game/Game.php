@@ -26,15 +26,15 @@ class Game
         $colliders = $this->colliders;
         $bulletInCollider = [];
 
-        foreach($bullets as $bullet)
-        {
-            foreach($colliders as $collider)
-            {
-                if($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) && 
-                $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['heigth'])) $bulletInCollider[] = $bullet['id'];
-                return $bulletInCollider;
+        foreach ($bullets as $bullet) {
+            foreach ($colliders as $collider) {
+                if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
+                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
+                    $bulletInCollider[] = $bullet['id'];
+                }
             }
         }
+        return $bulletInCollider;
     }
 
     private function genHash()
@@ -138,13 +138,11 @@ class Game
             $this->db->updateTimestamp(time());
             $this->spawnPlayers();
             $hitsBulletsIdInWall = $this->checkHitCollider();
-            if($hitsWalls){
-                foreach($hitsBulletsIdInWall as $hitBulletIdInWall)
-                {
-                    $this->db->DeleteBullet($hitBulletIdInWall)
+            if ($hitsBulletsIdInWall) {
+                foreach ($hitsBulletsIdInWall as $hitBulletIdInWall) {
+                    $this->db->DeleteBullet($hitBulletIdInWall);
                 }
             }
-
 
 
 ////            // пробежаться по всем игрокам
