@@ -1,39 +1,191 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/SpawnPoints/SpawnPoints.php';
+require_once __DIR__ . '/CollidersPositions/CollidersPositions.php';
+
 class Game
 {
     private DB $db;
     private array $teamASpawnPoints;
     private array $teamBSpawnPoints;
+    private array $colliders;
 
     public function __construct($db)
     {
         $this->db = $db;
         $this->teamASpawnPoints = SpawnPoints::$spawnPoints[0];
         $this->teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
+        $this->colliders = CollidersPositions::$collidersPositions;
     }
+
+    private function checkHitCollider()
+    {
+        $bullets = $this->getBullets();
+        $colliders = $this->colliders;
+        $bulletInCollider = [];
+
+        foreach ($bullets as $bullet) {
+            foreach ($colliders as $collider) {
+                if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
+                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
+                    $bulletInCollider[] = $bullet['id'];
+                }
+            }
+        }
+        return $bulletInCollider;
+    }
+    
 
     private function genHash()
     {
         return md5(rand(0, 1000000));
     }
+//    private function checkHit()
+//    {
+//        $players = $this->db->getAllInfoPlayers();
+//        $bullets = $this->getBullets();
+//        $onPointIds = array();
+//
+//        foreach ($bullets as $bullet)
+//        {
+//            foreach ($players as $player)
+//            {
+//                if ((sqrt(($bullet['x']**2)+($bullet['y']**2)))<=((sqrt(($player['x']**2)+($player['y']**2)))+1))
+//                {
+//                    $onPointIds[] = array(
+//                        'bullet_id' => $bullet["id"], 
+//                        'player_id' => $player["user_id"]
+//                    );
+//                }
+//            }
+//        }
+//        $this->setHit($onPointIds);
+//    }
 
-    private function updateScene($timeout, $timestamp) {
-        if (time() - $timestamp >= $timeout) {
+    public function setHit($playerId, $bulletId)
+    {        
+            $this->decreaseHp($playerId, 20);
+            $this->db->DeleteBullet($bulletId);
+            return true;
+    }
+
+    private function spawnPlayers()
+    {
+        $players = $this->db->getAllInfoPlayers();
+        $usedSpawnPoints = [];
+        foreach ($players as $player) {
+            if ($player['status'] == 'WaitToSpawn') {
+                if ($player['team_id'] == 0) {
+                    $spawnPoint = $this->getFreeSpawnPoint($player['x'], $player['y'], $this->teamASpawnPoints, $usedSpawnPoints);
+                    if ($spawnPoint !== null) {
+                        $this->db->spawnPlayer($player['user_id'], $spawnPoint['x'], $spawnPoint['y']);
+                        $this->db->setStatus($player['user_id'], 'Live');
+                        $usedSpawnPoints[] = $spawnPoint;
+                    }
+                } else if ($player['team_id'] == 1) {
+                    $spawnPoint = $this->getFreeSpawnPoint($player['x'], $player['y'], $this->teamBSpawnPoints, $usedSpawnPoints);
+                    if ($spawnPoint !== null) {
+                        $this->db->spawnPlayer($player['user_id'], $spawnPoint['x'], $spawnPoint['y']);
+                        $this->db->setStatus($player['user_id'], 'Live');
+                        $usedSpawnPoints[] = $spawnPoint;
+                    }
+                }
+            } else if ($player['status'] == 'Death') {
+                if ($player['team_id'] == 0) {
+                    $spawnPoint = $this->teamASpawnPoints[array_rand($this->teamASpawnPoints)];
+                    $this->db->spawnPlayer($player['user_id'], $spawnPoint['x'], $spawnPoint['y']);
+                    $this->db->setStatus($player['user_id'], 'Live');
+
+                } else if ($player['team_id'] == 1) {
+                    $spawnPoint = $this->teamBSpawnPoints[array_rand($this->teamASpawnPoints)];
+                    $this->db->spawnPlayer($player['user_id'], $spawnPoint['x'], $spawnPoint['y']);
+                    $this->db->setStatus($player['user_id'], 'Live');
+                }
+            }
+        }
+
+
+    }
+
+
+    private function getFreeSpawnPoint($spawnPoints, $usedSpawnPoints) //$playerX, $playerY,)
+    {
+        foreach ($spawnPoints as $spawnPoint) {
+            if (!in_array($spawnPoint, $usedSpawnPoints)) {//&& $this->checkFreePosition($playerX, $playerY, $spawnPoint['x'], $spawnPoint['y'])) {
+                return $spawnPoint;
+            }
+        }
+        return null;
+    }
+
+    private function decreaseHp($playerId, $dHp = 20)
+    {
+        $player = $this->db->getUserByUserId($playerId);
+        if (!($player->hp - $dHp <= 0)) {
+            $this->db->decreaseHp($playerId, $dHp);
+        } else if ($player->hp - $dHp <= 0 || $player->hp == 0) {
+            $this->setDeath($player);
+        }
+
+    }
+
+    private function setDeath($player)
+    {
+        $this->db->setStatus($player, 'Death');
+        $teamId = $player->team_id;
+        if ($teamId == 0) {
+            $this->db->updateScoreInTeam(0, 10);
+        } else $this->db->updateScoreInTeam(1, 10);
+    }
+
+
+    private function getBullets()
+    {
+        return $this->db->getBullets();
+    }
+
+
+    public function getObjects()
+    {
+        return $this->db->getObjects();
+    }
+
+    public function getPlayers() // deploy погуглить
+    {
+        return $this->db->getPlayers();
+    }
+
+
+    private function updateScene($timeout, $timestamp)
+    {
+
+        $time = intval(microtime()) - $timestamp;
+        if ($time >= $timeout) {
             $this->db->updateTimestamp(time());
-//            // пробежаться по всем игрокам
-//            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы
-//
-//            // пробежаться по всем пулям
-//            // если у пули статус "куда-то попала" - удалить её
-//
-//            // пробежаться по всем игрокам
-//            // если пуля убила игрока, то поменять его статус на "умер"
-//            // поменять статус пули на "куда-то попала"
-//            // записать запись об убийстве игрока в stats
-//            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
-//            //$players = $this->getPlayers();
-//            //$bullets = $this->getBullets();
+            $this->spawnPlayers();
+//            $hitsBulletsIdInWall = $this->checkHitCollider();
+//            if ($hitsBulletsIdInWall) {
+//                foreach ($hitsBulletsIdInWall as $hitBulletIdInWall) {
+//                    $this->db->DeleteBullet($hitBulletIdInWall);
+//                }
+//            }
+
+
+////            // пробежаться по всем игрокам
+////            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы // или поменять статус на мертв
+////
+////            // пробежаться по всем пулям
+////            // если у пули статус "куда-то попала" - удалить её
+////
+////            // пробежаться по всем игрокам
+////            // если пуля убила игрока, то поменять его статус на "умер"
+////            // поменять статус пули на "куда-то попала"
+////            // записать запись об убийстве игрока в stats
+////            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
+////            //$players = $this->getPlayers();
+////            //$bullets = $this->getBullets();
             return true;
         }
         return false;
@@ -62,76 +214,52 @@ class Game
         if ($hashes->players_hash !== $playersHash) {
             $players = $this->getPlayers();
             $scene['scene']['players'] = $players;
-            $scene['hashes']['playersHash'] = $playersHash;
+            $scene['hashes']['playersHash'] = $hashes->players_hash;
         }
         if ($hashes->objects_hash !== $objectsHash) {
             $objects = $this->getObjects();
             $scene['scene']['objects'] = $objects;
-            $scene['hashes']['objectsHash'] = $objectsHash;
+            $scene['hashes']['objectsHash'] = $hashes->objects_hash;
         }
         if ($hashes->bullets_hash !== $bulletsHash) {
             $bullets = $this->getBullets();
             $scene['scene']['bullets'] = $bullets;
-            $scene['hashes']['bulletsHash'] = $bulletsHash;
+            $scene['hashes']['bulletsHash'] = $hashes->bullets_hash;
         }
         return $scene;
     }
 
-    public function getBullets()
-    {
-        return $this->db->getBullets();
-    }
 
-    public function getObjects()
+    public function startMatch($time = 180)
     {
-        return $this->db->getObjects();
-    }
-
-    public function getPlayers()
-    {
-        return $this->db->getPlayers();
-    }
-//    public function setPlayer($id, $x, $y, $vx, $vy)
-//    {
-//        return $this->db->setPlayer($id, $x, $y, $vx, $vy);
-//    }
-
-    public function spawnPlayers($id, $x, $y)
-    {
-        $spawnCoordinates = SpawnPoints::$spawnPoints[$id];
-        if (isset($spawnCoordinates)) {
-            $playerCoordinates = [
-            'x' => $x,
-            'y' => $y
+        $timeStart = time();
+        $timeEnd = $timeStart + $time;
+        $this->db->startMatch($timeStart, $timeEnd);
+        return
+            [
+                'timeStart' => $timeStart,
+                'timeEnd' => $timeEnd,
             ];
-            $playerCoordinates = $spawnCoordinates[array_rand($spawnCoordinates)];
-            return $playerCoordinates;
+    }
+
+    private function endMatch()
+    {
+        $matchInfo = $this->db->getInfoMatch("Matching");
+        if ($matchInfo->status == "Matching") {
+            $timeEnd = $matchInfo->time_end;
+            $time = time();
+            if ($time == $timeEnd || $time + 5 == $timeEnd) {
+                return true;
+            }
         }
+
+        return false;
     }
 
-    public function reSpawn($playerId)
+    public function setBullet($userId, $x, $y, $vx, $vy)
     {
-        $teamId = $this->db->getTeamByPlayerId($playerId)->teamId;
-        if ($teamId === 0) $coords = $this->teamASpawnPoints[rand(0,4)];
-        else $coords = $this->teamBSpawnPoints[rand(0,4)];
-        $this->db->spawnPlayer($playerId, $coords['x'], $coords['y']);
-        return true;
-    }
-
-
-    public function startMatch($MatchId, $time = 180)
-    {
-
-    }
-
-    public function setKill($id)
-    {
-
-    }
-
-    public function setBullet($x, $y, $vx, $vy)
-    {
-        $this->db->setBullet($x, $y, $vx, $vy);
+        $bulletId = 
+        $this->db->setBullet($userId, $x, $y, $vx, $vy);
         $hash = $this->genHash();
         $this->db->updateBulletsHash($hash);
         return true;
@@ -160,42 +288,6 @@ class Game
         }
         return ['error' => 800];
     }
-//    private function updateScoreInTeam($teamId, $score): true|array
-//    {
-//        $this->db->updateScoreInTeam($teamId, $score);
-//        $team = $this->db-> chekAndGetWinTeam($teamId);
-//        if($team){
-//          //  $this->db->endGame();
-//            return array(
-//                'team_id' => $team,
-//            );
-//        }
-//        else{
-//            return true;
-//        }
-//    }
 
-//    public function getSkins($id)
-//    {
-//        $skins = $this->db->getSkins($id);
-//        if ($skins) {
-//            return [
-//                'skins' => [
-//                    'skin_id' => $skins->skin_id,
-//                    'text' => $skins->text
-//                ],
-//                'numberOfSkins' => $skins->cnt // Почти всегда будет два, пока не реализуем что-то дополнительное
-//            ];
-//        }
-//        return ['error' => 700];
-//    }
-
-
-//    public function setSkin($id, $skinId)
-//    {
-//        $this->db->setSkin($id, $skinId);
-//        return true;
-//    }
-
-
+    
 }

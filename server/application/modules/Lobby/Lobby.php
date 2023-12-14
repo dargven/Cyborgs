@@ -12,7 +12,7 @@ class Lobby
     public function selectTeam($id, $teamId)
     {
         if ($teamId == 1 || $teamId == 0) {
-            $this->db->addPlayerToTeam($id, $teamId);
+            $this->db->addPlayer($id, $teamId);
             return true;
         }
         return ['error' => 605];
