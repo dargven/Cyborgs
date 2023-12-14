@@ -17,60 +17,58 @@ class Game
         $this->db = $db;
         $this->teamASpawnPoints = SpawnPoints::$spawnPoints[0];
         $this->teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
-//        $this->colliders = CollidersPositions::$collidersPositions;
+        $this->colliders = CollidersPositions::$collidersPositions;
     }
 
-//    private function checkHitCollider()
-//    {
-//        $bullets = $this->getBullets();
-//        $colliders = $this->colliders;
-//        $bulletInCollider = [];
-//
-//        foreach ($bullets as $bullet) {
-//            foreach ($colliders as $collider) {
-//                if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
-//                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
-//                    $bulletInCollider[] = $bullet['id'];
-//                }
-//            }
-//        }
-//        return $bulletInCollider;
-//    }
-//    
+    private function checkHitCollider()
+    {
+        $bullets = $this->getBullets();
+        $colliders = $this->colliders;
+        $bulletInCollider = [];
+
+        foreach ($bullets as $bullet) {
+            foreach ($colliders as $collider) {
+                if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
+                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
+                    $bulletInCollider[] = $bullet['id'];
+                }
+            }
+        }
+        return $bulletInCollider;
+    }
+    
 
     private function genHash()
     {
         return md5(rand(0, 1000000));
     }
-    private function checkHit()
-    {
-        $players = $this->db->getAllInfoPlayers();
-        $bullets = $this->getBullets();
-        $onPointIds = array();
+//    private function checkHit()
+//    {
+//        $players = $this->db->getAllInfoPlayers();
+//        $bullets = $this->getBullets();
+//        $onPointIds = array();
+//
+//        foreach ($bullets as $bullet)
+//        {
+//            foreach ($players as $player)
+//            {
+//                if ((sqrt(($bullet['x']**2)+($bullet['y']**2)))<=((sqrt(($player['x']**2)+($player['y']**2)))+1))
+//                {
+//                    $onPointIds[] = array(
+//                        'bullet_id' => $bullet["id"], 
+//                        'player_id' => $player["user_id"]
+//                    );
+//                }
+//            }
+//        }
+//        $this->setHit($onPointIds);
+//    }
 
-        foreach ($bullets as $bullet)
-        {
-            foreach ($players as $player)
-            {
-                if ((sqrt(($bullet['x']**2)+($bullet['y']**2)))<=((sqrt(($player['x']**2)+($player['y']**2)))+1))
-                {
-                    $onPointIds[] = array(
-                        'bullet_id' => $bullet["id"], 
-                        'player_id' => $player["user_id"]
-                    );
-                }
-            }
-        }
-        $this->setHit($onPointIds);
-    }
-
-    public function setHit($arrayPlayersBullets)
+    public function setHit($playerId, $bulletId)
     {        
-        foreach ($arrayPlayersBullets as $value)
-        {
-            $this->decreaseHp($value['player_id'], 20);
-            $this->db->DeleteBullet($value['bullet_id']);
-        }   
+            $this->decreaseHp($playerId, 20);
+            $this->db->DeleteBullet($bulletId);
+            return true;
     }
 
     private function spawnPlayers()
@@ -260,6 +258,7 @@ class Game
 
     public function setBullet($userId, $x, $y, $vx, $vy)
     {
+        $bulletId = 
         $this->db->setBullet($userId, $x, $y, $vx, $vy);
         $hash = $this->genHash();
         $this->db->updateBulletsHash($hash);
@@ -290,43 +289,5 @@ class Game
         return ['error' => 800];
     }
 
-
-//    private function updateScoreInTeam($teamId, $score): true|array
-//    {
-//        $this->db->updateScoreInTeam($teamId, $score);
-//        $team = $this->db-> chekAndGetWinTeam($teamId);
-//        if($team){
-//          //  $this->db->endGame();
-//            return array(
-//                'team_id' => $team,
-//            );
-//        }
-//        else{
-//            return true;
-//        }
-//    }
-
-//    public function getSkins($id)
-//    {
-//        $skins = $this->db->getSkins($id);
-//        if ($skins) {
-//            return [
-//                'skins' => [
-//                    'skin_id' => $skins->skin_id,
-//                    'text' => $skins->text
-//                ],
-//                'numberOfSkins' => $skins->cnt // Почти всегда будет два, пока не реализуем что-то дополнительное
-//            ];
-//        }
-//        return ['error' => 700];
-//    }
-
-
-//    public function setSkin($id, $skinId)
-//    {
-//        $this->db->setSkin($id, $skinId);
-//        return true;
-//    }
-
-
+    
 }

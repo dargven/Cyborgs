@@ -310,16 +310,15 @@ class Application
         return ['error' => 242];
     }
 
-    function test($params)
-    {
-        $bullets = '';
-            if ($bullets && is_array($bullets)) {
-                return $this->game->test($bullets);
+    function setHit($params){
+        $token = $params['playerId'];
+        $bulletId = $params['bulletId'];
+        if($token && $bulletId){
+            $user = $this->user->getUserByToken($token);
+            if($user){
+                return $this->game->setHit($user->id, $bulletId);
             }
-            
-        return ['error' => 20232324];
-
-
+        }
     }
 
 
