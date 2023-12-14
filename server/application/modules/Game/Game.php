@@ -89,17 +89,23 @@ class Game
         } else $this->db->updateScoreInTeam(1, 10);
     }
 
+
     private function getBullets()
     {
         return $this->db->getBullets();
     }
 
-    private function getObjects()
+    private function endMatch(mixed $timeEnd, string $string)
+    {
+        $this->db->endMatch($timeEnd, 'EndMatch');
+    }
+
+    public function getObjects()
     {
         return $this->db->getObjects();
     }
 
-    private function getPlayers() // deploy погуглить
+    public function getPlayers() // deploy погуглить
     {
         return $this->db->getPlayers();
     }
@@ -112,9 +118,7 @@ class Game
             $this->db->updateTimestamp(time());
             $this->spawnPlayers();
             $players = $this->db->getAllInfoPlayers();
-            if (count($players) >= 2) {
 
-            }
 
 ////            // пробежаться по всем игрокам
 ////            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы // или поменять статус на мертв
@@ -173,15 +177,16 @@ class Game
     }
 
 
-    public function startMatch($time = 180) // Переделать
+    public function startMatch($time = 180)
     {
         $timeStart = time();
         $timeEnd = $timeStart + $time;
         $this->db->startMatch($timeStart, $timeEnd);
         $time = time();
         if ($time == $timeEnd || $time + 5 == $timeEnd) {
+            $this->endMatch($timeEnd, 'EndMatch');
             return [
-                'matchEnd' => true
+                'endMatch' => true
             ];
         }
         return [
@@ -190,13 +195,6 @@ class Game
         ];
     }
 
-//    public function endMatch($timeEnd){
-//        $this->db->getMatchInfo($timeEnd);
-//        $currentTime = time();
-//        if(){
-//            
-//        }
-//    }
 
     public function setBullet($x, $y, $vx, $vy)
     {
