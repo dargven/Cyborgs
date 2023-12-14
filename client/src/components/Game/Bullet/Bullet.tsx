@@ -2,23 +2,18 @@ import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import { Texture } from "three/src/textures/Texture";
+import { TBullet } from "../../../modules/Server/types";
 
-interface IProjectiileProps {
-    initialSpeed: number;
-    direction: Vector3;
-    initialPosition: Vector3;
+type TBulletProps = {
     texture: Texture;
-    damage: number;
-    team: number;
-}
+} & TBullet;
 
-const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture, team }: IProjectiileProps) => {
+const Bullet = ({ x, y, vx, vy, texture }: TBulletProps) => {
     const bulletRef = useRef<RapierRigidBody>(null!);
     const [isActive, setActive] = useState<boolean>(true);
 
     useEffect(() => {
-        direction.setLength(initialSpeed)
-        bulletRef.current.setLinvel(direction, true);
+        bulletRef.current.setLinvel(new Vector3(vx, vy), true);
     }, []);
 
     return (
@@ -26,26 +21,24 @@ const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture,
             ref={bulletRef}
             lockRotations
             angularDamping={1}
-            position={initialPosition}
+            position={[x, y, 0]}
             ccd
             restitution={0}
             userData={{
-                type: 'projectile',
-                damage: damage,
-                team: team,
+                type: 'projectile'
             }}>
             {isActive ? <group>
                 <BallCollider
                     args={[0.1]}
                     restitution={0}
                     sensor
-                    // onIntersectionEnter={(e) => {
-                    //     const data: any = e.other.rigidBody?.userData;
-                    //     if (data.type === "player" || data.type === "collider") {
-                    //         bulletRef.current.setEnabled(false);
-                    //         setActive(false);
-                    //     }
-                    // }}
+                    onIntersectionEnter={(e) => {
+                        const data: any = e.other.rigidBody?.userData;
+                        if (data.type === "player" || data.type === "collider") {
+                            bulletRef.current.setEnabled(false);
+                            setActive(false);
+                        }
+                    }}
                 />
                 <sprite scale={0.5}>
                     <spriteMaterial map={texture} />
@@ -55,4 +48,4 @@ const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture,
     );
 }
 
-export default Projectile;
+export default Bullet;

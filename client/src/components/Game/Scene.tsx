@@ -11,7 +11,7 @@ import Map from "./Map/Map";
 import MapObjects from "./Map/MapObjects";
 import Obstacle from "./Map/Obstacle";
 import Player from "./Player/Player";
-import Projectile from "./Bullet/Bullet";
+import Bullet from "./Bullet/Bullet";
 import Dummy from "./Player/Dummy";
 import Game from "../../modules/Game/Game";
 
@@ -39,33 +39,25 @@ const Scene = () => {
         'glass': glass,
     });
 
-    const player = useRef<TPlayer>();
+    const timer = useRef<number>(0);
 
-    // const [myBullets, setMyBullets] = useState<TBullet[]>([]);
-    // const [bullets, setBullets] = useState<TBullet[]>([]);
+    const player = useRef<TPlayer>();
+    const [myBullets, setMyBullets] = useState<TBullet[]>([]);
+    const [bullets, setBullets] = useState<TBullet[]>([]);
     const [dummies, setDummies] = useState<TPlayer[]>([]);
-    // const [obstacles, setObstacles] = useState<TDestructible[]>();
 
     const sendBullet = (bullet: TBullet) => {
-        server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
+        server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy);
     }
 
-    // myBullets.forEach((bullet) => {
-    //     server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
-    // });
-
-    // const updatePlayer = useCallback((player: TPlayer) => {
-    //     setMyPlayer(player);
-
-    // }, [myPlayer]);
-
     const sendMyPlayer = async (player: TPlayer) => {
-        await server.setPlayer(player.x, player.y, player.vx, player.vy, 0, 0)
+        await server.setPlayer(player.x, player.y, player.vx, player.vy, 0, 0);
     };
 
     const getScene = async () => {
         const result = await server.getScene();
         if (result?.bullets) {
+            setBullets(result.bullets);
             // bullets.current = result.bullets;
         }
         if (result?.players) {
@@ -99,41 +91,36 @@ const Scene = () => {
         player.current = updated;
     }
 
-    const onMovement = (position: Vector3) => {
-        const cameraPos = new Vector3(position.x + pointer.x, position.y + pointer.y, 7);
+    const onMovement = (x: number, y: number) => {
+        const cameraPos = new Vector3(x + pointer.x, y + pointer.y, 7);
         camera.position.lerp(cameraPos, 0.05);
         camera.updateProjectionMatrix();
-
-        // if (debugRef.current) {
-        //     debugRef.current.position.copy(camera.position).add(positionToCamera);
-        // }
     }
 
-    const onFire = (position: Vector3, team: number) => {
+    const onFire = (x: number, y: number) => {
         const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
 
         // смещение, чтобы игрок не мог расстрелять сам себя, придется фиксить под разные скорости
         direction.setLength(0.6);
-        position.x += direction.x;
-        position.y += direction.y;
-        position.z = 0;
-        direction.setLength(1);
+        x += direction.x;
+        y += direction.y;
+        direction.setLength(15);
 
         const current = Date.now();
 
-        // if (.001 * (current - last) > 1 / inventory[0].rate) {
-        //     const bullet = inventory[0].fire({
-        //         position,
-        //         direction,
-        //         key: `${1337}-${Date.now()}`,
-        //         team
-        //     });
+        if (.001 * (current - timer.current) > 1 / 1) {
+            timer.current = current;
 
-        //     if (bullet) {
-        //         setBullets((bullets) => [...bullets, bullet]);
-        //     }
-        //     setLast(current);
-        // }
+            const bullet: TBullet = {
+                x,
+                y,
+                vx: direction.x,
+                vy: direction.y,
+                bulletId: myBullets.length
+            };
+            sendBullet(bullet);
+            setMyBullets([...myBullets, bullet]);
+        }
     }
 
     const colliders = CollidersPositions();
@@ -155,32 +142,16 @@ const Scene = () => {
                     const token = store.getUser().token;
                     if (player.token !== token) {
                         return <Dummy
+                            {...player}
                             key={player.token}
-                            token={player.token}
-                            teamId={player.teamId}
-                            x={player.x}
-                            y={player.y}
-                            vx={player.vx}
-                            vy={player.vy}
-                            dx={player.dx}
-                            dy={player.dy}
-                            hp={player.hp}
                         />
                     } else {
                         return <Player
-                            hp={player.hp}
+                            {...player}
                             key={token}
-                            token={token}
-                            teamId={player.teamId}
-                            x={player.x}
-                            y={player.y}
-                            vx={player.vx}
-                            vy={player.vy}
-                            dx={player.dx}
-                            dy={player.dy}
                             onMovement={onMovement}
                             updatePlayer={updatePlayer}
-                        // onFire={onFire}
+                            onFire={onFire}
                         />
                     }
                 })}
@@ -192,18 +163,21 @@ const Scene = () => {
                     />
                 )}
 
-                {/* {bullets.map(bullet =>
-                    <Projectile
-                        damage={100}
+                {bullets.map(bullet =>
+                    <Bullet
+                        {...bullet}
                         key={bullet.bulletId}
-                        initialSpeed={10}
-                        initialPosition={new Vector3(bullet.x, bullet.y, 0)}
-                        direction={new Vector3(bullet.vx, bullet.vy)}
                         texture={textures['bullet']}
-                        team={1}
-
                     />
-                )} */}
+                )}
+
+                {myBullets.map(bullet =>
+                    <Bullet
+                        {...bullet}
+                        key={bullet.bulletId}
+                        texture={textures['bullet']}
+                    />
+                )}
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
                     <Map texture={textures['room']} />

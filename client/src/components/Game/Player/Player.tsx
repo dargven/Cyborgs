@@ -8,9 +8,9 @@ import { TPlayer } from "../../../modules/Server/types";
 import { Animator } from "../Sprites/Animator";
 
 export type TPlayerProps = {
-    onFire?(position: Vector3, team: number): void;
-    onMovement(position: Vector3): void;
-    updatePlayer(updated: TPlayer): void
+    onFire(x: number, y: number): void;
+    onMovement(x: number, y: number): void;
+    updatePlayer(updated: TPlayer): void;
 } & TPlayer;
 
 const Player = ({
@@ -24,16 +24,13 @@ const Player = ({
     token,
     hp,
     onMovement,
-    // onFire,
-    // getPosVel,
+    onFire,
     updatePlayer,
 }: TPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
-    // const [isShooting, setShooting] = useState<boolean>(false);
-
-    const [controlKeys, getKeys] = useKeyboardControls();
+    const [_, getKeys] = useKeyboardControls();
 
     const mouseShoot = useRef<boolean>(false);
     const [state, setState] = useState<TPlayer>({
@@ -110,35 +107,12 @@ const Player = ({
         const { up, down, left, right, shoot } = getKeys();
         movementController(up, down, left, right);
 
-        const playerPosition = vec3(ref.current?.translation());
+        onMovement(state.x, state.y);
 
-        if (onMovement) {
-            onMovement(playerPosition);
+        if (shoot || mouseShoot.current) {
+            onFire(state.x, state.y);
         }
-
-        // if (shoot || isShooting) {
-        //     if (onFire) {
-        //         onFire(playerPosition, teamId);
-        //     }
-        // }
-
-
     });
-
-    // useEffect(() => {
-    //     const data = {
-    //         type: 'player',
-    //         team: teamId,
-    //         hp: state.hp,
-    //     }
-
-    //     ref.current.userData = data;
-
-    //     if (state.hp === 0) {
-    //         ref.current.setEnabled(false);
-    //     }
-
-    // }, [state]);
 
     return (
         <group>

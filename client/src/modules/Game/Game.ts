@@ -98,13 +98,9 @@ class Game implements IGame {
         // запрос
     }
 
-    someCode = () => {
-        return console.log('loop')
-    }
-
     loop() {
         this.intervalID = Number(setInterval(() => {
-            console.log('loop');
+            // console.log('loop');
         }, 1000))
 
         console.log(this.intervalID)
