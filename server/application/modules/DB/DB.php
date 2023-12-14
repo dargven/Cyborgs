@@ -106,6 +106,10 @@ class DB
             [$login, $hash, $name, $email, $uuid]
         );
     }
+    public function getInfoMatch($status)
+    {
+        return $this->query("SELECT * FROM `match` WHERE status = ?", [$status]);
+    }
 
     public function startMatch($timeStart, $timeEnd)
     {
@@ -117,13 +121,15 @@ VALUES (?,?)", [$timeStart, $timeEnd]);
     public function endMatch($timeEnd, $status = 'EndMatch')
     {
         $this->execute("UPDATE `match` SET status =? WHERE time_end=?;
-                            DELETE FROM players;
-                            DELETE FROM bullets;",
-                            [$status, $timeEnd]  //
-                        );
+                            UPDATE players SET status=DEFAULT, team_id = DEFAULT, skin_id = DEFAULT, 
+                                               x = DEFAULT, y=DEFAULT,vx =DEFAULT, vy =DEFAULT, 
+                                               dx = DEFAULT, dy=DEFAULT, hp = DEFAULT, kills =DEFAULT;
+                            DELETE FROM bullets;
+",
+            [$status, $timeEnd]  //
+        );
     }
 
-   
 
     public function setPassword($id, $password)
     {
@@ -186,11 +192,14 @@ ORDER BY u.bullet_id");
 
     }
 
-    public function addPlayer($id, $teamId, $status = 'WaitToSpawn')
+    public function addPlayer($id, $teamId)
     {
-        $this->execute("INSERT INTO players (user_id, team_id) VALUES (?, ?);
-                            UPDATE players SET status = ? WHERE user_id = ?",             
-            [$id, $teamId, $status, $id]);
+        $status = 'WaitToSpawn';
+        $this->execute(
+            "INSERT INTO players (user_id, team_id, status)
+                 VALUES (?, ?, ?)
+                 ON DUPLICATE KEY UPDATE user_id = VALUES(user_id)",
+                 [$id, $teamId, $status]);
     }
 
 
@@ -229,7 +238,7 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
         $this->execute("INSERT INTO players (user_id, x, y, vx, vy, dx, dy) VALUES (?, ?, ?, ?, ?, ?, ?) 
 ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), 
       vx = VALUES(vx), vy = VALUES(vy), dx = VALUES(dx), dy = VALUES(dy);
-", [$id, $x, $y, $vx, $vy, $dx, $dy]);
+", [$id, $x, $y, $vx, $vy, $dx, $dy]); // Переписать (без on duplicate key)
     }
 
     public function setStatus($id, $status)
@@ -301,11 +310,7 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE game SET update_timestamp=? WHERE id=1", [$timestamp]);
     }
-
-    public function chekAndGetWinTeam()
-    {
-        return $this->query("SELECT team_id FROM teams WHERE team_score >= 25");
-    }
+    
 
     public function decreaseHp($playerId, $dHp)
     {
