@@ -20,6 +20,36 @@ class Game
         return md5(rand(0, 1000000));
     }
 
+    private function checkHit()
+    {
+        $players = $this->db->getAllInfoPlayers();
+        $bullets = $this->getBullets();
+        $onPointIds = array();
+
+        foreach ($bullets as $bullet)
+        {
+            foreach ($players as $player)
+            {
+                if ((sqrt(($bullet['x']**2)+($bullet['y']**2)))<=((sqrt(($player['x']**2)+($player['y']**2)))+1))
+                {
+                    $onPointIds[] = array(
+                        'bullet_id' => $bullet["id"], 
+                        'player_id' => $player["user_id"]
+                    );
+                }
+            }
+        }
+        $this->setHit($onPointIds);
+    }
+
+    public function setHit($arrayPlayersBullets)
+    {        
+        foreach ($arrayPlayersBullets as $value)
+        {
+            $this->decreaseHp($value['player_id'], 20);
+            $this->db->DeleteBullet($value['bullet_id']);
+        }   
+    }
 
     private function spawnPlayers()
     {
