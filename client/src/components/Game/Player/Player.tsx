@@ -11,6 +11,8 @@ export type TPlayerProps = {
     onFire(x: number, y: number): void;
     onMovement(x: number, y: number): void;
     updatePlayer(updated: TPlayer): void;
+    getDirection?(): Vector3;
+    playerRotation?: number;
 } & TPlayer;
 
 const Player = ({
@@ -26,11 +28,16 @@ const Player = ({
     onMovement,
     onFire,
     updatePlayer,
+    getDirection,
+    playerRotation
 }: TPlayerProps) => {
 
     const ref = useRef<RapierRigidBody>(null!);
 
     const [_, getKeys] = useKeyboardControls();
+
+    const [rot, setRot] = useState<number>(playerRotation ?? 0);
+
 
     const mouseShoot = useRef<boolean>(false);
     const [state, setState] = useState<TPlayer>({
@@ -104,6 +111,12 @@ const Player = ({
     }, []);
 
     useFrame(() => {
+
+        if (getDirection) {
+            const dir = getDirection();
+            setRot(Math.atan2(dir.y, dir.x));
+        }
+
         const { up, down, left, right, shoot } = getKeys();
         movementController(up, down, left, right);
 
@@ -135,6 +148,7 @@ const Player = ({
                     textureImageURL={'./assets/test/Sprite-0001.png'}
                     textureDataURL={'./assets/test/Sprite-0001.json'}
                     alphaTest={0.01}
+                    materialRotation={rot}
                 />
 
                 <BallCollider args={[0.5]} restitution={0}
