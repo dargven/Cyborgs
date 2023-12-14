@@ -24,8 +24,8 @@
 
 h3 {
     font-family: "Zelek";
-    color: rgba(0, 217, 255, 0.432);
-    font-size: 3dvh;
+    color: rgba(255, 255, 255, 0.432);
+    font-size: 6dvh;
 }
 
 .chat-message {
