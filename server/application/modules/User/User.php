@@ -44,9 +44,9 @@ class User
                 $token = $this->genToken();
                 $this->db->updateToken($user->id, $token);
                 return [
-                    'name'  => $user->login,
+                    'name' => $user->login,
                     'token' => $token,
-                    'uuid'  => $user->uuid,
+                    'uuid' => $user->uuid,
                 ];
 //            }
 //            return ['error' => 1005];
@@ -63,7 +63,7 @@ class User
             $token = $this->genToken();
             $this->db->updateToken($user->id, $token);
             return [
-                'name'  => $user->name,
+                'name' => $user->name,
                 'token' => $token,
             ];
         }
@@ -76,8 +76,7 @@ class User
     {
         $user = $this->db->getUserByToken($token);
         if ($user) {
-//            $this->db->deletePlayerInPlayers($token);           //Вернуть для Proda//
-            $this->db->deletePlayerInTeams($token);
+            $this->db->deletePlayer($token);  //Вернуть для Proda//
             $this->db->updateToken($user->id, NULL);
             return true;
         }
@@ -87,13 +86,11 @@ class User
     public function register($login, $hash, $name, $email)
     {
         $user = $this->db->getUserByLogin($login);
-        if (!$user)
-        {
+        if (!$user) {
             $userByEmail = $this->db->getUserByEmail($email);
-            if (!$userByEmail)
-            {
+            if (!$userByEmail) {
                 $uuid = uniqid();
-                $this->db->addUser($login, $hash, $name, $email, $uuid); 
+                $this->db->addUser($login, $hash, $name, $email, $uuid);
                 return true;
             }
             return ['error' => 1006];
@@ -107,7 +104,7 @@ class User
         $email = $user->email;
         $_SESSION['login'] = $login;
         $_SESSION['rndCode'] = $randomNumber;
-        $_SESSION['e-mail']  = $email;
+        $_SESSION['e-mail'] = $email;
         $_SESSION['idUser'] = $user->id;
         if ($this->mailer->sendEmail($email, 'verifCode', 'your Verificitaion code is ' . $randomNumber)) {
             return true;

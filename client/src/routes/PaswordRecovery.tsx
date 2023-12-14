@@ -1,6 +1,6 @@
-import NavBar from "../components/navBar";
-import "../Auth.css";
 import useAuth from "../hooks/useAuth";
+import Loading from "../components/loading";
+import "../Auth.css";
 
 const PasswordRecovery = () => {
     const {
@@ -14,6 +14,7 @@ const PasswordRecovery = () => {
         timeout,
         isButtonDisabled,
         timer,
+        isLoading,
         sendNewHash,
         SetCode,
         Recovery,
@@ -21,7 +22,7 @@ const PasswordRecovery = () => {
 
     return (
         <>
-            <NavBar/>
+        {isLoading && <Loading/>}
             <div className="title">
                 КИБОРГИ <br/> ТЕПЕРЬ В 2D
             </div>

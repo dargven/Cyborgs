@@ -176,8 +176,6 @@ class Application
     }
 
 
-
-
     /******************/
     /* ЖАЛКАЯ ПАРОДИЯ */
     /******************/
@@ -210,7 +208,7 @@ class Application
         if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0) && ($vy || $vy == 0)) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
-                return $this->game->setBullet($x, $y, $vx, $vy);
+                return $this->game->setBullet($user->id, $x, $y, $vx, $vy);
             }
             return ['error' => 1002];
         }
@@ -312,11 +310,16 @@ class Application
         return ['error' => 242];
     }
 
-    function SpawnPlayers($params){
-        $id = $params['id'];
-        $x = $params['x'];
-        $y = $params['y'];
-        return $this->game->spawnPlayers($id, $x, $y);
+    function setHit($params){
+        $token = $params['playerId'];
+        $bulletId = $params['bulletId'];
+        if($token && $bulletId){
+            $user = $this->user->getUserByToken($token);
+            if($user){
+                return $this->game->setHit($user->id, $bulletId);
+            }
+        }
     }
+
 
 }

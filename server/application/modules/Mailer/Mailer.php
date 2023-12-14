@@ -3,6 +3,7 @@
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
 require __DIR__ . '/../../../vendor/autoload.php';
 
@@ -21,13 +22,13 @@ class Mailer
     {
         try {
             $this->mail->isSMTP();
-            $this->mail->Host = 'smtp-relay.brevo.com';
+            $this->mail->Host = $_ENV['Mail_Host'];
             $this->mail->SMTPAuth = true;
-            $this->mail->Username = 'dargvel@gmail.com';
-            $this->mail->Password = 'w95fDd7txYUqmgna';
+            $this->mail->Username = $_ENV['Mail_UserName'];
+            $this->mail->Password = $_ENV['Mail_Password'];
             $this->mail->SMTPSecure = 'tls';
             $this->mail->isHTML(true);
-            $this->mail->Port = 587;
+            $this->mail->Port = $_ENV['Mail_Port'];
 
             $this->mail->setFrom('cyborgs@game.ru', 'Your Cyborgs');
             $this->mail->addAddress($to);
