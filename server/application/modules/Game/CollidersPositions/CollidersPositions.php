@@ -72,5 +72,5 @@ class CollidersPositions
         ['x' => 8.75, 'y' => -13.75, 'width' => 0.5, 'height' => 0.5],
         ['x' => 19.25, 'y' => -6.5, 'width' => 1.5, 'height' => 2],
         ['x' => 22.25, 'y' => -6, 'width' => 1.5, 'height' => 3],
-    ]
+    ];
 }
