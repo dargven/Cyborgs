@@ -5,8 +5,8 @@ require_once __DIR__ . '/../../modules/Mailer/Mailer.php';
 
 class User
 {
-    private DB $db;
-    private Mailer $mailer;
+    private $db;
+    private $mailer;
 
     function __construct($db)
     {
@@ -98,7 +98,7 @@ class User
         return ['error' => 1003];
     }
 
-    public function sendCodeToResetPassword($login, $user): array|true
+    public function sendCodeToResetPassword($login, $user)
     {
         $randomNumber = random_int(10000, 99999);
         $email = $user->email;
@@ -112,7 +112,7 @@ class User
         return ['error' => 707];// could not send message
     }
 
-    public function getCodeToResetPassword($code): array|true
+    public function getCodeToResetPassword($code)
     {
         if (isset($_SESSION['idUser']) && isset($_SESSION['rndCode'])) {
             $id = $_SESSION['idUser'];
@@ -129,7 +129,7 @@ class User
 
     }
 
-    public function setPasswordAfterReset($hash): array|true
+    public function setPasswordAfterReset($hash)
     {
         if (isset($_SESSION['idUser'])) {
             $id = $_SESSION['idUser'];
@@ -143,7 +143,7 @@ class User
 
     }
 
-    public function sendWarningOfAttemptResetPassword(): array|bool
+    public function sendWarningOfAttemptResetPassword()
     {
         if (isset($_SESSION['idUser']) && isset($_SESSION['e-mail'])) {
             $email = $_SESSION['e-mail'];
@@ -152,7 +152,7 @@ class User
         return ['error' => 709];
     }
 
-    public function sendWarningOfReplacePassword(): array|bool
+    public function sendWarningOfReplacePassword()
     {
         if (isset($_SESSION['idUser']) && isset($_SESSION['e-mail'])) {
             $email = $_SESSION['e-mail'];

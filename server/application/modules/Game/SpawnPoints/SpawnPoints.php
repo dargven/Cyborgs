@@ -2,7 +2,7 @@
 
 class SpawnPoints
 {
-    static array $spawnPoints = [
+    static $spawnPoints = [
         0 => [
             [
                 'x' => 22,

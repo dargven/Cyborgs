@@ -7,10 +7,10 @@ require_once __DIR__ . '/CollidersPositions/CollidersPositions.php';
 
 class Game
 {
-    private DB $db;
-    private array $teamASpawnPoints;
-    private array $teamBSpawnPoints;
-    private array $colliders;
+    private $db;
+    private $teamASpawnPoints;
+    private $teamBSpawnPoints;
+    private $colliders;
 
     public function __construct($db)
     {
@@ -36,7 +36,7 @@ class Game
         }
         return $bulletInCollider;
     }
-    
+
 
     private function genHash()
     {
@@ -65,10 +65,10 @@ class Game
 //    }
 
     public function setHit($playerId, $bulletId)
-    {        
-            $this->decreaseHp($playerId, 20);
-            $this->db->DeleteBullet($bulletId);
-            return true;
+    {
+        $this->decreaseHp($playerId, 20);
+        $this->db->DeleteBullet($bulletId);
+        return true;
     }
 
     private function spawnPlayers()
@@ -258,8 +258,8 @@ class Game
 
     public function setBullet($userId, $x, $y, $vx, $vy)
     {
-        $bulletId = 
-        $this->db->setBullet($userId, $x, $y, $vx, $vy);
+        $bulletId =
+            $this->db->setBullet($userId, $x, $y, $vx, $vy);
         $hash = $this->genHash();
         $this->db->updateBulletsHash($hash);
         return true;
@@ -289,5 +289,5 @@ class Game
         return ['error' => 800];
     }
 
-    
+
 }
