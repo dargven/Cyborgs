@@ -1,4 +1,4 @@
-import {Store} from "../Store/Store";
+import { Store } from "../Store/Store";
 import {
     TBullet,
     TDestructible,
@@ -17,16 +17,18 @@ import {
 export default class Server {
     private HOST: string;
     private store: Store;
+    private uuid: string | null;
     private token: string | null;
     private chatHash: string = "123";
     public error: TError;
-    private sceneHashes: TSceneHashes = {bulletsHash: '0', playersHash: '0', objectsHash: '0'};
+
 
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
         this.store = store;
+        this.uuid = localStorage.getItem('uuid');
         this.token = localStorage.getItem('token');
-        this.error = {code: 202, text: " "};
+        this.error = { code: 202, text: " " };
     }
 
     async request<T>(method: string, params: any = {}): Promise<T | null> {
@@ -48,6 +50,7 @@ export default class Server {
         } catch (e) {
             return null;
         }
+
     }
 
     async login(
@@ -55,41 +58,42 @@ export default class Server {
         hash: string,
         rnd: number
     ): Promise<TUser | null> {
-        const result = await this.request<TUser>("login", {login, hash, rnd});
-        if (result?.token) {
+        const result = await this.request<TUser>("login", { login, hash, rnd });
+        if (result?.token && result?.uuid) {
             localStorage.setItem('token', result.token);
-            this.store.setUser(login, result.token);
+            localStorage.setItem('uuid', result.uuid)
+            this.store.setUser(login, result.token, result.uuid);
         }
         return result;
     }
 
     async autoLogin(): Promise<TUser | null> {
-        const result = await this.request<TUser>("autoLogin", {token: this.token});
-        if (result) {
+        const result = await this.request<TUser>("autoLogin", { uuid: this.uuid, token: this.token });
+        if (result?.token) {
             localStorage.setItem('token', result.token);
-            this.store.setUser(result.name, result.token);
+            this.store.setUser(result.name, result.token, result.uuid);
         }
         return result;
     }
 
-    async logout(): Promise<boolean | null> {
-        const result = await this.request<boolean>("logout", {token: this.token});
+    async logout() {
+        const result = await this.request<boolean>("logout", { token: localStorage.getItem('token') });
         if (result) {
             localStorage.removeItem('token')
+            localStorage.removeItem('uuid')
         }
-        return result;
     }
 
     async resetPasswordByEmail(login: string): Promise<boolean | null> {
-        return await this.request<boolean>("sendCodeToResetPassword", {login});
+        return await this.request<boolean>("sendCodeToResetPassword", { login });
     }
 
     async getCodeToResetPassword(code: string): Promise<boolean | null> {
-        return await this.request<boolean>("getCodeToResetPassword", {code});
+        return await this.request<boolean>("getCodeToResetPassword", { code });
     }
 
     async setPasswordAfterReset(hash: string): Promise<boolean | null> {
-        return await this.request<boolean>("setPasswordAfterReset", {hash});
+        return await this.request<boolean>("setPasswordAfterReset", { hash });
     }
 
     sendMessage(message: string): Promise<TMessage | null> {
@@ -117,7 +121,7 @@ export default class Server {
         name: string,
         email: string
     ): Promise<TUser | null> {
-        return this.request<TUser>("register", {login, hash, name, email});
+        return this.request<TUser>("register", { login, hash, name, email });
     }
 
     async selectTeam(teamId: 0 | 1): Promise<TTeam | null> {
@@ -174,7 +178,7 @@ export default class Server {
         return null;
     }
 
-    async setPlayer(x: number, y: number, vx: number, vy: number,dx: number, dy: number): Promise<TPlayer[] | null> {
+    async setPlayer(x: number, y: number, vx: number, vy: number, dx: number, dy: number): Promise<TPlayer[] | null> {
         return this.request<TPlayer[]>('setPlayer', {
             token: this.token,
             x: x,
@@ -186,19 +190,19 @@ export default class Server {
         });
     }
 
-
-
     async getScene(): Promise<TScene | null> {
         const result = await this.request<TGetScene>('getScene',
             {
                 token: this.token,
-                bulletsHash: this.sceneHashes.bulletsHash,
-                playersHash: this.sceneHashes.playersHash,
-                objectsHash: this.sceneHashes.objectsHash,
+                bulletsHash: this.store.sceneHashes.bulletsHash,
+                playersHash: this.store.sceneHashes.playersHash,
+                objectsHash: this.store.sceneHashes.objectsHash,
             });
 
         if (result) {
-            this.sceneHashes = result.hashes;
+            this.store.sceneHashes.bulletsHash = result.hashes.bulletsHash;
+            this.store.sceneHashes.playersHash = result.hashes.playersHash;
+            this.store.sceneHashes.objectsHash = result.hashes.objectsHash;
             return result.scene;
         }
 

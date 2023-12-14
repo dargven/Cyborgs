@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes} from "react-router-dom";
 import {HOST} from "./config";
 import {Store} from "./modules/Store/Store";
 import Server from "./modules/Server/Server";
@@ -17,7 +17,6 @@ export const ServerContext = React.createContext<Server>(null!);
 const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
-
     const handleAutoLogin = async () => {
         if (localStorage.getItem('token')) {
             const isAutoLogin = await server.autoLogin()
@@ -34,21 +33,18 @@ const App: React.FC = () => {
     }, [])
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <StoreContext.Provider value={store}>
                 <ServerContext.Provider value={server}>
                     <Routes>
                         {localStorage.getItem('token') ? (
-                            <Route path="" element={<MainPage/>}/>
-                        ) : (
-                            <Route path="" element={<StartPage/>}/>
-                        )}
+                            <Route path="" element={<MainPage/>}/>) 
+                            : 
+                            (<Route path="" element={<StartPage/>}/>)}
                         <Route path="/PaswordRecovery" element={<PasswordRecovery/>}/>
-                        <Route path="/StartPage" element={<StartPage/>}
-                        />
+                        <Route path="/StartPage" element={<StartPage/>}/>
                         <Route path="/login" element={<LoginPage/>}/>
-                        <Route path="/registration" element={<RegistrationPage/>}
-                        />
+                        <Route path="/registration" element={<RegistrationPage/>}/>
                         <Route element={<PrivateRoute/>}>
                             <Route path="/main" element={<MainPage/>}/>
                             <Route path="/game" element={<GamePage/>}/>
@@ -56,7 +52,7 @@ const App: React.FC = () => {
                     </Routes>
                 </ServerContext.Provider>
             </StoreContext.Provider>
-        </BrowserRouter>
+        </HashRouter>
     );
 };
 

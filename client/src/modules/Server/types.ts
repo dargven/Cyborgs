@@ -11,6 +11,7 @@ export type TError = {
 export type TUser = {
     name: string,
     token: string,
+    uuid: string,
 }
 
 export type TMessage = {
@@ -28,7 +29,7 @@ export type TGetMessages = {
 
 export type TPlayer = {
     token: string;
-    teamId: number;
+    teamId: 0 | 1;
     hp: number;
     x: number;
     y: number;

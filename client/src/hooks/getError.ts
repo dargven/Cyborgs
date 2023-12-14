@@ -47,7 +47,7 @@ const getError = (error: TError) => {
             break;
 
         case 1001:
-            errorMessage = "Укажите логин или пароль";
+            errorMessage = "Укажите логин и пароль";
             break;
         case 1002:
             errorMessage = "Ошибка авторизации";
@@ -58,6 +58,12 @@ const getError = (error: TError) => {
         case 1004:
             errorMessage = "Невозможно найти пользователя";
             break;
+        case 1005:
+            errorMessage="Неверная почта";
+            break
+        case 1006:
+            errorMessage="Пароль должен включать 4 символа и не состоять из кирилицы"
+            break
         default:
             errorMessage = "Непредвиденная ошибка";
             break;

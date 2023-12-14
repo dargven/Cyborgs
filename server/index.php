@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: Application/json; charset = utf-8');
 header('Access-Control-Allow-Origin: *');
+require_once 'config.php';
 require_once 'application/Answer.php';
 require_once 'application/Application.php';
 function result($params) {
@@ -30,6 +31,7 @@ function result($params) {
             case 'getObjects': return $app->getObjects($params);//работает
             case 'getScene':return $app->getScene($params);// ->> need to test
             case 'setBullet': return $app->setBullet($params);
+            case 'SpawnPlayers': return $app->spawnPlayers($params);
             default: return ['error' => 102];
         }
     }

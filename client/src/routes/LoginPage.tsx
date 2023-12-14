@@ -1,5 +1,6 @@
 import {Navigate} from "react-router-dom";
 import NavBar from "../components/navBar";
+import Loading from "../components/loading";
 import NavButton from "../components/navButton";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
 import getError from "../hooks/getError";
@@ -16,6 +17,7 @@ const LoginPage = () => {
         errorRef,
         loginSuccess,
         showPassword,
+        isLoading,
         handleLogin,
         togglePasswordVisibility,
       } = useAuth();
@@ -23,7 +25,6 @@ const LoginPage = () => {
     useEnterKeyHandler(13, handleLogin);
 
     return (
-
 
         <ScoreMenu/>
         

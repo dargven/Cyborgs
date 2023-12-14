@@ -15,7 +15,6 @@ const Chat = ({StopMove}: IChat) => {
     const chatRef = useRef<HTMLInputElement | null>(null);
     const errorRef = useRef<HTMLDivElement | null>(null);
     const server = useContext(ServerContext);
-    let interval: NodeJS.Timer | null = null;
 
     const [messages, setMessages] = useState<TMessage[]>([]);
 
@@ -41,14 +40,13 @@ const Chat = ({StopMove}: IChat) => {
             setMessages(messagesFromServer);
         } else {
             if (server.error.code === 1002) {
-                console.log('nuku')
-                navigate("/login");
+                navigate("/login", {replace: true});
             }
         }
     };
 
     useEffect(() => {
-        const interval = setInterval(updateChat, 150);
+        const interval = setInterval(updateChat, 2500);
         return () => {
             clearInterval(interval);
         };
