@@ -132,7 +132,7 @@ class Game
     private function updateScene($timeout, $timestamp)
     {
 
-        $time = microtime() - $timestamp;
+        $time = intval((microtime() - $timestamp));
         if ($time >= $timeout) {
             $this->db->updateTimestamp(time());
             $this->spawnPlayers();
