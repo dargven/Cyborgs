@@ -4,6 +4,8 @@ import MapObjects from "./MapObjects";
 import LightMap from "./LightMap";
 import { ITextureObject } from "../Scene";
 import { useRef, useState } from "react";
+import CollidersPositions from "./CollidersPositions";
+import Obstacle from "./Obstacle";
 
 interface IMapProps {
     texture: Texture;
@@ -16,13 +18,27 @@ const Map = ({ texture }: IMapProps) => {
         "glass": glass
     })
 
+    const colliders = CollidersPositions();
+    let colliderKeyCounter = 0;
+    const generateColliderKey = () => {
+        const key = `collider-${colliderKeyCounter}`;
+        colliderKeyCounter++;
+        return key;
+    };
+
     return (
         <group>
-            <group scale={[81, 61, 1]} position={[0, 0, 0]}>
+            <group scale={[56, 49, 1]} position={[4.5, 6, 0]}>
                 <MakeSprite texture={texture} />
             </group>
             <MapObjects textures={glassTexture.current.glass} position={new Vector3()} />
             <LightMap />
+            {colliders.map(collider =>
+                    <Obstacle
+                        key={generateColliderKey()}
+                        {...collider}
+                    />
+                )}
         </group>
     );
 }

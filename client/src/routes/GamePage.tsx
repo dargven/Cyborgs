@@ -1,106 +1,82 @@
-import {useContext, useState} from "react";
-import {ServerContext} from "../App";
-import Game from "../components/Game/Game";
-import useKeyHandler from "../hooks/useKeyHandler";
-import NavButton from "../components/navButton";
+import { Html, KeyboardControls, KeyboardControlsEntry, PerspectiveCamera, Preload } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { Suspense, useContext, useEffect, useMemo, useRef, useState } from "react";
+import Scene from "../components/Game/Scene";
+import { ServerContext, StoreContext } from "../App";
+import Game from "../modules/Game/Game";
 import Chat from "../components/Chat/Chat";
-import "../popUpMenu.css";
 import "../TeamSelect.css";
 
+export enum EControls {
+    up = 'up',
+    down = 'down',
+    left = 'left',
+    right = 'right',
+    shoot = 'shoot',
+    hitscan = 'hitscan',
+    select1 = 'select1',
+    select2 = 'select2',
+    select3 = 'select3',
+}
+
 const GamePage = () => {
+    const inputMap = useMemo<KeyboardControlsEntry[]>(() => [
+        { name: EControls.up, keys: ['KeyW'] },
+        { name: EControls.down, keys: ['KeyS'] },
+        { name: EControls.left, keys: ['KeyA'] },
+        { name: EControls.right, keys: ['KeyD'] },
+        { name: EControls.shoot, keys: ['Space'] },
+        { name: EControls.hitscan, keys: ['KeyH'] },
+        { name: EControls.select1, keys: ['1'] },
+        { name: EControls.select2, keys: ['2'] },
+        { name: EControls.select3, keys: ['3'] },
+    ], []);
+
     const server = useContext(ServerContext);
-    const [stopMove, setStopMove] = useState({
-        isPopupVisible: false,
-        isChatClicked: false,
-        blockMove: false
-    });
+    const store = useContext(StoreContext);
+
+    const game = useRef<Game>(new Game(server, store));
 
     const [team, setTeam] = useState<0 | 1 | null>(null);
 
-    const handleTeam = async (teamId: 0 | 1) => {
-        if(teamId == 0 || teamId == 1){
-            const STeam = await server.selectTeam(teamId)
-            if(STeam) {
-                setTeam(teamId)
-            }
+    useEffect(() => {
+        console.log(team);
+
+        return () => {
+            console.log("quit");
+            clearInterval(game.current.intervalID);
         }
-    }
-
-    const StopMove = () => {
-        setStopMove((prevState) => ({
-            ...prevState,
-            blockMove: true,
-            isChatClicked: true
-        }));
-    }
-
-    const handleKeyPress = () => {
-        setStopMove((prevState) => ({
-            ...prevState,
-            isPopupVisible: !stopMove.isPopupVisible,
-            blockMove: !stopMove.blockMove
-        }));
-    };
-
-    useKeyHandler(27, handleKeyPress);
+    }, []);
 
     return (
         <div>
-            <Chat StopMove={StopMove}/>
-            {team !== null ? (
-                <Game/>
-            ) : (
-                <>
-                    <button onClick={() => handleTeam(0)} className="Team1">
-                        команда 1
-                    </button>
-                    <button onClick={() => handleTeam(1)} className="Team2">
-                        команда 2
-                    </button>
-                </>
-            )}
-
-            {stopMove.isPopupVisible && (
-                <div
-                    className="popUpMenu"
-                    onClick={() =>
-                        setStopMove((prevState) => ({
-                            ...prevState,
-                            isPopupVisible: false,
-                            blockMove: false
-                        }))}
-                >
-                    <div
-                        className="popUpMenu__content"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <button
-                            onClick={() =>
-                                setStopMove((prevState) => ({
-                                    ...prevState,
-                                    isPopupVisible: false,
-                                    blockMove: false
-                                }))}
-                            className="popUpBtn"
-                        >
-                            Возобновить
+            <KeyboardControls map={inputMap}>
+                <Chat />
+                {team === null ? (
+                    <div>
+                        <button onClick={() => setTeam(0)} className="Team1">
+                            команда 1
                         </button>
-                        <NavButton
-                            to="/game"
-                            text="Настройки"
-                            className="popUpBtn"
-                        />
-                        <NavButton
-                            to="/main"
-                            text="Выход"
-                            className="popUpBtn"
-                        />
+                        <button onClick={() => setTeam(1)} className="Team2">
+                            команда 2
+                        </button>
                     </div>
-                </div>
-            )}
-
-        </div>
+                ) : (
+                    <div>
+                        <Canvas style={{ background: 'black' }}>
+                            <Suspense>
+                                <PerspectiveCamera position={[0, 0, 0]}>
+                                    <Scene />
+                                    <axesHelper />
+                                </PerspectiveCamera>
+                            </Suspense>
+                            <Preload all />
+                        </Canvas>
+                    </div>
+                )}
+            </KeyboardControls>
+        </div >
     );
-};
+}
 
 export default GamePage;
