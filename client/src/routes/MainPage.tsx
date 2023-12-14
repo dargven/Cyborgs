@@ -34,7 +34,7 @@ const MainPage = () => {
             <div className="Main">
                 <NavButton to="/game" text="Играть"/>
                 <button className="Leave" onClick={() => {
-                    server.logout();
+                    server.logout()  ;
                     navigate('/login', {replace: true});
                 }}>Выход
                 </button>

@@ -1,5 +1,4 @@
 import {Navigate, useLocation} from "react-router-dom";
-import NavBar from "../components/navBar";
 import Loading from "../components/loading";
 import NavButton from "../components/navButton";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
@@ -71,7 +70,8 @@ const LoginPage = () => {
                             className="RecoveryButton"
                         ></NavButton>
                     </div>
-                    <button onClick={() => handleLogin()}>
+                    <button onClick={() => 
+                        handleLogin()}>
                         <h1>Войти</h1>
                     </button>
                 </div>

@@ -11,6 +11,7 @@ import PasswordRecovery from "./routes/PaswordRecovery";
 import StartPage from "./routes/StartPage";
 import PrivateRoute from "./components/privateRoute";
 import NavBar from "./components/navBar";
+import { getToken } from "./hooks/useToken";
 
 export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
@@ -18,21 +19,22 @@ export const ServerContext = React.createContext<Server>(null!);
 const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
+    const token = getToken()
 
-    const handleAutoLogin = async () => {
-        if (localStorage.getItem('token')) {
-            const isAutoLogin = await server.autoLogin()
-            if (isAutoLogin) {
-                store.setAuth()
-            }
-        }
-    }
+    // const handleAutoLogin = async () => {
+    //     if (token) {
+    //         const isAutoLogin = await server.autoLogin()
+    //         if (isAutoLogin) {
+    //             store.setAuth()
+    //         }
+    //     }
+    // }
 
-    useEffect(() => {
-        if (localStorage.getItem('token')) {
-            handleAutoLogin()
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (token) {
+    //         handleAutoLogin()
+    //     }
+    // }, [])
 
     return (
         <StoreContext.Provider value={store}>

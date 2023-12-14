@@ -1,3 +1,4 @@
+import { getToken, setToken, removeToken, getUuid, setUuid, removeUuid } from "../../hooks/useToken";
 import {Store} from "../Store/Store";
 import {
     TBullet,
@@ -26,15 +27,15 @@ export default class Server {
     constructor(HOST: string, store: Store) {
         this.HOST = HOST;
         this.store = store;
-        this.uuid = localStorage.getItem('uuid');
-        this.token = localStorage.getItem('token');
+        this.token = getToken();
+        this.uuid = getUuid();
         this.error = {code: 202, text: " "};
     }
 
     async request<T>(method: string, params: any = {}): Promise<T | null> {
         try {
             if (this.token) {
-                params.token = localStorage.getItem('token');
+                params.token = this.token
             }
             const str = Object.keys(params)
                 .map((key) => `${key}=${params[key]}`)
@@ -61,8 +62,9 @@ export default class Server {
         const result = await this.request<TUser>("login", {login, hash, rnd});
         if (result?.token && result?.uuid) 
         {
-            localStorage.setItem('token', result.token);
-            localStorage.setItem('uuid', result.uuid)
+            setToken(result?.token)
+            setUuid(result?.uuid)
+            this.token = result.token;
             this.store.setUser(login, result.token, result.uuid);
         }
         return result;
@@ -71,17 +73,19 @@ export default class Server {
     async autoLogin(): Promise<TUser | null> {
         const result = await this.request<TUser>("autoLogin", {uuid: this.uuid, token: this.token});
         if (result?.token) {
-            localStorage.setItem('token', result.token);
+            setToken(result?.token)
+            this.token = result.token;
             this.store.setUser(result.name, result.token, result.uuid);
         }
         return result;
     }
 
     async logout() {
-        const result = await this.request<boolean>("logout", {token: localStorage.getItem('token')});
+        const result = await this.request<boolean>("logout", {token: this.token});
         if (result) {
-            localStorage.removeItem('token')
-            localStorage.removeItem('uuid')
+            removeToken()
+            removeUuid()
+            this.token = null;
         }
     }
 
@@ -106,7 +110,7 @@ export default class Server {
 
     async getMessages(): Promise<TMessages | null> {
         const result = await this.request<TGetMessages>("getMessages", {
-            token: localStorage.getItem("token"),
+            token: this.token,
             hash: this.chatHash,
         });
         if (result?.hash) {
@@ -165,6 +169,7 @@ export default class Server {
         if (result) {
             return result;
         }
+
         return null;
     }
 

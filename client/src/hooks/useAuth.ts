@@ -20,6 +20,7 @@ const useAuth = () => {
     const navigate = useNavigate();
     const [timer, setTimer] = useState(60);
 
+
     const [useAuth, setUseAuth] = useState({
         loginSuccess: false,
         registrationSuccess: false,
@@ -272,11 +273,9 @@ const useAuth = () => {
         isButtonDisabled: useAuth.isButtonDisabled,
         isLoading: useAuth.isLoading,
 
-
         handleLogin,
         handleRegistration,
         togglePasswordVisibility,
-
         sendNewHash,
         SetCode,
         Recovery,
