@@ -1,10 +1,11 @@
-import { SpriteAnimator, useKeyboardControls } from "@react-three/drei";
+import { useKeyboardControls } from "@react-three/drei";
 import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
 import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
-import HealthBar from "../HealthBar";
+import HealthBar from "./HealthBar";
 import { useFrame } from "@react-three/fiber";
 import { TPlayer } from "../../../modules/Server/types";
+import { Animator } from "../Sprites/Animator";
 
 export type TPlayerProps = {
     onFire?(position: Vector3, team: number): void;
@@ -30,10 +31,11 @@ const Player = ({
 
     const ref = useRef<RapierRigidBody>(null!);
 
-    const [isShooting, setShooting] = useState<boolean>(false);
+    // const [isShooting, setShooting] = useState<boolean>(false);
 
     const [controlKeys, getKeys] = useKeyboardControls();
 
+    const mouseShoot = useRef<boolean>(false);
     const [state, setState] = useState<TPlayer>({
         x,
         y,
@@ -79,27 +81,20 @@ const Player = ({
                 });
                 updatePlayer(state);
             }
-
-            // if (getPosVel && isControlled) {
-            //     getPosVel(ref.current.translation() as Vector3, ref.current.linvel() as Vector3);
-            // }
         }
     }
 
     useEffect(() => {
         const mouseDownHandler = (e: MouseEvent) => {
             if (e.button === 0) {
-                setShooting(true);
+                mouseShoot.current = true;
             }
         }
         const mouseUpHandler = (e: MouseEvent) => {
             if (e.button === 0) {
-                setShooting(false);
+                mouseShoot.current = false;
             }
         }
-        // if (getMyPlayer) {
-        //     getMyPlayer(state);
-        // }
 
         document.addEventListener("mousedown", mouseDownHandler);
         document.addEventListener("mouseup", mouseUpHandler);
@@ -109,7 +104,7 @@ const Player = ({
             document.removeEventListener("mouseup", mouseUpHandler);
         }
 
-    }, [state]);
+    }, []);
 
     useFrame(() => {
         const { up, down, left, right, shoot } = getKeys();
@@ -130,23 +125,23 @@ const Player = ({
 
     });
 
-    useEffect(() => {
-        const data = {
-            type: 'player',
-            team: teamId,
-            hp: state.hp,
-        }
+    // useEffect(() => {
+    //     const data = {
+    //         type: 'player',
+    //         team: teamId,
+    //         hp: state.hp,
+    //     }
 
-        ref.current.userData = data;
+    //     ref.current.userData = data;
 
-        if (state.hp === 0) {
-            ref.current.setEnabled(false);
-        }
+    //     if (state.hp === 0) {
+    //         ref.current.setEnabled(false);
+    //     }
 
-    }, [state]);
+    // }, [state]);
 
     return (
-        <>
+        <group>
             <RigidBody
                 ref={ref}
                 scale={0.5}
@@ -158,7 +153,7 @@ const Player = ({
                 lockRotations
             >
 
-                <SpriteAnimator
+                <Animator
                     fps={2}
                     startFrame={0}
                     loop={true}
@@ -170,19 +165,19 @@ const Player = ({
 
                 <BallCollider args={[0.5]} restitution={0}
                     onIntersectionEnter={(e) => {
-                        const data: any = e.other.rigidBody?.userData;
-                        if (data.type === "projectile") {
-                            const damage = data.team === teamId ? data.damage / 2 : data.damage;
-                            if (hp - damage < 0) {
-                                setState({ ...state, hp: 0 });
-                            } else {
-                                setState({ ...state, hp: hp - damage });
-                            }
-                        }
+                        // const data: any = e.other.rigidBody?.userData;
+                        // if (data.type === "projectile") {
+                        //     const damage = data.team === teamId ? data.damage / 2 : data.damage;
+                        //     if (hp - damage < 0) {
+                        //         setState({ ...state, hp: 0 });
+                        //     } else {
+                        //         setState({ ...state, hp: hp - damage });
+                        //     }
+                        // }
                     }} />
                 <HealthBar value={hp} color={0xff0000} />
             </RigidBody>
-        </>
+        </group>
     );
 }
 

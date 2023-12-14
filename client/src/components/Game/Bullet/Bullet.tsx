@@ -39,13 +39,14 @@ const Projectile = ({ initialSpeed, direction, initialPosition, damage, texture,
                     args={[0.1]}
                     restitution={0}
                     sensor
-                    onIntersectionEnter={(e) => {
-                        const data: any = e.other.rigidBody?.userData;
-                        if (data.type === "player" || data.type === "collider") {
-                            bulletRef.current.setEnabled(false);
-                            setActive(false);
-                        }
-                    }} />
+                    // onIntersectionEnter={(e) => {
+                    //     const data: any = e.other.rigidBody?.userData;
+                    //     if (data.type === "player" || data.type === "collider") {
+                    //         bulletRef.current.setEnabled(false);
+                    //         setActive(false);
+                    //     }
+                    // }}
+                />
                 <sprite scale={0.5}>
                     <spriteMaterial map={texture} />
                 </sprite>

@@ -1,10 +1,9 @@
-import { SpriteAnimator, useKeyboardControls } from "@react-three/drei";
-import { BallCollider, RapierRigidBody, RigidBody, vec3 } from "@react-three/rapier";
-import { useEffect, useRef, useState } from "react";
-import { Vector3 } from "three";
-import HealthBar from "../HealthBar";
-import { useFrame } from "@react-three/fiber";
+import { Animator } from "../Sprites/Animator";
+import { RapierRigidBody, RigidBody } from "@react-three/rapier";
+import HealthBar from "./HealthBar";
 import { TPlayer } from "../../../modules/Server/types";
+import { useEffect, useRef } from "react";
+import { Vector3 } from "three";
 
 const Dummy = ({
     x,
@@ -20,20 +19,8 @@ const Dummy = ({
 
     const ref = useRef<RapierRigidBody>(null!);
 
-    // const [state, setState] = useState<TPlayer>({
-    //     x,
-    //     y,
-    //     vx,
-    //     vy,
-    //     dx,
-    //     dy,
-    //     hp,
-    //     token,
-    //     teamId,
-    // });
-
     return (
-        <>
+        <group>
             <RigidBody
                 ref={ref}
                 scale={0.5}
@@ -46,7 +33,7 @@ const Dummy = ({
                 linearVelocity={[vx, vy, 0]}
             >
 
-                <SpriteAnimator
+                <Animator
                     fps={2}
                     startFrame={0}
                     loop={true}
@@ -70,7 +57,7 @@ const Dummy = ({
                     }} /> */}
                 <HealthBar value={hp} color={0xff0000} />
             </RigidBody>
-        </>
+        </group>
     );
 }
 

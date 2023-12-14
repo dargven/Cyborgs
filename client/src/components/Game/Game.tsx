@@ -1,6 +1,6 @@
 import { KeyboardControls, KeyboardControlsEntry, PerspectiveCamera, Preload } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, lazy, useMemo } from "react";
+import { useMemo } from "react";
 import Scene from "./Scene";
 
 export enum EControls {
@@ -27,14 +27,12 @@ const Game = () => {
         { name: EControls.select3, keys: ['3'] },
     ], []);
 
-    const vSize = 20;
-
     return (
         <KeyboardControls map={inputMap}>
             <Canvas style={{ background: 'black' }}>
                 <PerspectiveCamera position={[0, 0, 0]}>
-                    <Scene/>
-                    <Preload all /> 
+                    <Scene />
+                    <Preload all />
                     <axesHelper />
                 </PerspectiveCamera>
             </Canvas>

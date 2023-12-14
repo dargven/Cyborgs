@@ -17,7 +17,6 @@ export const ServerContext = React.createContext<Server>(null!);
 const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
-
     const handleAutoLogin = async () => {
         if (localStorage.getItem('token')) {
             const isAutoLogin = await server.autoLogin()

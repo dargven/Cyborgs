@@ -1,21 +1,19 @@
 import { Stars } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Group, Texture, TextureLoader, Vector3 } from "three";
+import { Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
 import { TBullet, TDestructible, TPlayer } from "../../modules/Server/types";
-import CollidersPositions from "./CollidersPositions";
-import FishTank from "./Fishtank";
-import LightMap from "./LightMap";
-import Map from "./Map";
-import MapObjects from "./MapObjects";
-import Obstacle from "./Obstacle";
+import CollidersPositions from "./Map/CollidersPositions";
+import LightMap from "./Map/LightMap";
+import Map from "./Map/Map";
+import MapObjects from "./Map/MapObjects";
+import Obstacle from "./Map/Obstacle";
 import Player from "./Player/Player";
-import Projectile from "./Projectile";
-import { useInterval } from "usehooks-ts";
-import Debug from "./DebugInfo";
+import Projectile from "./Bullet/Bullet";
 import Dummy from "./Player/Dummy";
+import Game from "../../modules/Game/Game";
 
 interface ITextureObject {
     [key: string]: Texture
@@ -43,11 +41,10 @@ const Scene = () => {
 
     const player = useRef<TPlayer>();
 
-    const [myBullets, setMyBullets] = useState<TBullet[]>([]);
-    const [bullets, setBullets] = useState<TBullet[]>([]);
-    const [players, setPlayers] = useState<TPlayer[]>([]);
-    // const [myPlayer, setMyPlayer] = useState<TPlayer>();
-    const [obstacles, setObstacles] = useState<TDestructible[]>();
+    // const [myBullets, setMyBullets] = useState<TBullet[]>([]);
+    // const [bullets, setBullets] = useState<TBullet[]>([]);
+    const [dummies, setDummies] = useState<TPlayer[]>([]);
+    // const [obstacles, setObstacles] = useState<TDestructible[]>();
 
     const sendBullet = (bullet: TBullet) => {
         server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy)
@@ -69,69 +66,47 @@ const Scene = () => {
     const getScene = async () => {
         const result = await server.getScene();
         if (result?.bullets) {
-            setBullets(result.bullets);
+            // bullets.current = result.bullets;
         }
         if (result?.players) {
-            setPlayers(result.players);
+            // dummies.current = result.players;
+            setDummies(result.players);
         }
         if (result?.objects) {
-            setObstacles(result.objects);
+            // objects.current = result.objects;
         }
     }
 
-
     useEffect(() => {
         getScene();
-        const mp = players.filter(p => p.token === store.getUser().token)[0];
-        // setMyPlayer(mp);
-        player.current = mp;
-    }, []);
+        player.current = dummies.filter(p => p.token === store.getUser().token)[0];
 
-    useEffect(() => {
         const interval = setInterval(() => {
-            console.log(Date.now());
             getScene();
             if (player.current) {
-                console.log(player.current);
                 sendMyPlayer(player.current);
             }
-        }, 500);
+        }, 250);
 
         return () => {
             clearInterval(interval);
         }
     }, []);
 
-    const mouseX = useRef(0);
-    const mouseY = useRef(0);
-    const debugRef = useRef<Group>();
-    const positionToCamera = new Vector3(0, -2, -3);
-
     const { viewport, camera, pointer } = useThree();
-
-    const handleMouseMove = (event: MouseEvent) => {
-        mouseX.current = (event.clientX / window.innerWidth) * 2 - 1;
-        mouseY.current = -(event.clientY / window.innerHeight) * 2 + 1;
-    }
-
-    document.addEventListener("mousemove", handleMouseMove);
 
     const updatePlayer = (updated: TPlayer) => {
         player.current = updated;
     }
 
     const onMovement = (position: Vector3) => {
-        const cameraPos = new Vector3(position.x + mouseX.current, position.y + mouseY.current, 7);
+        const cameraPos = new Vector3(position.x + pointer.x, position.y + pointer.y, 7);
         camera.position.lerp(cameraPos, 0.05);
         camera.updateProjectionMatrix();
 
-        // if (invRef.current) {
-        //     invRef.current.position.copy(camera.position).add(positionToCamera);
+        // if (debugRef.current) {
+        //     debugRef.current.position.copy(camera.position).add(positionToCamera);
         // }
-
-        if (debugRef.current) {
-            debugRef.current.position.copy(camera.position).add(positionToCamera);
-        }
     }
 
     const onFire = (position: Vector3, team: number) => {
@@ -169,18 +144,14 @@ const Scene = () => {
         return key;
     };
 
-    
-
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull">
                 <LightMap />
 
-                <FishTank />
+                {/* {player.current && <Debug player={player.current} debugRef={debugRef} />} */}
 
-                {player.current && <Debug player={player.current} debugRef={debugRef} />}
-
-                {players.map(player => {
+                {dummies.map(player => {
                     const token = store.getUser().token;
                     if (player.token !== token) {
                         return <Dummy
@@ -209,8 +180,7 @@ const Scene = () => {
                             dy={player.dy}
                             onMovement={onMovement}
                             updatePlayer={updatePlayer}
-                        // onFire={onFire}                           
-                        // getMyPlayer={updatePlayer}
+                        // onFire={onFire}
                         />
                     }
                 })}

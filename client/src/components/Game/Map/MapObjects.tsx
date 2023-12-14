@@ -1,6 +1,6 @@
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import { Vector3, Texture } from "three";
-import MakeSprite from "./MakeSprite";
+import MakeSprite from "../Sprites/MakeSprite";
 import Obstacle from "./Obstacle";
 
 interface IMapObjects {
