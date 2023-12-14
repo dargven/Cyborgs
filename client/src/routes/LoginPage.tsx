@@ -1,4 +1,4 @@
-import {Navigate, useLocation} from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import Loading from "../components/loading";
 import NavButton from "../components/navButton";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
@@ -19,16 +19,11 @@ const LoginPage = () => {
         togglePasswordVisibility,
       } = useAuth();
 
-    const location = useLocation();
-
-    const fromPage = location.state?.from?.pathname || '/';
-
     useEnterKeyHandler(13, handleLogin);
 
     return (
         <>
             {isLoading && <Loading/>}
-            {fromPage}
             <div className="title">
                 КИБОРГИ <br/> ТЕПЕРЬ В 2D
             </div>
@@ -75,7 +70,6 @@ const LoginPage = () => {
                         <h1>Войти</h1>
                     </button>
                 </div>
-
                 {loginSuccess ? <Navigate to="/main" replace={true}/> : null}
             </div>
         </>

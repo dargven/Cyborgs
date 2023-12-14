@@ -14,6 +14,13 @@ const useKeyHandler = (key: number, callback?: () => void) => {
         [callback]
     );
 
+    window.onkeydown = event => {
+        if(event.key  === 'Tab')
+        {
+            event.preventDefault();
+        }
+    }
+
     useEffect(() => {
         document.addEventListener("keydown", handleKeyPress);
         return () => {

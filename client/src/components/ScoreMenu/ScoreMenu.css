@@ -1,0 +1,69 @@
+.Back {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.747);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.firstTeam , .secondTeam{
+    height: 30dvh;
+    width: 40dvw;
+    background-color: rgba(109, 35, 35, 0.452);
+    margin-bottom: 2dvh;
+}
+
+.secondTeam {
+    background-color: rgba(46, 31, 100, 0.473)
+}
+
+h3 {
+    font-family: "Zelek";
+    color: rgba(0, 217, 255, 0.432);
+    font-size: 3dvh;
+}
+
+.chat-message {
+    margin-bottom: 3dvh ;
+    display: flex;
+}
+
+.name, .status, .score, .deaths {
+    flex: 2;
+    text-align: center;
+    font-size: 1.5dvh;  
+    font-family: "Zelek";
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin: 0; /* Опционально: добавьте отступ снизу заголовка */
+}
+
+.header-item {
+    flex: 1;
+    text-align: center;
+    margin: 3dvh 3.5dvw ; /* Опционально: добавьте отступы между элементами заголовка */
+}
+
+.name {
+    color: rgba(21, 204, 236, 0.781);                                   
+}
+
+.status {
+    color: rgba(29, 128, 90, 0.781);   
+}
+
+.score {
+    color: rgba(201, 189, 23, 0.781);   
+}
+
+.deaths {
+    color: rgba(241, 56, 9, 0.781);
+}
