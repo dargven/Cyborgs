@@ -131,6 +131,8 @@ const Scene = () => {
         return key;
     };
 
+    
+
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull">
@@ -177,7 +179,7 @@ const Scene = () => {
                         key={bullet.bulletId}
                         texture={textures['bullet']}
                     />
-                )}
+                )} */}
 
                 <group scale={[81, 61, 1]} position={[0, 0, 0]}>
                     <Map texture={textures['room']} />
