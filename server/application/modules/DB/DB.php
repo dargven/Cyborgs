@@ -106,6 +106,20 @@ class DB
             [$login, $hash, $name, $email, $uuid]
         );
     }
+    public function startMatch($timeStart, $timeEnd)
+    {
+        $this->execute("INSERT INTO `match` (time_start, time_end)
+VALUES (?,?)",[$timeStart, $timeEnd]);
+    }
+    
+    public function getMatchInfo($timeEnd){
+        $this->query("SELECT * FROM `match` WHERE time_end=?", [$timeEnd]);
+    }
+    
+    public function endMatch($id, $status)
+    {
+        
+    }
 
     public function setPassword($id, $password)
     {

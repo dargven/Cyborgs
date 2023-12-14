@@ -85,7 +85,7 @@ class Game
         $this->db->setStatus($player, 'Death');
         $teamId = $player->team_id;
         if ($teamId == 0) {
-            $this->db->updateScoreInTeam(0,10);
+            $this->db->updateScoreInTeam(0, 10);
         } else $this->db->updateScoreInTeam(1, 10);
     }
 
@@ -111,6 +111,10 @@ class Game
         if ($time >= $timeout) {
             $this->db->updateTimestamp(time());
             $this->spawnPlayers();
+            $players = $this->db->getAllInfoPlayers();
+            if (count($players) >= 2) {
+
+            }
 
 ////            // пробежаться по всем игрокам
 ////            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы // или поменять статус на мертв
@@ -169,10 +173,30 @@ class Game
     }
 
 
-    public function startMatch($MatchId, $time = 180)
+    public function startMatch($time = 180) // Переделать
     {
-
+        $timeStart = time();
+        $timeEnd = $timeStart + $time;
+        $this->db->startMatch($timeStart, $timeEnd);
+        $time = time();
+        if ($time == $timeEnd || $time + 5 == $timeEnd) {
+            return [
+                'matchEnd' => true
+            ];
+        }
+        return [
+            'timeStart' => $timeStart,
+            'timeEnd' => $timeEnd,
+        ];
     }
+
+//    public function endMatch($timeEnd){
+//        $this->db->getMatchInfo($timeEnd);
+//        $currentTime = time();
+//        if(){
+//            
+//        }
+//    }
 
     public function setBullet($x, $y, $vx, $vy)
     {
