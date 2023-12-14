@@ -1,18 +1,37 @@
 <?php
 session_start();
 require_once __DIR__ . '/SpawnPoints/SpawnPoints.php';
+require_once __DIR__ . '/CollidersPositions/CollidersPositions.php';
 
 class Game
 {
     private DB $db;
     private array $teamASpawnPoints;
     private array $teamBSpawnPoints;
+    private array $colliders;
 
     public function __construct($db)
     {
         $this->db = $db;
         $this->teamASpawnPoints = SpawnPoints::$spawnPoints[0];
         $this->teamBSpawnPoints = SpawnPoints::$spawnPoints[1];
+        $this->colliders = CollidersPositions::$collidersPositions;
+    }
+
+    private function checkHitCollider()
+    {
+        $bullets = $this->getBullets();
+        $colliders = $this->colliders;
+
+        foreach($bullets as $bullet)
+        {
+            foreach($colliders as $collider)
+            {
+                if($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) && 
+                $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['heigth'])) return true;
+                return false;
+            }
+        }
     }
 
     private function genHash()
