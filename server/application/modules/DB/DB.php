@@ -102,20 +102,24 @@ class DB
             [$login, $hash, $name, $email, $uuid]
         );
     }
+
     public function startMatch($timeStart, $timeEnd)
     {
         $this->execute("INSERT INTO `match` (time_start, time_end)
-VALUES (?,?)",[$timeStart, $timeEnd]);
+VALUES (?,?)", [$timeStart, $timeEnd]);
     }
-    
-    public function getMatchInfo($timeEnd){
-        $this->query("SELECT * FROM `match` WHERE time_end=?", [$timeEnd]);
-    }
-    
-    public function endMatch($id, $status)
+
+
+    public function endMatch($timeEnd, $status = 'EndMatch')
     {
-        
+        $this->execute("UPDATE `match` SET status =? WHERE time_end=?;
+                            DELETE FROM players;
+                            DELETE FROM bullets;",
+                            [$status, $timeEnd]
+                        );
     }
+
+   
 
     public function setPassword($id, $password)
     {
@@ -180,7 +184,7 @@ ORDER BY u.bullet_id");
 
     public function addPlayer($id, $teamId)
     {
-        $this->execute("INSERT INTO players (user_id, team_id) VALUES (?, ?)", [$id,$teamId]);
+        $this->execute("INSERT INTO players (user_id, team_id) VALUES (?, ?)", [$id, $teamId]);
     }
 
 
