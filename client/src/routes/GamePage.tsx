@@ -6,6 +6,7 @@ import NavButton from "../components/navButton";
 import Chat from "../components/Chat/Chat";
 import "../popUpMenu.css";
 import "../TeamSelect.css";
+import ScoreMenu from "../components/ScoreMenu/ScoreMenu";
 
 const GamePage = () => {
     const server = useContext(ServerContext);
@@ -48,7 +49,10 @@ const GamePage = () => {
         <div>
             <Chat StopMove={StopMove}/>
             {team !== null ? (
-                <Game/>
+                <>
+                    <Game/>
+                    <ScoreMenu/>
+                </>
             ) : (
                 <>
                     <button onClick={() => handleTeam(0)} className="Team1">

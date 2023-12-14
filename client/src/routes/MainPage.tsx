@@ -2,8 +2,10 @@ import {useContext} from "react";
 import {ServerContext, StoreContext} from "../App";
 import {useNavigate} from "react-router-dom";
 import useKeyHandler from "../hooks/useKeyHandler";
-import NavButton from "../components/navButton";
+import Loading from "../components/loading";
 import "../Main.css";
+import useAuth from "../hooks/useAuth";
+import { getToken } from "../hooks/useToken";
 
 const MainPage = () => {
 
@@ -17,10 +19,17 @@ const MainPage = () => {
         }
     }
 
+
+
+    const {
+        isLoading,
+    } = useAuth()
+
     useKeyHandler(13, checkUser);
 
     return (
         <>
+            {isLoading && <Loading/>}
             <div className="slide-in">
             </div>
             <div className="b-marquee b-marquee--rtl">
@@ -32,7 +41,17 @@ const MainPage = () => {
             </div>
             <h2>КИБОРГИ 2D</h2>
             <div className="Main">
-                <NavButton to="/game" text="Играть"/>
+                <button onClick={() => {
+                    if(getToken() !== null)
+                    {
+                        navigate('/game')
+                    }
+                    else
+                        navigate('/login')
+                }}>
+                    Играть
+                </button>
+                {/* <NavButton to="/game" text="Играть"/> */}
                 <button className="Leave" onClick={() => {
                     server.logout()  ;
                     navigate('/login', {replace: true});

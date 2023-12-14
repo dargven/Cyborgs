@@ -22,7 +22,7 @@ const App: React.FC = () => {
     const token = getToken()
 
     const handleAutoLogin = async () => {
-        if (token) {
+        if (token !== null) {
             const isAutoLogin = await server.autoLogin()
             if (isAutoLogin) {
                 store.setAuth()
@@ -43,10 +43,10 @@ const App: React.FC = () => {
                     <Route path="/" element={<NavBar/>}>
                         <Route path="login" element={<LoginPage/>}/>
                         <Route path="registration" element={<RegistrationPage/>}/>
+                        <Route path="recovery" element={<PasswordRecovery/>}/>
                         <Route path="*" element={<Navigate to="/login" replace />} />
                         <Route path="/" element={<Navigate to="/login" replace />}/>
                     </Route>
-                    <Route path="recovery" element={<PasswordRecovery/>}/>
                     <Route path="start" element={<StartPage/>}/>
                     <Route path="main" element={
                         <PrivateRoute>

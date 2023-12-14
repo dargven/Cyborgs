@@ -86,7 +86,7 @@ const Chat = ({StopMove}: IChat) => {
                                     <span className="timestamp">
                                         {userTime(msg.created)}
                                     </span>
-                                    <span className="name">{msg.name}:</span>
+                                    <span className="chname">{msg.name}:</span>
                                     <span className="message">
                                         {msg.message}
                                     </span>
