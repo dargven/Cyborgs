@@ -94,6 +94,10 @@ const Scene = () => {
         camera.updateProjectionMatrix();
     }
 
+    const getDirection = () => {
+        return new Vector3(pointer.x, pointer.y / viewport.aspect, 0).normalize();
+    }
+
     const onFire = (x: number, y: number) => {
         const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
 
@@ -150,6 +154,7 @@ const Scene = () => {
                             onMovement={onMovement}
                             updatePlayer={updatePlayer}
                             onFire={onFire}
+                            getDirection={getDirection}
                         />
                     }
                 })}
