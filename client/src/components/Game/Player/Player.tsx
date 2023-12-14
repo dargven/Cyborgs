@@ -148,12 +148,12 @@ const Player = ({
             >
 
                 <Animator
-                    fps={2}
+                    fps={5}
                     startFrame={0}
                     loop={true}
                     autoPlay={true}
-                    textureImageURL={'./assets/test/Sprite-0001.png'}
-                    textureDataURL={'./assets/test/Sprite-0001.json'}
+                    textureImageURL={'./assets/test/sprite_metall_cop_move_m.png'}
+                    textureDataURL={'./assets/test/sprite_metall_cop_move_m.json'}
                     alphaTest={0.01}
                     materialRotation={rot}
                 />
