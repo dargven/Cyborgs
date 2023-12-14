@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/SpawnPoints/SpawnPoints.php';
 require_once __DIR__ . '/CollidersPositions/CollidersPositions.php';
 
@@ -53,7 +55,7 @@ class Game
                         $this->db->setStatus($player['user_id'], 'Live');
                         $usedSpawnPoints[] = $spawnPoint;
                     }
-                } elseif ($player['team_id'] == 1) {
+                } else if ($player['team_id'] == 1) {
                     $spawnPoint = $this->getFreeSpawnPoint($player['x'], $player['y'], $this->teamBSpawnPoints, $usedSpawnPoints);
                     if ($spawnPoint !== null) {
                         $this->db->spawnPlayer($player['user_id'], $spawnPoint['x'], $spawnPoint['y']);
@@ -130,7 +132,7 @@ class Game
     private function updateScene($timeout, $timestamp)
     {
 
-        $time = microtime() - $timestamp;
+        $time = intval(microtime()) - $timestamp;
         if ($time >= $timeout) {
             $this->db->updateTimestamp(time());
             $this->spawnPlayers();
