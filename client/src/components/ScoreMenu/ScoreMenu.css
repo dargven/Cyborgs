@@ -31,5 +31,47 @@ h3 {
 }
 
 .chat-message {
-    color: #ffffff;
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.name, .status, .score, .deaths {
+    flex: 2;
+    /* text-align: center; */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0px; /* Опционально: добавьте отступ снизу заголовка */
+}
+
+.header-item {
+    flex: 1;
+    text-align: center;
+    margin: 40px; /* Опционально: добавьте отступы между элементами заголовка */
+}
+
+.name {
+    font-family: "Zelek";
+    color: rgba(21, 204, 236, 0.781);
+    font-size: 1.5dvh;                                
+}
+
+.status {
+    font-family: "Zelek";
+    color: rgba(29, 128, 90, 0.781);
+    font-size: 1.5dvh;     
+}
+
+.score {
+    font-family: "Zelek";
+    color: rgba(201, 189, 23, 0.781);
+    font-size: 1.5dvh;     
+}
+
+.deaths {
+    font-family: "Zelek";
+    color: rgba(241, 56, 9, 0.781);
+    font-size: 1.5dvh;  
 }

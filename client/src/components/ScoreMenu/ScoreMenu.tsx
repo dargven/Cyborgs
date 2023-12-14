@@ -20,6 +20,15 @@ const ScoreMenu = () => {
         {name: 'бот Рустам', teamId: 0, score: 0, deaths: 10, status: 'super bot'},
     ]);
 
+    const HeaderScore = () => (
+        <div className="header">
+          <span className="header-item name">Player</span>
+          <span className="header-item status">Status</span>
+          <span className="header-item score">Score</span>
+          <span className="header-item deaths">Deaths</span>
+        </div>
+      );
+
     const [isScoreVisible, setIsScoreVisible] = useState(false);
 
     useEffect(() => {
@@ -55,12 +64,13 @@ const ScoreMenu = () => {
             isScoreVisible && (
                 <div className="Back" onClick={() => {setIsScoreVisible(false)}}>
                         <h3>SCORE</h3>
+                    <HeaderScore/>
                     <div className="firstTeam">
                         {users
                         .filter(user => user.teamId === 0)
                         .map((user) => (
                             <p className="chat-message">
-                                <span className="name">{user.name} : </span>
+                                <span className="name">{user.name} </span>
                                 <span className="status">{user.status}</span>
                                 <span className="score">{user.score}</span>
                                 <span className="deaths">{user.deaths}</span>
@@ -72,7 +82,7 @@ const ScoreMenu = () => {
                         .filter(user => user.teamId === 1)
                         .map((user) => (
                             <p className="chat-message">
-                                <span className="name">{user.name} : </span>
+                                <span className="name">{user.name} </span>
                                 <span className="status">{user.status}</span>
                                 <span className="score">{user.score}</span>
                                 <span className="deaths">{user.deaths}</span>
