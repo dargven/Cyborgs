@@ -75,7 +75,7 @@ const Scene = () => {
             if (player.current) {
                 sendMyPlayer(player.current);
             }
-        }, 250);
+        }, 60);
 
         return () => {
             clearInterval(interval);
