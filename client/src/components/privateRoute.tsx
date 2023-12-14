@@ -1,10 +1,21 @@
-import {Navigate, Outlet} from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
+import { getToken } from "../hooks/useToken";
 
-const PrivateRoute = () => {
+interface IprivateRouteProps {
+    children: React.ReactElement;
+}
 
-    return (
-        localStorage.getItem('token') ? <Outlet/> : <Navigate to="/login"/>
-    )
+const PrivateRoute = ({children}: IprivateRouteProps ) => {
+
+    const location = useLocation();
+
+    const token = getToken();
+
+    if(!token){
+        return <Navigate to='/login'replace={true} state={{from: location}} />
+    }
+
+    return children;
 }
 
 export default PrivateRoute;

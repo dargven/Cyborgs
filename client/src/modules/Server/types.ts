@@ -70,6 +70,15 @@ export type TScene = {
 }
 
 export type TTeam = {
-    teamId: number,
-    token: string,
+    teamId: number;
+    token: string;
+}
+
+export type TTeamUser = {
+    teamId: number;
+    token?: string;
+    name: string;
+    score: number;
+    status: string;
+    deaths: number;
 }

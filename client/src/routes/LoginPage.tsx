@@ -1,5 +1,4 @@
-import {Navigate} from "react-router-dom";
-import NavBar from "../components/navBar";
+import { Navigate, useLocation } from "react-router-dom";
 import Loading from "../components/loading";
 import NavButton from "../components/navButton";
 import useEnterKeyHandler from "../hooks/useKeyHandler";
@@ -24,7 +23,6 @@ const LoginPage = () => {
 
     return (
         <>
-            <NavBar/>
             {isLoading && <Loading/>}
             <div className="title">
                 КИБОРГИ <br/> ТЕПЕРЬ В 2D
@@ -62,16 +60,16 @@ const LoginPage = () => {
                     <div ref={errorRef} className="errorDiv"></div>
                     <div className="PasswordRecovery">
                         <NavButton
-                            to="/PaswordRecovery"
+                            to="/recovery"
                             text="забыли пароль?"
                             className="RecoveryButton"
                         ></NavButton>
                     </div>
-                    <button onClick={() => handleLogin()}>
+                    <button onClick={() => 
+                        handleLogin()}>
                         <h1>Войти</h1>
                     </button>
                 </div>
-
                 {loginSuccess ? <Navigate to="/main" replace={true}/> : null}
             </div>
         </>
