@@ -39,46 +39,39 @@ const Scene = () => {
         'glass': glass,
     });
 
+
     const timer = useRef<number>(0);
 
     const player = useRef<TPlayer>();
-    const [myBullets, setMyBullets] = useState<TBullet[]>([]);
-    const [bullets, setBullets] = useState<TBullet[]>([]);
-    const [dummies, setDummies] = useState<TPlayer[]>([]);
 
-    const sendBullet = (bullet: TBullet) => {
-        server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy);
-    }
+    const [game, setGame]  = useState<Game>(new Game(server, store))
+    
+    // const getScene = async () => {
+    //     const result = await server.getScene();
+    //     if (result?.bullets) {
+    //         Game?.sendBullet(result.bullets);
+    //         bullets.current = result.bullets;
+    //     }
+    //     if (result?.players) {
+    //         dummies.current = result.players;
+    //         setDummies(result.players);
+    //     }
+    //     if (result?.objects) {
+    //         // objects.current = result.objects;
+    //     }
+    // }
 
-    const sendMyPlayer = async (player: TPlayer) => {
-        await server.setPlayer(player.x, player.y, player.vx, player.vy, 0, 0);
-    };
-
-    const getScene = async () => {
-        const result = await server.getScene();
-        if (result?.bullets) {
-            setBullets(result.bullets);
-            // bullets.current = result.bullets;
-        }
-        if (result?.players) {
-            // dummies.current = result.players;
-            setDummies(result.players);
-        }
-        if (result?.objects) {
-            // objects.current = result.objects;
-        }
-    }
 
     useEffect(() => {
-        getScene();
-        player.current = dummies.filter(p => p.token === store.getUser().token)[0];
+        game.getScene();
+        player.current = game.dummies.filter(p => p.token === store.getUser().token)[0];
 
         const interval = setInterval(() => {
-            getScene();
+            game.getScene();
             if (player.current) {
-                sendMyPlayer(player.current);
+                game.setPlayer(player.current);
             }
-        }, 250);
+        }, 1000);
 
         return () => {
             clearInterval(interval);
@@ -116,10 +109,10 @@ const Scene = () => {
                 y,
                 vx: direction.x,
                 vy: direction.y,
-                bulletId: myBullets.length
+                bulletId: game.myBullets.length
             };
-            sendBullet(bullet);
-            setMyBullets([...myBullets, bullet]);
+            //sendBullet(bullet);
+            //setMyBullets([...myBullets, bullet]);
         }
     }
 
@@ -138,9 +131,7 @@ const Scene = () => {
             <Physics gravity={[0, 0, 0]} colliders="hull">
                 <LightMap />
 
-                {/* {player.current && <Debug player={player.current} debugRef={debugRef} />} */}
-
-                {dummies.map(player => {
+                {game.players.map(player => {
                     const token = store.getUser().token;
                     if (player.token !== token) {
                         return <Dummy
@@ -165,7 +156,7 @@ const Scene = () => {
                     />
                 )}
 
-                {bullets.map(bullet =>
+                {game.bullets.map(bullet =>
                     <Bullet
                         {...bullet}
                         key={bullet.bulletId}
@@ -173,7 +164,7 @@ const Scene = () => {
                     />
                 )}
 
-                {myBullets.map(bullet =>
+                {game.myBullets.map(bullet =>
                     <Bullet
                         {...bullet}
                         key={bullet.bulletId}

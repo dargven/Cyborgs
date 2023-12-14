@@ -3,10 +3,12 @@ import { TBullet, TDestructible, TPlayer } from "../Server/types";
 import Server from "../Server/Server";
 import { Store } from "../Store/Store";
 
+
 interface IGame {
     bullets: TBullet[];
     objects: TDestructible[];
     players: TPlayer[];
+    dummies: TPlayer[];
 
     // myPlayer: TPlayer;
     myBullets: TBullet[];
@@ -27,6 +29,7 @@ class Game implements IGame {
     bullets: TBullet[];
     objects: TDestructible[];
     players: TPlayer[];
+    dummies: TPlayer[];
 
     // myPlayer: TPlayer;
     myBullets: TBullet[];
@@ -48,6 +51,7 @@ class Game implements IGame {
         this.bullets = [];
         this.players = [];
         this.objects = [];
+        this.dummies = [];
 
         this.timestamp = 0;
 
@@ -90,12 +94,12 @@ class Game implements IGame {
         }
     }
 
-    setPlayer() {
-        // запрос
+    async setPlayer(player: TPlayer) {
+        await this.server.setPlayer(player.x, player.y, player.vx, player.vy, 0, 0);
     }
 
-    setBullet() {
-        // запрос
+    setBullet(bullet: TBullet) {
+        this.server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy);
     }
 
     loop() {
