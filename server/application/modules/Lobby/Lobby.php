@@ -13,7 +13,7 @@ class Lobby
     {
         if ($teamId == 1 || $teamId == 0) {
             $this->db->addPlayer($id, $teamId);
-            $this->db->setStatus($id, 'WaitToSpawn');
+//            $this->db->setStatus($id, 'WaitToSpawn');
             return true;
         }
         return ['error' => 605];
