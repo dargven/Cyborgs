@@ -1,21 +1,20 @@
 import { Stars } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
-import { TBullet, TDestructible, TPlayer } from "../../modules/Server/types";
+import { TBullet, TPlayer } from "../../modules/Server/types";
+import Bullet from "./Bullet/Bullet";
 import CollidersPositions from "./Map/CollidersPositions";
 import LightMap from "./Map/LightMap";
 import Map from "./Map/Map";
 import MapObjects from "./Map/MapObjects";
 import Obstacle from "./Map/Obstacle";
-import Player from "./Player/Player";
-import Bullet from "./Bullet/Bullet";
 import Dummy from "./Player/Dummy";
-import Game from "../../modules/Game/Game";
+import Player from "./Player/Player";
 
-interface ITextureObject {
+export interface ITextureObject {
     [key: string]: Texture
 }
 
@@ -30,13 +29,11 @@ const Scene = () => {
 
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load('./assets/Bullets/Projectile.png');
-    const room = textureLoader.load('./assets/rooms/map-office-plain.png');
-    const glass = textureLoader.load('./assets/Map parts/Glass.png');
+    const room = textureLoader.load('./assets/rooms/cyborgs-office.png');
 
     const [textures] = useState<ITextureObject>({
         'room': room,
         'bullet': TPROJECTILE,
-        'glass': glass,
     });
 
     const timer = useRef<number>(0);
@@ -135,8 +132,7 @@ const Scene = () => {
 
     return (
         <group>
-            <Physics gravity={[0, 0, 0]} colliders="hull">
-                <LightMap />
+            <Physics gravity={[0, 0, 0]} colliders="hull" debug>
 
                 {/* {player.current && <Debug player={player.current} debugRef={debugRef} />} */}
 
@@ -158,13 +154,6 @@ const Scene = () => {
                     }
                 })}
 
-                {colliders.map(collider =>
-                    <Obstacle
-                        key={generateColliderKey()}
-                        {...collider}
-                    />
-                )}
-
                 {bullets.map(bullet =>
                     <Bullet
                         {...bullet}
@@ -181,11 +170,8 @@ const Scene = () => {
                     />
                 )}
 
-                <group scale={[81, 61, 1]} position={[0, 0, 0]}>
-                    <Map texture={textures['room']} />
-                </group>
+                <Map texture={textures['room']} />
 
-                <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)} />
             </Physics>
             <Stars />
         </group>
