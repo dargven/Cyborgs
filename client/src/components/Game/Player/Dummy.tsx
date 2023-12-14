@@ -1,5 +1,5 @@
 import { Animator } from "../Sprites/Animator";
-import { RapierRigidBody, RigidBody } from "@react-three/rapier";
+import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 import HealthBar from "./HealthBar";
 import { TPlayer } from "../../../modules/Server/types";
 import { useRef } from "react";
@@ -42,11 +42,14 @@ const Dummy = ({
                     alphaTest={0.01}
                 />
 
-                {/* <BallCollider args={[0.5]} restitution={0}
+
+                {/* <BallCollider
+                
+                    args={[0.5]}
+                    restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "projectile") {
-                            const damage = data.team === teamId ? data.damage / 2 : data.damage;
                             if (hp - damage < 0) {
                                 setState({ ...state, hp: 0 });
                             } else {

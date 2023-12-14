@@ -25,7 +25,7 @@ const Bullet = ({ x, y, vx, vy, texture }: TBulletProps) => {
             ccd
             restitution={0}
             userData={{
-                type: 'projectile'
+                type: 'bullet'
             }}>
             {isActive ? <group>
                 <BallCollider
