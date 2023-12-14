@@ -198,6 +198,14 @@ export default class Server {
         });
     }
 
+    async setHit(token:string, bulletId: number){
+        return this.request('setHit', {
+            token: this.token,
+            bulletId: bulletId,
+        });
+
+    }
+
     async getScene(): Promise<TScene | null> {
         const result = await this.request<TGetScene>('getScene',
             {

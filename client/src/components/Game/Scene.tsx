@@ -1,20 +1,21 @@
 import { Stars } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
-import { TBullet, TPlayer } from "../../modules/Server/types";
-import Bullet from "./Bullet/Bullet";
+import { TBullet, TDestructible, TPlayer } from "../../modules/Server/types";
 import CollidersPositions from "./Map/CollidersPositions";
 import LightMap from "./Map/LightMap";
 import Map from "./Map/Map";
 import MapObjects from "./Map/MapObjects";
 import Obstacle from "./Map/Obstacle";
-import Dummy from "./Player/Dummy";
 import Player from "./Player/Player";
+import Bullet from "./Bullet/Bullet";
+import Dummy from "./Player/Dummy";
+import Game from "../../modules/Game/Game";
 
-export interface ITextureObject {
+interface ITextureObject {
     [key: string]: Texture
 }
 
@@ -29,11 +30,13 @@ const Scene = () => {
 
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load('./assets/Bullets/Projectile.png');
-    const room = textureLoader.load('./assets/rooms/cyborgs-office.png');
+    const room = textureLoader.load('./assets/rooms/map-office-plain.png');
+    const glass = textureLoader.load('./assets/Map parts/Glass.png');
 
     const [textures] = useState<ITextureObject>({
         'room': room,
         'bullet': TPROJECTILE,
+        'glass': glass,
     });
 
     const timer = useRef<number>(0);
@@ -75,7 +78,7 @@ const Scene = () => {
             if (player.current) {
                 sendMyPlayer(player.current);
             }
-        }, 1000);
+        }, 250);
 
         return () => {
             clearInterval(interval);
@@ -93,7 +96,6 @@ const Scene = () => {
         camera.position.lerp(cameraPos, 0.05);
         camera.updateProjectionMatrix();
     }
-
     const getDirection = () => {
         return new Vector3(pointer.x, pointer.y / viewport.aspect, 0).normalize();
     }

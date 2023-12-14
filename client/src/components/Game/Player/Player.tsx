@@ -15,6 +15,10 @@ export type TPlayerProps = {
     playerRotation?: number;
 } & TPlayer;
 
+// const sendHit = (hit: THit) => {
+//     server.setHit(this.token,bulletId);
+// }
+
 const Player = ({
     x,
     y,
@@ -138,6 +142,9 @@ const Player = ({
                 linearDamping={10}
                 angularDamping={1}
                 lockRotations
+                userData={{
+                    type: 'player'
+                }}
             >
 
                 <Animator
@@ -159,8 +166,10 @@ const Player = ({
                         if (data.type === "bullet") {
                             if (state.hp - 20 < 0) {
                                 setState({ ...state, hp: 0 });
+                                // sendHit(hit);
                             } else {
                                 setState({ ...state, hp: hp - 20 });
+                                // sendHit(hit);
                                 // в меня попали - отправь инфу на сервер
                             }
                         }
