@@ -20,8 +20,6 @@ interface IGame {
     store: Store;
 
     timestamp: number;
-
-    intervalID: number;
 }
 
 class Game implements IGame {
@@ -42,8 +40,6 @@ class Game implements IGame {
 
     timestamp: number;
 
-    intervalID: number;
-
     constructor(server: Server, store: Store) {
         this.server = server;
         this.store = store;
@@ -57,8 +53,6 @@ class Game implements IGame {
 
         this.cameraPosition = new Vector3();
         this.mousePostion = new Vector2();
-
-       this.intervalID = 0;
 
         // получение данных о сцене, в т.ч. начальных данных об игроке
 
@@ -78,7 +72,7 @@ class Game implements IGame {
         // };
         this.myBullets = [];
 
-        // this.loop();
+        this.loop();
     }
 
     async getScene() {
@@ -103,11 +97,20 @@ class Game implements IGame {
     }
 
     loop() {
-        this.intervalID = Number(setInterval(() => {
-            // console.log('loop');
-        }, 1000))
+        let intervalID = setInterval(() => {
+            this.getScene();
+            if (this.players) {
+                this.players.forEach((player) => {
+                    this.setPlayer(player);
+                })
+            }
+        }, 1000)
 
-        console.log(this.intervalID)
+        console.log(intervalID)
+        
+        return () => {
+            clearInterval(intervalID);
+        }
         // return this.intervalID
         // return () => {
         //     clearInterval(interval);

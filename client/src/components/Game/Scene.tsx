@@ -15,7 +15,7 @@ import Bullet from "./Bullet/Bullet";
 import Dummy from "./Player/Dummy";
 import Game from "../../modules/Game/Game";
 
-interface ITextureObject {
+export interface ITextureObject {
     [key: string]: Texture
 }
 
@@ -31,12 +31,10 @@ const Scene = () => {
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load('./assets/Bullets/Projectile.png');
     const room = textureLoader.load('./assets/rooms/map-office-plain.png');
-    const glass = textureLoader.load('./assets/Map parts/Glass.png');
 
     const [textures] = useState<ITextureObject>({
         'room': room,
         'bullet': TPROJECTILE,
-        'glass': glass,
     });
 
 
@@ -44,8 +42,8 @@ const Scene = () => {
 
     const player = useRef<TPlayer>();
 
-    const [game, setGame]  = useState<Game>(new Game(server, store))
-    
+    const [game, setGame] = useState<Game>(new Game(server, store))
+
     // const getScene = async () => {
     //     const result = await server.getScene();
     //     if (result?.bullets) {
@@ -64,18 +62,7 @@ const Scene = () => {
 
     useEffect(() => {
         game.getScene();
-        player.current = game.dummies.filter(p => p.token === store.getUser().token)[0];
-
-        const interval = setInterval(() => {
-            game.getScene();
-            if (player.current) {
-                game.setPlayer(player.current);
-            }
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
-        }
+        // player.current = game.dummies.filter(p => p.token === store.getUser().token)[0];
     }, []);
 
     const { viewport, camera, pointer } = useThree();
@@ -124,12 +111,9 @@ const Scene = () => {
         return key;
     };
 
-
-
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull">
-                <LightMap />
 
                 {game.players.map(player => {
                     const token = store.getUser().token;
@@ -172,11 +156,8 @@ const Scene = () => {
                     />
                 )}
 
-                <group scale={[81, 61, 1]} position={[0, 0, 0]}>
-                    <Map texture={textures['room']} />
-                </group>
+                <Map texture={textures['room']} />
 
-                <MapObjects textures={textures['glass']} position={new Vector3(0, 0, 0.1)} />
             </Physics>
             <Stars />
         </group>
