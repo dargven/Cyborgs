@@ -11,16 +11,14 @@
     flex-direction: column;
 }
 
-.firstTeam {
-    height: 30vh;
-    width: 40vw;
+.firstTeam , .secondTeam{
+    height: 30dvh;
+    width: 40dvw;
     background-color: rgba(109, 35, 35, 0.452);
-    margin-bottom: 20px;
+    margin-bottom: 2dvh;
 }
 
 .secondTeam {
-    height: 30vh;
-    width: 40vw;
     background-color: rgba(46, 31, 100, 0.473)
 }
 
@@ -31,47 +29,41 @@ h3 {
 }
 
 .chat-message {
-    margin-bottom: 20px;
+    margin-bottom: 3dvh ;
     display: flex;
 }
 
 .name, .status, .score, .deaths {
     flex: 2;
-    /* text-align: center; */
+    text-align: center;
+    font-size: 1.5dvh;  
+    font-family: "Zelek";
 }
 
 .header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 0px; /* Опционально: добавьте отступ снизу заголовка */
+    margin: 0; /* Опционально: добавьте отступ снизу заголовка */
 }
 
 .header-item {
     flex: 1;
     text-align: center;
-    margin: 40px; /* Опционально: добавьте отступы между элементами заголовка */
+    margin: 3dvh 3.5dvw ; /* Опционально: добавьте отступы между элементами заголовка */
 }
 
 .name {
-    font-family: "Zelek";
-    color: rgba(21, 204, 236, 0.781);
-    font-size: 1.5dvh;                                
+    color: rgba(21, 204, 236, 0.781);                                   
 }
 
 .status {
-    font-family: "Zelek";
-    color: rgba(29, 128, 90, 0.781);
-    font-size: 1.5dvh;     
+    color: rgba(29, 128, 90, 0.781);   
 }
 
 .score {
-    font-family: "Zelek";
-    color: rgba(201, 189, 23, 0.781);
-    font-size: 1.5dvh;     
+    color: rgba(201, 189, 23, 0.781);   
 }
 
 .deaths {
-    font-family: "Zelek";
     color: rgba(241, 56, 9, 0.781);
-    font-size: 1.5dvh;  
 }
