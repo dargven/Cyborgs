@@ -56,6 +56,18 @@ const Player = ({
         teamId,
     });
 
+
+    const [frameName, setFrameName] = useState('movement')
+
+    const onEnd = ({ currentFrameName, currentFrame }:any) => {
+        if(hp === 0){
+            if (currentFrameName === 'movement') {
+                setFrameName('corpse')
+            }
+        }
+        
+    }
+
     const movementController = (up?: boolean, down?: boolean, left?: boolean, right?: boolean) => {
 
         if (ref.current) {
@@ -116,10 +128,13 @@ const Player = ({
 
     useFrame(() => {
 
-        if (getDirection) {
-            const dir = getDirection();
-            setRot(Math.atan2(dir.y, dir.x));
+        if (hp !== 0){
+            if (getDirection) {
+                const dir = getDirection();
+                setRot(Math.atan2(dir.y, dir.x));
+            }
         }
+        
 
         const { up, down, left, right, shoot } = getKeys();
         movementController(up, down, left, right);
@@ -151,12 +166,16 @@ const Player = ({
                     fps={5}
                     startFrame={0}
                     loop={true}
+                    onLoopEnd={onEnd}
+                    frameName={frameName}
+                    animationNames={['movement','corpse']}
                     autoPlay={true}
-                    textureImageURL={'./assets/test/sprite_metall_cop_move_m.png'}
-                    textureDataURL={'./assets/test/sprite_metall_cop_move_m.json'}
+                    textureImageURL={'./assets/test/Cop.png'}
+                    textureDataURL={'./assets/test/Cop.json'}
                     alphaTest={0.01}
                     materialRotation={rot}
                 />
+
 
                 <BallCollider
                     args={[0.5]}
