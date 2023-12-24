@@ -2,21 +2,41 @@ import { useContext, useEffect, useState } from "react";
 import "./ScoreMenu.css";
 import { TTeamUser } from "../../modules/Server/types";
 import { ServerContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 const ScoreMenu = () => {
-    const [users, setUsers] = useState<TTeamUser[]>([
-        {name: 'Dimon-Dominator', teamId: 1, score: 26, deaths: -10, status: 'krutoy paren'},
-        {name: 'Hikita', teamId: 1, score: 26, deaths: -10, status: 'krutoy paren'},
-        {name: 'lapaigne', teamId: 1, score: 26, deaths: 2, status: 'dead'},
-        {name: 'CashemereGateKeper', teamId: 1, score: 26, deaths: 3, status: 'dead'},
-        {name: 'Ruthik', teamId: 1, score: 0, deaths: 10, status: 'krutoy paren'},
 
-        {name: 'dargven', teamId: 0, score: 1, deaths: 100, status: 'ne krutoy paren'},
-        {name: 'бот Виталя', teamId: 0, score: 0, deaths: 10, status: 'bot'},
-        {name: 'бот Витя', teamId: 0, score: 0, deaths: 5, status: 'dead bot'},
-        {name: 'бот Пётр', teamId: 0, score: 0, deaths: 6, status: 'dead bot'},
-        {name: 'бот Рустам', teamId: 0, score: 0, deaths: 10, status: 'super bot'},
-    ]);
+    const server = useContext(ServerContext);
+    const navigate = useNavigate();
+
+    const [users, setUsers] = useState<TTeamUser[]>([]);
+
+    const updateScore = async () => {
+      const sceneFromServer  = await server.getScene();
+        if (sceneFromServer && sceneFromServer.players) {
+          const usersFromServer = sceneFromServer.players.map((player) => ({
+            name: player.name,
+            teamId: player.teamId,
+            score: player.score,
+            deaths: player.deaths,
+            status: player.status,
+          }));
+          setUsers(usersFromServer);
+        }
+        else{
+          if (server.error.code === 1002) {
+            navigate("/login", {replace: true});
+        }
+        }
+
+      } 
+
+    useEffect(() => {
+        const interval = setInterval(updateScore, 2500);
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
 
     const HeaderScore = () => (
         <div className="header">

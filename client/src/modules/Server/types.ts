@@ -37,6 +37,10 @@ export type TPlayer = {
     vy: number;
     dx: number;
     dy: number;
+    name: string;
+    score: number;
+    status: string;
+    deaths: number;
 }
 
 export type TBullet = {
