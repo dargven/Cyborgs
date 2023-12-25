@@ -6,6 +6,7 @@ import HealthBar from "./HealthBar";
 import { useFrame } from "@react-three/fiber";
 import { TPlayer } from "../../../modules/Server/types";
 import { Animator } from "../Sprites/Animator";
+import React from "react";
 
 export type TPlayerProps = {
     onFire(x: number, y: number): void;
@@ -56,12 +57,15 @@ const Player = ({
         teamId,
     });
 
-
     const [frameName, setFrameName] = useState('movement')
 
-    const onEnd = ({ currentFrameName, currentFrame }:any) => {
-        if(hp === 0){
-            if (currentFrameName === 'movement') {
+    const currentFrame = React.useRef<number>(0)
+
+    const currentFrameName = React.useRef<string>(frameName || '')
+
+    const onEnd = ({}) => {
+        if(!hp){
+            if (frameName === 'movement') {
                 setFrameName('corpse')
             }
         }
@@ -128,7 +132,7 @@ const Player = ({
 
     useFrame(() => {
 
-        if (hp !== 0){
+        if (hp){
             if (getDirection) {
                 const dir = getDirection();
                 setRot(Math.atan2(dir.y, dir.x));
