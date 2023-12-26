@@ -7,7 +7,7 @@ require_once __DIR__ . '/CollidersPositions/CollidersPositions.php';
 
 class Game
 {
-    private $db;
+    private DB $db;
     private $teamASpawnPoints;
     private $teamBSpawnPoints;
     private $colliders;
