@@ -1,18 +1,15 @@
-import { Html, Text } from "@react-three/drei"
+import { Text } from "@react-three/drei"
 import { TPlayer } from "../../../modules/Server/types"
 
 interface IDebug {
     player: TPlayer,
-    debugRef: any
 }
 
-const Debug = ({player, debugRef}: IDebug) => {
+const Debug = ({player}: IDebug) => {
     return(
-        <group ref={debugRef}>
-            <Text fontSize={0.1} position={[0,4.2,0]} >
-                x = {Math.round(player.x)} | y = {Math.round(player.y)} | vx = { player.vx } | vy = { player.vy } | dx = { player.dx } | dy = { player.dy } | hp = { player.hp } | team = { player.teamId }   
-            </Text>
-        </group>
+        <Text fontSize={0.25}>
+            x = {Math.round(player.x)} | y = {Math.round(player.y)} | vx = { player.vx } | vy = { player.vy } | dx = { player.dx } | dy = { player.dy } | hp = { player.hp } | team = { player.teamId }   
+        </Text>
     )
 }
 

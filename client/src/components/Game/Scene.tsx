@@ -2,7 +2,7 @@ import { Stars } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Texture, TextureLoader, Vector3 } from "three";
+import { Group, Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
 import { TBullet, TDestructible, TPlayer } from "../../modules/Server/types";
 import CollidersPositions from "./Map/CollidersPositions";
@@ -14,7 +14,7 @@ import Player from "./Player/Player";
 import Bullet from "./Bullet/Bullet";
 import Dummy from "./Player/Dummy";
 import Game from "../../modules/Game/Game";
-import Timer from "./Misc/Gametimer";
+import Hud from "./Hud";
 
 export interface ITextureObject {
     [key: string]: Texture
@@ -87,6 +87,7 @@ const Scene = () => {
     }, []);
 
     const { viewport, camera, pointer } = useThree();
+    const hudRef = useRef<Group>();
 
     const updatePlayer = (updated: TPlayer) => {
         player.current = updated;
@@ -96,6 +97,8 @@ const Scene = () => {
         const cameraPos = new Vector3(x + pointer.x, y + pointer.y, 7);
         camera.position.lerp(cameraPos, 0.05);
         camera.updateProjectionMatrix();
+
+        hudRef.current?.position.set(camera.position.x, camera.position.y, camera.position.z-5.6)
     }
 
     const getDirection = () => {
@@ -142,9 +145,7 @@ const Scene = () => {
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull">
 
-                {/* <Timer maxTime={180} timerRef={timerRef}/> */}
-
-                {/* {player.current && <Debug player={player.current} debugRef={debugRef} />} */}
+                {player.current && <Hud hudRef={hudRef} player={player.current}></Hud>}
 
                 {dummies.map(player => {
                     const token = store.getUser().token;

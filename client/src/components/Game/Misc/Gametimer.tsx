@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { TPlayer } from "../../../modules/Server/types";
+import { Text } from "@react-three/drei";
 
 interface ITimer {
     maxTime: number,
-    timerRef: any,
 }
 
 
-const Timer = ({maxTime,timerRef}:ITimer) => {
+const Timer = ({maxTime}:ITimer) => {
     const [counter, setCounter] = useState(maxTime)
     
     useEffect(()=>{
@@ -17,9 +16,9 @@ const Timer = ({maxTime,timerRef}:ITimer) => {
     },[counter])
 
     return(
-        <group ref={timerRef}>
+        <Text fontSize={0.25}>
             {counter}
-        </group>
+        </Text>
     )
 }
 
