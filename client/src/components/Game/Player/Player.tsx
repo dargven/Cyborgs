@@ -12,7 +12,7 @@ export type TPlayerProps = {
     onFire(x: number, y: number): void;
     onMovement(x: number, y: number): void;
     updatePlayer(updated: TPlayer): void;
-    getDirection?(): Vector3;
+    getDirection(): Vector3;
     playerRotation?: number;
 } & TPlayer;
 
@@ -127,15 +127,12 @@ const Player = ({
     }, []);
 
     useFrame(() => {
-
+        
         if (hp){
-            if (getDirection) {
                 const dir = getDirection();
                 setRot(Math.atan2(dir.y, dir.x));
-            }
         }
         
-
         const { up, down, left, right, shoot } = getKeys();
         movementController(up, down, left, right);
 
