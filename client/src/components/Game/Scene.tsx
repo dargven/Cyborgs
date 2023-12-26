@@ -14,6 +14,7 @@ import Player from "./Player/Player";
 import Bullet from "./Bullet/Bullet";
 import Dummy from "./Player/Dummy";
 import Game from "../../modules/Game/Game";
+import Timer from "./Misc/Gametimer";
 
 export interface ITextureObject {
     [key: string]: Texture
@@ -96,6 +97,7 @@ const Scene = () => {
         camera.position.lerp(cameraPos, 0.05);
         camera.updateProjectionMatrix();
     }
+
     const getDirection = () => {
         return new Vector3(pointer.x, pointer.y / viewport.aspect, 0).normalize();
     }
@@ -139,6 +141,8 @@ const Scene = () => {
     return (
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull">
+
+                {/* <Timer maxTime={180} timerRef={timerRef}/> */}
 
                 {/* {player.current && <Debug player={player.current} debugRef={debugRef} />} */}
 
