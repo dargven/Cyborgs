@@ -1,13 +1,13 @@
 //dev1
-const DOMAIN = 'http://pi21low';
-const PORT = 81;
-export const HOST = `${DOMAIN}:${PORT}`;
+// const DOMAIN = 'http://pi21low';
+// const PORT = 81;
+// export const HOST = `${DOMAIN}:${PORT}`;
 
 // dev2
 //
-// const DOMAIN :string = 'http://localhost';
-// const PORT = 8888;
-// export const HOST :string = `${DOMAIN}:${PORT}`;
+const DOMAIN :string = 'http://localhost';
+const PORT = 8888;
+export const HOST :string = `${DOMAIN}:${PORT}`;
 
 // prod
 //const DOMAIN = 'https://cyborgs-game.ru/server/index.php';
@@ -15,8 +15,5 @@ export const HOST = `${DOMAIN}:${PORT}`;
 // const DOMAIN = 'https://test.cyborgs-game.ru/server/index.php';
 // const DOMAIN = 'https://cyborgs-game.ru/server/index.php';
 // const DOMAIN = 'https://api.cyborgs-game.ru/index.php';
-
-
-// export const HOST = DOMAIN;
 
 // export const HOST = DOMAIN;

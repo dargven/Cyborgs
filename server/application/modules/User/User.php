@@ -1,12 +1,14 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 require_once __DIR__ . '/../../modules/Mailer/Mailer.php';
 
 class User
 {
-    private $db;
-    private $mailer;
+    private DB $db;
+    private Mailer $mailer;
 
     function __construct($db)
     {
