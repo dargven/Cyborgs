@@ -59,10 +59,6 @@ const Player = ({
 
     const [frameName, setFrameName] = useState('movement')
 
-    const currentFrame = React.useRef<number>(0)
-
-    const currentFrameName = React.useRef<string>(frameName || '')
-
     const onEnd = ({}) => {
         if(!hp){
             if (frameName === 'movement') {
