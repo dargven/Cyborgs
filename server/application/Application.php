@@ -8,10 +8,10 @@ require_once 'modules/Chat/Chat.php';
 
 class Application
 {
-    private $user;
-    private $chat;
-    private $game;
-    private $lobby;
+    private User $user;
+    private Chat $chat;
+    private Game $game;
+    private Lobby $lobby;
 
     public function __construct()
     {
