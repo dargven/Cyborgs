@@ -247,7 +247,7 @@ class Game
 
     public function shoot($userId, $x, $y, $vx, $vy)
     {
-        $this->db->shoot($userId, $x, $y, $vx, $vy);
+        $this->db->setBullet($userId, $x, $y, $vx, $vy);
         $hash = $this->genHash();
         $this->db->updateBulletsHash($hash);
         return true;
