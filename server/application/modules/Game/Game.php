@@ -238,6 +238,13 @@ class Game
         }
         return false;
     }
+    public function shoot($userId, $x, $y, $vx, $vy)
+    {
+        $this->db->shoot($userId, $x, $y, $vx, $vy);
+        $hash = $this->genHash();
+        $this->db->updateBulletsHash($hash);
+        return true;
+    }
 
     public function getScene($playersHash, $objectsHash, $bulletsHash)
     {
