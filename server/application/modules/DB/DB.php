@@ -12,7 +12,7 @@ class DB
         $port = $_ENV['PORT_PROD'];
         $user = $_ENV['USER_PROD'];
         $pass = $_ENV['PASS_PROD'];
-        $db =   $_ENV['DB_PROD'];
+        $db = $_ENV['DB_PROD'];
         //----------------------------------------------------------------------------//
         //
         //        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
@@ -156,7 +156,7 @@ VALUES (?,?)", [$timeStart, $timeEnd]);
                 x, y, vx, vy FROM bullets");
     }
 
-    public function doShoot($userId, $x, $y, $vx, $vy)
+    public function shoot($userId, $x, $y, $vx, $vy)
     {
 
         $this->execute(

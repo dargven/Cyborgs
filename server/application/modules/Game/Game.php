@@ -281,10 +281,9 @@ class Game
         return false;
     }
 
-    public function doShoot($userId, $x, $y, $vx, $vy)
+    public function shoot($userId, $x, $y, $vx, $vy)
     {
-        $bulletId =
-            $this->db->doShoot($userId, $x, $y, $vx, $vy);
+        $this->db->shoot($userId, $x, $y, $vx, $vy);
         $hash = $this->genHash();
         $this->db->updateBulletsHash($hash);
         return true;
