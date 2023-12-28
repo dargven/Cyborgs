@@ -167,9 +167,9 @@ VALUES (?,?, now())', [$id, $message]);
             [$userId, $x, $y, $vx, $vy]);
     }
 
-    public function DeleteBullet($id)
+    public function DeleteBullet($bulletsIdArray)
     {
-        $this->execute("DELETE FROM bullets WHERE id=?", [$id]);
+        $this->execute("DELETE FROM bullets WHERE id IN ?", [$bulletsIdArray]);
     }
 
     public function getTeamsInfo() // Переписать
