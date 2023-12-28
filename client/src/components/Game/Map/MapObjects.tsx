@@ -1,5 +1,4 @@
-import { CuboidCollider, RigidBody } from "@react-three/rapier";
-import { Vector3, Texture } from "three";
+import { Texture, Vector3 } from "three";
 import MakeSprite from "../Sprites/MakeSprite";
 import Obstacle from "./Obstacle";
 

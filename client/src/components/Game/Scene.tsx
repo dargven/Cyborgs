@@ -106,14 +106,14 @@ const Scene = () => {
         if (.001 * (current - timer.current) > 1 / 1) {
             timer.current = current;
 
-            // const bullet: TBullet = {
-            //     x,
-            //     y,
-            //     vx: direction.x,
-            //     vy: direction.y,
-            //     bulletId: 
-            // };
-            // sendBullet(bullet);
+            const bullet: TBullet = {
+                x,
+                y,
+                vx: direction.x,
+                vy: direction.y,
+                bulletId: 1
+            };
+            sendBullet(bullet);
         }
     }
 
@@ -128,7 +128,7 @@ const Scene = () => {
                     if (player.token !== token) {
                         return <Dummy
                             {...player}
-                            key={player.token}
+                            // key={player.token}           //засоряет всю консоль
                         />
                     } else {
                         return <Player
@@ -142,10 +142,11 @@ const Scene = () => {
                     }
                 })}
 
-                {bullets.map(bullet =>
+                {bullets.map((bullet, index) =>
                     <Bullet
                         {...bullet}
-                        key={bullet.bulletId}
+                        // key={bullet.bulletId}
+                        key={index}
                         texture={textures['bullet']}
                     />
                 )}
