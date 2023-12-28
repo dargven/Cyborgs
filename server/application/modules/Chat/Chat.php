@@ -2,7 +2,7 @@
 
 class Chat
 {
-    private  $db;
+    private DB $db;
 
     public function __construct($db)
     {
