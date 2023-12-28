@@ -32,7 +32,7 @@ class Application
     function register($params)
     {
         $login = $params['login'];
-        $name = $params ['name'];
+        $name = $params['name'];
         $email = $params['email'];
         $hash = $params['hash'];
         if ($login && $hash && $name && $email) {
@@ -124,8 +124,10 @@ class Application
         $playersHash = $params['playersHash'];
         $bulletsHash = $params['bulletsHash'];
         $objectsHash = $params['objectsHash'];
-        if ($token && ($playersHash || $playersHash == 0) && ($bulletsHash || $bulletsHash == 0)
-            && ($objectsHash || $objectsHash == 0)) {
+        if (
+            $token && ($playersHash || $playersHash == 0) && ($bulletsHash || $bulletsHash == 0)
+            && ($objectsHash || $objectsHash == 0)
+        ) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->game->getScene($playersHash, $objectsHash, $bulletsHash);
@@ -133,7 +135,6 @@ class Application
             return ['error' => 1002];
         }
         return ['error' => 242];
-
     }
 
     function getPlayers($params)
@@ -158,8 +159,10 @@ class Application
         $vy = $params['vy'];
         $dx = $params['dx'];
         $dy = $params['dy'];
-        if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0)
-            && ($vy || $vy == 0) && ($dx || $dx == 0) && ($dy || $dy == 0)) {
+        if (
+            $token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0)
+            && ($vy || $vy == 0) && ($dx || $dx == 0) && ($dy || $dy == 0)
+        ) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->game->setPlayer($user->id, $x, $y, $vx, $vy, $dx, $dy);
@@ -174,7 +177,7 @@ class Application
     /* ЖАЛКАЯ ПАРОДИЯ */
     /******************/
 
-//..
+    //..
 
     function getTeamsInfo($params)
     {
@@ -186,10 +189,8 @@ class Application
                 return $this->lobby->getTeamsInfo();
             }
             return ['error' => 1002];
-
         }
         return ['error' => 242];
-
     }
 
     function doShoot($params)
@@ -221,7 +222,6 @@ class Application
             return ['error' => 1002];
         }
         return ['error' => 242];
-
     }
 
     function setSkin($params)
@@ -233,13 +233,10 @@ class Application
             $user = $this->user->getUserByToken($token);
             if ($user) {
                 return $this->lobby->setSkin($user->id, $skinId);
-
             }
             return ['error' => 1002];
-
         }
         return ['error' => 242];
-
     }
 
     function setDestroyObject($params)
@@ -279,10 +276,8 @@ class Application
                 return $this->user->sendCodeToResetPassword($login, $user);
             }
             return ['error' => 1002];
-
         }
         return ['error' => 242];
-
     }
 
     function getCodeToResetPassword($params)
@@ -290,7 +285,6 @@ class Application
         $code = $params['code'];
         if ($code) {
             return $this->user->getCodeToResetPassword($code);
-
         }
         return ['error' => 242];
     }
@@ -315,5 +309,4 @@ class Application
             }
         }
     }
-
 }

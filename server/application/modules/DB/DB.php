@@ -6,28 +6,28 @@ class DB
 
     public function __construct()
     {
-//----------------------------------------------------------------------------//
-//
+        //----------------------------------------------------------------------------//
+        //
         $host = $_ENV['HOST_PROD'];
         $port = $_ENV['PORT_PROD'];
         $user = $_ENV['USER_PROD'];
         $pass = $_ENV['PASS_PROD'];
         $db =   $_ENV['DB_PROD'];
-//----------------------------------------------------------------------------//
-//
-//        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
-//        $port = $_ENV['PORT_LC1'];
-//        $user = $_ENV['USER_LC1'];
-//        $pass = $_ENV['PASS_LC1'];
-//        $db =   $_ENV['DB_LC1'];
-//
-//----------------------------------------------------------------------------//
-//
-//        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
-//        $port = $_ENV['PORT_LC2'];
-//        $user = $_ENV['USER_LC2'];
-//        $pass = $_ENV['PASS_LC2'];
-//        $db =   $_ENV['DB_LC2'];
+        //----------------------------------------------------------------------------//
+        //
+        //        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
+        //        $port = $_ENV['PORT_LC1'];
+        //        $user = $_ENV['USER_LC1'];
+        //        $pass = $_ENV['PASS_LC1'];
+        //        $db =   $_ENV['DB_LC1'];
+        //
+        //----------------------------------------------------------------------------//
+        //
+        //        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
+        //        $port = $_ENV['PORT_LC2'];
+        //        $user = $_ENV['USER_LC2'];
+        //        $pass = $_ENV['PASS_LC2'];
+        //        $db =   $_ENV['DB_LC2'];
 
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
@@ -61,7 +61,7 @@ class DB
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
-//    НЕПОВТОРИМЫЙ ОРИГИНАЛ
+    //    НЕПОВТОРИМЫЙ ОРИГИНАЛ
 
     public function getUserByLogin($login)
     {
@@ -119,7 +119,8 @@ VALUES (?,?)", [$timeStart, $timeEnd]);
 
     public function endMatch($timeEnd, $status = 'EndMatch')
     {
-        $this->execute("UPDATE `match` SET status =? WHERE time_end=?;
+        $this->execute(
+            "UPDATE `match` SET status =? WHERE time_end=?;
                             UPDATE players SET status=DEFAULT, team_id = DEFAULT, skin_id = DEFAULT, 
                                                x = DEFAULT, y=DEFAULT,vx =DEFAULT, vy =DEFAULT, 
                                                dx = DEFAULT, dy=DEFAULT, hp = DEFAULT, kills =DEFAULT;
@@ -158,8 +159,10 @@ VALUES (?,?)", [$timeStart, $timeEnd]);
     public function doShoot($userId, $x, $y, $vx, $vy)
     {
 
-        $this->execute("INSERT INTO bullets (bullets.user_id,x,y,vx,vy) VALUES (?,?,?,?,?)",
-            [$userId, $x, $y, $vx, $vy]);
+        $this->execute(
+            "INSERT INTO bullets (bullets.user_id,x,y,vx,vy) VALUES (?,?,?,?,?)",
+            [$userId, $x, $y, $vx, $vy]
+        );
     }
 
     public function DeleteBullet($id)
@@ -175,15 +178,15 @@ VALUES (?,?)", [$timeStart, $timeEnd]);
             FROM bullets as b
             LEFT JOIN usersBullets as u on u.bullet_id = b.id
             ORDER BY u.bullet_id");
-
     }
 
     public function updateScoreInTeam($teamId, $score)
     {
 
-        $this->execute("UPDATE teams SET team_score=+? WHERE  team_id=?",
-            [$score, $teamId]);
-
+        $this->execute(
+            "UPDATE teams SET team_score=+? WHERE  team_id=?",
+            [$score, $teamId]
+        );
     }
 
     public function addPlayer($id, $teamId)
@@ -193,7 +196,8 @@ VALUES (?,?)", [$timeStart, $timeEnd]);
             "INSERT INTO players (user_id, team_id, status)
                  VALUES (?, ?, ?)
                  ON DUPLICATE KEY UPDATE user_id = VALUES(user_id)",
-            [$id, $teamId, $status]);
+            [$id, $teamId, $status]
+        );
     }
 
     public function deletePlayer($token)
@@ -306,5 +310,4 @@ VALUES (?,?)", [$timeStart, $timeEnd]);
     {
         $this->execute("UPDATE players SET hp =-? WHERE user_id=?", [$playerId, $dHp]);
     }
-
 }
