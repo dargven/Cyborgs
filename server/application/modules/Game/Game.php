@@ -58,7 +58,9 @@ class Game
                 }
             }
         }
-        $this->setHit($playersHit, $bulletsInPlayer);
+        if($bulletsInPlayer && $playersHit){
+            $this->setHit($playersHit, $bulletsInPlayer);
+        }
     }
 
     public function setHit($playersId, $bulletsId)
