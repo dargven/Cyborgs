@@ -48,20 +48,24 @@ class Game
         $players = $this->db->getAllInfoPlayers();
         $bullets = $this->getBullets();
         $bulletsAndPlayerId = [];
+        $bulletsNeedToMove[] = [];
 
         foreach ($bullets as $bullet) {
             foreach ($players as $player) {
                 if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
-                    $bulletsAndPlayerIds[] = [
+                    $bulletsAndPlayerId[] = [
                         'bulletsId' => [$bullet['id']],
                         'playersId' => [$player['user_id']]
                     ];
+                } else {
+                    $bulletsNeedToMove[] = $bullet;
                 }
             }
         }
-        if ($bulletsAndPlayerIds) {
+        if ($bulletsAndPlayerId) {
             $this->setHit($bulletsAndPlayerId);
         }
+        $this->moveBullet($bulletsNeedToMove);
         return $bulletsAndPlayerId;
     }
 
@@ -72,6 +76,13 @@ class Game
         $this->decreaseHp($playersId);
         $this->db->DeleteBullet($bulletsId);
         return true;
+    }
+
+    private function checkTeamDamage()
+    {
+        //нужно брать все пули которые попали брать тим id в кого они попали по пуле смотреть тим ID кто стрелял
+        //если оно одинаковое то заносить их в $_SESSION
+        //создать еще 1 функцию -рейтинг если он попал больше 4 раз за матч по своим снимать рейтинг из писка мерки
     }
 
     private function decreaseHp($playersId, $dHp = 20)
@@ -98,39 +109,36 @@ class Game
 
     private function setDeath($deathPlayersId)
     {
+        $this->db->setDeath($deathPlayersId);
+        $this->updateTeamsScore($deathPlayersId);
+
+    }
+
+    private function updateTeamsScore($deathPlayersId)
+    {
         $scoreA = 0;
         $scoreB = 0;
-        $this->db->setDeath($deathPlayersId);
         $players = $this->db->getUsersByUserId($deathPlayersId);
         foreach ($players as $player) {
-            if($player['teamId'] == 0){
-                $scoreA += 10;
+            if ($player['teamId'] == 0) {
+                $scoreA += 1;
+            } else if ($player['teamId'] == 1) {
+                $scoreB += 1;
             }
-//            else $player['teamId']
         }
-//            $this->db->updateScoreInTeam(0, 10);
-//        } else $this->db->updateScoreInTeam(1, 10);
+        $this->db->updateScoreInTeam($scoreA, $scoreB);
     }
 
-
-    private function delBullet() //для удаления пуль со сцены
+    private function moveBullet($bulletsNeedToMove) //для передвежения пуль на сцены
     {
-        $bulletInCollider = $this->checkHitCollider();
-        $bulletInPlayer = $this->checkHit();
-        if ($bulletInCollider && $bulletInPlayer) {
-            // дописать в общий массив пули
-        }
-
-    }
-
-    private function moveBullet() //для передвежения пуль на сцены
-    {
-        $bullets = $this->getBullets();
-
-        foreach ($bullets as $bullet) {
+        $bulletId = [];
+        foreach ($bulletsNeedToMove as $bullet) {
             $bullet['x'] = $bullet['x'] + $bullet['vx'];
             $bullet['y'] = $bullet['y'] + $bullet['vy'];
+            $bulletId[] = $bullet['id'];
         }
+        
+        $this->db->updateBullets($bulletsNeedToMove);
 
     }
 

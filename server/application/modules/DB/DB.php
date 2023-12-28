@@ -185,11 +185,17 @@ ORDER BY u.bullet_id");
     }
 
 
-    public function updateScoreInTeam($teamId, $score)
+    public function updateScoreInTeam($scoreA, $scoreB)
     {
 
-        $this->execute("UPDATE teams SET team_score=+? WHERE  team_id=?",
-            [$score, $teamId]);
+        $this->execute("UPDATE teams
+        SET team_score = 
+        CASE 
+            WHEN team_id = ? THEN team_score + ?
+            WHEN team_id = ? THEN team_score + ?
+        END
+        WHERE team_id IN (?, ?);",
+            [0, $scoreA, 1, $scoreB, 0, 1]);
 
     }
 
@@ -321,6 +327,18 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     public function decreaseHp($playersId, $dHp)
     {
         $this->execute("UPDATE players SET hp =-? WHERE user_id IN ?", [$dHp, $playersId]);
+    }
+
+    public function updateBullets($bulletsNeedToMove)
+    {
+        $this->execute("UPDATE teams
+        SET team_score = 
+        CASE 
+            WHEN team_id = ? THEN team_score + ?
+            WHEN team_id = ? THEN team_score + ?
+        END
+        WHERE team_id IN (?, ?);",
+            [0, $scoreA, 1, $scoreB, 0, 1]);
     }
 
 }
