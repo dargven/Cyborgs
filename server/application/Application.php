@@ -198,7 +198,7 @@ class Application
 
     }
 
-    function setBullet($params)
+    function doShoot($params)
     {
         $token = $params['token'];
         $x = $params['x'];
@@ -208,7 +208,7 @@ class Application
         if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0) && ($vy || $vy == 0)) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
-                return $this->game->setBullet($user->id, $x, $y, $vx, $vy);
+                return $this->game->doShoot($user->id, $x, $y, $vx, $vy);
             }
             return ['error' => 1002];
         }

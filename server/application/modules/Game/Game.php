@@ -93,7 +93,6 @@ class Game
 
     }
     
-
     private function spawnPlayers()
     {
         $players = $this->db->getAllInfoPlayers();
@@ -279,10 +278,10 @@ class Game
         return false;
     }
 
-    public function setBullet($userId, $x, $y, $vx, $vy)
+    public function doShoot($userId, $x, $y, $vx, $vy)
     {
         $bulletId =
-            $this->db->setBullet($userId, $x, $y, $vx, $vy);
+            $this->db->doShoot($userId, $x, $y, $vx, $vy);
         $hash = $this->genHash();
         $this->db->updateBulletsHash($hash);
         return true;

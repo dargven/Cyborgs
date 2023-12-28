@@ -160,7 +160,7 @@ VALUES (?,?, now())', [$id, $message]);
                 x, y, vx, vy FROM bullets");
     }
 
-    public function setBullet($userId, $x, $y, $vx, $vy)
+    public function doShoot($userId, $x, $y, $vx, $vy)
     {
 
         $this->execute("INSERT INTO bullets (bullets.user_id,x,y,vx,vy) VALUES (?,?,?,?,?)",
