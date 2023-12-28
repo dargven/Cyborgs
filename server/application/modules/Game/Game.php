@@ -47,44 +47,61 @@ class Game
     {
         $players = $this->db->getAllInfoPlayers();
         $bullets = $this->getBullets();
-        $bulletsInPlayer = [];
-        $playersHit = [];
+        $bulletsAndPlayerId = [];
 
         foreach ($bullets as $bullet) {
             foreach ($players as $player) {
                 if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
-                    $bulletsInPlayer[] = $bullet["id"];
-                    $playersHit[] = $player["user_id"];
+                    $bulletsAndPlayerIds[] = [
+                        'bulletsId' => [$bullet['id']],
+                        'playersId' => [$player['user_id']]
+                    ];
                 }
             }
         }
-        if($bulletsInPlayer && $playersHit){
-            $this->setHit($playersHit, $bulletsInPlayer);
+        if ($bulletsAndPlayerIds) {
+            $this->setHit($bulletsAndPlayerId);
         }
+        return $bulletsAndPlayerId;
     }
 
-    public function setHit($playersId, $bulletsId)
+    public function setHit($bulletsAndPlayerId)
     {
-        $this->decreaseHp($playersId, 20);
+        $playersId = $bulletsAndPlayerId['playersId'];
+        $bulletsId = $bulletsAndPlayerId['bulletsId'];
+        $this->decreaseHp($playersId);
         $this->db->DeleteBullet($bulletsId);
         return true;
     }
 
-    private function decreaseHp($playerId, $dHp = 20)
+    private function decreaseHp($playersId, $dHp = 20)
     {
-        $player = $this->db->getUserByUserId($playerId);
-        if (!($player->hp - $dHp <= 0)) {
-            $this->db->decreaseHp($playerId, $dHp);
-        } else if ($player->hp - $dHp <= 0 || $player->hp == 0) {
-            $this->setDeath($player);
+        $decreaseHpPlayersId = [];
+        $deathPlayersId = [];
+        $players = $this->db->getUsersByUserId($playersId);
+        foreach ($players as $player) {
+            if ($player['hp'] - $dHp >= 0) {
+                $decreaseHpPlayersId[] = $player['id'];
+            } else if ($player['hp'] - $dHp <= 0 || $player['hp'] == 0) {
+                $deathPlayersId[] = $player['id'];
+            }
+            if($decreaseHpPlayersId){
+                $this->db->decreaseHp($decreaseHpPlayersId, $dHp);
+            }
+            if($deathPlayersId){
+                $this->setDeath($deathPlayersId);
+            }
+
         }
+        
+        
 
     }
 
-    private function setDeath($player)
+    private function setDeath($deathPlayersId)
     {
-        $this->db->setStatus($player, 'Death');
-        $teamId = $player->team_id;
+        $this->db->setDeath($deathPlayersId);
+foreach ($deathPlayersId as $player)
         if ($teamId == 0) {
             $this->db->updateScoreInTeam(0, 10);
         } else $this->db->updateScoreInTeam(1, 10);

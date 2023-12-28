@@ -84,9 +84,9 @@ class DB
         return $this->query("SELECT * FROM users WHERE id=?", [$id]);
     }
 
-    public function getUserByUserId($id)
+    public function getUsersByUserId($id)
     {
-        return $this->query("SELECT * FROM players WHERE user_id=?", [$id]);
+        return $this->queryAll("SELECT * FROM players WHERE user_id IN ?", [$id]);
     }
 
     public function getUserByUuid($uuid)
@@ -246,6 +246,11 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE players SET status = ? WHERE user_id = ?", [$status, $id]);
     }
+    public function setDeath($deathPlayersId)
+    {
+        $status = 'Death';
+        $this->execute("UPDATE players SET status = ? WHERE user_id IN ?", [$status, $deathPlayersId]);
+    }
 
     public function addUserStats($user_id, $kills, $death, $time_in_game, $points)
     {
@@ -313,9 +318,9 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     }
 
 
-    public function decreaseHp($playerId, $dHp)
+    public function decreaseHp($playersId, $dHp)
     {
-        $this->execute("UPDATE players SET hp =-? WHERE user_id=?", [$playerId, $dHp]);
+        $this->execute("UPDATE players SET hp =-? WHERE user_id IN ?", [$dHp, $playersId]);
     }
 
 }
