@@ -51,10 +51,8 @@ class Application
                 return $this->user->autoLogin($user, $token);
             }
             return ['error' => 705];
-
         }
         return ['error' => 242];
-
     }
 
     function login($params)
@@ -76,7 +74,6 @@ class Application
         }
         return ['error' => 242];
     }
-
 
     function getMessages($params)
     {
@@ -134,7 +131,6 @@ class Application
                 return $this->game->getScene($playersHash, $objectsHash, $bulletsHash);
             }
             return ['error' => 1002];
-
         }
         return ['error' => 242];
 
@@ -171,8 +167,6 @@ class Application
             return ['error' => 1002];
         }
         return ['error' => 242];
-
-
     }
 
 
@@ -321,6 +315,5 @@ class Application
             }
         }
     }
-
 
 }

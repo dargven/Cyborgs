@@ -61,7 +61,6 @@ class DB
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
 //    НЕПОВТОРИМЫЙ ОРИГИНАЛ
 
     public function getUserByLogin($login)
@@ -94,7 +93,6 @@ class DB
         return $this->query("SELECT * FROM users WHERE uuid=?", [$uuid]);
     }
 
-
     public function updateToken($id, $token)
     {
         $this->execute("UPDATE users SET token=? WHERE id=?", [$token, $id]);
@@ -119,7 +117,6 @@ class DB
 VALUES (?,?)", [$timeStart, $timeEnd]);
     }
 
-
     public function endMatch($timeEnd, $status = 'EndMatch')
     {
         $this->execute("UPDATE `match` SET status =? WHERE time_end=?;
@@ -131,7 +128,6 @@ VALUES (?,?)", [$timeStart, $timeEnd]);
             [$status, $timeEnd]  //
         );
     }
-
 
     public function setPassword($id, $password)
     {
@@ -149,9 +145,8 @@ VALUES (?,?)", [$timeStart, $timeEnd]);
     public function sendMessage($id, $message)
     {
         $this->execute('INSERT INTO messages (user_id, message, created)
-VALUES (?,?, now())', [$id, $message]);
+        VALUES (?,?, now())', [$id, $message]);
     }
-
 
     public function getBullets() //
     {
@@ -173,17 +168,15 @@ VALUES (?,?, now())', [$id, $message]);
     }
 
     public function getTeamsInfo() // Переписать
-
     {
         return $this->queryAll("SELECT u.id AS bullet_id, u.user_id AS user_id,
-       b.x AS x, b.y AS y,
-       b.vx AS vx, b.vy AS vy
-FROM bullets as b
-         LEFT JOIN usersBullets as u on u.bullet_id = b.id
-ORDER BY u.bullet_id");
+            b.x AS x, b.y AS y,
+            b.vx AS vx, b.vy AS vy
+            FROM bullets as b
+            LEFT JOIN usersBullets as u on u.bullet_id = b.id
+            ORDER BY u.bullet_id");
 
     }
-
 
     public function updateScoreInTeam($teamId, $score)
     {
@@ -203,18 +196,17 @@ ORDER BY u.bullet_id");
             [$id, $teamId, $status]);
     }
 
-
     public function deletePlayer($token)
     {
         $this->execute("DELETE FROM players
-WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
+        WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
 
     public function getSkinsInLobby() // переписать
     {
         return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, 
-       skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id 
-                   WHERE skins.role='lobby'");
+        skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id 
+        WHERE skins.role='lobby'");
     }
 
     public function setSkinInLobby($id, $skinId) // переписать
@@ -222,11 +214,10 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
         $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
     }
 
-
     public function getPlayers()
     {
         return $this->queryAll("SELECT u.token, p.hp, p.team_id, p.skin_id, p.x, p.y, p.vx, p.vy, p.dx, p.dy
-FROM players as p INNER JOIN users as u on u.id=p.user_id");
+        FROM players as p INNER JOIN users as u on u.id=p.user_id");
     }
 
     public function getAllInfoPlayers()
@@ -237,9 +228,9 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
     public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
     {
         $this->execute("INSERT INTO players (user_id, x, y, vx, vy, dx, dy) VALUES (?, ?, ?, ?, ?, ?, ?) 
-ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), 
-      vx = VALUES(vx), vy = VALUES(vy), dx = VALUES(dx), dy = VALUES(dy);
-", [$id, $x, $y, $vx, $vy, $dx, $dy]); // Переписать (без on duplicate key)
+        ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), 
+        vx = VALUES(vx), vy = VALUES(vy), dx = VALUES(dx), dy = VALUES(dy);
+        ", [$id, $x, $y, $vx, $vy, $dx, $dy]); // Переписать (без on duplicate key)
     }
 
     public function setStatus($id, $status)
@@ -251,10 +242,9 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("INSERT INTO stats (user_id, kills, death, time_in_game, points)
         VALUES (?, 0, 0, 0, 0) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), kills = VALUES(kills), death = VALUES(death), 
-      time_in_game = VALUES(time_in_game), points = VALUES(points);
-", [$user_id, $kills, $death, $time_in_game, $points]);
+        time_in_game = VALUES(time_in_game), points = VALUES(points);
+        ", [$user_id, $kills, $death, $time_in_game, $points]);
     }
-
 
     public function getObjects()
     {
@@ -265,7 +255,6 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         return $this->query("SELECT * FROM objects WHERE id=?", [$id]);
     }
-
 
     public function setDestroyObject($objectId, $state)
     {
@@ -319,4 +308,3 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     }
 
 }
-
