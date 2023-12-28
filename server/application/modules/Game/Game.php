@@ -20,6 +20,7 @@ class Game
         $this->colliders = CollidersPositions::$collidersPositions;
     }
 
+    //проверка на попадание в стену
     private function checkHitCollider()
     {
         $bullets = $this->getBullets();
@@ -39,11 +40,12 @@ class Game
         return $bulletInCollider;
     }
 
-
     private function genHash()
     {
         return md5(rand(0, 1000000));
     }
+
+    //проверка на попадание в игрока
     private function checkHit()
     {
         $players = $this->db->getAllInfoPlayers();
@@ -62,22 +64,25 @@ class Game
         $this->setHit($PlayerHit, $bulletInPlayer);
     }
 
+    //снятие хп у игрока
     public function setHit($playerId, $bulletId)
     {
         $this->decreaseHp($playerId, 20);
-        $this->db->DeleteBullet($bulletId);
+        //$this->db->DeleteBullet($bulletId);-Виталя это вроде удалить надо у нас уже по другому удаляет
         return true;
     }
-
-    private function delBullet() //для удаления пуль со сцены
+    
+    //для удаления пуль со сцены
+    private function delBullet() 
     {
         $bulletInCollider = $this->checkHitCollider();
         $bulletInPlayer = $this->checkHit();
         if ($bulletInCollider && $bulletInPlayer) {
             //дописать в общий массив пули
-        }
+        }//дописать запуск DEliteBulet
     }
 
+    //передвижение пули
     private function moveBullet() //для передвежения пуль на сцены
     {
         $bullets = $this->getBullets();
@@ -88,6 +93,7 @@ class Game
         }
     }
 
+    //снятие очков за попадание по своим
     private function teamKill()
     {
         //нужно брать все пули которые попали брать тим id в кого они попали по пуле смотреть тим ID кто стрелял
@@ -95,6 +101,7 @@ class Game
         //создать еще 1 функцию -рейтинг если он попал больше 4 раз за матч по своим снимать рейтинг из писка мерки
     }
 
+    //спавн игроков после смерти
     private function spawnPlayers()
     {
         $players = $this->db->getAllInfoPlayers();
@@ -130,7 +137,7 @@ class Game
         }
     }
 
-
+    //проверяет свободные спавны, чтоб игроки в друг друге не спавнились
     private function getFreeSpawnPoint($spawnPoints, $usedSpawnPoints) //$playerX, $playerY,)
     {
         foreach ($spawnPoints as $spawnPoint) {
@@ -141,6 +148,7 @@ class Game
         return null;
     }
 
+    //уменьшает зп игрокам
     private function decreaseHp($playerId, $dHp = 20)
     {
         $player = $this->db->getUserByUserId($playerId);
@@ -151,6 +159,7 @@ class Game
         }
     }
 
+    //убивает игрока 'Также доложна добавлять килы и смерти'
     private function setDeath($player)
     {
         $this->db->setStatus($player, 'Death');
@@ -160,12 +169,10 @@ class Game
         } else $this->db->updateScoreInTeam(1, 10);
     }
 
-
     private function getBullets()
     {
         return $this->db->getBullets();
     }
-
 
     public function getObjects()
     {
@@ -176,7 +183,6 @@ class Game
     {
         return $this->db->getPlayers();
     }
-
 
     private function updateScene($timeout, $timestamp)
     {
@@ -248,7 +254,6 @@ class Game
         }
         return $scene;
     }
-
 
     public function startMatch($time = 180)
     {

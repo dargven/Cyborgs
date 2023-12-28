@@ -16,7 +16,6 @@ class Lobby
             return true;
         }
         return ['error' => 605];
-
     }
 
 
@@ -35,6 +34,4 @@ class Lobby
         $this->db->setSkinInLobby($id, $skinId);
         return true;
     }
-
-
 }

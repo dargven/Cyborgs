@@ -15,7 +15,6 @@ class Mailer
     public function __construct()
     {
         $this->mail = new PHPMailer(true);
-
     }
 
     public function sendEmail($to, $subject, $body)
@@ -39,8 +38,5 @@ class Mailer
         } catch (Exception $e) {
             return false;
         }
-
     }
-
-
 }

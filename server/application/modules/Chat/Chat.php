@@ -32,5 +32,4 @@ class Chat
         }
         return true;
     }
-
 }

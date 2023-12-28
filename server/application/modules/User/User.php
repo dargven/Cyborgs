@@ -42,7 +42,7 @@ class User
         if ($user) {
             $hashS = md5($user->password . $rnd);
             if ($hash === $hashS) {
-//            if (!$user->token) { //Проверка на игру с двух устройств(скорее всего не понадобится)
+                //            if (!$user->token) { //Проверка на игру с двух устройств(скорее всего не понадобится)
                 $token = $this->genToken();
                 $this->db->updateToken($user->id, $token);
                 return [
@@ -50,8 +50,8 @@ class User
                     'token' => $token,
                     'uuid' => $user->uuid,
                 ];
-//            }
-//            return ['error' => 1005];
+                //            }
+                //            return ['error' => 1005];
 
             }
             return ['error' => 1002];
@@ -70,8 +70,6 @@ class User
             ];
         }
         return ['error' => 1002];
-
-
     }
 
     public function logout($token)
@@ -111,7 +109,7 @@ class User
         if ($this->mailer->sendEmail($email, 'verifCode', 'your Verificitaion code is ' . $randomNumber)) {
             return true;
         }
-        return ['error' => 707];// could not send message
+        return ['error' => 707]; // could not send message
     }
 
     public function getCodeToResetPassword($code)
@@ -139,7 +137,7 @@ class User
             $this->db->setPassword($id, $hash);
             return true;
         }
-        return ['error' => 709];// 709'=>'session did not start
+        return ['error' => 709]; // 709'=>'session did not start
         // or you need use previous method',
 
 
@@ -162,6 +160,4 @@ class User
         }
         return ['error' => 709];
     }
-
-
 }
