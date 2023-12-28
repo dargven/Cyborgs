@@ -87,10 +87,11 @@ class Game
     {
         $bullets = $this->getBullets();
 
-        foreach ($bullets as $bullet) {
+        foreach ($bullets as &$bullet) {
             $bullet['x'] = $bullet['x'] + $bullet['vx'];
             $bullet['y'] = $bullet['y'] + $bullet['vy'];
         }
+        unset($bullet);
     }
 
     //снятие очков за попадание по своим
@@ -278,16 +279,16 @@ class Game
             }
         }
 
-        return false;
-    }
-
-    public function shoot($userId, $x, $y, $vx, $vy)
+        return false;ion shoot($userId, $x, $y, $vx, $vy)
     {
-        $this->db->shoot($userId, $x, $y, $vx, $vy);
+    $this->db->shoot($userId, $x, $y, $vx, $vy);
         $hash = $this->genHash();
         $this->db->updateBulletsHash($hash);
         return true;
     }
+    }
+
+    public funct
 
 
     public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
