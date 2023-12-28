@@ -8,9 +8,9 @@ require_once __DIR__ . '/CollidersPositions/CollidersPositions.php';
 class Game
 {
     private DB $db;
-    private $teamASpawnPoints;
-    private $teamBSpawnPoints;
-    private $colliders;
+    private array $teamASpawnPoints;
+    private array $teamBSpawnPoints;
+    private array $colliders;
 
     public function __construct($db)
     {
@@ -24,18 +24,17 @@ class Game
     {
         $bullets = $this->getBullets();
         $colliders = $this->colliders;
-        $bulletInCollider = [];
+        $bulletsInCollider = [];
 
         foreach ($bullets as $bullet) {
             foreach ($colliders as $collider) {
                 if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
-                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) 
-                    {
-                    $bulletInCollider[] = $bullet['id'];
+                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
+                    $bulletsInCollider[] = $bullet['id'];
                 }
             }
         }
-        return $bulletInCollider;
+        return $bulletsInCollider;
     }
 
 
@@ -43,56 +42,72 @@ class Game
     {
         return md5(rand(0, 1000000));
     }
+
     private function checkHit()
     {
         $players = $this->db->getAllInfoPlayers();
         $bullets = $this->getBullets();
-        $bulletInPlayer = [];
-        $PlayerHit=[];
+        $bulletsInPlayer = [];
+        $playersHit = [];
 
-        foreach ($bullets as $bullet)
-        {
-            foreach ($players as $player)
-            {
-                if ((sqrt(($bullet['x']**2)+($bullet['y']**2)))<=((sqrt(($player['x']**2)+($player['y']**2)))+1))
-                {
-                    $bulletInPlayer = $bullet["id"]; 
-                    $PlayerHit = $player["user_id"];
+        foreach ($bullets as $bullet) {
+            foreach ($players as $player) {
+                if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
+                    $bulletsInPlayer[] = $bullet["id"];
+                    $playersHit[] = $player["user_id"];
                 }
             }
         }
-        $this->setHit($PlayerHit,$bulletInPlayer);
+        $this->setHit($playersHit, $bulletsInPlayer);
     }
 
-    public function setHit($playerId, $bulletId)
+    public function setHit($playersId, $bulletsId)
     {
-        $this->decreaseHp($playerId, 20);
-        $this->db->DeleteBullet($bulletId);
+        $this->decreaseHp($playersId, 20);
+        $this->db->DeleteBullet($bulletsId);
         return true;
     }
-    
-    private function delBullet()//для удаления пуль со сцены
+
+    private function decreaseHp($playerId, $dHp = 20)
+    {
+        $player = $this->db->getUserByUserId($playerId);
+        if (!($player->hp - $dHp <= 0)) {
+            $this->db->decreaseHp($playerId, $dHp);
+        } else if ($player->hp - $dHp <= 0 || $player->hp == 0) {
+            $this->setDeath($player);
+        }
+
+    }
+
+    private function setDeath($player)
+    {
+        $this->db->setStatus($player, 'Death');
+        $teamId = $player->team_id;
+        if ($teamId == 0) {
+            $this->db->updateScoreInTeam(0, 10);
+        } else $this->db->updateScoreInTeam(1, 10);
+    }
+
+    private function delBullet() //для удаления пуль со сцены
     {
         $bulletInCollider = $this->checkHitCollider();
         $bulletInPlayer = $this->checkHit();
         if ($bulletInCollider && $bulletInPlayer) {
-            //дописать в общий массив пули
+            // дописать в общий массив пули
         }
 
     }
 
-    private function moveBullet()//для передвежения пуль на сцены
+    private function moveBullet() //для передвежения пуль на сцены
     {
         $bullets = $this->getBullets();
 
-        foreach ($bullets as $bullet)
-        {
-            $bullet['x'] = $bullet['x']+$bullet['vx'];
-            $bullet['y'] = $bullet['y']+$bullet['vy'];
+        foreach ($bullets as $bullet) {
+            $bullet['x'] = $bullet['x'] + $bullet['vx'];
+            $bullet['y'] = $bullet['y'] + $bullet['vy'];
         }
 
     }
-    
 
     private function spawnPlayers()
     {
@@ -132,7 +147,6 @@ class Game
 
     }
 
-
     private function getFreeSpawnPoint($spawnPoints, $usedSpawnPoints) //$playerX, $playerY,)
     {
         foreach ($spawnPoints as $spawnPoint) {
@@ -143,32 +157,11 @@ class Game
         return null;
     }
 
-    private function decreaseHp($playerId, $dHp = 20)
-    {
-        $player = $this->db->getUserByUserId($playerId);
-        if (!($player->hp - $dHp <= 0)) {
-            $this->db->decreaseHp($playerId, $dHp);
-        } else if ($player->hp - $dHp <= 0 || $player->hp == 0) {
-            $this->setDeath($player);
-        }
-
-    }
-
-    private function setDeath($player)
-    {
-        $this->db->setStatus($player, 'Death');
-        $teamId = $player->team_id;
-        if ($teamId == 0) {
-            $this->db->updateScoreInTeam(0, 10);
-        } else $this->db->updateScoreInTeam(1, 10);
-    }
-
 
     private function getBullets()
     {
         return $this->db->getBullets();
     }
-
 
     public function getObjects()
     {
@@ -179,7 +172,6 @@ class Game
     {
         return $this->db->getPlayers();
     }
-
 
     private function updateScene($timeout, $timestamp)
     {
