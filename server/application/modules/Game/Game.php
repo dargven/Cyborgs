@@ -28,9 +28,10 @@ class Game
 
         foreach ($bullets as $bullet) {
             foreach ($colliders as $collider) {
-                if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
-                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) 
-                    {
+                if (
+                    $bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
+                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])
+                ) {
                     $bulletInCollider[] = $bullet['id'];
                 }
             }
@@ -48,20 +49,17 @@ class Game
         $players = $this->db->getAllInfoPlayers();
         $bullets = $this->getBullets();
         $bulletInPlayer = [];
-        $PlayerHit=[];
+        $PlayerHit = [];
 
-        foreach ($bullets as $bullet)
-        {
-            foreach ($players as $player)
-            {
-                if ((sqrt(($bullet['x']**2)+($bullet['y']**2)))<=((sqrt(($player['x']**2)+($player['y']**2)))+1))
-                {
-                    $bulletInPlayer = $bullet["id"]; 
+        foreach ($bullets as $bullet) {
+            foreach ($players as $player) {
+                if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
+                    $bulletInPlayer = $bullet["id"];
                     $PlayerHit = $player["user_id"];
                 }
             }
         }
-        $this->setHit($PlayerHit,$bulletInPlayer);
+        $this->setHit($PlayerHit, $bulletInPlayer);
     }
 
     public function setHit($playerId, $bulletId)
@@ -70,29 +68,33 @@ class Game
         $this->db->DeleteBullet($bulletId);
         return true;
     }
-    
-    private function delBullet()//для удаления пуль со сцены
+
+    private function delBullet() //для удаления пуль со сцены
     {
         $bulletInCollider = $this->checkHitCollider();
         $bulletInPlayer = $this->checkHit();
         if ($bulletInCollider && $bulletInPlayer) {
             //дописать в общий массив пули
         }
-
     }
 
-    private function moveBullet()//для передвежения пуль на сцены
+    private function moveBullet() //для передвежения пуль на сцены
     {
         $bullets = $this->getBullets();
 
-        foreach ($bullets as $bullet)
-        {
-            $bullet['x'] = $bullet['x']+$bullet['vx'];
-            $bullet['y'] = $bullet['y']+$bullet['vy'];
+        foreach ($bullets as $bullet) {
+            $bullet['x'] = $bullet['x'] + $bullet['vx'];
+            $bullet['y'] = $bullet['y'] + $bullet['vy'];
         }
-
     }
-    
+
+    private function teamKill()
+    {
+        //нужно брать все пули которые попали брать тим id в кого они попали по пуле смотреть тим ID кто стрелял
+        //если оно одинаковое то заносить их в новую базу
+        //создать еще 1 функцию -рейтинг если он попал больше 4 раз за матч по своим снимать рейтинг из писка мерки
+    }
+
     private function spawnPlayers()
     {
         $players = $this->db->getAllInfoPlayers();
@@ -119,7 +121,6 @@ class Game
                     $spawnPoint = $this->teamASpawnPoints[array_rand($this->teamASpawnPoints)];
                     $this->db->spawnPlayer($player['user_id'], $spawnPoint['x'], $spawnPoint['y']);
                     $this->db->setStatus($player['user_id'], 'Live');
-
                 } else if ($player['team_id'] == 1) {
                     $spawnPoint = $this->teamBSpawnPoints[array_rand($this->teamASpawnPoints)];
                     $this->db->spawnPlayer($player['user_id'], $spawnPoint['x'], $spawnPoint['y']);
@@ -127,15 +128,13 @@ class Game
                 }
             }
         }
-
-
     }
 
 
     private function getFreeSpawnPoint($spawnPoints, $usedSpawnPoints) //$playerX, $playerY,)
     {
         foreach ($spawnPoints as $spawnPoint) {
-            if (!in_array($spawnPoint, $usedSpawnPoints)) {//&& $this->checkFreePosition($playerX, $playerY, $spawnPoint['x'], $spawnPoint['y'])) {
+            if (!in_array($spawnPoint, $usedSpawnPoints)) { //&& $this->checkFreePosition($playerX, $playerY, $spawnPoint['x'], $spawnPoint['y'])) {
                 return $spawnPoint;
             }
         }
@@ -150,7 +149,6 @@ class Game
         } else if ($player->hp - $dHp <= 0 || $player->hp == 0) {
             $this->setDeath($player);
         }
-
     }
 
     private function setDeath($player)
@@ -195,19 +193,19 @@ class Game
             // }
 
 
-////            // пробежаться по всем игрокам
-////            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы // или поменять статус на мертв
-////
-////            // пробежаться по всем пулям
-////            // если у пули статус "куда-то попала" - удалить её
-////
-////            // пробежаться по всем игрокам
-////            // если пуля убила игрока, то поменять его статус на "умер"
-////            // поменять статус пули на "куда-то попала"
-////            // записать запись об убийстве игрока в stats
-////            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
-////            //$players = $this->getPlayers();
-////            //$bullets = $this->getBullets();
+            ////            // пробежаться по всем игрокам
+            ////            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы // или поменять статус на мертв
+            ////
+            ////            // пробежаться по всем пулям
+            ////            // если у пули статус "куда-то попала" - удалить её
+            ////
+            ////            // пробежаться по всем игрокам
+            ////            // если пуля убила игрока, то поменять его статус на "умер"
+            ////            // поменять статус пули на "куда-то попала"
+            ////            // записать запись об убийстве игрока в stats
+            ////            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
+            ////            //$players = $this->getPlayers();
+            ////            //$bullets = $this->getBullets();
             return true;
         }
         return false;
@@ -222,11 +220,11 @@ class Game
         }
         $scene = [
             'hashes' =>
-                [
-                    'playersHash' => NULL,
-                    'objectsHash' => NULL,
-                    'bulletsHash' => NULL
-                ],
+            [
+                'playersHash' => NULL,
+                'objectsHash' => NULL,
+                'bulletsHash' => NULL
+            ],
             'scene' => [
                 'players' => NULL,
                 'bullets' => NULL,
@@ -310,6 +308,4 @@ class Game
         }
         return ['error' => 800];
     }
-
-
 }
