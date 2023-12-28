@@ -20,35 +20,68 @@ class Game
         $this->colliders = CollidersPositions::$collidersPositions;
     }
 
-    private function checkHitCollider()
-    {
-        $bullets = $this->getBullets();
-        $colliders = $this->colliders;
-        $bulletsInCollider = [];
-
-        foreach ($bullets as $bullet) {
-            foreach ($colliders as $collider) {
-                if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
-                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
-                    $bulletsInCollider[] = $bullet['id'];
-                }
-            }
-        }
-        return $bulletsInCollider;
-    }
-
-
     private function genHash()
     {
         return md5(rand(0, 1000000));
     }
 
-    private function checkHit()
+
+    private function updateScene($timeout, $timestamp)
+    {
+
+        $time = time() * 1000 - intval($timestamp);
+        if ($time >= $timeout) {
+            $this->db->updateTimestamp(time() * 1000);
+            $this->spawnPlayers();
+            $this->moveBullet();
+            // $hitsBulletsIdInWall = $this->checkHitCollider();
+            // if ($hitsBulletsIdInWall) {
+            //     foreach ($hitsBulletsIdInWall as $hitBulletIdInWall) {переписать на  delBullet
+            //         $this->db->DeleteBullet($hitBulletIdInWall);
+            //     }
+            // }
+
+
+////            // пробежаться по всем игрокам
+////            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы // или поменять статус на мертв
+////
+////            // пробежаться по всем пулям
+////            // если у пули статус "куда-то попала" - удалить её
+////
+////            // пробежаться по всем игрокам
+////            // если пуля убила игрока, то поменять его статус на "умер"
+////            // поменять статус пули на "куда-то попала"
+////            // записать запись об убийстве игрока в stats
+////            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
+////            //$players = $this->getPlayers();
+////            //$bullets = $this->getBullets();
+            return true;
+        }
+        return false;
+    }
+
+    private function moveBullet() //для передвежения пуль на сцены
+    {
+        $bullets = $this->db->getBullets();
+        foreach ($bullets as &$bullet) {
+            $bullet['x'] = $bullet['x'] + $bullet['vx'];
+            $bullet['y'] = $bullet['y'] + $bullet['vy'];
+        }
+        unset($bullet);
+        foreach ($bullets as $bullet) {
+            $this->db->updateBullets($bullet);
+        }
+        $this->checkHit($bullets);
+        $this->checkHitCollider($bullets);
+
+    }
+
+    private function checkHit($bullets)
     {
         $players = $this->db->getAllInfoPlayers();
-        $bullets = $this->getBullets();
+//        $bullets = $this->getBullets();
         $bulletsAndPlayerId = [];
-        $bulletsNeedToMove[] = [];
+//        $bulletsNeedToMove[] = [];
 
         foreach ($bullets as $bullet) {
             foreach ($players as $player) {
@@ -57,32 +90,26 @@ class Game
                         'bulletsId' => [$bullet['id']],
                         'playersId' => [$player['user_id']]
                     ];
-                } else {
-                    $bulletsNeedToMove[] = $bullet;
                 }
+//                else {
+//                    $bulletsNeedToMove[] = $bullet;
+//                }
             }
         }
         if ($bulletsAndPlayerId) {
             $this->setHit($bulletsAndPlayerId);
         }
-        $this->moveBullet($bulletsNeedToMove);
-        return $bulletsAndPlayerId;
+//        $this->moveBullet($bulletsNeedToMove);
+//        return $bulletsAndPlayerId;
     }
 
-    public function setHit($bulletsAndPlayerId)
+    private function setHit($bulletsAndPlayerId)
     {
         $playersId = $bulletsAndPlayerId['playersId'];
         $bulletsId = $bulletsAndPlayerId['bulletsId'];
         $this->decreaseHp($playersId);
         $this->db->DeleteBullet($bulletsId);
         return true;
-    }
-
-    private function checkTeamDamage()
-    {
-        //нужно брать все пули которые попали брать тим id в кого они попали по пуле смотреть тим ID кто стрелял
-        //если оно одинаковое то заносить их в $_SESSION
-        //создать еще 1 функцию -рейтинг если он попал больше 4 раз за матч по своим снимать рейтинг из писка мерки
     }
 
     private function decreaseHp($playersId, $dHp = 20)
@@ -129,18 +156,30 @@ class Game
         $this->db->updateScoreInTeam($scoreA, $scoreB);
     }
 
-    private function moveBullet($bulletsNeedToMove) //для передвежения пуль на сцены
+    private function checkHitCollider($bullets)
     {
-        $bulletId = [];
-        foreach ($bulletsNeedToMove as $bullet) {
-            $bullet['x'] = $bullet['x'] + $bullet['vx'];
-            $bullet['y'] = $bullet['y'] + $bullet['vy'];
-            $bulletId[] = $bullet['id'];
-        }
-        
-        $this->db->updateBullets($bulletsNeedToMove);
+//        $bullets = $this->getBullets();
+        $colliders = $this->colliders;
+        $bulletsInCollider = [];
 
+        foreach ($bullets as $bullet) {
+            foreach ($colliders as $collider) {
+                if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
+                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
+                    $bulletsInCollider[] = $bullet['id'];
+                }
+            }
+        }
+        return $bulletsInCollider;
     }
+
+    private function checkTeamDamage()
+    {
+        //нужно брать все пули которые попали брать тим id в кого они попали по пуле смотреть тим ID кто стрелял
+        //если оно одинаковое то заносить их в $_SESSION
+        //создать еще 1 функцию -рейтинг если он попал больше 4 раз за матч по своим снимать рейтинг из писка мерки
+    }
+
 
     private function spawnPlayers()
     {
@@ -206,38 +245,6 @@ class Game
         return $this->db->getPlayers();
     }
 
-    private function updateScene($timeout, $timestamp)
-    {
-
-        $time = time() * 1000 - intval($timestamp);
-        if ($time >= $timeout) {
-            $this->db->updateTimestamp(time() * 1000);
-            $this->spawnPlayers();
-            // $hitsBulletsIdInWall = $this->checkHitCollider();
-            // if ($hitsBulletsIdInWall) {
-            //     foreach ($hitsBulletsIdInWall as $hitBulletIdInWall) {переписать на  delBullet
-            //         $this->db->DeleteBullet($hitBulletIdInWall);
-            //     }
-            // }
-
-
-////            // пробежаться по всем игрокам
-////            // если игрок умер, то удалить его из игроков и добавить запись "трупик" в предметы // или поменять статус на мертв
-////
-////            // пробежаться по всем пулям
-////            // если у пули статус "куда-то попала" - удалить её
-////
-////            // пробежаться по всем игрокам
-////            // если пуля убила игрока, то поменять его статус на "умер"
-////            // поменять статус пули на "куда-то попала"
-////            // записать запись об убийстве игрока в stats
-////            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
-////            //$players = $this->getPlayers();
-////            //$bullets = $this->getBullets();
-            return true;
-        }
-        return false;
-    }
     public function shoot($userId, $x, $y, $vx, $vy)
     {
         $this->db->shoot($userId, $x, $y, $vx, $vy);
