@@ -85,27 +85,33 @@ class Game
             } else if ($player['hp'] - $dHp <= 0 || $player['hp'] == 0) {
                 $deathPlayersId[] = $player['id'];
             }
-            if($decreaseHpPlayersId){
+            if ($decreaseHpPlayersId) {
                 $this->db->decreaseHp($decreaseHpPlayersId, $dHp);
             }
-            if($deathPlayersId){
+            if ($deathPlayersId) {
                 $this->setDeath($deathPlayersId);
             }
 
         }
-        
-        
 
     }
 
     private function setDeath($deathPlayersId)
     {
+        $scoreA = 0;
+        $scoreB = 0;
         $this->db->setDeath($deathPlayersId);
-foreach ($deathPlayersId as $player)
-        if ($teamId == 0) {
-            $this->db->updateScoreInTeam(0, 10);
-        } else $this->db->updateScoreInTeam(1, 10);
+        $players = $this->db->getUsersByUserId($deathPlayersId);
+        foreach ($players as $player) {
+            if($player['teamId'] == 0){
+                $scoreA += 10;
+            }
+//            else $player['teamId']
+        }
+//            $this->db->updateScoreInTeam(0, 10);
+//        } else $this->db->updateScoreInTeam(1, 10);
     }
+
 
     private function delBullet() //для удаления пуль со сцены
     {
