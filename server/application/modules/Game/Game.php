@@ -184,9 +184,9 @@ class Game
     private function updateScene($timeout, $timestamp)
     {
 
-        $time = intval(microtime()) - $timestamp;
+        $time = time() * 1000 - intval($timestamp);
         if ($time >= $timeout) {
-            $this->db->updateTimestamp(time());
+            $this->db->updateTimestamp(time() * 1000);
             $this->spawnPlayers();
             // $hitsBulletsIdInWall = $this->checkHitCollider();
             // if ($hitsBulletsIdInWall) {

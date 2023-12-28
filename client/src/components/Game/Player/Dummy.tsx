@@ -2,7 +2,7 @@ import { Animator } from "../Sprites/Animator";
 import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 import HealthBar from "./HealthBar";
 import { TPlayer } from "../../../modules/Server/types";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const Dummy = ({
     x,
@@ -15,6 +15,17 @@ const Dummy = ({
     token,
     hp,
 }: TPlayer) => {
+
+    const [frameName, setFrameName] = useState('movement')
+
+    const onEnd = ({}) => {
+        if(!hp){
+            if (frameName === 'movement') {
+                setFrameName('corpse')
+            }
+        }
+        
+    }
 
     const ref = useRef<RapierRigidBody>(null!);
 
@@ -33,12 +44,15 @@ const Dummy = ({
             >
 
                 <Animator
-                    fps={2}
+                    fps={5}
                     startFrame={0}
                     loop={true}
+                    onLoopEnd={onEnd}
+                    frameName={frameName}
+                    animationNames={['movement','corpse']}
                     autoPlay={true}
-                    textureImageURL={'./assets/test/Sprite-0001.png'}
-                    textureDataURL={'./assets/test/Sprite-0001.json'}
+                    textureImageURL={'./assets/test/Cop.png'}
+                    textureDataURL={'./assets/test/Cop.json'}
                     alphaTest={0.01}
                 />
 
