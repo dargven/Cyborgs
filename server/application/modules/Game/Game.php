@@ -76,33 +76,6 @@ class Game
 
     }
 
-    private function checkHit($bullets)
-    {
-        $players = $this->db->getAllInfoPlayers();
-//        $bullets = $this->getBullets();
-        $bulletsAndPlayerId = [];
-//        $bulletsNeedToMove[] = [];
-
-        foreach ($bullets as $bullet) {
-            foreach ($players as $player) {
-                if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
-                    $bulletsAndPlayerId[] = [
-                        'bulletsId' => [$bullet['id']],
-                        'playersId' => [$player['user_id']]
-                    ];
-                }
-//                else {
-//                    $bulletsNeedToMove[] = $bullet;
-//                }
-            }
-        }
-        if ($bulletsAndPlayerId) {
-            $this->setHit($bulletsAndPlayerId);
-        }
-//        $this->moveBullet($bulletsNeedToMove);
-//        return $bulletsAndPlayerId;
-    }
-
     private function setHit($bulletsAndPlayerId)
     {
         $playersId = $bulletsAndPlayerId['playersId'];
@@ -161,6 +134,9 @@ class Game
 //        $bullets = $this->getBullets();
         $colliders = $this->colliders;
         $bulletsInCollider = [];
+        $players = $this->db->getAllInfoPlayers();
+        $bulletInPlayer = [];
+        $PlayerHit = [];
 
         foreach ($bullets as $bullet) {
             foreach ($colliders as $collider) {
@@ -169,8 +145,32 @@ class Game
                     $bulletsInCollider[] = $bullet['id'];
                 }
             }
+            foreach ($players as $player) {
+                if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
+                    $bulletInPlayer = $bullet["id"];
+                    $PlayerHit = $player["user_id"];
+                }
+            }
         }
         return $bulletsInCollider;
+    }
+
+    private function checkHit()
+    {
+        $players = $this->db->getAllInfoPlayers();
+        $bullets = $this->getBullets();
+        $bulletInPlayer = [];
+        $PlayerHit = [];
+
+        foreach ($bullets as $bullet) {
+            foreach ($players as $player) {
+                if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
+                    $bulletInPlayer = $bullet["id"];
+                    $PlayerHit = $player["user_id"];
+                }
+            }
+        }
+        $this->setHit($PlayerHit, $bulletInPlayer);
     }
 
     private function checkTeamDamage()
