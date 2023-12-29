@@ -57,20 +57,20 @@ const Dummy = ({
                 />
 
 
-                {/* <BallCollider
+                { <BallCollider
                 
                     args={[0.5]}
                     restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "projectile") {
-                            if (hp - damage < 0) {
-                                setState({ ...state, hp: 0 });
-                            } else {
-                                setState({ ...state, hp: hp - damage });
-                            }
+                            // if (hp - damage < 0) {
+                            //     setState({ ...state, hp: 0 });
+                            // } else {
+                            //     setState({ ...state, hp: hp - damage });
+                            // }
                         }
-                    }} /> */}
+                    }} /> }
                 <HealthBar value={hp} color={0xff0000} />
             </RigidBody>
         </group>
