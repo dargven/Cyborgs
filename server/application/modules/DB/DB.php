@@ -84,7 +84,7 @@ class DB
         return $this->query("SELECT * FROM users WHERE id=?", [$id]);
     }
 
-    public function getUsersByUserId($id)
+    public function getPlayersByUserId($id)
     {
         return $this->queryAll("SELECT * FROM players WHERE user_id IN ?", [$id]);
     }
@@ -216,17 +216,17 @@ ORDER BY u.bullet_id");
 WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
 
-    public function getSkinsInLobby() // переписать
-    {
-        return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, 
-       skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id 
-                   WHERE skins.role='lobby'");
-    }
-
-    public function setSkinInLobby($id, $skinId) // переписать
-    {
-        $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
-    }
+//    public function getSkinsInLobby() // переписать
+//    {
+//        return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, 
+//       skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id 
+//                   WHERE skins.role='lobby'");
+//    }
+//
+//    public function setSkinInLobby($id, $skinId) // переписать
+//    {
+//        $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
+//    }
 
 
     public function getPlayers()
@@ -329,7 +329,7 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
         $this->execute("UPDATE players SET hp =-? WHERE user_id IN ?", [$dHp, $playersId]);
     }
 
-    public function updateBullets($bulletsNeedToMove)
+    public function updateScoreTeams($scoreA, $scoreB)
     {
         $this->execute("UPDATE teams
         SET team_score = 

@@ -34,12 +34,6 @@ class Game
             $this->db->updateTimestamp(time() * 1000);
             $this->spawnPlayers();
             $this->moveBullet();
-            // $hitsBulletsIdInWall = $this->checkHitCollider();
-            // if ($hitsBulletsIdInWall) {
-            //     foreach ($hitsBulletsIdInWall as $hitBulletIdInWall) {переписать на  delBullet
-            //         $this->db->DeleteBullet($hitBulletIdInWall);
-            //     }
-            // }
 
 
 ////            // пробежаться по всем игрокам
@@ -72,22 +66,61 @@ class Game
             $this->db->updateBullets($bullet);
         }
         $this->checkHit($bullets);
-        // $this->checkHitCollider($bullets);
 
     }
 
-    private function setHit($bulletsAndPlayerId)
+    private function checkHit($bullets)
     {
-        $playersId = $bulletsAndPlayerId['playersId'];
-        $this->decreaseHp($playersId);
+        $colliders = $this->colliders;
+        $bulletsToDelete = [];
+        $players = $this->db->getAllInfoPlayers();
+        $PlayersHit = [];
+
+        foreach ($bullets as $bullet) {
+            if ($bullet['status'] == 'Shoot') {
+                foreach ($players as $player) {
+                    if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
+                        $bulletsToDelete = $bullet["id"]; // Дописать if bulletsToDelete
+                        $PlayersHit[] = $player["user_id"];
+                        var_dump('Playerhit');
+                        var_dump($PlayersHit);
+                        break;
+                    }
+                    if (!(in_array($bullet['id'], $bulletsToDelete))) {
+                        foreach ($colliders as $collider) {
+                            if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
+                                $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
+                                $bulletsToDelete = $bullet['id'];
+                                var_dump($bulletsToDelete);
+                                var_dump('bulletTodelete');
+                                break;
+                            }
+                        }
+
+                    }
+                }
+
+            }
+
+
+        }
+        if ($PlayersHit) {
+            $this->setHit($PlayersHit);
+
+        }
+    }
+
+    private function setHit($PlayersHit)
+    {
+        $this->decreaseHp($PlayersHit);
         return true;
     }
 
-    private function decreaseHp($playersId, $dHp = 20)
+    private function decreaseHp($playersHitId, $dHp = 20)
     {
         $decreaseHpPlayersId = [];
         $deathPlayersId = [];
-        $players = $this->db->getUsersByUserId($playersId);
+        $players = $this->db->getPlayersByUserId($playersHitId);
         foreach ($players as $player) {
             if ($player['hp'] - $dHp >= 0) {
                 $decreaseHpPlayersId[] = $player['id'];
@@ -127,50 +160,6 @@ class Game
         $this->db->updateScoreInTeam($scoreA, $scoreB);
     }
 
-    private function checkHit($bullets)
-    {
-//        $bullets = $this->getBullets();
-        $colliders = $this->colliders;
-        $bulletsToDelete = [];
-        $players = $this->db->getAllInfoPlayers();
-        $bulletInPlayer = [];
-        $PlayerHit = [];
-
-        foreach ($bullets as $bullet) {
-            foreach ($colliders as $collider) {
-                if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
-                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
-                    $bulletsToDelete = $bullet['id'];// не уверен что добавление в php так работает
-                }
-            }
-            foreach ($players as $player) {
-                if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
-                    $bulletsToDelete = $bullet["id"];
-                    $PlayerHit = $player["user_id"];
-                }
-            }
-        }
-        return  $bulletsToDelete;
-        $this->setHit($PlayerHit);//тут тоже нужно переписать скорее всего
-    }
-
-    // private function checkHit()
-    // {
-    //     $players = $this->db->getAllInfoPlayers();
-    //     $bullets = $this->getBullets();
-    //     $bulletInPlayer = [];
-    //     $PlayerHit = [];
-
-    //     foreach ($bullets as $bullet) {
-    //         foreach ($players as $player) {
-    //             if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
-    //                 $bulletInPlayer = $bullet["id"];
-    //                 $PlayerHit = $player["user_id"];
-    //             }
-    //         }
-    //     }
-    //     $this->setHit($PlayerHit, $bulletInPlayer);
-    // }
 
     private function checkTeamDamage()
     {
