@@ -9,34 +9,48 @@ const ScoreMenu = () => {
     const server = useContext(ServerContext);
     const navigate = useNavigate();
 
-    const [users, setUsers] = useState<TTeamUser[]>([]);
+    const [users, setUsers] = useState<TTeamUser[]>([
+        {name: 'Dimon-Dominator', teamId: 1, score: 266, deaths: -10, status: 'krutoy paren'},	
+        {name: 'Hikita', teamId: 1, score: 26563, deaths: -10, status: 'krutoy paren'},	
+        {name: 'lapaigne', teamId: 1, score: 2608, deaths: 2, status: 'dead'},	
+        {name: 'CashemereGateKeper', teamId: 1, score: 267, deaths: 3, status: 'dead'},	
+        {name: 'Ruthik', teamId: 1, score: 0, deaths: 10, status: 'krutoy paren'},
 
-    const updateScore = async () => {
-      const sceneFromServer  = await server.getScene();
-        if (sceneFromServer && sceneFromServer.players) {
-          const usersFromServer = sceneFromServer.players.map((player) => ({
-            name: player.name,
-            teamId: player.teamId,
-            score: player.score,
-            deaths: player.deaths,
-            status: player.status,
-          }));
-          setUsers(usersFromServer);
-        }
-        else{
-          if (server.error.code === 1002) {
-            navigate("/login", {replace: true});
-        }
-        }
+        {name: 'бот Виталя', teamId: 0, score: 0, deaths: 10, status: 'bot'},
+        {name: 'бот Витя', teamId: 0, score: 0, deaths: 5, status: 'dead bot'},	  
+        {name: 'dargven', teamId: 0, score: 1, deaths: 100, status: 'ne krutoy paren'},
+        {name: 'бот Пётр', teamId: 0, score: 0, deaths: 6, status: 'dead bot'},
+        {name: 'бот Рустам', teamId: 0, score: 0, deaths: 10, status: 'super bot'}
+    ]);
 
-      } 
+    
 
-    useEffect(() => {
-        const interval = setInterval(updateScore, 2500);
-        return () => {
-            clearInterval(interval);
-        };
-    }, []);
+    // const updateScore = async () => {
+    //   const sceneFromServer  = await server.getScene();
+    //     if (sceneFromServer && sceneFromServer.players) {
+    //       const usersFromServer = sceneFromServer.players.map((player) => ({
+    //         name: player.name,
+    //         teamId: player.teamId,
+    //         score: player.score,
+    //         deaths: player.deaths,
+    //         status: player.status,
+    //       }));
+    //       setUsers(usersFromServer);
+    //     }
+    //     else{
+    //       if (server.error.code === 1002) {
+    //         navigate("/login", {replace: true});
+    //     }
+    //     }
+
+    //   } 
+
+    // useEffect(() => {
+    //     const interval = setInterval(updateScore, 2500);
+    //     return () => {
+    //         clearInterval(interval);
+    //     };
+    // }, []);
 
     const HeaderScore = () => (
         <div className="header">
@@ -86,6 +100,7 @@ const ScoreMenu = () => {
                     <div className="firstTeam">
                         {users
                         .filter(user => user.teamId === 0)
+                        .sort((a, b) => b.score - a.score)
                         .map((user) => (
                             <p className="chat-message">
                                 <span className="name">{user.name} </span>
@@ -98,6 +113,7 @@ const ScoreMenu = () => {
                     <div className="secondTeam">
                         {users
                         .filter(user => user.teamId === 1)
+                        .sort((a, b) => b.score - a.score)
                         .map((user) => (
                             <p className="chat-message">
                                 <span className="name">{user.name} </span>

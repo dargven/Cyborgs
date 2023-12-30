@@ -6,7 +6,6 @@ import HealthBar from "./HealthBar";
 import { useFrame } from "@react-three/fiber";
 import { TPlayer } from "../../../modules/Server/types";
 import { Animator } from "../Sprites/Animator";
-import React from "react";
 
 export type TPlayerProps = {
     onFire(x: number, y: number): void;
@@ -30,6 +29,10 @@ const Player = ({
     teamId,
     token,
     hp,
+    name,
+    score,
+    status,
+    deaths,
     onMovement,
     onFire,
     updatePlayer,
@@ -55,6 +58,10 @@ const Player = ({
         hp,
         token,
         teamId,
+        name,
+        score,
+        status,
+        deaths
     });
 
     const [frameName, setFrameName] = useState('movement')
