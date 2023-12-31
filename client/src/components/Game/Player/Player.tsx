@@ -42,7 +42,7 @@ const Player = ({
     const [_, getKeys] = useKeyboardControls();
 
     const rot = useRef<number>(playerRotation ?? 0)
-
+    // const [rot, setRot] = useState<number>(playerRotation ?? 0);
 
     const mouseShoot = useRef<boolean>(false);
     const state = useRef<TPlayer>({
@@ -100,12 +100,6 @@ const Player = ({
                     vx: vec3(ref.current?.linvel()).x,
                     vy: vec3(ref.current?.linvel()).y,
                 };
-                // setState({
-                //     ...state, x: vec3(ref.current?.translation()).x,
-                //     y: vec3(ref.current?.translation()).y,
-                //     vx: vec3(ref.current?.linvel()).x,
-                //     vy: vec3(ref.current?.linvel()).y,
-                // });
                 updatePlayer(state.current);
             }
         }
@@ -193,14 +187,12 @@ const Player = ({
                                     ...state.current,
                                     hp: 0
                                 };
-                                // setState({ ...state, hp: 0 });
                                 // sendHit(hit);
                             } else {
                                 state.current = {
                                     ...state.current,
                                     hp: hp - 20
                                 };
-                                // setState({ ...state, hp: hp - 20 });
                                 // sendHit(hit);
                                 // в меня попали - отправь инфу на сервер
                             }
