@@ -9,9 +9,7 @@ const PrivateRoute = ({children}: IprivateRouteProps ) => {
 
     const location = useLocation();
 
-    const token = getToken();
-
-    if(!token){
+    if(getToken() == null){
         return <Navigate to='/login'replace={true} state={{from: location}} />
     }
 

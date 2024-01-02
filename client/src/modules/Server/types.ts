@@ -85,7 +85,6 @@ export type TTeam = {
 
 export type TTeamUser = {
     teamId: number;
-    token?: string;
     name: string;
     score: number;
     status: string;
