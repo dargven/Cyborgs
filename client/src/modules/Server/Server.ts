@@ -88,6 +88,7 @@ export default class Server {
             removeToken()
             removeUuid()
             this.token = null;
+            this.uuid = null;
         }
     }
 
