@@ -53,7 +53,6 @@ class Game
         }
         return false;
     }
-
     private function moveBullet() //для передвежения пуль на сцены
     {
         $bullets = $this->db->getBullets();
@@ -62,8 +61,24 @@ class Game
             $bullet['y'] = $bullet['y'] + $bullet['vy'];
         }
         unset($bullet);
-        foreach ($bullets as $bullet) {
-            $this->db->updateBullets($bullet);
+        //////
+        for ($i = 0; $i < count($bullets); $i++) {
+            $id = $bullets[$i]['id'];
+            $x = $bullets[$i]['x'];
+            $y = $bullets[$i]['y'];
+            $vx = $bullets[$i]['vx'];
+            $vy = $bullets[$i]['vy'];
+            if ($i = 0) {
+                $this->db->updateBullets($id, $x, $y, $vx, $vy,
+                    'START TRANSACTION');
+            } else if ($i = (count($bullets) - 1)) {
+                $this->db->updateBullets($id, $x, $y, $vx, $vy,
+                    'COMMIT');
+            }
+            else {
+                $this->db->updateBullets($id, $x, $y, $vx, $vy,
+                    'MoveBullet');
+            }
         }
         $this->checkHit($bullets);
 
@@ -82,8 +97,6 @@ class Game
                     if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
                         $bulletsToDelete = $bullet["id"]; // Дописать if bulletsToDelete
                         $PlayersHit[] = $player["user_id"];
-                        var_dump('Playerhit');
-                        var_dump($PlayersHit);
                         break;
                     }
                     if (!(in_array($bullet['id'], $bulletsToDelete))) {
@@ -91,8 +104,6 @@ class Game
                             if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
                                 $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
                                 $bulletsToDelete = $bullet['id'];
-                                var_dump($bulletsToDelete);
-                                var_dump('bulletTodelete');
                                 break;
                             }
                         }
@@ -101,12 +112,9 @@ class Game
                 }
 
             }
-
-
         }
         if ($PlayersHit) {
             $this->setHit($PlayersHit);
-
         }
     }
 
@@ -197,7 +205,7 @@ class Game
                     $this->db->setStatus($player['user_id'], 'Live');
 
                 } else if ($player['team_id'] == 1) {
-                    $spawnPoint = $this->teamBSpawnPoints[array_rand($this->teamASpawnPoints)];
+                    $spawnPoint = $this->teamBSpawnPoints[array_rand($this->teamBSpawnPoints)];
                     $this->db->spawnPlayer($player['user_id'], $spawnPoint['x'], $spawnPoint['y']);
                     $this->db->setStatus($player['user_id'], 'Live');
                 }
@@ -207,7 +215,7 @@ class Game
 
     }
 
-    private function getFreeSpawnPoint($spawnPoints, $usedSpawnPoints) //$playerX, $playerY,)
+    private function getFreeSpawnPoint($playerX, $playerY,$spawnPoints, $usedSpawnPoints)
     {
         foreach ($spawnPoints as $spawnPoint) {
             if (!in_array($spawnPoint, $usedSpawnPoints)) {//&& $this->checkFreePosition($playerX, $playerY, $spawnPoint['x'], $spawnPoint['y'])) {

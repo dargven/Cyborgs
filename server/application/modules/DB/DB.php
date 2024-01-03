@@ -12,7 +12,7 @@ class DB
         $port = $_ENV['PORT_PROD'];
         $user = $_ENV['USER_PROD'];
         $pass = $_ENV['PASS_PROD'];
-        $db =   $_ENV['DB_PROD'];
+        $db = $_ENV['DB_PROD'];
 //----------------------------------------------------------------------------//
 //
 //        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
@@ -167,6 +167,23 @@ VALUES (?,?, now())', [$id, $message]);
             [$userId, $x, $y, $vx, $vy]);
     }
 
+    public function updateBullets($id, $x, $y, $vx, $vy, $statusTransaction)
+    {
+        $string = "UPDATE bullets SET x = ?, y = ?, 
+               vx = ?, vy = ?
+               WHERE id = ?";
+        if ($statusTransaction === 'START TRANSACTION') {
+            $this->execute($statusTransaction);
+            $this->execute($string, [$id, $x, $y, $vx, $vy]);
+        } else if ($statusTransaction === "MoveBullet") {
+            $this->execute($string, [$id, $x, $y, $vx, $vy]);
+        } else {
+            $this->execute($string , [$id, $x, $y, $vx, $vy]);
+            $this->execute($statusTransaction); 
+        }
+
+    }
+
     public function DeleteBullet($bulletsIdArray)
     {
         $this->execute("DELETE FROM bullets WHERE id IN ?", [$bulletsIdArray]);
@@ -252,6 +269,7 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE players SET status = ? WHERE user_id = ?", [$status, $id]);
     }
+
     public function setDeath($deathPlayersId)
     {
         $status = 'Death';
