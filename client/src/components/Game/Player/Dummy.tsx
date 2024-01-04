@@ -54,6 +54,7 @@ const Dummy = ({
                     textureImageURL={'./assets/test/Cop.png'}
                     textureDataURL={'./assets/test/Cop.json'}
                     alphaTest={0.01}
+                    materialRotation={Math.atan2(dy,dx)}
                 />
 
 

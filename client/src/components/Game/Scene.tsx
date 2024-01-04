@@ -51,7 +51,7 @@ const Scene = () => {
     }
 
     const sendMyPlayer = async (player: TPlayer) => {
-        await server.setPlayer(player.x, player.y, player.vx, player.vy, 0, 0);
+        await server.setPlayer(player.x, player.y, player.vx, player.vy, player.dx, player.dy);
     };
 
     const getScene = async () => {
