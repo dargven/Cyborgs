@@ -95,7 +95,7 @@ class Game
             if ($bullet['status'] == 'Shoot') {
                 foreach ($players as $player) {
                     if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
-                        $bulletsToDelete = $bullet["id"]; // Дописать if bulletsToDelete
+                        $bulletsToDelete[] = $bullet["id"]; // Дописать if bulletsToDelete
                         $PlayersHit[] = $player["user_id"];
                         break;
                     }
@@ -103,7 +103,7 @@ class Game
                         foreach ($colliders as $collider) {
                             if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
                                 $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
-                                $bulletsToDelete = $bullet['id'];
+                                $bulletsToDelete[] = $bullet['id'];
                                 break;
                             }
                         }

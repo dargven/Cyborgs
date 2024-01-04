@@ -171,15 +171,15 @@ VALUES (?,?, now())', [$id, $message]);
     {
         $string = "UPDATE bullets SET x = ?, y = ?, 
                vx = ?, vy = ?
-               WHERE id = ?";
+               WHERE id = ?;";
         if ($statusTransaction === 'START TRANSACTION') {
-            $this->execute($statusTransaction);
+            $this->execute($statusTransaction . ';');
             $this->execute($string, [$id, $x, $y, $vx, $vy]);
         } else if ($statusTransaction === "MoveBullet") {
             $this->execute($string, [$id, $x, $y, $vx, $vy]);
         } else {
-            $this->execute($string , [$id, $x, $y, $vx, $vy]);
-            $this->execute($statusTransaction); 
+            $this->execute($string, [$id, $x, $y, $vx, $vy]);
+            $this->execute($statusTransaction);
         }
 
     }
