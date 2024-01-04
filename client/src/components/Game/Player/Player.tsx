@@ -99,6 +99,8 @@ const Player = ({
                     y: vec3(ref.current?.translation()).y,
                     vx: vec3(ref.current?.linvel()).x,
                     vy: vec3(ref.current?.linvel()).y,
+                    dx: Math.cos(rot.current),
+                    dy: Math.sin(rot.current),
                 };
                 updatePlayer(state.current);
             }
