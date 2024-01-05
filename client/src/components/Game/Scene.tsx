@@ -111,7 +111,7 @@ const Scene = () => {
                 y,
                 vx: direction.x,
                 vy: direction.y,
-                bulletId: bullets.length
+                bulletId: 0
             };
             sendBullet(bullet);
         }
@@ -128,7 +128,7 @@ const Scene = () => {
                     if (player.token !== token) {
                         return <Dummy
                             {...player}
-                            // key={player.token}           //засоряет всю консоль
+                            key={player.token}
                         />
                     } else {
                         return <Player
@@ -142,10 +142,10 @@ const Scene = () => {
                     }
                 })}
 
-                {bullets.map((bullet) =>
+                {bullets.map((bullet, index) =>
                     <Bullet
                         {...bullet}
-                        key={bullet.bulletId}
+                        key={index}
                         texture={textures['bullet']}
                     />
                 )}
