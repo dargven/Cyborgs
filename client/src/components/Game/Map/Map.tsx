@@ -1,6 +1,6 @@
-import { useRef } from "react";
-import { Texture, TextureLoader, Vector3 } from "three";
-import  {ITextureObject}  from "../Scene";
+import { useState } from "react";
+import { Texture, TextureLoader } from "three";
+import { ITextureObject } from "../Scene";
 import MakeSprite from "../Sprites/MakeSprite";
 import CollidersPositions from "./CollidersPositions";
 import LightMap from "./LightMap";
@@ -14,7 +14,7 @@ interface IMapProps {
 const Map = ({ texture }: IMapProps) => {
     const textureLoader = new TextureLoader();
     const glass = textureLoader.load('./assets/Map parts/Glass.png');
-     const glassTexture = useRef<ITextureObject>({
+    const [textures] = useState<ITextureObject>({
         "glass": glass
     })
 
@@ -31,14 +31,15 @@ const Map = ({ texture }: IMapProps) => {
             <group scale={[56, 49, 1]} position={[4.5, 6, 0]}>
                 <MakeSprite texture={texture} />
             </group>
-            
+
             <LightMap />
             {colliders.map(collider =>
-                    <Obstacle
-                        key={generateColliderKey()}
-                        {...collider}
-                    />
-                )}
+                <Obstacle
+                    key={generateColliderKey()}
+                    {...collider}
+                />
+            )}
+            <MapObjects texture={textures["glass"]}/>
         </group>
     );
 }

@@ -1,14 +1,12 @@
-import { CuboidCollider, RigidBody } from "@react-three/rapier";
-import { Vector3, Texture } from "three";
+import { Texture, Vector3 } from "three";
 import MakeSprite from "../Sprites/MakeSprite";
 import Obstacle from "./Obstacle";
 
 interface IMapObjects {
-    textures: Texture;
-    position: Vector3;
+    texture: Texture;
 }
 
-const MapObjects = (props: IMapObjects) => {
+const MapObjects = ({texture}: IMapObjects) => {
 
 
     const sprites = [
@@ -31,11 +29,11 @@ const MapObjects = (props: IMapObjects) => {
     ];
 
     return (
-        <group position={props.position}>
+        <group>
             {sprites.map((sprite, key) => (
                 <MakeSprite
                     key={key}
-                    texture={props.textures}
+                    texture={texture}
                     position={sprite.position}
                 />
             ))}

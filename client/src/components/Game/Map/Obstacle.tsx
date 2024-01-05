@@ -1,6 +1,6 @@
-import { RigidBody, CuboidCollider, RapierRigidBody } from "@react-three/rapier";
+import { CuboidCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
+import { useRef, useState } from "react";
 import { ICollider } from "../../../modules/Game/entities/Collider";
-import { useEffect, useRef, useState } from "react";
 import MakeSprite from "../Sprites/MakeSprite";
 
 const Obstacle = ({ position, args, isDestructible, texture }: ICollider) => {
