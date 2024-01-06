@@ -51,6 +51,9 @@ const MainPage = () => {
                 }}>
                     Играть
                 </button>
+                <button onClick={()=>{
+                    navigate('/statistic',{replace:true})
+                }}>Статистика</button>
                 {/* <NavButton to="/game" text="Играть"/> */}
                 <button className="Leave" onClick={() => {
                     server.logout()  ;
