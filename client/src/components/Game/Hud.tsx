@@ -14,7 +14,7 @@ const Hud = ({hudRef, player}: IHud) => {
                 <Debug player={player}></Debug>
             </group>
             <group position={[0,3.7,0]} >
-                <Timer maxTime={120}></Timer>
+                <Timer isMatchEnd = {false}></Timer>
             </group>
         </group>
     )
