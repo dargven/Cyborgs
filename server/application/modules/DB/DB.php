@@ -156,7 +156,7 @@ VALUES (?,?, now())', [$id, $message]);
     public function getBullets() //
     {
         return $this->queryAll("
-                SELECT id, user_id ,
+                SELECT id, status, user_id ,
                 x, y, vx, vy FROM bullets");
     }
 
@@ -248,7 +248,7 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
 
     public function getPlayers()
     {
-        return $this->queryAll("SELECT u.token, p.hp, p.team_id, p.skin_id, p.x, p.y, p.vx, p.vy, p.dx, p.dy
+        return $this->queryAll("SELECT u.token as token, u.name as name, p.score as score, p.status as status, p.hp and hp, p.team_id as teamId, p.skin_id, p.x, p.y, p.vx, p.vy, p.dx, p.dy
 FROM players as p INNER JOIN users as u on u.id=p.user_id");
     }
 
