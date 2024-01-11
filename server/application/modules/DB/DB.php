@@ -58,6 +58,7 @@ class DB
     {
         $sth = $this->pdo->prepare($sql);
         $sth->execute($params);
+        var_dump($sth, $params);
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
