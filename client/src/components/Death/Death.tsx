@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+ import "./Death.css";
 
-const Death=()=>{
+const Death = () => {
     const [timer, setTimer] = useState(5);
-    const [deathButton, setDeathButton]=useState({
+    const [deathButton, setDeathButton] = useState({
         timeout: false,
-        isButtonDisabled:false
-})
+        isButtonDisabled: false
+    })
     const startTimer = () => {
         setDeathButton((prevState) => ({
             ...prevState,
@@ -33,34 +34,39 @@ const Death=()=>{
     useEffect(() => {
         startTimer();
     }, []);
-return(
-    <>
-        <div>ты был убит
-            <div>твой убийца</div>
-        </div>
-        <div>2
-            <div>
-                убийств ?
+    return (
+        <>
+            <div className="pageWrapper">
+                <div className="pageTitle">ты был убит
+                    <div>твой убийца</div>
+                </div>
+                <div className="container_death">
+                   2
+                    <div className="centered">
+                        
+                        <div className="block">
+                            убийств ?
+                        </div>
+                        <div className="block">
+                            урон ?
+                        </div>
+                        <div className="block">
+                            смертей ?
+                        </div>
+                    </div>
+                </div>
+                {deathButton.timeout && (
+                    <div className="timeout">
+                        {timer}
+                    </div>
+                )}
+                <button className="Next" onClick={() => startTimer()}
+                    disabled={deathButton.isButtonDisabled}
+                >возродится</button>
             </div>
-            <div>
-                 урон ?
-            </div>
-            <div>
-                смертей ?
-            </div>
-        </div>
-        {deathButton.timeout && (
-                                <div className="timeout">
-                                     {timer}
-                                </div>
-                            )}
-        <button onClick={ ()=>startTimer()}
-        disabled={deathButton.isButtonDisabled}
-        >возродится</button>
 
-    
-    </>
-)
+        </>
+    )
 
 }
 export default Death
