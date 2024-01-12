@@ -184,7 +184,7 @@ const Player = ({
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "bullet") {
-                            if (state.current.hp - 20 < 0) {
+                            if (state.current?.hp - 20 < 0) {
                                 state.current = {
                                     ...state.current,
                                     hp: 0
@@ -200,7 +200,7 @@ const Player = ({
                             }
                         }
                     }} />
-                <HealthBar value={state.current.hp} color={0xff0000} />
+                <HealthBar value={state.current?.hp} color={0xff0000} />
             </RigidBody>
         </group>
     );

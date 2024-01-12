@@ -58,7 +58,7 @@ class DB
     {
         $sth = $this->pdo->prepare($sql);
         $sth->execute($params);
-        var_dump($sth, $params);
+//        var_dump($sth, $params);
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -249,7 +249,7 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
 
     public function getPlayers()
     {
-        return $this->queryAll("SELECT u.token as token, u.name as name, p.score as score, p.status as status, p.hp and hp, p.team_id as teamId, p.skin_id, p.x, p.y, p.vx, p.vy, p.dx, p.dy
+        return $this->queryAll("SELECT u.token as token, u.name as name, p.score as score, p.status as status, p.hp as hp, p.team_id as teamId, p.skin_id, p.x, p.y, p.vx, p.vy, p.dx, p.dy
 FROM players as p INNER JOIN users as u on u.id=p.user_id");
     }
 
