@@ -44,11 +44,11 @@ const Player = ({
 
     const [_, getKeys] = useKeyboardControls();
 
-    const [rot, setRot] = useState<number>(playerRotation ?? 0);
-
+    const rot = useRef<number>(playerRotation ?? 0)
+    // const [rot, setRot] = useState<number>(playerRotation ?? 0);
 
     const mouseShoot = useRef<boolean>(false);
-    const [state, setState] = useState<TPlayer>({
+    const state = useRef<TPlayer>({
         x,
         y,
         vx,
@@ -100,13 +100,16 @@ const Player = ({
             ref.current.setLinvel(velocity, true);
 
             if (velocity.length()) {
-                setState({
-                    ...state, x: vec3(ref.current?.translation()).x,
+                state.current = {
+                    ...state.current,
+                    x: vec3(ref.current?.translation()).x,
                     y: vec3(ref.current?.translation()).y,
                     vx: vec3(ref.current?.linvel()).x,
                     vy: vec3(ref.current?.linvel()).y,
-                });
-                updatePlayer(state);
+                    dx: Math.cos(rot.current),
+                    dy: Math.sin(rot.current),
+                };
+                updatePlayer(state.current);
             }
         }
     }
@@ -136,17 +139,18 @@ const Player = ({
     useFrame(() => {
         
         if (hp){
-                const dir = getDirection();
-                setRot(Math.atan2(dir.y, dir.x));
+            const dir = getDirection();
+            rot.current = Math.atan2(dir.y, dir.x);
+            // setRot(Math.atan2(dir.y, dir.x));
         }
         
         const { up, down, left, right, shoot } = getKeys();
         movementController(up, down, left, right);
 
-        onMovement(state.x, state.y);
+        onMovement(state.current.x, state.current.y);
 
         if (shoot || mouseShoot.current) {
-            onFire(state.x, state.y);
+            onFire(state.current.x, state.current.y);
         }
     });
 
@@ -177,7 +181,7 @@ const Player = ({
                     textureImageURL={'./assets/test/Cop.png'}
                     textureDataURL={'./assets/test/Cop.json'}
                     alphaTest={0.01}
-                    materialRotation={rot}
+                    materialRotation={rot.current}
                 />
 
 
@@ -187,17 +191,23 @@ const Player = ({
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "bullet") {
-                            if (state.hp - 20 < 0) {
-                                setState({ ...state, hp: 0 });
+                            if (state.current.hp - 20 < 0) {
+                                state.current = {
+                                    ...state.current,
+                                    hp: 0
+                                };
                                 // sendHit(hit);
                             } else {
-                                setState({ ...state, hp: hp - 20 });
+                                state.current = {
+                                    ...state.current,
+                                    hp: hp - 20
+                                };
                                 // sendHit(hit);
                                 // в меня попали - отправь инфу на сервер
                             }
                         }
                     }} />
-                <HealthBar value={state.hp} color={0xff0000} />
+                <HealthBar value={state.current.hp} color={0xff0000} />
             </RigidBody>
         </group>
     );
