@@ -16,8 +16,6 @@ import { getToken } from "./hooks/useToken";
 export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
 
-console.log(getToken())
-
 const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
