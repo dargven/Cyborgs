@@ -39,6 +39,7 @@ const MainPage = () => {
             </div>
             <h2>КИБОРГИ 2D</h2>
             <div className="Main">
+            {store.getUser().name}
                 <button onClick={() => {
                     if(getToken() !== null)
                     {

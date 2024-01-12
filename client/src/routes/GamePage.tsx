@@ -13,7 +13,8 @@ const GamePage = () => {
     const [stopMove, setStopMove] = useState({
         isPopupVisible: false,
         isChatClicked: false,
-        blockMove: false
+        blockMove: false,
+        isSettingsVisible: false
     });
 
     const [team, setTeam] = useState<0 | 1 | null>(null);
@@ -63,7 +64,24 @@ const GamePage = () => {
                     </button>
                 </>
             )}
-
+            {stopMove.isSettingsVisible && (
+                <div className="SettingsBG">
+                    <div className="Settings">
+                        {/* <div className="slidecontainer">
+                            <input type="range" min="1" max="100" value="50" className="slider" id="myRange"/>
+                        </div> */}
+                        <button onClick={() => {
+                            setStopMove((prevState) => ({
+                                    ...prevState,
+                                    isSettingsVisible: false,
+                                }))}}
+                                className="popUpBtn"
+                            >
+                            Применить       
+                        </button>
+                    </div>
+                </div>
+            )}
             {stopMove.isPopupVisible && (
                 <div
                     className="popUpMenu"
@@ -89,11 +107,17 @@ const GamePage = () => {
                         >
                             Возобновить
                         </button>
-                        <NavButton
-                            to="/game"
-                            text="Настройки"
-                            className="popUpBtn"
-                        />
+                        <button onClick={() =>
+                                setStopMove((prevState) => ({
+                                    ...prevState,
+                                    isPopupVisible: false,
+                                    blockMove: false,
+                                    isSettingsVisible: true
+                                }))}
+                            className="popUpBtn"    
+                        >
+                            Настройки
+                        </button>
                         <NavButton
                             to="/main"
                             text="Выход"
@@ -102,7 +126,6 @@ const GamePage = () => {
                     </div>
                 </div>
             )}
-
         </div>
     );
 };

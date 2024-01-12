@@ -10,22 +10,7 @@ const ScoreMenu = () => {
   const navigate = useNavigate();
   
   const [isScoreVisible, setIsScoreVisible] = useState(false);
-  const [users, setUsers] = useState<TTeamUser[]>([
-      {name: 'Dimon-Dominator', teamId: 1, score: 266, deaths: -10, status: 'krutoy paren'},	
-      {name: 'Hikita', teamId: 1, score: 26563, deaths: -10, status: 'krutoy paren'},	
-      {name: 'lapaigne', teamId: 1, score: 2608, deaths: 2, status: 'dead'},	
-      {name: 'CashemereGateKeper', teamId: 1, score: 267, deaths: 3, status: 'dead'},	
-      {name: 'Ruthik', teamId: 1, score: 0, deaths: 10, status: 'krutoy paren'},
-  
-      {name: 'бот Виталя', teamId: 0, score: 0, deaths: 10, status: 'bot'},
-      {name: 'бот Витя', teamId: 0, score: 0, deaths: 5, status: 'dead bot'},	  
-      {name: 'dargven', teamId: 0, score: 1, deaths: 100, status: 'ne krutoy paren'},
-      {name: 'бот Пётр', teamId: 0, score: 0, deaths: 6, status: 'dead bot'},
-      {name: 'бот Рустам', teamId: 0, score: 0, deaths: 10, status: 'super bot'}
-    ]);
-
-
-    
+  const [users, setUsers] = useState<TTeamUser[]>([]);
 
     const updateScore = async () => {
       const sceneFromServer  = await server.getScene();
@@ -53,8 +38,6 @@ const ScoreMenu = () => {
         };
     }, []);
 
-    
-    
     useEffect(() => {
       const handleKeyDown = (event: KeyboardEvent) => {
         if (event.code === "Tab") {
@@ -91,7 +74,7 @@ const ScoreMenu = () => {
       <>
         {
           isScoreVisible && (
-            <div className="Back" onClick={() => {setIsScoreVisible(false)}}>
+            <div className="Back">
                         <h3>SCORE</h3>
                     <HeaderScore/>
                     <div className="firstTeam">
