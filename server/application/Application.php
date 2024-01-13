@@ -21,6 +21,9 @@ class Application
         $this->chat = new Chat($db);
         $this->game = new Game($db);
     }
+    function test($params){
+        $this->game->moveBullet();
+    }
 
 
 

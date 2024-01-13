@@ -154,7 +154,7 @@ VALUES (?,?, now())', [$id, $message]);
     }
 
 
-    public function getBullets() //
+    public function getBullets() 
     {
         return $this->queryAll("
                 SELECT id, status, user_id ,
@@ -168,21 +168,20 @@ VALUES (?,?, now())', [$id, $message]);
             [$userId, $x, $y, $vx, $vy]);
     }
 
-    public function updateBullets($id, $x, $y, $vx, $vy, $statusTransaction)
+    public function updateBullets($strokeX, $strokeY, $id)
     {
-        $string = "UPDATE bullets SET x = ?, y = ?, 
-               vx = ?, vy = ?
-               WHERE id = ?;";
-        if ($statusTransaction === 'START TRANSACTION') {
-            $this->execute($statusTransaction . ';');
-            $this->execute($string, [$id, $x, $y, $vx, $vy]);
-        } else if ($statusTransaction === "MoveBullet") {
-            $this->execute($string, [$id, $x, $y, $vx, $vy]);
-        } else {
-            $this->execute($string, [$id, $x, $y, $vx, $vy]);
-            $this->execute($statusTransaction);
-        }
+        $ids = implode(',',$id);
+        $stroke = "UPDATE bullets SET x = CASE id {$strokeX}
+                   ELSE x 
+            END,
+                   y = CASE ID {$strokeY}
+                   ELSE y
+            END
+                   WHERE id IN ($ids);
 
+";
+//        var_dump($stroke);
+        $this->execute($stroke);
     }
 
     public function DeleteBullet($bulletsIdArray)

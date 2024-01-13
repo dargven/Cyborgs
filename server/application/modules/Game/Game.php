@@ -33,7 +33,7 @@ class Game
         if ($time >= $timeout) {
             $this->db->updateTimestamp(time() * 1000);
             $this->spawnPlayers();
-            $this->moveBullet();
+//            $this->moveBullet();
 
 
 ////            // пробежаться по всем игрокам
@@ -53,7 +53,7 @@ class Game
         }
         return false;
     }
-    private function moveBullet() //для передвежения пуль на сцены
+    public function moveBullet() //для передвежения пуль на сцены
     {
         $bullets = $this->db->getBullets();
         foreach ($bullets as &$bullet) {
@@ -62,25 +62,26 @@ class Game
         }
         unset($bullet);
         //////
+        $sqlStrokeX = "";
+        $sqlStrokeY = "";
+        $arrayOfBId = [];
         for ($i = 0; $i < count($bullets); $i++) {
-            $id = $bullets[$i]['id'];
-            $x = $bullets[$i]['x'];
-            $y = $bullets[$i]['y'];
-            $vx = $bullets[$i]['vx'];
-            $vy = $bullets[$i]['vy'];
-            if ($i = 0) {
-                $this->db->updateBullets($id, $x, $y, $vx, $vy,
-                    'START TRANSACTION');
-            } else if ($i = (count($bullets) - 1)) {
-                $this->db->updateBullets($id, $x, $y, $vx, $vy,
-                    'COMMIT');
-            }
-            else {
-                $this->db->updateBullets($id, $x, $y, $vx, $vy,
-                    'MoveBullet');
+            if($bullets[$i]['status'] == 'Shoot'){
+                $id = $bullets[$i]['id'];
+                $x = $bullets[$i]['x'];
+                $y = $bullets[$i]['y'];
+                $vx = $bullets[$i]['vx'];
+                $vy = $bullets[$i]['vy'];
+                $sqlStrokeX .= "WHEN {$id} THEN {$x} ";
+                $sqlStrokeY .= "WHEN {$id} THEN {$y} ";
+                $arrayOfBId[] = $id;
+
             }
         }
-        $this->checkHit($bullets);
+        if($sqlStrokeX){
+            $this->db->updateBullets($sqlStrokeX, $sqlStrokeY, $arrayOfBId);
+        }
+//        $this->checkHit($bullets);
 
     }
 
