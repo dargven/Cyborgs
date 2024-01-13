@@ -57,8 +57,8 @@ class Game
     {
         $bullets = $this->db->getBullets();
         foreach ($bullets as &$bullet) {
-            $bullet['x'] = $bullet['x'] + $bullet['vx'];
-            $bullet['y'] = $bullet['y'] + $bullet['vy'];
+            $bullet['x'] = $bullet['x'] + $bullet['vx'] / 10;
+            $bullet['y'] = $bullet['y'] + $bullet['vy'] / 10;
         }
         unset($bullet);
         //////
