@@ -84,11 +84,7 @@ class DB
     {
         return $this->query("SELECT * FROM users WHERE id=?", [$id]);
     }
-
-    public function getPlayersByUserId($id)
-    {
-        return $this->queryAll("SELECT * FROM players WHERE user_id IN ?", [$id]);
-    }
+    
 
     public function getUserByUuid($uuid)
     {
@@ -180,13 +176,24 @@ VALUES (?,?, now())', [$id, $message]);
                    WHERE id IN ($ids);
 
 ";
-//        var_dump($stroke);
         $this->execute($stroke);
     }
 
-    public function DeleteBullet($bulletsIdArray)
+    public function setStatusOfdeleteBullets($stroke, $id)
     {
-        $this->execute("DELETE FROM bullets WHERE id IN ?", [$bulletsIdArray]);
+        $ids = implode(',',$id);
+        $stroke = "UPDATE bullets SET status = CASE id {$stroke}
+                   ELSE status 
+            END
+                   WHERE id IN ($ids);
+
+";
+        $this->execute($stroke);
+    }
+    public function deleteBullets()
+    {
+        $this->execute("DELETE FROM bullets
+WHERE status =? ", ["Delete"]);
     }
 
     public function getTeamsInfo() // Переписать
@@ -270,12 +277,6 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
         $this->execute("UPDATE players SET status = ? WHERE user_id = ?", [$status, $id]);
     }
 
-    public function setDeath($deathPlayersId)
-    {
-        $status = 'Death';
-        $this->execute("UPDATE players SET status = ? WHERE user_id IN ?", [$status, $deathPlayersId]);
-    }
-
     public function addUserStats($user_id, $kills, $death, $time_in_game, $points)
     {
         $this->execute("INSERT INTO stats (user_id, kills, death, time_in_game, points)
@@ -330,7 +331,6 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE game SET objects_hash=? WHERE id=1", [$hash]);
     }
-
     public function updateSkinsHash($hash)
     {
         $this->execute("UPDATE game SET chat_hash = ? WHERE id = 1", [$hash]);
@@ -342,9 +342,27 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     }
 
 
-    public function decreaseHp($playersId, $dHp)
+    public function decreaseHp($strokeDHp, $id)
     {
-        $this->execute("UPDATE players SET hp =-? WHERE user_id IN ?", [$dHp, $playersId]);
+        $ids = implode(',',$id);
+        $stroke = "UPDATE players SET hp = CASE id {$strokeDHp}
+                   ELSE hp 
+            END
+                   WHERE id IN ($ids);
+
+";
+        $this->execute($stroke);
+    }
+    public function setDeath($strokeSetDeath, $id)
+    {
+        $ids = implode(',',$id);
+        $stroke = "UPDATE players SET status = CASE id {$strokeSetDeath}
+                   ELSE status
+            END
+                   WHERE id IN ($ids);
+
+";
+        $this->execute($stroke);
     }
 
     public function updateScoreTeams($scoreA, $scoreB)

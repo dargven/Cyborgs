@@ -33,7 +33,10 @@ class Game
         if ($time >= $timeout) {
             $this->db->updateTimestamp(time() * 1000);
             $this->spawnPlayers();
-//            $this->moveBullet();
+            $bullets = $this->db->getBullets();
+            $this->checkHit($bullets);
+            $this->moveBullet($bullets);
+            $this->deleteBullets();
 
 
 ////            // пробежаться по всем игрокам
@@ -53,9 +56,9 @@ class Game
         }
         return false;
     }
-    public function moveBullet() //для передвежения пуль на сцены
+
+    public function moveBullet($bullets) //для передвежения пуль на сцены
     {
-        $bullets = $this->db->getBullets();
         foreach ($bullets as &$bullet) {
             $bullet['x'] = $bullet['x'] + $bullet['vx'] / 10;
             $bullet['y'] = $bullet['y'] + $bullet['vy'] / 10;
@@ -66,23 +69,24 @@ class Game
         $sqlStrokeY = "";
         $arrayOfBId = [];
         for ($i = 0; $i < count($bullets); $i++) {
-            if($bullets[$i]['status'] == 'Shoot'){
+            if ($bullets[$i]['status'] == 'Shoot') {
                 $id = $bullets[$i]['id'];
                 $x = $bullets[$i]['x'];
                 $y = $bullets[$i]['y'];
-                $vx = $bullets[$i]['vx'];
-                $vy = $bullets[$i]['vy'];
                 $sqlStrokeX .= "WHEN {$id} THEN {$x} ";
                 $sqlStrokeY .= "WHEN {$id} THEN {$y} ";
                 $arrayOfBId[] = $id;
 
             }
         }
-        if($sqlStrokeX){
+        if ($sqlStrokeX) {
             $this->db->updateBullets($sqlStrokeX, $sqlStrokeY, $arrayOfBId);
         }
-//        $this->checkHit($bullets);
 
+    }
+    private function deleteBullets()
+    {
+        $this->db->deleteBullets();
     }
 
     private function checkHit($bullets)
@@ -90,21 +94,21 @@ class Game
         $colliders = $this->colliders;
         $bulletsToDelete = [];
         $players = $this->db->getAllInfoPlayers();
-        $PlayersHit = [];
+        $playersHit = [];
 
         foreach ($bullets as $bullet) {
             if ($bullet['status'] == 'Shoot') {
                 foreach ($players as $player) {
                     if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
-                        $bulletsToDelete[] = $bullet["id"]; // Дописать if bulletsToDelete
-                        $PlayersHit[] = $player["user_id"];
+                        $bulletsToDelete[] = $bullet; // Дописать if bulletsToDelete
+                        $playersHit[] = $player;
                         break;
                     }
                     if (!(in_array($bullet['id'], $bulletsToDelete))) {
                         foreach ($colliders as $collider) {
                             if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
                                 $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
-                                $bulletsToDelete[] = $bullet['id'];
+                                $bulletsToDelete[] = $bullet;
                                 break;
                             }
                         }
@@ -114,60 +118,84 @@ class Game
 
             }
         }
-        if ($PlayersHit) {
-            $this->setHit($PlayersHit);
+        if ($playersHit) {
+            $this->setHit($playersHit);
+        }
+        if ($bulletsToDelete) {
+            $this->setStatusBulletToDelete($bulletsToDelete);
         }
     }
 
-    private function setHit($PlayersHit)
+    private function setStatusBulletToDelete($bulletsToDelete)
     {
-        $this->decreaseHp($PlayersHit);
-        return true;
+        $sqlStroke = '';
+        $arrayOfBId = [];
+        foreach ($bulletsToDelete as $bullet) {
+            $id = $bullet['id'];
+            $status = "Delete";
+            $sqlStroke .= "WHEN {$id} THEN '{$status}' ";
+            $arrayOfBId[] = $id;
+        }
+        $this->db->setStatusOfdeleteBullets($sqlStroke, $arrayOfBId);
+
+
     }
 
-    private function decreaseHp($playersHitId, $dHp = 20)
+
+    private function setHit($playersHit)
     {
+        $this->decreaseHp($playersHit); // Пропишем логику статистики. Попозже
+    }
+
+    private function decreaseHp($playersHit)
+    {
+        $dHp = 20;
         $decreaseHpPlayersId = [];
         $deathPlayersId = [];
-        $players = $this->db->getPlayersByUserId($playersHitId);
-        foreach ($players as $player) {
-            if ($player['hp'] - $dHp >= 0) {
+        $sqlStrokeDHp = '';
+        $sqlStrokeSetDeath = '';
+        foreach ($playersHit as $player) {
+            $pHp = $player['hp'];
+            $id = $player['id'];
+            if ($pHp - $dHp >= 0) {
+                $sqlStrokeDHp .= "WHEN {$id} THEN hp-20 ";
                 $decreaseHpPlayersId[] = $player['id'];
-            } else if ($player['hp'] - $dHp <= 0 || $player['hp'] == 0) {
+            } else if ($pHp - $dHp <= 0 || $player['hp'] == 0) {
+                $status = "Death";
+                $sqlStrokeSetDeath .= "WHEN {$id} THEN {$status} ";
                 $deathPlayersId[] = $player['id'];
             }
-            if ($decreaseHpPlayersId) {
-                $this->db->decreaseHp($decreaseHpPlayersId, $dHp);
-            }
-            if ($deathPlayersId) {
-                $this->setDeath($deathPlayersId);
-            }
-
+        }
+        if ($sqlStrokeDHp) {
+            $this->db->decreaseHp($sqlStrokeDHp, $decreaseHpPlayersId);
+        }
+        if ($sqlStrokeSetDeath) {
+            $this->setDeath($sqlStrokeSetDeath, $deathPlayersId);
         }
 
     }
 
-    private function setDeath($deathPlayersId)
+    private function setDeath($sqlStrokeSetDeath,$deathPlayersId)
     {
-        $this->db->setDeath($deathPlayersId);
-        $this->updateTeamsScore($deathPlayersId);
+        $this->db->setDeath($sqlStrokeSetDeath,$deathPlayersId);
+//        $this->updateTeamsScore($deathPlayersId);
 
     }
 
-    private function updateTeamsScore($deathPlayersId)
-    {
-        $scoreA = 0;
-        $scoreB = 0;
-        $players = $this->db->getUsersByUserId($deathPlayersId);
-        foreach ($players as $player) {
-            if ($player['teamId'] == 0) {
-                $scoreA += 1;
-            } else if ($player['teamId'] == 1) {
-                $scoreB += 1;
-            }
-        }
-        $this->db->updateScoreInTeam($scoreA, $scoreB);
-    }
+//    private function updateTeamsScore($deathPlayersId)
+//    {
+//        $scoreA = 0;
+//        $scoreB = 0;
+//        $players = $this->db->getUsersByUserId($deathPlayersId);
+//        foreach ($players as $player) {
+//            if ($player['teamId'] == 0) {
+//                $scoreA += 1;
+//            } else if ($player['teamId'] == 1) {
+//                $scoreB += 1;
+//            }
+//        }
+//        $this->db->updateScoreInTeam($scoreA, $scoreB);
+//    }
 
 
     private function checkTeamDamage()
@@ -216,7 +244,7 @@ class Game
 
     }
 
-    private function getFreeSpawnPoint($playerX, $playerY,$spawnPoints, $usedSpawnPoints)
+    private function getFreeSpawnPoint($playerX, $playerY, $spawnPoints, $usedSpawnPoints)
     {
         foreach ($spawnPoints as $spawnPoint) {
             if (!in_array($spawnPoint, $usedSpawnPoints)) {//&& $this->checkFreePosition($playerX, $playerY, $spawnPoint['x'], $spawnPoint['y'])) {
