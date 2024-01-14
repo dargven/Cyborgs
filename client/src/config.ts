@@ -12,7 +12,7 @@ export const HOST :string = `${DOMAIN}:${PORT}`;
 // prod
 //const DOMAIN = 'https://cyborgs-game.ru/server/index.php';
 // const DOMAIN = 'https://srv.cyborgs-game.ru/server/index.php';
-// const DOMAIN = 'https://test.cyborgs-game.ru/server/index.php';
+const DOMAIN = 'https://test.cyborgs-game.ru/server/index.php';
 // const DOMAIN = 'https://cyborgs-game.ru/server/index.php';
 // const DOMAIN = 'https://api.cyborgs-game.ru/index.php';
 
