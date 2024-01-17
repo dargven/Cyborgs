@@ -96,7 +96,7 @@ const Scene = () => {
         const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
 
         // смещение, чтобы игрок не мог расстрелять сам себя, придется фиксить под разные скорости
-        direction.setLength(0.6);
+        direction.setLength(1.5);
         x += direction.x;
         y += direction.y;
         direction.setLength(15);
