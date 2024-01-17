@@ -111,7 +111,7 @@ const Scene = () => {
                 y,
                 vx: direction.x,
                 vy: direction.y,
-                bulletId: 0
+                bulletId: bullets.length
             };
             sendBullet(bullet);
         }
@@ -142,10 +142,10 @@ const Scene = () => {
                     }
                 })}
 
-                {bullets.map((bullet, index) =>
+                {bullets.map((bullet) =>
                     <Bullet
                         {...bullet}
-                        key={index}
+                        key={bullet.bulletId}
                         texture={textures['bullet']}
                     />
                 )}
