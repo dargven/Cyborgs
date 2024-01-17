@@ -9,16 +9,32 @@
     align-items: center;
     flex-direction: column;
 }
-
+.Teams{
+    transform: translateY(25%);
+}
 .firstTeam,
 .secondTeam {
     display: block;
     box-shadow: 2dvw 2dvw rgba(0, 0, 0, 0.5);
     height: 30dvh;
     width: 45dvw;
-    margin-bottom: 0.5dvh;
+    margin-bottom: 0.5dvh;flex: 1;
+    overflow-y: auto;
+}
+.firstTeam::-webkit-scrollbar,.secondTeam::-webkit-scrollbar {
+    width: 1dvh;
 }
 
+.firstTeam::-webkit-scrollbar-thumb,.secondTeam::-webkit-scrollbar-thumb {
+    background:  rgb(161, 11, 149);
+    border-radius: 3dvw;
+}
+.secondTeam::-webkit-scrollbar-thumb {
+    background: rgb(23, 6, 255);
+}
+.firstTeam::-webkit-scrollbar-track,.secondTeam::-webkit-scrollbar-track {
+    background: rgba(44, 44, 44, 0.7);
+}
 .firstTeam {
     border: 0.3dvw solid rgba(233, 39, 217, 0.2);
     /* background: linear-gradient(-135deg, transparent 2dvw, rgba(233, 39, 217, 0.3) 0) top right; */
@@ -34,17 +50,18 @@
 
 h3 {
     position: relative;
-    top: 5dvh;
+    top: 3dvh;
     font-family: "Zelek";
     color: rgba(255, 255, 255, 0.856);
     font-size: 6dvh;
     animation: glitch1 1s infinite;
 }
 
-.chat-message {
+.information {
     margin-bottom: 2dvh;
-    padding: 0;
-    display: flex;          
+    display: flex;  margin-top: 2vh;
+    padding: 0.2vh;
+    margin-top: 2vh;         
 }
 
 .name,
