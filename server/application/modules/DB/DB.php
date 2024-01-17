@@ -8,11 +8,11 @@ class DB
     {
 //----------------------------------------------------------------------------//
 //
-        $host = $_ENV['HOST_PROD'];
-        $port = $_ENV['PORT_PROD'];
-        $user = $_ENV['USER_PROD'];
-        $pass = $_ENV['PASS_PROD'];
-        $db = $_ENV['DB_PROD'];
+//        $host = $_ENV['HOST_PROD'];
+//        $port = $_ENV['PORT_PROD'];
+//        $user = $_ENV['USER_PROD'];
+//        $pass = $_ENV['PASS_PROD'];
+//        $db = $_ENV['DB_PROD'];
 //----------------------------------------------------------------------------//
 //
 //        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
@@ -23,11 +23,11 @@ class DB
 //
 //----------------------------------------------------------------------------//
 //
-//        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
-//        $port = $_ENV['PORT_LC2'];
-//        $user = $_ENV['USER_LC2'];
-//        $pass = $_ENV['PASS_LC2'];
-//        $db =   $_ENV['DB_LC2'];
+        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
+        $port = $_ENV['PORT_LC2'];
+        $user = $_ENV['USER_LC2'];
+        $pass = $_ENV['PASS_LC2'];
+        $db = $_ENV['DB_LC2'];
 
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
@@ -85,7 +85,7 @@ class DB
     {
         return $this->query("SELECT * FROM users WHERE id=?", [$id]);
     }
-    
+
 
     public function getUserByUuid($uuid)
     {
@@ -151,7 +151,7 @@ VALUES (?,?, now())', [$id, $message]);
     }
 
 
-    public function getBullets() 
+    public function getBullets()
     {
         return $this->queryAll("
                 SELECT id, status, user_id ,
@@ -167,7 +167,7 @@ VALUES (?,?, now())', [$id, $message]);
 
     public function updateBullets($strokeX, $strokeY, $id)
     {
-        $ids = implode(',',$id);
+        $ids = implode(',', $id);
         $stroke = "UPDATE bullets SET px = x,
                    x = CASE id 
                        {$strokeX}
@@ -187,7 +187,7 @@ VALUES (?,?, now())', [$id, $message]);
 
     public function setStatusOfdeleteBullets($stroke, $id)
     {
-        $ids = implode(',',$id);
+        $ids = implode(',', $id);
         $stroke = "UPDATE bullets SET status = CASE id {$stroke}
                    ELSE status 
             END
@@ -196,6 +196,7 @@ VALUES (?,?, now())', [$id, $message]);
 ";
         $this->execute($stroke);
     }
+
     public function deleteBullets()
     {
         $this->execute("DELETE FROM bullets
@@ -272,10 +273,8 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
 
     public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
     {
-        $this->execute("INSERT INTO players (user_id, x, y, vx, vy, dx, dy) VALUES (?, ?, ?, ?, ?, ?, ?) 
-ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), 
-      vx = VALUES(vx), vy = VALUES(vy), dx = VALUES(dx), dy = VALUES(dy);
-", [$id, $x, $y, $vx, $vy, $dx, $dy]); // Переписать (без on duplicate key)
+        $this->execute("UPDATE players  SET x = ?, y= ?, vx= ?, vy= ?, dx= ?, dy= ? WHERE user_id = ?",
+            [$x, $y, $vx, $vy, $dx, $dy, $id]);
     }
 
     public function setStatus($id, $status)
@@ -337,6 +336,7 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     {
         $this->execute("UPDATE game SET objects_hash=? WHERE id=1", [$hash]);
     }
+
     public function updateSkinsHash($hash)
     {
         $this->execute("UPDATE game SET chat_hash = ? WHERE id = 1", [$hash]);
@@ -350,8 +350,8 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 
     public function decreaseHp($strokeDHp, $id)
     {
-        
-        $ids = implode(',',$id);
+
+        $ids = implode(',', $id);
         $stroke = "UPDATE players SET hp = CASE id {$strokeDHp}
                    ELSE hp 
             END
@@ -360,10 +360,11 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 ";
         $this->execute($stroke);
     }
+
     public function setDeath($strokeSetDeath, $id)
     {
-        $ids = implode(',',$id);
-        $stroke = "UPDATE players SET status = CASE id {$strokeSetDeath}
+        $ids = implode(',', $id);
+        $stroke = "UPDATE players SET hp = 0, status = CASE id {$strokeSetDeath}
                    ELSE status
             END
                    WHERE id IN ($ids);
