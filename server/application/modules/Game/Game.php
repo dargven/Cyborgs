@@ -33,10 +33,10 @@ class Game
         if ($time >= $timeout) {
             $this->db->updateTimestamp(time() * 1000);
             $this->spawnPlayers();
+            $this->deleteBullets();
             $bullets = $this->db->getBullets();
             $this->checkHit($bullets);
             $this->moveBullet($bullets);
-            $this->deleteBullets();
 
 
 ////            // пробежаться по всем игрокам
@@ -84,6 +84,7 @@ class Game
         }
 
     }
+
     private function deleteBullets()
     {
         $this->db->deleteBullets();
@@ -99,10 +100,10 @@ class Game
         foreach ($bullets as $bullet) {
             if ($bullet['status'] == 'Shoot') {
                 foreach ($players as $player) {
-                    if ((sqrt(($bullet['x'] ** 2) + ($bullet['y'] ** 2))) <= ((sqrt(($player['x'] ** 2) + ($player['y'] ** 2))) + 1)) {
+                    if ((($bullet['x'] - $player['x']) ** 2 + ($bullet['y'] - $player['y']) ** 2) <= 1) {
                         $bulletsToDelete[] = $bullet; // Дописать if bulletsToDelete
                         $playersHit[] = $player;
-                        break;
+                        continue;
                     }
                     if (!(in_array($bullet['id'], $bulletsToDelete))) {
                         foreach ($colliders as $collider) {
@@ -162,7 +163,7 @@ class Game
                 $decreaseHpPlayersId[] = $player['id'];
             } else if ($pHp - $dHp <= 0 || $player['hp'] == 0) {
                 $status = "Death";
-                $sqlStrokeSetDeath .= "WHEN {$id} THEN {$status} ";
+                $sqlStrokeSetDeath .= "WHEN {$id} THEN '{$status}' ";
                 $deathPlayersId[] = $player['id'];
             }
         }
@@ -175,9 +176,9 @@ class Game
 
     }
 
-    private function setDeath($sqlStrokeSetDeath,$deathPlayersId)
+    private function setDeath($sqlStrokeSetDeath, $deathPlayersId)
     {
-        $this->db->setDeath($sqlStrokeSetDeath,$deathPlayersId);
+        $this->db->setDeath($sqlStrokeSetDeath, $deathPlayersId);
 //        $this->updateTeamsScore($deathPlayersId);
 
     }

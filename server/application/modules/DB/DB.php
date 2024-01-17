@@ -42,6 +42,7 @@ class DB
     private function execute($sql, $params = [])
     {
         $sth = $this->pdo->prepare($sql);
+        var_dump($sth);
         return $sth->execute($params);
     }
 
@@ -167,10 +168,14 @@ VALUES (?,?, now())', [$id, $message]);
     public function updateBullets($strokeX, $strokeY, $id)
     {
         $ids = implode(',',$id);
-        $stroke = "UPDATE bullets SET x = CASE id {$strokeX}
+        $stroke = "UPDATE bullets SET px = x,
+                   x = CASE id 
+                       {$strokeX}
                    ELSE x 
             END,
-                   y = CASE ID {$strokeY}
+                   py = y,
+                    y = CASE id 
+               {$strokeY}
                    ELSE y
             END
                    WHERE id IN ($ids);
@@ -178,6 +183,7 @@ VALUES (?,?, now())', [$id, $message]);
 ";
         $this->execute($stroke);
     }
+
 
     public function setStatusOfdeleteBullets($stroke, $id)
     {
@@ -344,6 +350,7 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 
     public function decreaseHp($strokeDHp, $id)
     {
+        
         $ids = implode(',',$id);
         $stroke = "UPDATE players SET hp = CASE id {$strokeDHp}
                    ELSE hp 
