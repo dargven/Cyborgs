@@ -101,7 +101,7 @@ class Game
             if ($bullet['status'] == 'Shoot') {
                 foreach ($players as $player) {
                     if ((($bullet['x'] - $player['x']) ** 2 + ($bullet['y'] - $player['y']) ** 2) <= 1) {
-                        $bulletsToDelete[] = $bullet; // Дописать if bulletsToDelete
+                        $bulletsToDelete[] = $bullet;
                         $playersHit[] = $player;
                         continue;
                     }
@@ -342,15 +342,6 @@ class Game
         }
 
         return false;
-    }
-
-    public function setBullet($userId, $x, $y, $vx, $vy)
-    {
-        $bulletId =
-            $this->db->setBullet($userId, $x, $y, $vx, $vy);
-        $hash = $this->genHash();
-        $this->db->updateBulletsHash($hash);
-        return true;
     }
 
 

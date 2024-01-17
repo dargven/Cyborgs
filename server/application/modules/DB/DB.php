@@ -42,7 +42,7 @@ class DB
     private function execute($sql, $params = [])
     {
         $sth = $this->pdo->prepare($sql);
-        var_dump($sth);
+//        var_dump($sth);
         return $sth->execute($params);
     }
 
