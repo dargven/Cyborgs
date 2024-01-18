@@ -71,6 +71,9 @@ const Player = ({
             if (frameName === 'movement') {
                 setFrameName('corpse')
             }
+        }else
+        {
+            setFrameName('movement')
         }
         
     }
