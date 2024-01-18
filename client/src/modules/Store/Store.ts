@@ -5,16 +5,14 @@ export class Store {
         name: '',
         isAuth: false,
         token: '',
-        uuid: '',
     }
 
     public sceneHashes: TSceneHashes = { bulletsHash: '2', playersHash: '3', objectsHash: '5' };
 
-    setUser(name: string, token: string, uuid: string): void {
+    setUser(name: string, token: string): void {
         this.user.name = name;
         this.user.isAuth = true;
         this.user.token = token;
-        this.user.uuid = uuid;
     }
 
     setAuth() {

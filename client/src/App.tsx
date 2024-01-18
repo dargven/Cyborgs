@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Navigate, Route, Routes, useNavigate} from "react-router-dom";
+import React, {useEffect} from "react";
+import { Navigate, Route, Routes} from "react-router-dom";
 import {HOST} from "./config";
 import {Store} from "./modules/Store/Store";
 import Server from "./modules/Server/Server";
@@ -19,13 +19,25 @@ export const ServerContext = React.createContext<Server>(null!);
 const App: React.FC = () => {
     const store = new Store();
     const server = new Server(HOST, store);
-    const navigate = useNavigate();
+    const token = getToken()
+
+    const handleAutoLogin = async () => {
+        if (token !== null) {
+            const isAutoLogin = await server.autoLogin()
+            if (isAutoLogin) {
+                store.setAuth()
+            }else
+            {
+                localStorage.removeItem('token')
+            }
+        }
+    }
 
     useEffect(() => {
-        if (getToken() !== null) {
-            navigate("/main", {replace: true})
+        if (token) {
+            handleAutoLogin()
         }
-      }, []);
+    }, [])
 
     return (
         <StoreContext.Provider value={store}>
