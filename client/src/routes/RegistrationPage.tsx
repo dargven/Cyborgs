@@ -3,6 +3,7 @@ import useEnterKeyHandler from "../hooks/useKeyHandler";
 import useAuth from "../hooks/useAuth";
 import Loading from "../components/loading";
 import "../Auth.css";
+import useTab from "../hooks/useTab";
 
 const openEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-open.png";
 const closeEyeIcon = process.env.PUBLIC_URL + "/assets/image/eye-close.png";
@@ -22,6 +23,7 @@ const RegistrationPage = () => {
       } = useAuth();
 
     useEnterKeyHandler(13, handleRegistration);
+    useTab();
 
     return (
         <>
@@ -39,6 +41,7 @@ const RegistrationPage = () => {
                         className="input"
                         placeholder="Логин"
                         ref={loginRef}
+                        tabIndex={0}
                     />
                     <input
                         type="text"
@@ -47,6 +50,7 @@ const RegistrationPage = () => {
                         className="input"
                         placeholder="Имя"
                         ref={nameRef}
+                        tabIndex={0}
                     />
                     <input
                         type="text"
@@ -55,6 +59,7 @@ const RegistrationPage = () => {
                         className="input"
                         placeholder="Почта"
                         ref={emailRef}
+                        tabIndex={0}
                     />
                     <div className="password-input-container">
                         <input
@@ -64,6 +69,7 @@ const RegistrationPage = () => {
                             className="input"
                             placeholder="Пароль"
                             ref={passwordRef}
+                            tabIndex={0}
                         />
                         <button
                             className="show-password-button"

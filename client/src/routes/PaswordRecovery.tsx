@@ -1,6 +1,7 @@
 import useAuth from "../hooks/useAuth";
 import Loading from "../components/loading";
 import "../Auth.css";
+import useTab from "../hooks/useTab";
 
 const PasswordRecovery = () => {
     const {
@@ -19,6 +20,8 @@ const PasswordRecovery = () => {
         SetCode,
         Recovery,
     } = useAuth()
+
+    useTab();
 
     return (
         <>
@@ -40,6 +43,7 @@ const PasswordRecovery = () => {
                                 placeholder="Логин"
                                 ref={loginRef}
                                 disabled={recoveryPressed}
+                                tabIndex={0}
                             />
                             <div ref={errorRef} className="errorDiv"></div>
                             {timeout && (
@@ -67,6 +71,7 @@ const PasswordRecovery = () => {
                                     className="recoveryCode"
                                     placeholder="Код"
                                     ref={codeRef}
+                                    tabIndex={0}
                                 />
                                 <div ref={errorRef} className="errorDiv"></div>
                                 <button
@@ -85,6 +90,7 @@ const PasswordRecovery = () => {
                                 name="password"
                                 placeholder="Новый пароль"
                                 ref={newPasswordRef1}
+                                tabIndex={0}
                             />
                             <input
                                 type="password"
@@ -92,6 +98,7 @@ const PasswordRecovery = () => {
                                 name="password"
                                 placeholder="Повторите пароль"
                                 ref={newPasswordRef2}
+                                tabIndex={0}
                             />
                             <div ref={errorRef} className="errorDiv"></div>
                             <button
