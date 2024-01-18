@@ -42,6 +42,18 @@ const Player = ({
 
     const ref = useRef<RapierRigidBody>(null!);
 
+    const [frameName, setFrameName] = useState('movement')
+
+    const onEnd = ({}) => {
+        if (status === 'Live') {
+            setFrameName('movement')
+            console.log('123')
+          } else {
+            setFrameName('corpse')
+            console.log('333333')
+          }
+    }
+
     const [_, getKeys] = useKeyboardControls();
 
     const rot = useRef<number>(playerRotation ?? 0)
@@ -64,19 +76,6 @@ const Player = ({
         deaths
     });
 
-    const [frameName, setFrameName] = useState('movement')
-
-    const onEnd = ({}) => {
-        if(!hp){
-            if (frameName === 'movement') {
-                setFrameName('corpse')
-            }
-        }else
-        {
-            setFrameName('movement')
-        }
-        
-    }
 
     const movementController = (up?: boolean, down?: boolean, left?: boolean, right?: boolean) => {
 
@@ -174,20 +173,18 @@ const Player = ({
             >
 
                 <Animator
-                    fps={5}
-                    startFrame={0}
-                    loop={true}
                     onLoopEnd={onEnd}
                     frameName={frameName}
+                    fps={5}
                     animationNames={['movement','corpse']}
                     autoPlay={true}
+                    loop={true}
+                    alphaTest={0.01}
                     textureImageURL={'./assets/test/Cop.png'}
                     textureDataURL={'./assets/test/Cop.json'}
-                    alphaTest={0.01}
                     materialRotation={rot.current}
                 />
-
-
+                
                 <BallCollider
                     args={[0.5]}
                     restitution={0}
