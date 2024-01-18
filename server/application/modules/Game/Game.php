@@ -298,7 +298,8 @@ class Game
             'scene' => [
                 'players' => NULL,
                 'bullets' => NULL,
-                'objects' => NULL
+                'objects' => NULL,
+                'match' => NULL,
             ],
         ];
         if ($hashes->players_hash !== $playersHash) {
@@ -319,27 +320,32 @@ class Game
         return $scene;
     }
 
-//    public function startMatch()
-//    {
-//        $timeStart = time() * 1000;
-//        $timeEnd = $timeStart + 180000;
-//        $this->db->startMatch($timeStart, $timeEnd);
-//    }
-//
-//
-//    private function endMatch()
-//    {
-//        $matchInfo = $this->db->getInfoMatch("Matching");
-//        if ($matchInfo->status == "Matching") {
-//            $timeEnd = $matchInfo->time_end;
-//            $time = time();
-//            if ($time == $timeEnd || $time + 5 == $timeEnd) {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
+    public function match(){
+        if(!$this->endMatch()){
+            $this->startMatch();
+        }
+    }
+    public function startMatch()
+    {
+        $timeStart = time() * 1000;
+        $timeEnd = $timeStart + 180000;
+        $this->db->startMatch($timeStart, $timeEnd);
+    }
+
+
+    private function endMatch()
+    {
+        $matchInfo = $this->db->getInfoMatch("Matching");
+        if ($matchInfo->status == "Matching") {
+            $timeEnd = $matchInfo->time_end;
+            $time = time();
+            if ($time == $timeEnd || $time + 5 == $timeEnd) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
     public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
