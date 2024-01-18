@@ -309,7 +309,7 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
 
     public function spawnPlayer($userId, $x, $y)
     {
-        $this->execute("UPDATE players SET x=?, y=? WHERE user_id=?", [$x, $y, $userId]);
+        $this->execute("UPDATE players SET x=?, y=?, hp = default WHERE user_id=?", [$x, $y, $userId]);
     }
 
     public function getHashes()

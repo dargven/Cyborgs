@@ -21,7 +21,9 @@ class Application
         $this->chat = new Chat($db);
         $this->game = new Game($db);
     }
-    function test($params){
+
+    function test($params)
+    {
         $this->game->moveBullet();
     }
 
@@ -312,18 +314,6 @@ class Application
         }
         return ['error' => 242];
     }
-
-    function setHit($params)
-    {
-        $token = $params['playerId'];
-        $bulletId = $params['bulletId'];
-        if ($token && $bulletId) {
-            $user = $this->user->getUserByToken($token);
-            if ($user) {
-                return $this->game->setHit($user->id, $bulletId);
-            }
-        }
-    }
-
+    
 
 }

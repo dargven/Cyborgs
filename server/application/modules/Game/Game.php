@@ -152,18 +152,20 @@ class Game
     {
         $dHp = 20;
         $decreaseHpPlayersId = [];
+        $deathPlayers = [];
         $deathPlayersId = [];
         $sqlStrokeDHp = '';
         $sqlStrokeSetDeath = '';
         foreach ($playersHit as $player) {
             $pHp = $player['hp'];
             $id = $player['id'];
-            if ($pHp - $dHp >= 0) {
+            if ($pHp - $dHp > 0) {
                 $sqlStrokeDHp .= "WHEN {$id} THEN hp-20 ";
                 $decreaseHpPlayersId[] = $player['id'];
             } else if ($pHp - $dHp <= 0 || $player['hp'] == 0) {
                 $status = "Death";
-                $sqlStrokeSetDeath .= "WHEN {$id} THEN '{$status}' ";
+                $sqlStrokeSetDeath .= "WHEN {$id} THEN '$status' ";
+                $deathPlayers[] = $player;
                 $deathPlayersId[] = $player['id'];
             }
         }
@@ -171,32 +173,32 @@ class Game
             $this->db->decreaseHp($sqlStrokeDHp, $decreaseHpPlayersId);
         }
         if ($sqlStrokeSetDeath) {
-            $this->setDeath($sqlStrokeSetDeath, $deathPlayersId);
+            $this->setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers);
         }
 
     }
 
-    private function setDeath($sqlStrokeSetDeath, $deathPlayersId)
+    private function setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers)
     {
         $this->db->setDeath($sqlStrokeSetDeath, $deathPlayersId);
-//        $this->updateTeamsScore($deathPlayersId);
+        $this->updateTeamsScore($deathPlayers);
 
     }
 
-//    private function updateTeamsScore($deathPlayersId)
-//    {
-//        $scoreA = 0;
-//        $scoreB = 0;
-//        $players = $this->db->getUsersByUserId($deathPlayersId);
-//        foreach ($players as $player) {
-//            if ($player['teamId'] == 0) {
-//                $scoreA += 1;
-//            } else if ($player['teamId'] == 1) {
-//                $scoreB += 1;
-//            }
-//        }
-//        $this->db->updateScoreInTeam($scoreA, $scoreB);
-//    }
+    private function updateTeamsScore($deathPlayers)
+    {
+        $scoreA = 0;
+        $scoreB = 0;
+        foreach ($deathPlayers as $player) {
+            if ($player['teamId'] == 0) {
+                $scoreB += 1;
+            } else if ($player['teamId'] == 1) {
+                $scoreA += 1;
+            }
+        }
+
+        $this->db->updateScoreInTeam($scoreA, $scoreB);
+    }
 
 
     private function checkTeamDamage()
@@ -266,7 +268,7 @@ class Game
         return $this->db->getObjects();
     }
 
-    public function getPlayers() // deploy погуглить
+    public function getPlayers()
     {
         return $this->db->getPlayers();
     }
@@ -317,32 +319,27 @@ class Game
         return $scene;
     }
 
-
-    public function startMatch($time = 180)
-    {
-        $timeStart = time();
-        $timeEnd = $timeStart + $time;
-        $this->db->startMatch($timeStart, $timeEnd);
-        return
-            [
-                'timeStart' => $timeStart,
-                'timeEnd' => $timeEnd,
-            ];
-    }
-
-    private function endMatch()
-    {
-        $matchInfo = $this->db->getInfoMatch("Matching");
-        if ($matchInfo->status == "Matching") {
-            $timeEnd = $matchInfo->time_end;
-            $time = time();
-            if ($time == $timeEnd || $time + 5 == $timeEnd) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+//    public function startMatch()
+//    {
+//        $timeStart = time() * 1000;
+//        $timeEnd = $timeStart + 180000;
+//        $this->db->startMatch($timeStart, $timeEnd);
+//    }
+//
+//
+//    private function endMatch()
+//    {
+//        $matchInfo = $this->db->getInfoMatch("Matching");
+//        if ($matchInfo->status == "Matching") {
+//            $timeEnd = $matchInfo->time_end;
+//            $time = time();
+//            if ($time == $timeEnd || $time + 5 == $timeEnd) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
 
     public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
