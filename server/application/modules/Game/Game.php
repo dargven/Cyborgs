@@ -37,6 +37,7 @@ class Game
             $bullets = $this->db->getBullets();
             $this->checkHit($bullets);
             $this->moveBullet($bullets);
+            $this->match();
 
 
 ////            // пробежаться по всем игрокам
@@ -285,8 +286,10 @@ class Game
     {
         $hashes = $this->db->getHashes();
         if ($this->updateScene($hashes->update_timeout, $hashes->update_timestamp)) {
-            $this->db->updateBulletsHash($this->genHash());
-            $this->db->updatePlayersHash($this->genHash());
+            $playersHash = $this->genHash();
+            $bulletsHash = $this->genHash();
+            $objectsHash = $this->genHash();
+            $this->db->updateAllGameHashes($playersHash, $bulletsHash, $objectsHash);
         }
         $scene = [
             'hashes' =>
@@ -299,7 +302,11 @@ class Game
                 'players' => NULL,
                 'bullets' => NULL,
                 'objects' => NULL,
-                'match' => NULL,
+            ],
+            'match' => [
+                'matchStart' => NULL,
+                'matchEnd' => NULL,
+                'matchStatus'=> 'playing'
             ],
         ];
         if ($hashes->players_hash !== $playersHash) {
@@ -317,14 +324,18 @@ class Game
             $scene['scene']['bullets'] = $bullets;
             $scene['hashes']['bulletsHash'] = $hashes->bullets_hash;
         }
+//        if () {
+//
+//        }
         return $scene;
     }
 
-    public function match(){
-        if(!$this->endMatch()){
-            $this->startMatch();
-        }
+    public function match()
+    {
+        $matchInfo = $this->db->getInfoMatch("Matching");
+        
     }
+
     public function startMatch()
     {
         $timeStart = time() * 1000;
@@ -338,8 +349,8 @@ class Game
         $matchInfo = $this->db->getInfoMatch("Matching");
         if ($matchInfo->status == "Matching") {
             $timeEnd = $matchInfo->time_end;
-            $time = time();
-            if ($time == $timeEnd || $time + 5 == $timeEnd) {
+            $time = time() * 1000;
+            if ($time == $timeEnd || $time + 100 == $timeEnd) {
                 return true;
             }
         }
