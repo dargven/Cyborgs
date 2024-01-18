@@ -1,19 +1,14 @@
 import { Stars } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
-import { TBullet, TDestructible, TPlayer } from "../../modules/Server/types";
-import CollidersPositions from "./Map/CollidersPositions";
-import LightMap from "./Map/LightMap";
-import Map from "./Map/Map";
-import MapObjects from "./Map/MapObjects";
-import Obstacle from "./Map/Obstacle";
-import Player from "./Player/Player";
+import { TBullet, TPlayer } from "../../modules/Server/types";
 import Bullet from "./Bullet/Bullet";
+import Map from "./Map/Map";
 import Dummy from "./Player/Dummy";
-import Game from "../../modules/Game/Game";
+import Player from "./Player/Player";
 
 export interface ITextureObject {
     [key: string]: Texture
@@ -31,23 +26,20 @@ const Scene = () => {
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load('./assets/Bullets/Projectile.png');
     const room = textureLoader.load('./assets/rooms/cyborgs-office.png');
-    const glass = textureLoader.load('./assets/Map parts/Glass.png');
 
     const [textures] = useState<ITextureObject>({
         'room': room,
         'bullet': TPROJECTILE,
-        'glass': glass,
     });
 
     const timer = useRef<number>(0);
 
     const player = useRef<TPlayer>();
-    const [myBullets, setMyBullets] = useState<TBullet[]>([]);
     const [bullets, setBullets] = useState<TBullet[]>([]);
     const [dummies, setDummies] = useState<TPlayer[]>([]);
 
     const sendBullet = (bullet: TBullet) => {
-        server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy);
+        server.shoot(bullet.x, bullet.y, bullet.vx, bullet.vy);
     }
 
     const sendMyPlayer = async (player: TPlayer) => {
@@ -119,22 +111,11 @@ const Scene = () => {
                 y,
                 vx: direction.x,
                 vy: direction.y,
-                bulletId: myBullets.length
+                bulletId: bullets.length
             };
             sendBullet(bullet);
-            setMyBullets([...myBullets, bullet]);
         }
     }
-
-    const colliders = CollidersPositions();
-    let colliderKeyCounter = 0;
-    const generateColliderKey = () => {
-        const key = `collider-${colliderKeyCounter}`;
-        colliderKeyCounter++;
-        return key;
-    };
-
-
 
     return (
         <group>
@@ -161,15 +142,7 @@ const Scene = () => {
                     }
                 })}
 
-                {bullets.map(bullet =>
-                    <Bullet
-                        {...bullet}
-                        key={bullet.bulletId}
-                        texture={textures['bullet']}
-                    />
-                )}
-
-                {myBullets.map(bullet =>
+                {bullets.map((bullet) =>
                     <Bullet
                         {...bullet}
                         key={bullet.bulletId}

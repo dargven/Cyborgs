@@ -154,8 +154,8 @@ export default class Server {
         return null;
     }
 
-    setBullet(x: number, y: number, vx: number, vy: number): Promise<TBullet[] | null> {
-        return this.request<TBullet[]>('setBullet', {
+    shoot(x: number, y: number, vx: number, vy: number): Promise<TBullet[] | null> {
+        return this.request<TBullet[]>('shoot', {
             token: this.token,
             x: x,
             y: y,
