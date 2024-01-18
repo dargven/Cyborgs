@@ -37,6 +37,10 @@ export type TPlayer = {
     vy: number;
     dx: number;
     dy: number;
+    name: string;
+    score: number;
+    status: string;
+    deaths: number;
 }
 
 export type TBullet = {
@@ -81,7 +85,6 @@ export type TTeam = {
 
 export type TTeamUser = {
     teamId: number;
-    token?: string;
     name: string;
     score: number;
     status: string;
