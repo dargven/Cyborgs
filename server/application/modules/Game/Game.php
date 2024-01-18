@@ -191,9 +191,9 @@ class Game
         $scoreB = 0;
         foreach ($deathPlayers as $player) {
             if ($player['teamId'] == 0) {
-                $scoreB += 1;
-            } else if ($player['teamId'] == 1) {
                 $scoreA += 1;
+            } else if ($player['teamId'] == 1) {
+                $scoreB += 1;
             }
         }
 
