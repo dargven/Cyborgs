@@ -53,7 +53,7 @@ class Game
 ////            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
 ////            //$players = $this->getPlayers();
 ////            //$bullets = $this->getBullets();
-            return true;
+            return ;
         }
         return false;
     }
@@ -333,7 +333,7 @@ class Game
             'match' => [
                 'matchStart' => NULL,
                 'matchEnd' => NULL,
-                'matchStatus'=> 'playing'
+                'matchStatus'=> 'notplaying'
             ],
         ];
         if ($hashes->players_hash !== $playersHash) {
@@ -361,6 +361,7 @@ class Game
     {
         $matchInfo = $this->db->getInfoMatch();
         $timeEnd = $matchInfo->match_time_end;
+        $timeStart = $matchInfo->match_time_start;
         $time = time() * 1000;
         if ($time >= $timeEnd || $time + 100 >= $timeEnd) {
             $this->endMatch();
