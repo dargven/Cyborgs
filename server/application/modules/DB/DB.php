@@ -8,11 +8,11 @@ class DB
     {
 //----------------------------------------------------------------------------//
 //
-//        $host = $_ENV['HOST_PROD'];
-//        $port = $_ENV['PORT_PROD'];
-//        $user = $_ENV['USER_PROD'];
-//        $pass = $_ENV['PASS_PROD'];
-//        $db = $_ENV['DB_PROD'];
+        $host = $_ENV['HOST_PROD'];
+        $port = $_ENV['PORT_PROD'];
+        $user = $_ENV['USER_PROD'];
+        $pass = $_ENV['PASS_PROD'];
+        $db = $_ENV['DB_PROD'];
 //----------------------------------------------------------------------------//
 //
 //        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
@@ -23,11 +23,11 @@ class DB
 //
 //----------------------------------------------------------------------------//
 //
-        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
-        $port = $_ENV['PORT_LC2'];
-        $user = $_ENV['USER_LC2'];
-        $pass = $_ENV['PASS_LC2'];
-        $db = $_ENV['DB_LC2'];
+//        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
+//        $port = $_ENV['PORT_LC2'];
+//        $user = $_ENV['USER_LC2'];
+//        $pass = $_ENV['PASS_LC2'];
+//        $db = $_ENV['DB_LC2'];
 
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
@@ -106,27 +106,27 @@ class DB
         );
     }
 
-    public function getInfoMatch($status)
+    public function getInfoMatch()
     {
-        return $this->query("SELECT * FROM `match` WHERE status = ?", [$status]);
+        return $this->query("SELECT match_time_start, match_time_end FROM `game` WHERE id=1");
     }
 
     public function startMatch($timeStart, $timeEnd)
     {
-        $this->execute("INSERT INTO `match` (time_start, time_end)
-VALUES (?,?)", [$timeStart, $timeEnd]);
+        $this->execute("UPDATE `game` SET match_time_start = ?, match_time_end =?, match_status = ? WHERE id = 1
+", [$timeStart, $timeEnd, "playing"] );
     }
 
 
-    public function endMatch($timeEnd, $status = 'EndMatch')
+    public function endMatch()
     {
-        $this->execute("UPDATE `match` SET status =? WHERE time_end=?;
+        $this->execute("UPDATE `game` SET match_status =DEFAULT;
                             UPDATE players SET status='WaitToSpawn', team_id = DEFAULT, skin_id = DEFAULT, 
                                                x = DEFAULT, y=DEFAULT,vx =DEFAULT, vy =DEFAULT, 
                                                dx = DEFAULT, dy=DEFAULT, hp = DEFAULT, kills =DEFAULT;
                             DELETE FROM bullets;
 ",
-            [$status, $timeEnd]  //
+              //
         );
     }
 
@@ -250,7 +250,7 @@ WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
 
     public function getPlayers()
     {
-        return $this->queryAll("SELECT u.token as token, u.name as name, p.score as score, p.status as status, p.hp as hp, p.team_id as teamId, p.skin_id, p.x, p.y, p.vx, p.vy, p.dx, p.dy
+        return $this->queryAll("SELECT u.token as token, u.name as name, p.score as score, p.status as status, p.hp as hp, p.team_id as teamId, p.deaths as deaths, p.skin_id, p.x, p.y, p.vx, p.vy, p.dx, p.dy
 FROM players as p INNER JOIN users as u on u.id=p.user_id");
     }
 
