@@ -97,7 +97,7 @@ const useAuth = () => {
 
             errorRef.current!.innerText = getError(server.error);
         }else{
-            server.error.code=1006
+            server.error.code=1007
             errorRef.current!.innerText=getError(server.error)
         }
         }
@@ -107,7 +107,6 @@ const useAuth = () => {
         }
        
         } else {
-        server.error.code=242
         errorRef.current!.innerText=getError(server.error)
     }
     };
