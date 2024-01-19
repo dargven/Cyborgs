@@ -106,27 +106,27 @@ class DB
         );
     }
 
-    public function getInfoMatch($status)
+    public function getInfoMatch()
     {
-        return $this->query("SELECT * FROM `match` WHERE status = ?", [$status]);
+        return $this->query("SELECT match_time_start, match_time_end FROM `game` WHERE id=1");
     }
 
     public function startMatch($timeStart, $timeEnd)
     {
-        $this->execute("INSERT INTO `match` (time_start, time_end)
-VALUES (?,?)", [$timeStart, $timeEnd]);
+        $this->execute("INSERT INTO `game` (match_time_start, match_time_end,status)
+VALUES (?,?,?)", [$timeStart, $timeEnd, "matching"]);
     }
 
 
-    public function endMatch($timeEnd, $status = 'EndMatch')
+    public function endMatch()
     {
-        $this->execute("UPDATE `match` SET status =? WHERE time_end=?;
+        $this->execute("UPDATE `game` SET match_status =DEFAULT;
                             UPDATE players SET status='WaitToSpawn', team_id = DEFAULT, skin_id = DEFAULT, 
                                                x = DEFAULT, y=DEFAULT,vx =DEFAULT, vy =DEFAULT, 
                                                dx = DEFAULT, dy=DEFAULT, hp = DEFAULT, kills =DEFAULT;
                             DELETE FROM bullets;
 ",
-            [$status, $timeEnd]  //
+              //
         );
     }
 

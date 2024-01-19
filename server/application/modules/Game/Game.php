@@ -161,9 +161,11 @@ class Game
         $deathPlayersId = [];
         $sqlStrokeDHp = '';
         $sqlStrokeSetDeath = '';
+        //
         $killsCounterPlayers = [];
         $sqlSetKillerToVictim = '';
         $sqlAddKillsToKiller = '';
+        //
         $killersId = [];
         foreach ($playersHit as $player) {
             $pHp = $player['hp'];
@@ -171,13 +173,16 @@ class Game
             if ($pHp - $dHp > 0) {
                 $sqlStrokeDHp .= "WHEN {$id} THEN hp-20 ";
                 $decreaseHpPlayersId[] = $player['user_id'];
-            } else if ($pHp - $dHp <= 0 || $player['hp'] == 0) {
+                } 
+            else if ($pHp - $dHp <= 0 || $player['hp'] == 0) {
                 $status = "Death";
                 $sqlStrokeSetDeath .= "WHEN {$id} THEN '$status' ";
                 $deathPlayers[] = $player;
                 $deathPlayersId[] = $player['user_id'];
+                //
                 $killerId = $playersHitByBullet[$id];
                 $killsCounterPlayers[$killerId] += 1;
+                //
                 
             }
         }
@@ -187,6 +192,7 @@ class Game
         }
         if ($sqlStrokeSetDeath) {
             $this->setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers);
+            //
             foreach ($playersHitByBullet as $killerPlayerId){
                 $victimId = array_search($killerPlayerId, $playersHitByBullet); // Victim == user_id;
                 $sqlSetKillerToVictim .= "WHEN $victimId THEN $killerPlayerId";
@@ -353,8 +359,15 @@ class Game
 
     public function match()
     {
-        $matchInfo = $this->db->getInfoMatch("Matching");
-        
+        $matchInfo = $this->db->getInfoMatch();
+        $timeEnd = $matchInfo->match_time_end;
+        $time = time() * 1000;
+        if ($time >= $timeEnd || $time + 100 >= $timeEnd) {
+            $this->endMatch();
+        }
+        else if($matchInfo->match_status == "notPlaying"){
+            $this->startMatch(); 
+        }
     }
 
     public function startMatch()
@@ -367,17 +380,12 @@ class Game
 
     private function endMatch()
     {
-        $matchInfo = $this->db->getInfoMatch("Matching");
-        if ($matchInfo->status == "Matching") {
-            $timeEnd = $matchInfo->time_end;
-            $time = time() * 1000;
-            if ($time == $timeEnd || $time + 100 == $timeEnd) {
-                return true;
-            }
-        }
-
-        return false;
+        $matchInfo = $this->db->getInfoMatch();
+        sleep(15);
+        $this->db->endMatch();
+        $this->startMatch();
     }
+       
 
 
     public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
