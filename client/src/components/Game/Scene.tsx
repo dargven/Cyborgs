@@ -4,7 +4,7 @@ import { Physics } from "@react-three/rapier";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Group, Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
-import { TBullet, TDestructible, TPlayer } from "../../modules/Server/types";
+import { TBullet, TDestructible, TMatch, TPlayer } from "../../modules/Server/types";
 import CollidersPositions from "./Map/CollidersPositions";
 import LightMap from "./Map/LightMap";
 import Map from "./Map/Map";
@@ -46,6 +46,7 @@ const Scene = () => {
     const [myBullets, setMyBullets] = useState<TBullet[]>([]);
     const [bullets, setBullets] = useState<TBullet[]>([]);
     const [dummies, setDummies] = useState<TPlayer[]>([]);
+    const [match, setMatch] = useState<TMatch[]>([]);
 
     const sendBullet = (bullet: TBullet) => {
         server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy);
@@ -68,6 +69,10 @@ const Scene = () => {
         if (result?.objects) {
             // objects.current = result.objects;
         }
+        if (result?.match){
+            setMatch(result.match)
+        }
+        console.log(result)
     }
 
     useEffect(() => {
@@ -76,6 +81,7 @@ const Scene = () => {
 
         const interval = setInterval(() => {
             getScene();
+
             if (player.current) {
                 sendMyPlayer(player.current);
             }

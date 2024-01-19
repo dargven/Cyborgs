@@ -67,11 +67,11 @@ export type TScene = {
     players: TPlayer[] | null;
     bullets: TBullet[] | null;
     objects: TDestructible[] | null;
-    match: TMatch[] | null;
+    match: TMatch[] | null
 }
 
 export type TMatch = {
-    matchStart : Date | null,
+    matchStart : Date| null,
     matchEnd : Date | null,
     matchStatus : 'playing' | 'end' | 'not-playing '
 }
