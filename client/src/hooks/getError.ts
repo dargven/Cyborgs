@@ -62,6 +62,9 @@ const getError = (error: TError) => {
             errorMessage="Неверная почта";
             break
         case 1006:
+            errorMessage="пользователь с такой почтой уже зарегистрирован"
+            break
+        case 1007:
             errorMessage="Пароль должен включать 4 символа и не состоять из кирилицы"
             break
         default:
