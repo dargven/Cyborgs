@@ -9,10 +9,10 @@ const setToken = (access_token: string): void => {
 };
 
 const setUuid = (uuid: string): void => {
-    localStorage.setItem(
-        UUID_KEY,
-        uuid
-    )
+  localStorage.setItem(
+      UUID_KEY,
+      uuid
+  )
 }
 
 const removeToken = (): void => {
@@ -24,43 +24,13 @@ const removeUuid = (): void => {
 }
 
 const getToken = () => {
-  let result = null;
-  const storedToken = localStorage.getItem(TOKEN_KEY);
-
-  if(storedToken !== null)
-      result = storedToken;
-
+  const result = localStorage.getItem(TOKEN_KEY);
   return result;
 };
 
 const getUuid = () => {
-    let result = null;
-    const storedUuid = localStorage.getItem(UUID_KEY);
-
-    if(storedUuid !== null)
-        result = storedUuid
-
-    return result
+  const result = localStorage.getItem(UUID_KEY);
+  return result
 }
 
-
 export { getToken, getUuid , setToken, setUuid , removeToken, removeUuid };
-
-// type StoredToken = {
-//     value: string;
-//     timeStamp: number;
-//   };
-  
-
-// //   23 часа 59 минут
-//   const TOKEN_TTL_MS = 86340000; 
-  
-//   const isExpired = (timeStamp?: number): boolean => {
-//     if (!timeStamp) return false;
-
-//     const now = new Date().getTime();
-//     const diff = now - timeStamp;
-  
-//     return diff > TOKEN_TTL_MS;
-//   };
-  
