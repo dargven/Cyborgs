@@ -47,10 +47,8 @@ const Player = ({
     const onEnd = ({}) => {
         if (status === 'Live') {
             setFrameName('movement')
-            console.log('123')
           } else {
             setFrameName('corpse')
-            console.log('333333')
           }
     }
 
