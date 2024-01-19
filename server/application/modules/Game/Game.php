@@ -176,30 +176,31 @@ class Game
                 $sqlStrokeSetDeath .= "WHEN {$id} THEN '$status' ";
                 $deathPlayers[] = $player;
                 $deathPlayersId[] = $player['user_id'];
-                $killerId = $playersHitByBullet[$id];
-                $killsCounterPlayers[$killerId] += 1;
-                
+//                $killerId = $playersHitByBullet[$id];
+//                $killsCounterPlayers[$killerId] += 1;
+
             }
         }
-        
+
         if ($sqlStrokeDHp) {
             $this->db->decreaseHp($sqlStrokeDHp, $decreaseHpPlayersId);
         }
         if ($sqlStrokeSetDeath) {
             $this->setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers);
-            foreach ($playersHitByBullet as $killerPlayerId){
-                $victimId = array_search($killerPlayerId, $playersHitByBullet); // Victim == user_id;
-                $sqlSetKillerToVictim .= "WHEN $victimId THEN $killerPlayerId";
-                $sqlAddKillsToKiller .= "WHEN {$killerPlayerId} THEN kills '+' {$killsCounterPlayers[$killerPlayerId]}";
-                $killersId[] = $killerPlayerId;
-            }
-        }
-        if($sqlSetKillerToVictim){
-            $this->db->addInfoAboutKills($sqlSetKillerToVictim,$sqlAddKillsToKiller, $deathPlayersId,$killersId);
-        }
+//            foreach ($playersHitByBullet as $killerPlayerId){
+//                $victimId = array_search($killerPlayerId, $playersHitByBullet); // Victim == user_id;
+//                $sqlSetKillerToVictim .= "WHEN $victimId THEN $killerPlayerId";
+//                $sqlAddKillsToKiller .= "WHEN {$killerPlayerId} THEN kills '+' {$killsCounterPlayers[$killerPlayerId]}";
+//                $killersId[] = $killerPlayerId;
+//            }
+//        }
+//        if($sqlSetKillerToVictim){
+//            $this->db->addInfoAboutKills($sqlSetKillerToVictim,$sqlAddKillsToKiller, $deathPlayersId,$killersId);
+//        }
 
+//    }
+        }
     }
-
     private function setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers)
     {
         $this->db->setDeath($sqlStrokeSetDeath, $deathPlayersId);
@@ -212,9 +213,9 @@ class Game
         $scoreA = 0;
         $scoreB = 0;
         foreach ($deathPlayers as $player) {
-            if ($player['teamId'] == 0) {
+            if ($player['team_id'] == 0) {
                 $scoreA += 1;
-            } else if ($player['teamId'] == 1) {
+            } else if ($player['team_id'] == 1) {
                 $scoreB += 1;
             }
         }
