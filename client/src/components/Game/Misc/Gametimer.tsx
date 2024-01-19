@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Text } from "@react-three/drei";
 
+
 interface ITimer {
     isMatchEnd: boolean
 }
 
 
 const Timer = ({isMatchEnd}:ITimer) => {
+
     const matchStart = Math.floor((Date.now() / 1000))
     
     const matchEnd = Math.floor((Date.now() / 1000) + 100)
