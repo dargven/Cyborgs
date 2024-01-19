@@ -32,7 +32,7 @@ function result($params) {
             case 'getObjects': return $app->getObjects($params);
             case 'getScene':return $app->getScene($params);
             case 'shoot': return $app->shoot($params);
-            case 'test':return $app->test($params);
+            case 'getStats':return  $app->getStats($params);
             default: return ['error' => 102];
         }
     }

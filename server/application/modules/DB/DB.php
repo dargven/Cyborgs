@@ -121,7 +121,7 @@ VALUES (?,?)", [$timeStart, $timeEnd]);
     public function endMatch($timeEnd, $status = 'EndMatch')
     {
         $this->execute("UPDATE `match` SET status =? WHERE time_end=?;
-                            UPDATE players SET status=DEFAULT, team_id = DEFAULT, skin_id = DEFAULT, 
+                            UPDATE players SET status='WaitToSpawn', team_id = DEFAULT, skin_id = DEFAULT, 
                                                x = DEFAULT, y=DEFAULT,vx =DEFAULT, vy =DEFAULT, 
                                                dx = DEFAULT, dy=DEFAULT, hp = DEFAULT, kills =DEFAULT;
                             DELETE FROM bullets;
@@ -201,18 +201,6 @@ VALUES (?,?, now())', [$id, $message]);
     {
         $this->execute("DELETE FROM bullets
 WHERE status =? ", ["Delete"]);
-    }
-
-    public function getTeamsInfo() // Переписать
-
-    {
-        return $this->queryAll("SELECT u.id AS bullet_id, u.user_id AS user_id,
-       b.x AS x, b.y AS y,
-       b.vx AS vx, b.vy AS vy
-FROM bullets as b
-         LEFT JOIN usersBullets as u on u.bullet_id = b.id
-ORDER BY u.bullet_id");
-
     }
 
 
@@ -309,7 +297,7 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
 
     public function spawnPlayer($userId, $x, $y)
     {
-        $this->execute("UPDATE players SET x=?, y=?, hp = default WHERE user_id=?", [$x, $y, $userId]);
+        $this->execute("UPDATE players SET x=?, y=?, hp = 100 WHERE user_id=?", [$x, $y, $userId]);
     }
 
     public function getHashes()
@@ -337,9 +325,9 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
         $this->execute("UPDATE game SET objects_hash=? WHERE id=1", [$hash]);
     }
 
-    public function updateSkinsHash($hash)
+    public function updateAllGameHashes($playersHash, $objectsHash, $bulletsHash)
     {
-        $this->execute("UPDATE game SET chat_hash = ? WHERE id = 1", [$hash]);
+        $this->execute("UPDATE game SET players_hash = ?, objects_hash = ?, bullets_hash = ? WHERE id = 1", [$playersHash, $objectsHash, $bulletsHash]);
     }
 
     public function updateTimestamp($timestamp)
@@ -352,10 +340,10 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
     {
 
         $ids = implode(',', $id);
-        $stroke = "UPDATE players SET hp = CASE id {$strokeDHp}
+        $stroke = "UPDATE players SET hp = CASE user_id {$strokeDHp}
                    ELSE hp 
             END
-                   WHERE id IN ($ids);
+                   WHERE user_id IN ($ids);
 
 ";
         $this->execute($stroke);
@@ -364,13 +352,34 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
     public function setDeath($strokeSetDeath, $id)
     {
         $ids = implode(',', $id);
-        $stroke = "UPDATE players SET hp = 0, status = CASE id {$strokeSetDeath}
+        $stroke = "UPDATE players SET hp = 0, deaths = deaths+1, status = CASE user_id {$strokeSetDeath}
                    ELSE status
             END
-                   WHERE id IN ($ids);
+                   WHERE user_id IN ($ids);
 
 ";
         $this->execute($stroke);
+    }
+
+    public function addInfoAboutKills($sqlSetKillerToVictim, $sqlAddKillsToKiller, $deathPlayersId, $killersId)
+    {
+        $deathPlayersIds = implode(',', $deathPlayersId);
+        $killerIds = implode(',', $killersId);
+        $sql = "UPDATE players 
+        SET 
+            killer_id = CASE user_id
+                            $sqlSetKillerToVictim
+                        END
+                WHERE user_id IN ($deathPlayersIds);
+                UPDATE players 
+        SET
+                kills = CASE user_id
+                        $sqlAddKillsToKiller 
+                    END
+                    WHERE user_id in($killerIds)
+                    
+                    ";
+        $this->execute($sql);
     }
 
     public function updateScoreTeams($scoreA, $scoreB)
@@ -383,6 +392,16 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
         END
         WHERE team_id IN (?, ?);",
             [0, $scoreA, 1, $scoreB, 0, 1]);
+    }
+
+    public function getStats($userId)
+    {
+        return $this->query("SELECT 
+             SUM(deaths) AS deaths,
+             SUM(kills) AS kills,
+             SUM(points) AS points
+             FROM stats
+             WHERE user_id = ?", [$userId]);
     }
 
 }

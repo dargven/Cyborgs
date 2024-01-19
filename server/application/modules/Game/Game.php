@@ -37,6 +37,7 @@ class Game
             $bullets = $this->db->getBullets();
             $this->checkHit($bullets);
             $this->moveBullet($bullets);
+            $this->match(); 
 
 
 ////            // пробежаться по всем игрокам
@@ -96,6 +97,7 @@ class Game
         $bulletsToDelete = [];
         $players = $this->db->getAllInfoPlayers();
         $playersHit = [];
+        $playersHitByBullet = [];
 
         foreach ($bullets as $bullet) {
             if ($bullet['status'] == 'Shoot') {
@@ -103,6 +105,9 @@ class Game
                     if ((($bullet['x'] - $player['x']) ** 2 + ($bullet['y'] - $player['y']) ** 2) <= 1) {
                         $bulletsToDelete[] = $bullet;
                         $playersHit[] = $player;
+                        $playersHitByBullet[] = [
+                            $player['user_id'] => $bullet['user_id']
+                        ];
                         continue;
                     }
                     if (!(in_array($bullet['id'], $bulletsToDelete))) {
@@ -148,7 +153,7 @@ class Game
             }
         }
         if ($playersHit) {
-            $this->setHit($playersHit);
+            $this->setHit($playersHit,$playersHitByBullet);
         }
         if ($bulletsToDelete) {
             $this->setStatusBulletToDelete($bulletsToDelete);
@@ -171,12 +176,12 @@ class Game
     }
 
 
-    private function setHit($playersHit)
+    private function setHit($playersHit, $playersHitByBullet)
     {
-        $this->decreaseHp($playersHit); // Пропишем логику статистики. Попозже
+        $this->decreaseHp($playersHit, $playersHitByBullet);
     }
 
-    private function decreaseHp($playersHit)
+    private function decreaseHp($playersHit, $playersHitByBullet)
     {
         $dHp = 20;
         $decreaseHpPlayersId = [];
@@ -184,28 +189,46 @@ class Game
         $deathPlayersId = [];
         $sqlStrokeDHp = '';
         $sqlStrokeSetDeath = '';
+        $killsCounterPlayers = [];
+        $sqlSetKillerToVictim = '';
+        $sqlAddKillsToKiller = '';
+        $killersId = [];
         foreach ($playersHit as $player) {
             $pHp = $player['hp'];
-            $id = $player['id'];
+            $id = $player['user_id'];
             if ($pHp - $dHp > 0) {
                 $sqlStrokeDHp .= "WHEN {$id} THEN hp-20 ";
-                $decreaseHpPlayersId[] = $player['id'];
+                $decreaseHpPlayersId[] = $player['user_id'];
             } else if ($pHp - $dHp <= 0 || $player['hp'] == 0) {
                 $status = "Death";
                 $sqlStrokeSetDeath .= "WHEN {$id} THEN '$status' ";
                 $deathPlayers[] = $player;
-                $deathPlayersId[] = $player['id'];
+                $deathPlayersId[] = $player['user_id'];
+//                $killerId = $playersHitByBullet[$id];
+//                $killsCounterPlayers[$killerId] += 1;
+
             }
         }
+
         if ($sqlStrokeDHp) {
             $this->db->decreaseHp($sqlStrokeDHp, $decreaseHpPlayersId);
         }
         if ($sqlStrokeSetDeath) {
             $this->setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers);
+//            foreach ($playersHitByBullet as $killerPlayerId){
+//                $victimId = array_search($killerPlayerId, $playersHitByBullet); // Victim == user_id;
+//                $sqlSetKillerToVictim .= "WHEN $victimId THEN $killerPlayerId";
+//                $sqlAddKillsToKiller .= "WHEN {$killerPlayerId} THEN kills '+' {$killsCounterPlayers[$killerPlayerId]}";
+//                $killersId[] = $killerPlayerId;
+//            }
+//        }
+//        if($sqlSetKillerToVictim){
+//            $this->db->addInfoAboutKills($sqlSetKillerToVictim,$sqlAddKillsToKiller, $deathPlayersId,$killersId);
+//        }
+
+//    }
         }
-
     }
-
     private function setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers)
     {
         $this->db->setDeath($sqlStrokeSetDeath, $deathPlayersId);
@@ -218,9 +241,9 @@ class Game
         $scoreA = 0;
         $scoreB = 0;
         foreach ($deathPlayers as $player) {
-            if ($player['teamId'] == 0) {
+            if ($player['team_id'] == 0) {
                 $scoreA += 1;
-            } else if ($player['teamId'] == 1) {
+            } else if ($player['team_id'] == 1) {
                 $scoreB += 1;
             }
         }
@@ -308,13 +331,25 @@ class Game
         $this->db->updateBulletsHash($hash);
         return true;
     }
+    public function getStats($userId){
+        
+        $stats = $this->db->getStats($userId);
+        $statsToSend = [
+            "kills" => $stats->kills,
+            "deaths"=>$stats->deaths,
+            "points"=>$stats->points
+            ];
+        return $statsToSend;
+    }
 
     public function getScene($playersHash, $objectsHash, $bulletsHash)
     {
         $hashes = $this->db->getHashes();
         if ($this->updateScene($hashes->update_timeout, $hashes->update_timestamp)) {
-            $this->db->updateBulletsHash($this->genHash());
-            $this->db->updatePlayersHash($this->genHash());
+            $playersHash = $this->genHash();
+            $bulletsHash = $this->genHash();
+            $objectsHash = $this->genHash();
+            $this->db->updateAllGameHashes($playersHash, $bulletsHash, $objectsHash);
         }
         $scene = [
             'hashes' =>
@@ -326,7 +361,12 @@ class Game
             'scene' => [
                 'players' => NULL,
                 'bullets' => NULL,
-                'objects' => NULL
+                'objects' => NULL,
+            ],
+            'match' => [
+                'matchStart' => NULL,
+                'matchEnd' => NULL,
+                'matchStatus'=> 'playing'
             ],
         ];
         if ($hashes->players_hash !== $playersHash) {
@@ -344,30 +384,39 @@ class Game
             $scene['scene']['bullets'] = $bullets;
             $scene['hashes']['bulletsHash'] = $hashes->bullets_hash;
         }
+//        if () {
+//
+//        }
         return $scene;
     }
 
-//    public function startMatch()
-//    {
-//        $timeStart = time() * 1000;
-//        $timeEnd = $timeStart + 180000;
-//        $this->db->startMatch($timeStart, $timeEnd);
-//    }
-//
-//
-//    private function endMatch()
-//    {
-//        $matchInfo = $this->db->getInfoMatch("Matching");
-//        if ($matchInfo->status == "Matching") {
-//            $timeEnd = $matchInfo->time_end;
-//            $time = time();
-//            if ($time == $timeEnd || $time + 5 == $timeEnd) {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
+    private function match()
+    {
+        $matchInfo = $this->db->getInfoMatch("Matching");
+        
+    }
+
+    private function startMatch()
+    {
+        $timeStart = time() * 1000;
+        $timeEnd = $timeStart + 180000;
+        $this->db->startMatch($timeStart, $timeEnd);
+    }
+
+
+    private function endMatch()
+    {
+        $matchInfo = $this->db->getInfoMatch("Matching");
+        if ($matchInfo->status == "Matching") {
+            $timeEnd = $matchInfo->time_end;
+            $time = time() * 1000;
+            if ($time == $timeEnd || $time + 100 == $timeEnd) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
     public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
