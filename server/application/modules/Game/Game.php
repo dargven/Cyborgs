@@ -97,6 +97,7 @@ class Game
         $bulletsToDelete = [];
         $players = $this->db->getAllInfoPlayers();
         $playersHit = [];
+        $playersHitByBullet = [];
 
         foreach ($bullets as $bullet) {
             if ($bullet['status'] == 'Shoot') {
@@ -104,6 +105,9 @@ class Game
                     if ((($bullet['x'] - $player['x']) ** 2 + ($bullet['y'] - $player['y']) ** 2) <= 1) {
                         $bulletsToDelete[] = $bullet;
                         $playersHit[] = $player;
+                        $playersHitByBullet[] = [
+                            $player['user_id'] => $bullet['user_id']
+                        ];
                         continue;
                     }
                     if (!(in_array($bullet['id'], $bulletsToDelete))) {
@@ -121,7 +125,7 @@ class Game
             }
         }
         if ($playersHit) {
-            $this->setHit($playersHit);
+            $this->setHit($playersHit,$playersHitByBullet);
         }
         if ($bulletsToDelete) {
             $this->setStatusBulletToDelete($bulletsToDelete);
@@ -144,12 +148,12 @@ class Game
     }
 
 
-    private function setHit($playersHit)
+    private function setHit($playersHit, $playersHitByBullet)
     {
-        $this->decreaseHp($playersHit); // Пропишем логику статистики. Попозже
+        $this->decreaseHp($playersHit, $playersHitByBullet);
     }
 
-    private function decreaseHp($playersHit)
+    private function decreaseHp($playersHit, $playersHitByBullet)
     {
         $dHp = 20;
         $decreaseHpPlayersId = [];
@@ -157,24 +161,41 @@ class Game
         $deathPlayersId = [];
         $sqlStrokeDHp = '';
         $sqlStrokeSetDeath = '';
+        $killsCounterPlayers = [];
+        $sqlSetKillerToVictim = '';
+        $sqlAddKillsToKiller = '';
+        $killersId = [];
         foreach ($playersHit as $player) {
             $pHp = $player['hp'];
-            $id = $player['id'];
+            $id = $player['user_id'];
             if ($pHp - $dHp > 0) {
                 $sqlStrokeDHp .= "WHEN {$id} THEN hp-20 ";
-                $decreaseHpPlayersId[] = $player['id'];
+                $decreaseHpPlayersId[] = $player['user_id'];
             } else if ($pHp - $dHp <= 0 || $player['hp'] == 0) {
                 $status = "Death";
                 $sqlStrokeSetDeath .= "WHEN {$id} THEN '$status' ";
                 $deathPlayers[] = $player;
-                $deathPlayersId[] = $player['id'];
+                $deathPlayersId[] = $player['user_id'];
+                $killerId = $playersHitByBullet[$id];
+                $killsCounterPlayers[$killerId] += 1;
+                
             }
         }
+        
         if ($sqlStrokeDHp) {
             $this->db->decreaseHp($sqlStrokeDHp, $decreaseHpPlayersId);
         }
         if ($sqlStrokeSetDeath) {
             $this->setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers);
+            foreach ($playersHitByBullet as $killerPlayerId){
+                $victimId = array_search($killerPlayerId, $playersHitByBullet); // Victim == user_id;
+                $sqlSetKillerToVictim .= "WHEN $victimId THEN $killerPlayerId";
+                $sqlAddKillsToKiller .= "WHEN {$killerPlayerId} THEN kills '+' {$killsCounterPlayers[$killerPlayerId]}";
+                $killersId[] = $killerPlayerId;
+            }
+        }
+        if($sqlSetKillerToVictim){
+            $this->db->addInfoAboutKills($sqlSetKillerToVictim,$sqlAddKillsToKiller, $deathPlayersId,$killersId);
         }
 
     }

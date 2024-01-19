@@ -297,7 +297,7 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
 
     public function spawnPlayer($userId, $x, $y)
     {
-        $this->execute("UPDATE players SET x=?, y=?, hp = default WHERE user_id=?", [$x, $y, $userId]);
+        $this->execute("UPDATE players SET x=?, y=?, hp = 100 WHERE user_id=?", [$x, $y, $userId]);
     }
 
     public function getHashes()
@@ -340,10 +340,10 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
     {
 
         $ids = implode(',', $id);
-        $stroke = "UPDATE players SET hp = CASE id {$strokeDHp}
+        $stroke = "UPDATE players SET hp = CASE user_id {$strokeDHp}
                    ELSE hp 
             END
-                   WHERE id IN ($ids);
+                   WHERE user_id IN ($ids);
 
 ";
         $this->execute($stroke);
@@ -352,13 +352,34 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
     public function setDeath($strokeSetDeath, $id)
     {
         $ids = implode(',', $id);
-        $stroke = "UPDATE players SET hp = 0, deaths = deaths+1, status = CASE id {$strokeSetDeath}
+        $stroke = "UPDATE players SET hp = 0, deaths = deaths+1, status = CASE user_id {$strokeSetDeath}
                    ELSE status
             END
-                   WHERE id IN ($ids);
+                   WHERE user_id IN ($ids);
 
 ";
         $this->execute($stroke);
+    }
+
+    public function addInfoAboutKills($sqlSetKillerToVictim, $sqlAddKillsToKiller, $deathPlayersId, $killersId)
+    {
+        $deathPlayersIds = implode(',', $deathPlayersId);
+        $killerIds = implode(',', $killersId);
+        $sql = "UPDATE players 
+        SET 
+            killer_id = CASE user_id
+                            $sqlSetKillerToVictim
+                        END
+                WHERE user_id IN ($deathPlayersIds);
+                UPDATE players 
+        SET
+                kills = CASE user_id
+                        $sqlAddKillsToKiller 
+                    END
+                    WHERE user_id in($killerIds)
+                    
+                    ";
+        $this->execute($sql);
     }
 
     public function updateScoreTeams($scoreA, $scoreB)
@@ -372,6 +393,7 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
         WHERE team_id IN (?, ?);",
             [0, $scoreA, 1, $scoreB, 0, 1]);
     }
+
 
 }
 
