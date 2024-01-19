@@ -361,13 +361,13 @@ class Game
         return $scene;
     }
 
-    public function match()
+    private function match()
     {
         $matchInfo = $this->db->getInfoMatch("Matching");
         
     }
 
-    public function startMatch()
+    private function startMatch()
     {
         $timeStart = time() * 1000;
         $timeEnd = $timeStart + 180000;
