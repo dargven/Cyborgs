@@ -37,7 +37,7 @@ class Game
             $bullets = $this->db->getBullets();
             $this->checkHit($bullets);
             $this->moveBullet($bullets);
-            $this->match();
+            $this->match(); 
 
 
 ////            // пробежаться по всем игрокам
@@ -301,6 +301,16 @@ class Game
         $hash = $this->genHash();
         $this->db->updateBulletsHash($hash);
         return true;
+    }
+    public function getStats($userId){
+        
+        $stats = $this->db->getStats($userId);
+        $statsToSend = [
+            "kills" => $stats->kills,
+            "deaths"=>$stats->deaths,
+            "points"=>$stats->points
+            ];
+        return $statsToSend;
     }
 
     public function getScene($playersHash, $objectsHash, $bulletsHash)
