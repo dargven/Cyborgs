@@ -64,7 +64,7 @@ const MainPage = () => {
             {isScorePressed && playerStats && (
                 <div className="pageWrapper">
                     <div className="pageTitle">Статистика игрока</div>
-                        {playerStats.map((player) => (
+                        {Object.values(playerStats).map((player: TPlayerScore) => (
                             <div className="container">
                                 <div className="static">
                                     <div>
