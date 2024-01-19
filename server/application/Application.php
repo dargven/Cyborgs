@@ -22,11 +22,7 @@ class Application
         $this->game = new Game($db);
     }
 
-    function test($params)
-    {
-        $this->game->moveBullet();
-    }
-
+ 
 
 
 
@@ -156,6 +152,20 @@ class Application
             return ['error' => 1002];
         }
         return ['error' => 242];
+    }
+
+    public function getStats($params)
+    {
+        $token = $params['token'];
+        if ($token) {
+            $user = $this->user->getUserByToken($token);
+            if ($user){
+                return $this->game->getStats($user->id);
+            }
+            return ["error" =>1002];
+            
+        }
+        return ["error"=>242];
     }
 
     function setPlayer($params)
@@ -314,6 +324,6 @@ class Application
         }
         return ['error' => 242];
     }
-    
+
 
 }

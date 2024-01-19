@@ -14,8 +14,6 @@ import {
     TUser
 } from "./types";
 
-// https://pablo.beget.com/phpMyAdmin/index.php логин: dargvetg_cyborgs пароль: vizual22cdxsaV
-
 export default class Server {
     private HOST: string;
     private store: Store;
@@ -67,7 +65,7 @@ export default class Server {
             setToken(result?.token)
             setUuid(result?.uuid)
             this.token = result.token;
-            this.store.setUser(login, result.token, result.uuid);
+            this.store.setUser(login, result.token);
         }
         return result;
     }
@@ -77,7 +75,7 @@ export default class Server {
         if (result?.token) {
             setToken(result?.token)
             this.token = result.token;
-            this.store.setUser(result.name, result.token, result.uuid);
+            this.store.setUser(result.name, result.token);
         }
         return result;
     }

@@ -394,6 +394,15 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
             [0, $scoreA, 1, $scoreB, 0, 1]);
     }
 
+    public function getStats($userId)
+    {
+        return $this->query("SELECT 
+             SUM(deaths) AS deaths,
+             SUM(kills) AS kills,
+             SUM(points) AS points
+             FROM stats
+             WHERE user_id = ?", [$userId]);
+    }
 
 }
 
