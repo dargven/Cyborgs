@@ -112,16 +112,44 @@ class Game
                     }
                     if (!(in_array($bullet['id'], $bulletsToDelete))) {
                         foreach ($colliders as $collider) {
-                            if ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
-                                $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) {
+                            if (
+                                ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
+                                $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) ||
+                                ($bullet['px'] >= $collider['x'] && $bullet['px'] <= ($collider['x'] + $collider['width']) &&
+                                $bullet['py'] <= $collider['y'] && $bullet['py'] >= ($collider['y'] - $collider['height']))
+                            ) {
                                 $bulletsToDelete[] = $bullet;
                                 break;
+                            } else {
+                                $sides = [
+                                    ['x1' => $collider['x'], 'y1' => $collider['y'], 'x2' => $collider['x'], 'y2' => $collider['y'] - $collider['height']],
+                                    ['x1' => $collider['x'] + $collider['width'], 'y1' => $collider['y'], 'x2' => $collider['x'] + $collider['width'], 'y2' => $collider['y'] - $collider['height']],
+                                    ['x1' => $collider['x'], 'y1' => $collider['y'], 'x2' => $collider['x'] + $collider['width'], 'y2' => $collider['y']],
+                                    ['x1' => $collider['x'], 'y1' => $collider['y'] - $collider['height'], 'x2' => $collider['x'] + $collider['width'], 'y2' => $collider['y'] - $collider['height']],
+                                ];
+    
+                                foreach ($sides as $side) {
+                                    list($x1, $y1, $x2, $y2) = [$bullet['px'], $bullet['py'], $bullet['x'], $bullet['y']];
+                                    list($x3, $y3, $x4, $y4) = [$side['x1'], $side['y1'], $side['x2'], $side['y2']];
+    
+                                    $denominator = ($x1 - $x2) * ($y3 - $y4) - ($y1 - $y2) * ($x3 - $x4);
+    
+                                    if ($denominator == 0) {
+                                        continue;
+                                    }
+    
+                                    $t = (($x1 - $x3) * ($y3 - $y4) - ($y1 - $y3) * ($x3 - $x4)) / $denominator;
+                                    $u = -(($x1 - $x2) * ($y1 - $y3) - ($y1 - $y2) * ($x1 - $x3)) / $denominator;
+    
+                                    if ($t >= 0 && $t <= 1 && $u >= 0 && $u <= 1) {
+                                        $bulletsToDelete[] = $bullet;
+                                        break;
+                                    }
+                                }
                             }
                         }
-
                     }
                 }
-
             }
         }
         if ($playersHit) {
