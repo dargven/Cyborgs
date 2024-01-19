@@ -1,8 +1,6 @@
-import NavButton from "../components/navButton"
+import NavButton from "../navButton"
 import "./StaticPage.css"
 const StatisticPage = () => {
-
-
     return (
         <>
             <div className="pageWrapper">
@@ -55,10 +53,11 @@ const StatisticPage = () => {
                         </div>
                     </div>
                     </div>
-                    <NavButton
+                    {/* <NavButton
                         to="/main"
                         text="вернуться в лобби"
-                        className="Next"></NavButton>
+                        className="Next">
+                    </NavButton> */}
                 
             </div>
         </>

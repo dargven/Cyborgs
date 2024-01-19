@@ -12,7 +12,6 @@ import StartPage from "./routes/StartPage";
 import PrivateRoute from "./components/privateRoute";
 import NavBar from "./components/navBar";
 import { getToken } from "./hooks/useToken";
-import StatisticPage from "./routes/StatisticPage";
 
 export const StoreContext = React.createContext<Store>(null!);
 export const ServerContext = React.createContext<Server>(null!);
@@ -55,11 +54,6 @@ const App: React.FC = () => {
                     <Route path="main" element={
                         <PrivateRoute>
                             <MainPage/>
-                        </PrivateRoute>
-                    }/>
-                    <Route path="statistic" element={
-                        <PrivateRoute>
-                            <StatisticPage/>
                         </PrivateRoute>
                     }/>
                     <Route path="game" element={
