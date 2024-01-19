@@ -8,7 +8,7 @@ import {
     TGetMessages, TGetScene,
     TMessage,
     TMessages,
-    TPlayer, TScene,
+    TPlayer, TPlayerScore, TScene,
     TSceneHashes,
     TTeam,
     TUser
@@ -202,6 +202,18 @@ export default class Server {
             bulletId: bulletId,
         });
 
+    }
+
+    async getStats(): Promise<TPlayerScore[] | null>{
+        const result = await this.request<TPlayerScore[]>('getStats',
+        {
+            token: this.token
+        })
+
+        if (result) {
+            return result;
+        }
+        return null;
     }
 
     async getScene(): Promise<TScene | null> {

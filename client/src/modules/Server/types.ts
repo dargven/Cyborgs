@@ -90,3 +90,9 @@ export type TTeamUser = {
     status: string;
     deaths: number;
 }
+
+export type TPlayerScore = {
+    kills: number;
+    deaths: number;
+    points: number;
+}
