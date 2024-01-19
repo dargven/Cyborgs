@@ -19,12 +19,11 @@ const Dummy = ({
     const [frameName, setFrameName] = useState('movement')
 
     const onEnd = ({}) => {
-        if(!hp){
-            if (frameName === 'movement') {
-                setFrameName('corpse')
-            }
-        }
-        
+        if (hp) {
+            setFrameName('movement')
+          } else {
+            setFrameName('corpse')
+          }
     }
 
     const ref = useRef<RapierRigidBody>(null!);
