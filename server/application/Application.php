@@ -8,10 +8,10 @@ require_once 'modules/Chat/Chat.php';
 
 class Application
 {
-    private $user;
-    private $chat;
-    private $game;
-    private $lobby;
+    private User $user;
+    private Chat $chat;
+    private Game $game;
+    private Lobby $lobby;
 
     public function __construct()
     {
@@ -22,6 +22,7 @@ class Application
         $this->game = new Game($db);
     }
 
+ 
 
 
 
@@ -153,6 +154,20 @@ class Application
         return ['error' => 242];
     }
 
+    public function getStats($params)
+    {
+        $token = $params['token'];
+        if ($token) {
+            $user = $this->user->getUserByToken($token);
+            if ($user){
+                return $this->game->getStats($user->id);
+            }
+            return ["error" =>1002];
+            
+        }
+        return ["error"=>242];
+    }
+
     function setPlayer($params)
     {
         $token = $params['token'];
@@ -198,7 +213,7 @@ class Application
 
     }
 
-    function setBullet($params)
+    function shoot($params)
     {
         $token = $params['token'];
         $x = $params['x'];
@@ -208,7 +223,7 @@ class Application
         if ($token && ($x || $x == 0) && ($y || $y == 0) && ($vx || $vx == 0) && ($vy || $vy == 0)) {
             $user = $this->user->getUserByToken($token);
             if ($user) {
-                return $this->game->setBullet($user->id, $x, $y, $vx, $vy);
+                return $this->game->shoot($user->id, $x, $y, $vx, $vy);
             }
             return ['error' => 1002];
         }
@@ -308,18 +323,6 @@ class Application
             return $this->user->setPasswordAfterReset($hash);
         }
         return ['error' => 242];
-    }
-
-    function setHit($params)
-    {
-        $token = $params['playerId'];
-        $bulletId = $params['bulletId'];
-        if ($token && $bulletId) {
-            $user = $this->user->getUserByToken($token);
-            if ($user) {
-                return $this->game->setHit($user->id, $bulletId);
-            }
-        }
     }
 
 
