@@ -37,7 +37,7 @@ class Game
             $bullets = $this->db->getBullets();
             $this->checkHit($bullets);
             $this->moveBullet($bullets);
-//            $infoMatch = $this->match();
+            $infoMatch = $this->match();
 
 
 ////            // пробежаться по всем игрокам
@@ -53,9 +53,9 @@ class Game
 ////            // игроку-убийце посчитать количество его убийств и обновить поле kills в таблице players
 ////            //$players = $this->getPlayers();
 ////            //$bullets = $this->getBullets();
-//            if ($infoMatch) {
-//                return $infoMatch;
-//            }
+            if ($infoMatch) {
+                return $infoMatch;
+            }
             return true;
         }
         return false;
@@ -398,41 +398,41 @@ class Game
         return $scene;
     }
 
-//    private function match()
-//    {
-//        $matchInfo = $this->db->getInfoMatch();
-//        $timeEnd = $matchInfo->match_time_end;
-//        $timeStart = $matchInfo->match_time_start;
-//        $matchStatus = 'playing';
-//        $time = time() * 1000;
-//        if ($time >= $timeEnd || $time + 100 >= $timeEnd) {
-//            $this->endMatch();
-//            $matchStatus = 'End';
-//        } else if ($matchInfo->match_status == "notPlaying") {
-//            $this->startMatch();
-//        }
-//        return [
-//            'match_time_start' => $timeStart,
-//            'match_time_end' => $timeEnd,
-//            'match_status'=>$matchStatus
-//        ];
-//    }
-//
-//    private function startMatch()
-//    {
-//        $timeStart = time() * 1000;
-//        $timeEnd = $timeStart + 180000;
-//        $this->db->startMatch($timeStart, $timeEnd);
-//    }
-//
-//
-//    private function endMatch()
-//    {
-//        $matchInfo = $this->db->getInfoMatch();
-//        sleep(15);
-//        $this->db->endMatch();
-//        $this->startMatch();
-//    }
+    private function match()
+    {
+        $matchInfo = $this->db->getInfoMatch();
+        $timeEnd = $matchInfo->match_time_end;
+        $timeStart = $matchInfo->match_time_start;
+        $matchStatus = 'playing';
+        $time = time() * 1000;
+        if ($time >= $timeEnd || $time + 100 >= $timeEnd) {
+            $this->endMatch();
+            $matchStatus = 'End';
+        } else if ($matchInfo->match_status == "notPlaying") {
+            $this->startMatch();
+        }
+        return [
+            'match_time_start' => $timeStart,
+            'match_time_end' => $timeEnd,
+            'match_status'=>$matchStatus
+        ];
+    }
+
+    private function startMatch()
+    {
+        $timeStart = time() * 1000;
+        $timeEnd = $timeStart + 180000;
+        $this->db->startMatch($timeStart, $timeEnd);
+    }
+
+
+    private function endMatch()
+    {
+        $matchInfo = $this->db->getInfoMatch();
+        sleep(15);
+        $this->db->endMatch();
+        $this->startMatch();
+    }
 
 
     public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
