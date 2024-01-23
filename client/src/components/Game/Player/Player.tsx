@@ -42,6 +42,16 @@ const Player = ({
 
     const ref = useRef<RapierRigidBody>(null!);
 
+    const [frameName, setFrameName] = useState('movement')
+
+    const onEnd = ({}) => {
+        if (status === 'Live') {
+            setFrameName('movement')
+          } else {
+            setFrameName('corpse')
+          }
+    }
+
     const [_, getKeys] = useKeyboardControls();
 
     const rot = useRef<number>(playerRotation ?? 0)
@@ -64,16 +74,6 @@ const Player = ({
         deaths
     });
 
-    const [frameName, setFrameName] = useState('movement')
-
-    const onEnd = ({}) => {
-        if(!hp){
-            if (frameName === 'movement') {
-                setFrameName('corpse')
-            }
-        }
-        
-    }
 
     const movementController = (up?: boolean, down?: boolean, left?: boolean, right?: boolean) => {
 
@@ -171,27 +171,25 @@ const Player = ({
             >
 
                 <Animator
-                    fps={5}
-                    startFrame={0}
-                    loop={true}
                     onLoopEnd={onEnd}
                     frameName={frameName}
+                    fps={5}
                     animationNames={['movement','corpse']}
                     autoPlay={true}
+                    loop={true}
+                    alphaTest={0.01}
                     textureImageURL={'./assets/test/Cop.png'}
                     textureDataURL={'./assets/test/Cop.json'}
-                    alphaTest={0.01}
                     materialRotation={rot.current}
                 />
-
-
+                
                 <BallCollider
                     args={[0.5]}
                     restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "bullet") {
-                            if (state.current.hp - 20 < 0) {
+                            if (state.current?.hp - 20 < 0) {
                                 state.current = {
                                     ...state.current,
                                     hp: 0
@@ -207,7 +205,7 @@ const Player = ({
                             }
                         }
                     }} />
-                <HealthBar value={state.current.hp} color={0xff0000} />
+                <HealthBar value={state.current?.hp} color={0xff0000} />
             </RigidBody>
         </group>
     );

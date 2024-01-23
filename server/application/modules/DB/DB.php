@@ -27,7 +27,7 @@ class DB
 //        $port = $_ENV['PORT_LC2'];
 //        $user = $_ENV['USER_LC2'];
 //        $pass = $_ENV['PASS_LC2'];
-//        $db =   $_ENV['DB_LC2'];
+//        $db = $_ENV['DB_LC2'];
 
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
@@ -42,6 +42,7 @@ class DB
     private function execute($sql, $params = [])
     {
         $sth = $this->pdo->prepare($sql);
+//        var_dump($sth);
         return $sth->execute($params);
     }
 
@@ -58,6 +59,7 @@ class DB
     {
         $sth = $this->pdo->prepare($sql);
         $sth->execute($params);
+//        var_dump($sth, $params);
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -84,10 +86,6 @@ class DB
         return $this->query("SELECT * FROM users WHERE id=?", [$id]);
     }
 
-    public function getUserByUserId($id)
-    {
-        return $this->query("SELECT * FROM players WHERE user_id=?", [$id]);
-    }
 
     public function getUserByUuid($uuid)
     {
@@ -108,27 +106,27 @@ class DB
         );
     }
 
-    public function getInfoMatch($status)
+    public function getInfoMatch()
     {
-        return $this->query("SELECT * FROM `match` WHERE status = ?", [$status]);
+        return $this->query("SELECT match_time_start, match_time_end FROM `game` WHERE id=1");
     }
 
     public function startMatch($timeStart, $timeEnd)
     {
-        $this->execute("INSERT INTO `match` (time_start, time_end)
-VALUES (?,?)", [$timeStart, $timeEnd]);
+        $this->execute("UPDATE `game` SET match_time_start = ?, match_time_end =?, match_status = ? WHERE id = 1
+", [$timeStart, $timeEnd, "playing"] );
     }
 
 
-    public function endMatch($timeEnd, $status = 'EndMatch')
+    public function endMatch()
     {
-        $this->execute("UPDATE `match` SET status =? WHERE time_end=?;
-                            UPDATE players SET status=DEFAULT, team_id = DEFAULT, skin_id = DEFAULT, 
+        $this->execute("UPDATE `game` SET match_status =DEFAULT;
+                            UPDATE players SET status='WaitToSpawn', team_id = DEFAULT, skin_id = DEFAULT, 
                                                x = DEFAULT, y=DEFAULT,vx =DEFAULT, vy =DEFAULT, 
                                                dx = DEFAULT, dy=DEFAULT, hp = DEFAULT, kills =DEFAULT;
                             DELETE FROM bullets;
 ",
-            [$status, $timeEnd]  //
+              //
         );
     }
 
@@ -153,10 +151,10 @@ VALUES (?,?, now())', [$id, $message]);
     }
 
 
-    public function getBullets() //
+    public function getBullets()
     {
         return $this->queryAll("
-                SELECT id, user_id ,
+                SELECT id, status, user_id ,
                 x, y, vx, vy FROM bullets");
     }
 
@@ -167,29 +165,56 @@ VALUES (?,?, now())', [$id, $message]);
             [$userId, $x, $y, $vx, $vy]);
     }
 
-    public function DeleteBullet($id)
+    public function updateBullets($strokeX, $strokeY, $id)
     {
-        $this->execute("DELETE FROM bullets WHERE id=?", [$id]);
+        $ids = implode(',', $id);
+        $stroke = "UPDATE bullets SET px = x,
+                   x = CASE id 
+                       {$strokeX}
+                   ELSE x 
+            END,
+                   py = y,
+                    y = CASE id 
+               {$strokeY}
+                   ELSE y
+            END
+                   WHERE id IN ($ids);
+
+";
+        $this->execute($stroke);
     }
 
-    public function getTeamsInfo() // Переписать
 
+    public function setStatusOfdeleteBullets($stroke, $id)
     {
-        return $this->queryAll("SELECT u.id AS bullet_id, u.user_id AS user_id,
-       b.x AS x, b.y AS y,
-       b.vx AS vx, b.vy AS vy
-FROM bullets as b
-         LEFT JOIN usersBullets as u on u.bullet_id = b.id
-ORDER BY u.bullet_id");
+        $ids = implode(',', $id);
+        $stroke = "UPDATE bullets SET status = CASE id {$stroke}
+                   ELSE status 
+            END
+                   WHERE id IN ($ids);
 
+";
+        $this->execute($stroke);
+    }
+
+    public function deleteBullets()
+    {
+        $this->execute("DELETE FROM bullets
+WHERE status =? ", ["Delete"]);
     }
 
 
-    public function updateScoreInTeam($teamId, $score)
+    public function updateScoreInTeam($scoreA, $scoreB)
     {
 
-        $this->execute("UPDATE teams SET team_score=+? WHERE  team_id=?",
-            [$score, $teamId]);
+        $this->execute("UPDATE teams
+        SET team_score = 
+        CASE 
+            WHEN team_id = ? THEN team_score + ?
+            WHEN team_id = ? THEN team_score + ?
+        END
+        WHERE team_id IN (?, ?);",
+            [0, $scoreA, 1, $scoreB, 0, 1]);
 
     }
 
@@ -210,22 +235,22 @@ ORDER BY u.bullet_id");
 WHERE user_id = (SELECT id FROM users WHERE token = ?)", [$token]);
     }
 
-    public function getSkinsInLobby() // переписать
-    {
-        return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, 
-       skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id 
-                   WHERE skins.role='lobby'");
-    }
-
-    public function setSkinInLobby($id, $skinId) // переписать
-    {
-        $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
-    }
+//    public function getSkinsInLobby() // переписать
+//    {
+//        return $this->queryAll("SELECT userSkins.skin_id as id, skins.text, 
+//       skins.image FROM userSkins INNER JOIN skins ON userSkins.skin_id = skins.id 
+//                   WHERE skins.role='lobby'");
+//    }
+//
+//    public function setSkinInLobby($id, $skinId) // переписать
+//    {
+//        $this->execute("UPDATE userSkins SET skin_id=? WHERE  id=?", [$skinId, $id]);
+//    }
 
 
     public function getPlayers()
     {
-        return $this->queryAll("SELECT u.token, p.hp, p.team_id, p.skin_id, p.x, p.y, p.vx, p.vy, p.dx, p.dy
+        return $this->queryAll("SELECT u.token as token, u.name as name, p.score as score, p.status as status, p.hp as hp, p.team_id as teamId, p.deaths as deaths, p.skin_id, p.x, p.y, p.vx, p.vy, p.dx, p.dy
 FROM players as p INNER JOIN users as u on u.id=p.user_id");
     }
 
@@ -236,10 +261,8 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
 
     public function setPlayer($id, $x, $y, $vx, $vy, $dx, $dy)
     {
-        $this->execute("INSERT INTO players (user_id, x, y, vx, vy, dx, dy) VALUES (?, ?, ?, ?, ?, ?, ?) 
-ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y), 
-      vx = VALUES(vx), vy = VALUES(vy), dx = VALUES(dx), dy = VALUES(dy);
-", [$id, $x, $y, $vx, $vy, $dx, $dy]); // Переписать (без on duplicate key)
+        $this->execute("UPDATE players  SET x = ?, y= ?, vx= ?, vy= ?, dx= ?, dy= ? WHERE user_id = ?",
+            [$x, $y, $vx, $vy, $dx, $dy, $id]);
     }
 
     public function setStatus($id, $status)
@@ -274,7 +297,7 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
 
     public function spawnPlayer($userId, $x, $y)
     {
-        $this->execute("UPDATE players SET x=?, y=? WHERE user_id=?", [$x, $y, $userId]);
+        $this->execute("UPDATE players SET x=?, y=?, hp = 100 WHERE user_id=?", [$x, $y, $userId]);
     }
 
     public function getHashes()
@@ -302,9 +325,9 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
         $this->execute("UPDATE game SET objects_hash=? WHERE id=1", [$hash]);
     }
 
-    public function updateSkinsHash($hash)
+    public function updateAllGameHashes($playersHash, $objectsHash, $bulletsHash)
     {
-        $this->execute("UPDATE game SET chat_hash = ? WHERE id = 1", [$hash]);
+        $this->execute("UPDATE game SET players_hash = ?, objects_hash = ?, bullets_hash = ? WHERE id = 1", [$playersHash, $objectsHash, $bulletsHash]);
     }
 
     public function updateTimestamp($timestamp)
@@ -313,9 +336,72 @@ ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), x = VALUES(x), y = VALUES(y),
     }
 
 
-    public function decreaseHp($playerId, $dHp)
+    public function decreaseHp($strokeDHp, $id)
     {
-        $this->execute("UPDATE players SET hp =-? WHERE user_id=?", [$playerId, $dHp]);
+
+        $ids = implode(',', $id);
+        $stroke = "UPDATE players SET hp = CASE user_id {$strokeDHp}
+                   ELSE hp 
+            END
+                   WHERE user_id IN ($ids);
+
+";
+        $this->execute($stroke);
+    }
+
+    public function setDeath($strokeSetDeath, $id)
+    {
+        $ids = implode(',', $id);
+        $stroke = "UPDATE players SET hp = 0, deaths = deaths+1, status = CASE user_id {$strokeSetDeath}
+                   ELSE status
+            END
+                   WHERE user_id IN ($ids);
+
+";
+        $this->execute($stroke);
+    }
+
+    public function addInfoAboutKills($sqlSetKillerToVictim, $sqlAddKillsToKiller, $deathPlayersId, $killersId)
+    {
+        $deathPlayersIds = implode(',', $deathPlayersId);
+        $killerIds = implode(',', $killersId);
+        $sql = "UPDATE players 
+        SET 
+            killer_id = CASE user_id
+                            $sqlSetKillerToVictim
+                        END
+                WHERE user_id IN ($deathPlayersIds);
+                UPDATE players 
+        SET
+                kills = CASE user_id
+                        $sqlAddKillsToKiller 
+                    END
+                    WHERE user_id in($killerIds)
+                    
+                    ";
+        $this->execute($sql);
+    }
+
+    public function updateScoreTeams($scoreA, $scoreB)
+    {
+        $this->execute("UPDATE teams
+        SET team_score = 
+        CASE 
+            WHEN team_id = ? THEN team_score + ?
+            WHEN team_id = ? THEN team_score + ?
+        END
+        WHERE team_id IN (?, ?);",
+            [0, $scoreA, 1, $scoreB, 0, 1]);
+    }
+
+    public function getStats($userId)
+    {
+        return $this->query("SELECT 
+             SUM(deaths) AS deaths,
+             SUM(kills) AS kills,
+             SUM(points) AS points
+             FROM stats
+             WHERE user_id = ?", [$userId]);
     }
 
 }
