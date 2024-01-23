@@ -80,7 +80,6 @@ const MainPage = () => {
                                     </div>
                                     </div>
                                 
-
                             <div className="damage">
                                 урон за все время
                                 <div>
