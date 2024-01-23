@@ -28,7 +28,7 @@ const App: React.FC = () => {
                 store.setAuth()
             }else
             {
-                localStorage.removeItem('token')
+                sessionStorage.removeItem('token')
             }
         }
     }

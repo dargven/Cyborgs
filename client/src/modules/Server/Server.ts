@@ -63,6 +63,7 @@ export default class Server {
         if (result?.token && result?.uuid) 
         {
             setToken(result?.token)
+            sessionStorage.setItem('token', result?.token)
             setUuid(result?.uuid)
             this.token = result.token;
             this.store.setUser(login, result.token);
@@ -204,8 +205,8 @@ export default class Server {
 
     }
 
-    async getStats(): Promise<TPlayerScore[] | null>{
-        const result = await this.request<TPlayerScore[]>('getStats',
+    async getStats(): Promise<TPlayerScore | null>{
+        const result = await this.request<TPlayerScore>('getStats',
         {
             token: this.token
         })

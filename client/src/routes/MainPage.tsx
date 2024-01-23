@@ -13,7 +13,7 @@ const MainPage = () => {
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     const [isScorePressed,setIsScorePressed]=useState<boolean>(false);
-    const [playerStats, setPlayerStats] = useState<TPlayerScore[] | null>(null);
+    const [playerStats, setPlayerStats] = useState<TPlayerScore>();
     const navigate = useNavigate();
 
     const checkUser = () => {
@@ -23,14 +23,13 @@ const MainPage = () => {
     }
 
     const updateScore = async () => {
-
-        
         const statsFromServer = await server.getStats();
         if (statsFromServer) {
-            setPlayerStats(statsFromServer);
-        } else {
-            if (server.error.code = 1002) {
-                navigate("/login", {replace: true})
+            setPlayerStats(statsFromServer)
+        }
+        else {
+            if (server.error && server.error.code === 1002) {
+                navigate("/login", { replace: true });
             }
         }
     }
@@ -47,13 +46,12 @@ const MainPage = () => {
 
     useKeyHandler(13, checkUser);
 
-    console.log(playerStats)
-
     return (
         <>
             {isLoading && <Loading/>}
             <div className="slide-in">
             </div>
+
             <div className="b-marquee b-marquee--rtl">
                 <div className="b-marquee__text">Петька спрашивает у Чапаева: «Василий Иванович, а что такое нюанс?»
                     Чапаев: — Снимай штаны Петька, покажу. Петька немного недоумевет, но снимает штаны. Чапаев подходит
@@ -61,61 +59,72 @@ const MainPage = () => {
                     х@й в жопе и у меня х@й в жопе… Но! Есть один нюанс…
                 </div>
             </div>
-            {isScorePressed && playerStats && (
+
+            {isScorePressed && (
                 <div className="pageWrapper">
                     <div className="pageTitle">Статистика игрока</div>
-                        {Object.values(playerStats).map((player: TPlayerScore) => (
-                            <div className="container">
-                                <div className="static">
+                        <div className="container">
+
+                            <div className="static">
                                     <div>
                                         всего игр
-                                        <div className="info">Loading..</div>
+                                        {"Loading..."}
                                     </div>
                                     <div>
                                         победы
-                                        <div className="info">Loading..</div>
+                                        {"Loading..."}
                                     </div>
                                     <div>
                                         поражения
-                                        <div className="info">Loading..</div>
+                                        {"Loading..."}
                                     </div>
-                                </div>
+                                    </div>
+                                
 
-                                <div className="damage">
-                                    урон за все время
-                                    <div>
-                                        <div className="info-ace">Loading..</div>
-                                        <div className="info-row">
-                                            <div>
-                                                наивысший
-                                                <div className="info">Loading..</div>
-                                            </div>
-                                            <div>
-                                                средний
-                                                <div className="info">Loading..</div>
-                                            </div>
+                            <div className="damage">
+                                урон за все время
+                                <div>
+                                    <div className="info-ace">
+                                        {"Loading..."}
+                                    </div>
+
+                                    <div className="info-row">
+                                        <div>
+                                            наивысший
+                                            {"Loading..."}
+                                        </div>
+                                        <div>
+                                            средний
+                                            {"Loading..."}
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div className="kill">
-                                    убийств за все время
-                                    <div>
-                                        <div className="info-ace">{player?.kills || "Loading"} || Loading..</div>
-                                        <div className="info-row">
-                                            <div>
-                                                смертей
-                                                <div className="info">{player?.deaths} || Loading</div>
+                            </div>
+                            
+                            <div className="kill">
+                                убийств за все время
+                                <div>
+                                    <div className="info-ace">
+                                        {playerStats?.kills}
+                                    </div>
+
+                                    <div className="info-row">
+                                        <div>
+                                            смертей
+                                            <div className="info">
+                                                {playerStats?.deaths}
                                             </div>
-                                            <div>
-                                                k/d
-                                                <div className="info">{player?.kills / player?.deaths} || Loading..</div>
+                                        </div>
+                                        <div>
+                                            k/d
+                                            <div className="info">
+                                                {playerStats?.kills}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                    ))}
+                        </div>
                 </div>
             )
             }

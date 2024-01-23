@@ -36,6 +36,7 @@ const Chat = ({StopMove}: IChat) => {
 
     const updateChat = async () => {
         const messagesFromServer = await server.getMessages();
+        console.log(messagesFromServer)
         if (messagesFromServer) {
             setMessages(messagesFromServer);
         } else {
