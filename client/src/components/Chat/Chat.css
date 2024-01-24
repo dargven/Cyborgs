@@ -1,7 +1,7 @@
 .chat {
     position: absolute;
     font-size: 1dvw;
-    bottom: 2dvh;
+    bottom: 0dvh;
     right: 2dvw;
     border: 0.2vi solid rgba(0, 0, 0, 0.7);
     border-bottom: none;
@@ -15,7 +15,7 @@
 
 .chatComponent {
     bottom: 0;
-    right: 4dvw;
+    right: 0dvw;
     position: fixed;
     z-index: 2;
     transition: transform 0.3s ease-in-out;
@@ -28,9 +28,9 @@
     font-size: 0.6dvw;
     width: 2dvw;
     padding: 0;
-    height: 2.5dvh;
+    height: 4dvh;
     font-family: Zelek;
-    margin-bottom: 1dvw;
+    margin-bottom: 0dvh;
 }
 .chat-toggle:focus{
     outline: none;
