@@ -13,7 +13,7 @@ body {
 
 .Main {
     animation: slideButton 2s ease-in-out forwards;
-    top: 45dvh;
+    top: 40dvh;
     width: 8dvw;
     font-size: 6dvw;
     flex-direction: column;
@@ -23,13 +23,10 @@ body {
 
 .Main button {
     color: #27CEE9;
-    margin: 1em 0px;
     font-family: Zelek;
-    width: 8dvw;
-    height: 10dvh;
+    height: 5dvh;
     text-align: left;
     font-size: 0.3em;
-    width: 120%;
     color: none;
     padding: 0;
     background: none;
@@ -39,11 +36,12 @@ body {
 
 .Main button:hover {
     text-align: left;
+    
     border-radius: 0;
     filter: contrast(30);
     border-color: #27CEE9;
     box-shadow: inset 0px 0px 5dvw rgba(0, 0, 0);
-    clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0);
+    /* clip-path: polygon(100% 0, 100% 50%, 85% 100%, 0 100%, 0 0); */
 
 }
 

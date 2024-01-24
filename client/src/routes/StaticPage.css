@@ -6,9 +6,13 @@
     height: 100vh;
     font-family: Zelek;
     color: aqua;
+    position: absolute;
+    right: 20dvw;
 }
 
 .pageTitle {
+    z-index: 1;
+    text-decoration: underline 0.2dvw;
     color: white;
     text-align: center;
     font-size: 2vw;
@@ -17,16 +21,17 @@
 }
 
 .container {
+    border: 0.3dvw solid rgba(255, 255, 255, 0.178);
     background-color: rgba(0, 0, 0, 0.7);
-    width: 32vmax;
-    height: 32vmax;
+    width: 35vmax;
+    height: 35vmax;
     font-size: 1dvw;
     text-align: center;
     line-height: 1.5;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
+    position: absolute;
 }
 
 .static {
@@ -34,14 +39,13 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 5dvh;
+    padding: 3dvw;
 }
 
 .static>div {
     font-size: 1dvw;
-    margin: 3dvh 1.5dvw;
+    padding:0 3dvw;
     border-right: 0.4dvw solid white;
-    padding-right: 2dvw;
 }
 
 .static>div:last-child {
@@ -52,10 +56,9 @@
 .damage,
 .kill {
     position: absolute;
-    bottom: 0;
-    margin-bottom: 5dvh;
+    width: 15dvw;
+    bottom: 3dvh;
     border: 0.3dvw solid aqua;
-    padding: 0.5dvw;
 }
 
 .damage {
@@ -69,24 +72,24 @@
 }
 
 .info {
-    margin: 0dvh 2dvw;
+    margin: 0dvh 3dvw;
     color: white;
 }
 
 .info-ace {
-    font-size: 2dvw;
+    font-size: 1dvw;
     color: white;
 }
 
 .info-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content:space-between;
 }
 
 .Next {
     color: aqua;
-    font-size: 3dvh;
+    font-size: 3dvw;
     background: none;
     border-width: 0.6dvh 0.6dvh;
     border-radius: 0;
