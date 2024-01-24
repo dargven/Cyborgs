@@ -13,7 +13,7 @@ const MainPage = () => {
     const server = useContext(ServerContext);
     const store = useContext(StoreContext);
     const [isScorePressed, setIsScorePressed] = useState<boolean>(false);
-    const [playerStats, setPlayerStats] = useState<TPlayerScore>();
+    const [playerStats, setPlayerStats] = useState<TPlayerScore | null>(null)
     const navigate = useNavigate();
 
     const checkUser = () => {
@@ -68,15 +68,15 @@ const MainPage = () => {
                         <div className="static">
                             <div>
                                 игр
-                                <p>{"Loading..."}</p>
+                                <p>{playerStats?.games == null ? 0 : playerStats?.games}</p>
                             </div>
                             <div>
                                 победы
-                                <p>{"Loading..."}</p>
+                                <p>{playerStats?.victories == null ? 0 : playerStats?.victories}</p>
                             </div>
                             <div>
                                 поражения
-                                <p>{"Loading..."}</p>
+                                <p>{playerStats?.loses == null ? 0 : playerStats?.loses}</p>
                             </div>
                         </div>
 
@@ -84,17 +84,17 @@ const MainPage = () => {
                             урон за все время
                             <div>
                                 <div className="info-ace">
-                                    {"Loading..."}
+                                    {playerStats?.allTimeDamage == null ? 0 : playerStats?.allTimeDamage}
                                 </div>
 
                                 <div className="info-row">
                                     <div>
                                         наивысший
-                                        <p>{"Loading..."}</p>
+                                        <p>{playerStats?.highestDamage == null ? 0 : playerStats?.highestDamage}</p>
                                     </div>
                                     <div>
                                         средний
-                                        <p>{"Loading..."}</p>
+                                        <p>{playerStats?.averageDamage == null ? 0 : playerStats?.averageDamage}</p>
                                     </div>
                                 </div>
                             </div>
@@ -104,20 +104,20 @@ const MainPage = () => {
                             убийств за все время
                             <div>
                                 <div className="info-ace">
-                                    {playerStats?.kills}
+                                    {playerStats?.kills == null ? 0 : playerStats?.kills}
                                 </div>
 
                                 <div className="info-row">
                                     <div>
                                         смертей
                                         <div className="info">
-                                            <p>{playerStats?.deaths}</p>
+                                            <p>{playerStats?.deaths == null ? 0 : playerStats?.deaths}</p>
                                         </div>
                                     </div>
                                     <div>
                                         k/d
                                         <div className="info">
-                                            <p>{playerStats?.kills}</p>
+                                            <p>{playerStats?.kills == null ? 0 : playerStats?.kills}</p>
                                         </div>
                                     </div>
                                 </div>

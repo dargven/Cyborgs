@@ -12,7 +12,7 @@
 
 .pageTitle {
     z-index: 1;
-    text-decoration: underline 0.2dvw;
+    /* text-decoration: underline 0.2dvw; */
     color: white;
     text-align: center;
     font-size: 2vw;
