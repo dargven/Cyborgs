@@ -34,7 +34,7 @@ const Scene = () => {
 
     const timer = useRef<number>(0);
 
-    const player = useRef<TPlayer>();
+    const player = useRef<TPlayer>(null!);
     const lastPlayerCoord = useRef<TPlayer>();
     const [bullets, setBullets] = useState<TBullet[]>([]);
     const [dummies, setDummies] = useState<TPlayer[]>([]);
@@ -68,7 +68,7 @@ const Scene = () => {
 
         const interval = setInterval(() => {
             getScene();
-            if (player.current && player.current !== lastPlayerCoord.current) {
+            if (player.current !== lastPlayerCoord.current) {
                 lastPlayerCoord.current = player.current;
                 sendMyPlayer(player.current);
             }
