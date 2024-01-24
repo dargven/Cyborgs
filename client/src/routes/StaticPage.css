@@ -17,7 +17,7 @@
     text-align: center;
     font-size: 2vw;
     font-weight: bold;
-    margin-bottom: 2vh;
+    margin-bottom: 10vh;
 }
 
 .container {
@@ -53,26 +53,19 @@
     padding-right: 0;
 }
 
-.damage,
-.kill {
+.user {
     position: absolute;
-    width: 15dvw;
-    bottom: 3dvh;
+    width: 25dvw;
+    bottom: 5dvh;
     border: 0.3dvw solid aqua;
-}
-
-.damage {
-    left: 0;
-    border-left: none;
-}
-
-.kill {
-    right: 0;
+    border-left:none;
     border-right: none;
 }
 
+
+
 .info {
-    margin: 2dvh 2dvw;
+    margin: 0 2dvw;
     color: white;
 }
 
@@ -81,11 +74,7 @@
     color: white;
 }
 
-.info-row {
-    display: flex;
-    align-items: center;
-    justify-content:space-between;
-}
+
 
 .Next {
     color: aqua;

@@ -67,7 +67,7 @@ const MainPage = () => {
 
                         <div className="static">
                             <div>
-                               игр
+                                игр
                                 <div className="info">
                                     {playerStats?.games == null ? 0 : playerStats?.games}
                                 </div>
@@ -84,51 +84,24 @@ const MainPage = () => {
                             </div>
                         </div>
 
-                        <div className="damage">
+                        <div className="user">
                             урон за все время
-                            <div>
-                                <div className="info-ace">
-                                    {playerStats?.allTimeDamage == null ? 0 : playerStats?.allTimeDamage}
-                                </div>
-
-                                <div className="info-row">
-                                    <div>
-                                        наивысший
-                                        <div className="info">
-                                            {playerStats?.highestDamage == null ? 0 : playerStats?.highestDamage}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        средний
-                                        <div className="info">
-                                            {playerStats?.averageDamage == null ? 0 : playerStats?.averageDamage}
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="info-ace">
+                                {playerStats?.allTimeDamage == null ? 0 : playerStats?.allTimeDamage}
                             </div>
-                        </div>
-
-                        <div className="kill">
                             убийств за все время
-                            <div>
-                                <div className="info-ace">
-                                    {playerStats?.kills == null ? 0 : playerStats?.kills}
-                                </div>
 
-                                <div className="info-row">
-                                    <div>
-                                        смертей
-                                        <div className="info">
-                                            {playerStats?.deaths == null ? 0 : playerStats?.deaths}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        k/d
-                                        <div className="info">
-                                            {playerStats?.kills == null ? 0 : playerStats?.kills}
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="info">
+                                {playerStats?.kills == null ? 0 : playerStats?.kills}
+                            </div>
+                            смертей
+                            <div className="info">
+                                {playerStats?.deaths == null ? 0 : playerStats?.deaths}
+                            </div>
+
+                            k/d
+                            <div className="info">
+                                {playerStats?.kills == null ? 0 : playerStats?.kills}
                             </div>
                         </div>
                     </div>
