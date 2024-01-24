@@ -101,7 +101,7 @@ const MainPage = () => {
 
                             k/d
                             <div className="info">
-                                {playerStats?.kills == null ? 0 : playerStats?.kills}
+                                {playerStats?.kills && playerStats?.deaths ? playerStats.kills / playerStats.deaths : 0}
                             </div>
                         </div>
                     </div>
