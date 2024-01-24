@@ -3,67 +3,127 @@
     width: 100vw;
     background-color: rgba(0, 0, 0, 0.747);
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
 }
-
-.firstTeam , .secondTeam{
+.Teams{
+    transform: translateY(25%);
+}
+.firstTeam,
+.secondTeam {
+    display: block;
+    box-shadow: 2dvw 2dvw rgba(0, 0, 0, 0.5);
     height: 30dvh;
-    width: 40dvw;
-    background-color: rgba(109, 35, 35, 0.452);
-    margin-bottom: 2dvh;
+    width: 45dvw;
+    margin-bottom: 0.5dvh;flex: 1;
+    overflow-y: auto;
+}
+.firstTeam::-webkit-scrollbar,.secondTeam::-webkit-scrollbar {
+    width: 1dvh;
+}
+
+.firstTeam::-webkit-scrollbar-thumb,.secondTeam::-webkit-scrollbar-thumb {
+    background:  rgb(161, 11, 149);
+    border-radius: 3dvw;
+}
+.secondTeam::-webkit-scrollbar-thumb {
+    background: rgb(23, 6, 255);
+}
+.firstTeam::-webkit-scrollbar-track,.secondTeam::-webkit-scrollbar-track {
+    background: rgba(44, 44, 44, 0.7);
+}
+.firstTeam {
+    border: 0.3dvw solid rgba(233, 39, 217, 0.2);
+    /* background: linear-gradient(-135deg, transparent 2dvw, rgba(233, 39, 217, 0.3) 0) top right; */
+    background-color: rgba(255, 3, 234, 0.3);
 }
 
 .secondTeam {
-    background-color: rgba(46, 31, 100, 0.473)
+   border: 0.3dvw solid rgba(39, 227, 233, 0.2);
+    border-top: 0.3dvw solid rgba(39, 227, 233, 0.5);
+    /* background: linear-gradient(45deg, transparent 2dvw, rgba(39, 227, 233, 0.3) 0); */
+    background-color: rgba(22, 6, 255, 0.3);
 }
 
 h3 {
+    position: relative;
+    top: 3dvh;
     font-family: "Zelek";
-    color: rgba(255, 255, 255, 0.432);
+    color: rgba(255, 255, 255, 0.856);
     font-size: 6dvh;
+    animation: glitch1 1s infinite;
 }
 
-.chat-message {
-    margin-bottom: 3dvh ;
-    display: flex;
+.information {
+    margin-bottom: 2dvh;
+    display: flex;  margin-top: 2vh;
+    padding: 0.2vh;
+    margin-top: 2vh;         
 }
 
-.name, .status, .score, .deaths {
-    flex: 2;
-    text-align: center;
-    font-size: 1.5dvh;  
-    font-family: "Zelek";
+.name,
+.status,
+.score,
+.deaths {
+  flex: 1;
+  margin: 0 0.3vw;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9vw;
+  font-family: "Zelek";
 }
-
 .header {
     display: flex;
     justify-content: space-between;
-    margin: 0; /* Опционально: добавьте отступ снизу заголовка */
 }
 
 .header-item {
     flex: 1;
-    text-align: center;
-    margin: 3dvh 3.5dvw ; /* Опционально: добавьте отступы между элементами заголовка */
+    margin: 1dvh 3.7dvw;
+    width: 4dvw;
+    /* Опционально: добавьте отступы между элементами заголовка */
 }
 
 .name {
-    color: rgba(21, 204, 236, 0.781);                                   
+    color: skyblue;
 }
 
 .status {
-    color: rgba(29, 128, 90, 0.781);   
+    color: greenyellow;
 }
 
 .score {
-    color: rgba(201, 189, 23, 0.781);   
+    color: yellow;
 }
 
 .deaths {
-    color: rgba(241, 56, 9, 0.781);
+    color: red;
+}@keyframes glitch1 {
+
+    0%,
+    100% {
+        text-shadow: -0.5dvh -0.5dvh 0x #10726a,
+        0.5dvh 0.5dvh 0 rgb(251, 255, 0);
+    }
+
+    25% {
+        filter: brightness(1.2);
+        text-shadow: 0.5dvh 0.5dvh 0 #10726a,
+        -0.5dvh -0.5dvh 0 rgb(132, 0, 255);
+    }
+
+    50% {
+        text-shadow: 0.5dvh -0.5dvh 0 #10726a,
+        -0.5dvh 0.5dvh 0 rgb(132, 0, 255);
+    }
+
+    75% {
+        filter: brightness(0.8);
+        text-shadow: 0.5dvh 0.5dvh 0 #10726a,
+        0.5dvh -0.5dvh 0 rgb(132, 0, 255);
+    }
 }

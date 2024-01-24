@@ -19,8 +19,6 @@ const MainPage = () => {
         }
     }
 
-
-
     const {
         isLoading,
     } = useAuth()
@@ -51,9 +49,8 @@ const MainPage = () => {
                 }}>
                     Играть
                 </button>
-                {/* <NavButton to="/game" text="Играть"/> */}
                 <button className="Leave" onClick={() => {
-                    server.logout()  ;
+                    server.logout();
                     navigate('/login', {replace: true});
                 }}>Выход
                 </button>

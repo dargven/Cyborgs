@@ -6,7 +6,6 @@ import HealthBar from "./HealthBar";
 import { useFrame } from "@react-three/fiber";
 import { TPlayer } from "../../../modules/Server/types";
 import { Animator } from "../Sprites/Animator";
-import React from "react";
 
 export type TPlayerProps = {
     onFire(x: number, y: number): void;
@@ -30,6 +29,10 @@ const Player = ({
     teamId,
     token,
     hp,
+    name,
+    score,
+    status,
+    deaths,
     onMovement,
     onFire,
     updatePlayer,
@@ -39,13 +42,23 @@ const Player = ({
 
     const ref = useRef<RapierRigidBody>(null!);
 
+    const [frameName, setFrameName] = useState('movement')
+
+    const onEnd = ({}) => {
+        if (status === 'Live') {
+            setFrameName('movement')
+          } else {
+            setFrameName('corpse')
+          }
+    }
+
     const [_, getKeys] = useKeyboardControls();
 
-    const [rot, setRot] = useState<number>(playerRotation ?? 0);
-
+    const rot = useRef<number>(playerRotation ?? 0)
+    // const [rot, setRot] = useState<number>(playerRotation ?? 0);
 
     const mouseShoot = useRef<boolean>(false);
-    const [state, setState] = useState<TPlayer>({
+    const state = useRef<TPlayer>({
         x,
         y,
         vx,
@@ -55,18 +68,12 @@ const Player = ({
         hp,
         token,
         teamId,
+        name,
+        score,
+        status,
+        deaths
     });
 
-    const [frameName, setFrameName] = useState('movement')
-
-    const onEnd = ({}) => {
-        if(!hp){
-            if (frameName === 'movement') {
-                setFrameName('corpse')
-            }
-        }
-        
-    }
 
     const movementController = (up?: boolean, down?: boolean, left?: boolean, right?: boolean) => {
 
@@ -93,13 +100,16 @@ const Player = ({
             ref.current.setLinvel(velocity, true);
 
             if (velocity.length()) {
-                setState({
-                    ...state, x: vec3(ref.current?.translation()).x,
+                state.current = {
+                    ...state.current,
+                    x: vec3(ref.current?.translation()).x,
                     y: vec3(ref.current?.translation()).y,
                     vx: vec3(ref.current?.linvel()).x,
                     vy: vec3(ref.current?.linvel()).y,
-                });
-                updatePlayer(state);
+                    dx: Math.cos(rot.current),
+                    dy: Math.sin(rot.current),
+                };
+                updatePlayer(state.current);
             }
         }
     }
@@ -129,17 +139,18 @@ const Player = ({
     useFrame(() => {
         
         if (hp){
-                const dir = getDirection();
-                setRot(Math.atan2(dir.y, dir.x));
+            const dir = getDirection();
+            rot.current = Math.atan2(dir.y, dir.x);
+            // setRot(Math.atan2(dir.y, dir.x));
         }
         
         const { up, down, left, right, shoot } = getKeys();
         movementController(up, down, left, right);
 
-        onMovement(state.x, state.y);
+        onMovement(state.current.x, state.current.y);
 
         if (shoot || mouseShoot.current) {
-            onFire(state.x, state.y);
+            onFire(state.current.x, state.current.y);
         }
     });
 
@@ -160,37 +171,41 @@ const Player = ({
             >
 
                 <Animator
-                    fps={5}
-                    startFrame={0}
-                    loop={true}
                     onLoopEnd={onEnd}
                     frameName={frameName}
+                    fps={5}
                     animationNames={['movement','corpse']}
                     autoPlay={true}
+                    loop={true}
+                    alphaTest={0.01}
                     textureImageURL={'./assets/test/Cop.png'}
                     textureDataURL={'./assets/test/Cop.json'}
-                    alphaTest={0.01}
-                    materialRotation={rot}
+                    materialRotation={rot.current}
                 />
-
-
+                
                 <BallCollider
                     args={[0.5]}
                     restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "bullet") {
-                            if (state.hp - 20 < 0) {
-                                setState({ ...state, hp: 0 });
+                            if (state.current?.hp - 20 < 0) {
+                                state.current = {
+                                    ...state.current,
+                                    hp: 0
+                                };
                                 // sendHit(hit);
                             } else {
-                                setState({ ...state, hp: hp - 20 });
+                                state.current = {
+                                    ...state.current,
+                                    hp: hp - 20
+                                };
                                 // sendHit(hit);
                                 // в меня попали - отправь инфу на сервер
                             }
                         }
                     }} />
-                <HealthBar value={state.hp} color={0xff0000} />
+                <HealthBar value={state.current?.hp} color={0xff0000} />
             </RigidBody>
         </group>
     );

@@ -19,12 +19,11 @@ const Dummy = ({
     const [frameName, setFrameName] = useState('movement')
 
     const onEnd = ({}) => {
-        if(!hp){
-            if (frameName === 'movement') {
-                setFrameName('corpse')
-            }
-        }
-        
+        if (hp) {
+            setFrameName('movement')
+          } else {
+            setFrameName('corpse')
+          }
     }
 
     const ref = useRef<RapierRigidBody>(null!);
@@ -54,23 +53,24 @@ const Dummy = ({
                     textureImageURL={'./assets/test/Cop.png'}
                     textureDataURL={'./assets/test/Cop.json'}
                     alphaTest={0.01}
+                    materialRotation={Math.atan2(dy,dx)}
                 />
 
 
-                {/* <BallCollider
+                { <BallCollider
                 
                     args={[0.5]}
                     restitution={0}
                     onIntersectionEnter={(e) => {
                         const data: any = e.other.rigidBody?.userData;
                         if (data.type === "projectile") {
-                            if (hp - damage < 0) {
-                                setState({ ...state, hp: 0 });
-                            } else {
-                                setState({ ...state, hp: hp - damage });
-                            }
+                            // if (hp - damage < 0) {
+                            //     setState({ ...state, hp: 0 });
+                            // } else {
+                            //     setState({ ...state, hp: hp - damage });
+                            // }
                         }
-                    }} /> */}
+                    }} /> }
                 <HealthBar value={hp} color={0xff0000} />
             </RigidBody>
         </group>

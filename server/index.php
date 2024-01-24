@@ -31,7 +31,8 @@ function result($params) {
             case 'setDestroyObject': return $app->setDestroyObject($params);
             case 'getObjects': return $app->getObjects($params);
             case 'getScene':return $app->getScene($params);
-            case 'setBullet': return $app->setBullet($params);
+            case 'shoot': return $app->shoot($params);
+            case 'getStats':return  $app->getStats($params);
             default: return ['error' => 102];
         }
     }

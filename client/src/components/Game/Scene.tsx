@@ -1,20 +1,16 @@
 import { Stars } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Group, Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
-import { TBullet, TDestructible, TMatch, TPlayer } from "../../modules/Server/types";
-import CollidersPositions from "./Map/CollidersPositions";
-import LightMap from "./Map/LightMap";
-import Map from "./Map/Map";
-import MapObjects from "./Map/MapObjects";
-import Obstacle from "./Map/Obstacle";
-import Player from "./Player/Player";
+import { TBullet, TMatch, TPlayer } from "../../modules/Server/types";
 import Bullet from "./Bullet/Bullet";
+import Map from "./Map/Map";
 import Dummy from "./Player/Dummy";
 import Game from "../../modules/Game/Game";
 import Hud from "./Hud";
+import Player from "./Player/Player";
 
 export interface ITextureObject {
     [key: string]: Texture
@@ -32,28 +28,26 @@ const Scene = () => {
     const textureLoader = new TextureLoader();
     const TPROJECTILE = textureLoader.load('./assets/Bullets/Projectile.png');
     const room = textureLoader.load('./assets/rooms/cyborgs-office.png');
-    const glass = textureLoader.load('./assets/Map parts/Glass.png');
 
     const [textures] = useState<ITextureObject>({
         'room': room,
         'bullet': TPROJECTILE,
-        'glass': glass,
     });
 
     const timer = useRef<number>(0);
 
-    const player = useRef<TPlayer>();
-    const [myBullets, setMyBullets] = useState<TBullet[]>([]);
+    const player = useRef<TPlayer>(null!);
+    const lastPlayerCoord = useRef<TPlayer>();
     const [bullets, setBullets] = useState<TBullet[]>([]);
     const [dummies, setDummies] = useState<TPlayer[]>([]);
     const [match, setMatch] = useState<TMatch[]>([]);
 
     const sendBullet = (bullet: TBullet) => {
-        server.setBullet(bullet.x, bullet.y, bullet.vx, bullet.vy);
+        server.shoot(bullet.x, bullet.y, bullet.vx, bullet.vy);
     }
 
     const sendMyPlayer = async (player: TPlayer) => {
-        await server.setPlayer(player.x, player.y, player.vx, player.vy, 0, 0);
+        await server.setPlayer(player.x, player.y, player.vx, player.vy, player.dx, player.dy);
     };
 
     const getScene = async () => {
@@ -81,8 +75,8 @@ const Scene = () => {
 
         const interval = setInterval(() => {
             getScene();
-
-            if (player.current) {
+            if (player.current !== lastPlayerCoord.current) {
+                lastPlayerCoord.current = player.current;
                 sendMyPlayer(player.current);
             }
         }, 250);
@@ -115,7 +109,7 @@ const Scene = () => {
         const direction = new Vector3(pointer.x, pointer.y / viewport.aspect, 0);
 
         // смещение, чтобы игрок не мог расстрелять сам себя, придется фиксить под разные скорости
-        direction.setLength(0.6);
+        direction.setLength(1.5);
         x += direction.x;
         y += direction.y;
         direction.setLength(15);
@@ -130,22 +124,11 @@ const Scene = () => {
                 y,
                 vx: direction.x,
                 vy: direction.y,
-                bulletId: myBullets.length
+                bulletId: bullets.length
             };
             sendBullet(bullet);
-            setMyBullets([...myBullets, bullet]);
         }
     }
-
-    const colliders = CollidersPositions();
-    let colliderKeyCounter = 0;
-    const generateColliderKey = () => {
-        const key = `collider-${colliderKeyCounter}`;
-        colliderKeyCounter++;
-        return key;
-    };
-
-
 
     return (
         <group>
@@ -172,15 +155,7 @@ const Scene = () => {
                     }
                 })}
 
-                {bullets.map(bullet =>
-                    <Bullet
-                        {...bullet}
-                        key={bullet.bulletId}
-                        texture={textures['bullet']}
-                    />
-                )}
-
-                {myBullets.map(bullet =>
+                {bullets.map((bullet) =>
                     <Bullet
                         {...bullet}
                         key={bullet.bulletId}
