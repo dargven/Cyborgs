@@ -108,53 +108,53 @@ class Game
                     if ((($bullet['x'] - $player['x']) ** 2 + ($bullet['y'] - $player['y']) ** 2) <= 1) {
                         $bulletsToDelete[] = $bullet;
                         $playersHit[] = $player;
-                        $playersHitByBullet[] = [
+                        $playersHitByBullet += [
                             $player['user_id'] => $bullet['user_id']
                         ];
                         continue;
                     }
-                    if (!(in_array($bullet['id'], $bulletsToDelete))) {
-                        foreach ($colliders as $collider) {
-                            if (
-                                ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
-                                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) ||
-                                ($bullet['px'] >= $collider['x'] && $bullet['px'] <= ($collider['x'] + $collider['width']) &&
-                                    $bullet['py'] <= $collider['y'] && $bullet['py'] >= ($collider['y'] - $collider['height']))
-                            ) {
-                                $bulletsToDelete[] = $bullet;
-                                break;
-                            } else {
-                                $sides = [
-                                    ['x1' => $collider['x'], 'y1' => $collider['y'], 'x2' => $collider['x'], 'y2' => $collider['y'] - $collider['height']],
-                                    ['x1' => $collider['x'] + $collider['width'], 'y1' => $collider['y'], 'x2' => $collider['x'] + $collider['width'], 'y2' => $collider['y'] - $collider['height']],
-                                    ['x1' => $collider['x'], 'y1' => $collider['y'], 'x2' => $collider['x'] + $collider['width'], 'y2' => $collider['y']],
-                                    ['x1' => $collider['x'], 'y1' => $collider['y'] - $collider['height'], 'x2' => $collider['x'] + $collider['width'], 'y2' => $collider['y'] - $collider['height']],
-                                ];
-
-                                foreach ($sides as $side) {
-                                    list($x1, $y1, $x2, $y2) = [$bullet['px'], $bullet['py'], $bullet['x'], $bullet['y']];
-                                    list($x3, $y3, $x4, $y4) = [$side['x1'], $side['y1'], $side['x2'], $side['y2']];
-
-                                    $denominator = ($x1 - $x2) * ($y3 - $y4) - ($y1 - $y2) * ($x3 - $x4);
-
-                                    if ($denominator == 0) {
-                                        continue;
-                                    }
-    
-                                    $t = (($x1 - $x3) * ($y3 - $y4) - ($y1 - $y3) * ($x3 - $x4)) / $denominator;
-                                    $u = -(($x1 - $x2) * ($y1 - $y3) - ($y1 - $y2) * ($x1 - $x3)) / $denominator;
-
-                                    if ($t >= 0 && $t <= 1 && $u >= 0 && $u <= 1) {
-                                        $bulletsToDelete[] = $bullet;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
+//                    if (!(in_array($bullet['id'], $bulletsToDelete))) {
+//                        foreach ($colliders as $collider) {
+//                            if (
+//                                ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
+//                                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) ||
+//                                ($bullet['px'] >= $collider['x'] && $bullet['px'] <= ($collider['x'] + $collider['width']) &&
+//                                    $bullet['py'] <= $collider['y'] && $bullet['py'] >= ($collider['y'] - $collider['height']))
+//                            ) {
+//                                $bulletsToDelete[] = $bullet;
+//                                break;
+//                            } else {
+//                                $sides = [
+//                                    ['x1' => $collider['x'], 'y1' => $collider['y'], 'x2' => $collider['x'], 'y2' => $collider['y'] - $collider['height']],
+//                                    ['x1' => $collider['x'] + $collider['width'], 'y1' => $collider['y'], 'x2' => $collider['x'] + $collider['width'], 'y2' => $collider['y'] - $collider['height']],
+//                                    ['x1' => $collider['x'], 'y1' => $collider['y'], 'x2' => $collider['x'] + $collider['width'], 'y2' => $collider['y']],
+//                                    ['x1' => $collider['x'], 'y1' => $collider['y'] - $collider['height'], 'x2' => $collider['x'] + $collider['width'], 'y2' => $collider['y'] - $collider['height']],
+//                                ];
+//
+//                                foreach ($sides as $side) {
+//                                    list($x1, $y1, $x2, $y2) = [$bullet['px'], $bullet['py'], $bullet['x'], $bullet['y']];
+//                                    list($x3, $y3, $x4, $y4) = [$side['x1'], $side['y1'], $side['x2'], $side['y2']];
+//
+//                                    $denominator = ($x1 - $x2) * ($y3 - $y4) - ($y1 - $y2) * ($x3 - $x4);
+//
+//                                    if ($denominator == 0) {
+//                                        continue;
+//                                    }
+//    
+//                                    $t = (($x1 - $x3) * ($y3 - $y4) - ($y1 - $y3) * ($x3 - $x4)) / $denominator;
+//                                    $u = -(($x1 - $x2) * ($y1 - $y3) - ($y1 - $y2) * ($x1 - $x3)) / $denominator;
+//
+//                                    if ($t >= 0 && $t <= 1 && $u >= 0 && $u <= 1) {
+//                                        $bulletsToDelete[] = $bullet;
+//                                        break;
+//                                    }
+//                                }
+//                            }
                 }
             }
         }
+//            }
+//        }
         if ($playersHit) {
             $this->setHit($playersHit, $playersHitByBullet);
         }
@@ -369,11 +369,12 @@ class Game
                 'players' => NULL,
                 'bullets' => NULL,
                 'objects' => NULL,
-            ],
-            'match' => [
-                'matchStart' => NULL,
-                'matchEnd' => NULL,
-                'matchStatus' => 'notPlaying'
+                'match' => NULL, 
+                //[
+//                    'matchStart' => NULL,
+//                    'matchEnd' => NULL,
+//                    'matchStatus' => 'notPlaying'
+//                ],
             ],
         ];
         if ($hashes->players_hash !== $playersHash) {
@@ -392,9 +393,9 @@ class Game
             $scene['hashes']['bulletsHash'] = $hashes->bullets_hash;
         }
         if (is_array($updateScene)) {
-            $scene['match']['matchStart'] = $updateScene['match_time_start'];
-            $scene['match']['matchEnd'] = $updateScene['match_time_end'];
-            $scene['match']['matchStatus'] = $updateScene['match_status'];
+            $scene['scene']['match']['matchStart'] = $updateScene['match_time_start'];
+            $scene['scene']['match']['matchEnd'] = $updateScene['match_time_end'];
+            $scene['scene']['match']['matchStatus'] = $updateScene['match_status'];
         }
         return $scene;
     }
