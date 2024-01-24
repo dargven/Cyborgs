@@ -117,9 +117,9 @@ class Game
                         foreach ($colliders as $collider) {
                             if (
                                 ($bullet['x'] >= $collider['x'] && $bullet['x'] <= ($collider['x'] + $collider['width']) &&
-                                $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) ||
+                                    $bullet['y'] <= $collider['y'] && $bullet['y'] >= ($collider['y'] - $collider['height'])) ||
                                 ($bullet['px'] >= $collider['x'] && $bullet['px'] <= ($collider['x'] + $collider['width']) &&
-                                $bullet['py'] <= $collider['y'] && $bullet['py'] >= ($collider['y'] - $collider['height']))
+                                    $bullet['py'] <= $collider['y'] && $bullet['py'] >= ($collider['y'] - $collider['height']))
                             ) {
                                 $bulletsToDelete[] = $bullet;
                                 break;
@@ -130,20 +130,20 @@ class Game
                                     ['x1' => $collider['x'], 'y1' => $collider['y'], 'x2' => $collider['x'] + $collider['width'], 'y2' => $collider['y']],
                                     ['x1' => $collider['x'], 'y1' => $collider['y'] - $collider['height'], 'x2' => $collider['x'] + $collider['width'], 'y2' => $collider['y'] - $collider['height']],
                                 ];
-    
+
                                 foreach ($sides as $side) {
                                     list($x1, $y1, $x2, $y2) = [$bullet['px'], $bullet['py'], $bullet['x'], $bullet['y']];
                                     list($x3, $y3, $x4, $y4) = [$side['x1'], $side['y1'], $side['x2'], $side['y2']];
-    
+
                                     $denominator = ($x1 - $x2) * ($y3 - $y4) - ($y1 - $y2) * ($x3 - $x4);
-    
+
                                     if ($denominator == 0) {
                                         continue;
                                     }
     
                                     $t = (($x1 - $x3) * ($y3 - $y4) - ($y1 - $y3) * ($x3 - $x4)) / $denominator;
                                     $u = -(($x1 - $x2) * ($y1 - $y3) - ($y1 - $y2) * ($x1 - $x3)) / $denominator;
-    
+
                                     if ($t >= 0 && $t <= 1 && $u >= 0 && $u <= 1) {
                                         $bulletsToDelete[] = $bullet;
                                         break;
@@ -209,8 +209,8 @@ class Game
                 $sqlStrokeSetDeath .= "WHEN {$id} THEN '$status' ";
                 $deathPlayers[] = $player;
                 $deathPlayersId[] = $player['user_id'];
-//                $killerId = $playersHitByBullet[$id];
-//                $killsCounterPlayers[$killerId] += 1;
+                $killerId = $playersHitByBullet[$id];
+                $killsCounterPlayers[$killerId] += 1;
 
             }
         }
@@ -220,20 +220,19 @@ class Game
         }
         if ($sqlStrokeSetDeath) {
             $this->setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers);
-//            foreach ($playersHitByBullet as $killerPlayerId){
-//                $victimId = array_search($killerPlayerId, $playersHitByBullet); // Victim == user_id;
-//                $sqlSetKillerToVictim .= "WHEN $victimId THEN $killerPlayerId";
-//                $sqlAddKillsToKiller .= "WHEN {$killerPlayerId} THEN kills '+' {$killsCounterPlayers[$killerPlayerId]}";
-//                $killersId[] = $killerPlayerId;
-//            }
-//        }
-//        if($sqlSetKillerToVictim){
-//            $this->db->addInfoAboutKills($sqlSetKillerToVictim,$sqlAddKillsToKiller, $deathPlayersId,$killersId);
-//        }
-
-//    }
+            foreach ($playersHitByBullet as $killerPlayerId) {
+                $victimId = array_search($killerPlayerId, $playersHitByBullet); // Victim == user_id;
+                $sqlSetKillerToVictim .= "WHEN $victimId THEN $killerPlayerId";
+                $sqlAddKillsToKiller .= "WHEN {$killerPlayerId} THEN kills '+' {$killsCounterPlayers[$killerPlayerId]}";
+                $killersId[] = $killerPlayerId;
+            }
         }
+        if ($sqlSetKillerToVictim) {
+            $this->db->addInfoAboutKills($sqlSetKillerToVictim, $sqlAddKillsToKiller, $deathPlayersId, $killersId);
+        }
+
     }
+
     private function setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers)
     {
         $this->db->setDeath($sqlStrokeSetDeath, $deathPlayersId);
@@ -336,14 +335,16 @@ class Game
         $this->db->updateBulletsHash($hash);
         return true;
     }
-    public function getStats($userId){
-        
+
+    public function getStats($userId)
+    {
+
         $stats = $this->db->getStats($userId);
         $statsToSend = [
             "kills" => $stats->kills,
-            "deaths"=>$stats->deaths,
-            "points"=>$stats->points
-            ];
+            "deaths" => $stats->deaths,
+            "points" => $stats->points
+        ];
         return $statsToSend;
     }
 
@@ -414,7 +415,7 @@ class Game
         return [
             'match_time_start' => $timeStart,
             'match_time_end' => $timeEnd,
-            'match_status'=>$matchStatus
+            'match_status' => $matchStatus
         ];
     }
 
