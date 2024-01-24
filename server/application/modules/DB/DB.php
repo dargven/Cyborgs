@@ -8,11 +8,11 @@ class DB
     {
 //----------------------------------------------------------------------------//
 //
-        $host = $_ENV['HOST_PROD'];
-        $port = $_ENV['PORT_PROD'];
-        $user = $_ENV['USER_PROD'];
-        $pass = $_ENV['PASS_PROD'];
-        $db = $_ENV['DB_PROD'];
+//        $host = $_ENV['HOST_PROD'];
+//        $port = $_ENV['PORT_PROD'];
+//        $user = $_ENV['USER_PROD'];
+//        $pass = $_ENV['PASS_PROD'];
+//        $db = $_ENV['DB_PROD'];
 //----------------------------------------------------------------------------//
 //
 //        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
@@ -23,11 +23,11 @@ class DB
 //
 //----------------------------------------------------------------------------//
 //
-//        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
-//        $port = $_ENV['PORT_LC2'];
-//        $user = $_ENV['USER_LC2'];
-//        $pass = $_ENV['PASS_LC2'];
-//        $db = $_ENV['DB_LC2'];
+        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
+        $port = $_ENV['PORT_LC2'];
+        $user = $_ENV['USER_LC2'];
+        $pass = $_ENV['PASS_LC2'];
+        $db = $_ENV['DB_LC2'];
 
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
@@ -223,8 +223,8 @@ WHERE status =? ", ["Delete"]);
         $status = 'WaitToSpawn';
         $this->execute(
             "INSERT INTO players (user_id, team_id, status)
-                 VALUES (?, ?, ?)
-                 ON DUPLICATE KEY UPDATE user_id = VALUES(user_id)",
+                VALUES (?, ?, ?)
+                ON DUPLICATE KEY UPDATE team_id = VALUES(team_id), status = VALUES(status);",
             [$id, $teamId, $status]);
     }
 

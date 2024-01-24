@@ -220,9 +220,9 @@ class Game
         }
         if ($sqlStrokeSetDeath) {
             $this->setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers);
-            foreach ($playersHitByBullet as $killerPlayerId) {
-                $victimId = array_search($killerPlayerId, $playersHitByBullet); // Victim == user_id;
-                $sqlSetKillerToVictim .= "WHEN $victimId THEN $killerPlayerId";
+            foreach ($deathPlayersId as $deathPlayerId) {
+                $victimId = array_search($deathPlayerId, $playersHitByBullet); // Victim == user_id;
+                $sqlSetKillerToVictim .= "WHEN $victimId THEN $deathPlayerId";
                 $sqlAddKillsToKiller .= "WHEN {$killerPlayerId} THEN kills '+' {$killsCounterPlayers[$killerPlayerId]}";
                 $killersId[] = $killerPlayerId;
             }
@@ -340,12 +340,11 @@ class Game
     {
 
         $stats = $this->db->getStats($userId);
-        $statsToSend = [
+        return [
             "kills" => $stats->kills,
             "deaths" => $stats->deaths,
             "points" => $stats->points
         ];
-        return $statsToSend;
     }
 
     public function getScene($playersHash, $objectsHash, $bulletsHash)
@@ -369,12 +368,7 @@ class Game
                 'players' => NULL,
                 'bullets' => NULL,
                 'objects' => NULL,
-                'match' => NULL, 
-                //[
-//                    'matchStart' => NULL,
-//                    'matchEnd' => NULL,
-//                    'matchStatus' => 'notPlaying'
-//                ],
+                'match' => NULL,
             ],
         ];
         if ($hashes->players_hash !== $playersHash) {
@@ -431,7 +425,7 @@ class Game
     private function endMatch()
     {
         $matchInfo = $this->db->getInfoMatch();
-        sleep(15);
+//        sleep(15);
         $this->db->endMatch();
         $this->startMatch();
     }
