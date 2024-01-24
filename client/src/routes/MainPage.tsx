@@ -67,16 +67,20 @@ const MainPage = () => {
 
                         <div className="static">
                             <div>
-                                игр
-                                <p>{playerStats?.games == null ? 0 : playerStats?.games}</p>
+                               игр
+                                <div className="info">
+                                    {playerStats?.games == null ? 0 : playerStats?.games}
+                                </div>
                             </div>
                             <div>
                                 победы
-                                <p>{playerStats?.victories == null ? 0 : playerStats?.victories}</p>
+                                <div className="info">
+                                    {playerStats?.victories == null ? 0 : playerStats?.victories}
+                                </div>
                             </div>
                             <div>
                                 поражения
-                                <p>{playerStats?.loses == null ? 0 : playerStats?.loses}</p>
+                                <div className="info">{playerStats?.loses == null ? 0 : playerStats?.loses}</div>
                             </div>
                         </div>
 
@@ -90,11 +94,15 @@ const MainPage = () => {
                                 <div className="info-row">
                                     <div>
                                         наивысший
-                                        <p>{playerStats?.highestDamage == null ? 0 : playerStats?.highestDamage}</p>
+                                        <div className="info">
+                                            {playerStats?.highestDamage == null ? 0 : playerStats?.highestDamage}
+                                        </div>
                                     </div>
                                     <div>
                                         средний
-                                        <p>{playerStats?.averageDamage == null ? 0 : playerStats?.averageDamage}</p>
+                                        <div className="info">
+                                            {playerStats?.averageDamage == null ? 0 : playerStats?.averageDamage}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -111,13 +119,13 @@ const MainPage = () => {
                                     <div>
                                         смертей
                                         <div className="info">
-                                            <p>{playerStats?.deaths == null ? 0 : playerStats?.deaths}</p>
+                                            {playerStats?.deaths == null ? 0 : playerStats?.deaths}
                                         </div>
                                     </div>
                                     <div>
                                         k/d
                                         <div className="info">
-                                            <p>{playerStats?.kills == null ? 0 : playerStats?.kills}</p>
+                                            {playerStats?.kills == null ? 0 : playerStats?.kills}
                                         </div>
                                     </div>
                                 </div>
