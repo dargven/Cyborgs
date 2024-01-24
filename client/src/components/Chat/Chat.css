@@ -14,10 +14,27 @@
 }
 
 .chatComponent {
-    bottom: 100dvh;
+    bottom: 0;
     right: 4dvw;
+    position: fixed;
+    z-index: 2;
+    transition: transform 0.3s ease-in-out;
 }
 
+.chat-toggle{
+    background-color: #007bff;
+   border: none;
+    color: white;
+    font-size: 0.6dvw;
+    width: 2dvw;
+    padding: 0;
+    height: 2.5dvh;
+    font-family: Zelek;
+    margin-bottom: 1dvw;
+}
+.chat-toggle:focus{
+    outline: none;
+}
 .chat-messages {
     min-height: 93%;
     max-height: 93%;
