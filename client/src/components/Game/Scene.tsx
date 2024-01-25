@@ -8,7 +8,6 @@ import { TBullet, TMatch, TPlayer } from "../../modules/Server/types";
 import Bullet from "./Bullet/Bullet";
 import Map from "./Map/Map";
 import Dummy from "./Player/Dummy";
-import Game from "../../modules/Game/Game";
 import Hud from "./Hud";
 import Player from "./Player/Player";
 
@@ -36,11 +35,11 @@ const Scene = () => {
 
     const timer = useRef<number>(0);
 
+    const match = useRef<TMatch | null>(null);
     const player = useRef<TPlayer>(null!);
     const lastPlayerCoord = useRef<TPlayer>();
     const [bullets, setBullets] = useState<TBullet[]>([]);
     const [dummies, setDummies] = useState<TPlayer[]>([]);
-    const [match, setMatch] = useState<TMatch[]>([]);
 
     const sendBullet = (bullet: TBullet) => {
         server.shoot(bullet.x, bullet.y, bullet.vx, bullet.vy);
@@ -63,10 +62,9 @@ const Scene = () => {
         if (result?.objects) {
             // objects.current = result.objects;
         }
-        if (result?.match){
-            setMatch(result.match)
+        if (result?.match) {
+            match.current = result.match;
         }
-        console.log(result)
     }
 
     useEffect(() => {
@@ -98,7 +96,7 @@ const Scene = () => {
         camera.position.lerp(cameraPos, 0.05);
         camera.updateProjectionMatrix();
 
-        hudRef.current?.position.set(camera.position.x, camera.position.y, camera.position.z-5.6)
+        hudRef.current?.position.set(camera.position.x, camera.position.y, camera.position.z - 5.6)
     }
 
     const getDirection = () => {
@@ -134,7 +132,7 @@ const Scene = () => {
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull">
 
-                {player.current && <Hud hudRef={hudRef} player={player.current}></Hud>}
+                {player.current && <Hud hudRef={hudRef} player={player.current} match={match.current}></Hud>}
 
                 {dummies.map(player => {
                     const token = store.getUser().token;
