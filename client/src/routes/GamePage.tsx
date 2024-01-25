@@ -8,6 +8,7 @@ import ScoreMenu from "../components/ScoreMenu/ScoreMenu";
 import { TTeam } from "../modules/Server/types";
 import "../popUpMenu.css";
 import "../TeamSelect.css";
+import "../tScore.css"
 
 const GamePage = () => {
 
@@ -72,9 +73,9 @@ const GamePage = () => {
                     {tScore &&
                         tScore.map((score) =>
                         (
-                            <div>
+                            <p>
                                 {score.team_id == 0 && score.team_score}
-                            </div>
+                            </p>
                         ))
                     }
                 </div>
@@ -82,9 +83,9 @@ const GamePage = () => {
                     {tScore &&
                         tScore.map((score) =>
                         (
-                            <div>
+                            <p>
                                 {score.team_id == 1 && score.team_score}
-                            </div>
+                            </p>
                         ))
                     }
                 </div>

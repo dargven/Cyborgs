@@ -1,0 +1,22 @@
+.teamScore {
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+  
+  .firstTeam,
+  .secondName {
+    display: inline-block;
+    margin: 0 10px; /* Регулируйте отступ между firstTeam и secondName по своему усмотрению */
+  }
+  
+  .firstTeam {
+    color: rgb(233, 39, 217); /* Цвет для первой команды */
+  }
+  
+  .secondName {
+    color: #27cee9; /* Цвет для второй команды */
+  }

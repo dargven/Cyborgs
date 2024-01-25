@@ -42,8 +42,16 @@
     position: absolute;
     text-align: center;
     top: 0;
-    left: 45%;
+    left: 0;
+    right: 0;
     z-index: 3;
-    width: 1px;
-    height: 1px;
-}
+  }
+  
+  .firstTeam,
+  .secondName {
+    display: inline-block;
+  }
+  
+  .firstTeam {
+    margin-right: 10px; /* Регулируйте отступ между firstTeam и secondName по своему усмотрению */
+  }
