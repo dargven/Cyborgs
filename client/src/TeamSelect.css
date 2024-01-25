@@ -37,13 +37,28 @@
     font-size: 5dvh;
     border: 1.5dvw solid rgb(233, 39, 217);
 }
-
 .teamScore {
     position: absolute;
+    left: 35%;
+    z-index: 2;
+    width: 30dvw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+.firstTeamScore,.secondTeamScore {
+    height: 3dvh;
+    flex: 1; 
+    font-size: 1dvw;
     text-align: center;
-    top: 0;
-    left: 45%;
-    z-index: 3;
-    width: 1px;
-    height: 1px;
+}
+.firstTeamScore {
+    border: 0.15dvw solid rgba(233, 39, 217, 0.2);
+    background-color: rgba(255, 3, 234, 0.3);
+}
+
+.secondTeamScore {
+    background-color: rgba(22, 6, 255, 0.3);
+    border: 0.15dvw solid rgba(39, 227, 233, 0.2);
 }

@@ -68,7 +68,7 @@ const GamePage = () => {
         <div>
             <Chat StopMove={StopMove} />
             <div className="teamScore">
-                <div className="firstTeam">
+                <div className="firstTeamScore">
                     {tScore &&
                         tScore.map((score) =>
                         (
@@ -78,7 +78,7 @@ const GamePage = () => {
                         ))
                     }
                 </div>
-                <div className="secondName">
+                <div className="secondTeamScore">
                     {tScore &&
                         tScore.map((score) =>
                         (
