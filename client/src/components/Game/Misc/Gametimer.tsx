@@ -3,7 +3,7 @@ import { Text } from "@react-three/drei";
 import { TMatch } from "../../../modules/Server/types";
 
 interface TGameTimer {
-    match: TMatch | null
+    match: TMatch;
 }
 
 const GameTimer = ({ match }: TGameTimer) => {
@@ -12,7 +12,7 @@ const GameTimer = ({ match }: TGameTimer) => {
     const time = Date.now();
 
     useEffect(() => {
-        if (match && match.matchStart && match.matchEnd) {
+        if (match.matchStart && match.matchEnd) {
             const maxTime = Math.floor((parseInt(match.matchEnd) - time) / 1000);
 
             if (maxTime > 0 && counter >= 0) {

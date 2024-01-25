@@ -35,7 +35,7 @@ const Scene = () => {
 
     const timer = useRef<number>(0);
 
-    const match = useRef<TMatch | null>(null);
+    const match = useRef<TMatch>(null!);
     const player = useRef<TPlayer>(null!);
     const lastPlayerCoord = useRef<TPlayer>();
     const [bullets, setBullets] = useState<TBullet[]>([]);
