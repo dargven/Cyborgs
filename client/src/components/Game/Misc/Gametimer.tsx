@@ -1,36 +1,31 @@
-export {};
+import { useEffect, useState } from "react";
+import { Text } from "@react-three/drei";
+import { TMatch } from "../../../modules/Server/types";
 
-// import { useContext, useEffect, useState } from "react";
-// import { Text } from "@react-three/drei";
-// import { ServerContext } from "../../../App";
+const Timer = ({matchStart,matchEnd}:TMatch) => {
 
+    const [counter, setCounter] = useState<number>(0);
 
-// interface ITimer {
-//     isMatchEnd: boolean
-// }
+    if (matchStart && matchEnd !== null) {
+        const maxTime = parseInt(matchEnd) - parseInt(matchStart); 
+        setCounter(maxTime); 
+        return maxTime; 
+    }
+   
 
+    useEffect(()=>{
+        if (counter>0){
+            setTimeout(()=>setCounter(counter-1),1000)
+        }
+    },[counter])
 
-// const Timer = ({isMatchEnd}:ITimer) => {
+    return(
+        <div>
+            <Text fontSize={0.25}>
+                {counter}
+            </Text>
+        </div>
+    )
+}
 
-//     // const maxTime = matchEnd - matchStart;
-    
-//     // const [counter, setCounter] = useState(maxTime)
-
-//     useEffect(()=>{
-//         if (counter>0){
-//             setTimeout(()=>setCounter(counter-1),1000)
-//         }
-
-//         if (counter === 0){
-//             isMatchEnd = true;
-//         }
-//     },[counter])
-
-//     return(
-//         <Text fontSize={0.25}>
-//             {counter}
-//         </Text>
-//     )
-// }
-
-// export default Timer;
+export default Timer;
