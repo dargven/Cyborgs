@@ -1,15 +1,18 @@
-import {useContext, useState} from "react";
-import {ServerContext} from "../App";
+import { useContext, useEffect, useState } from "react";
+import { ServerContext } from "../App";
 import Game from "../components/Game/Game";
 import useKeyHandler from "../hooks/useKeyHandler";
 import NavButton from "../components/navButton";
 import Chat from "../components/Chat/Chat";
+import ScoreMenu from "../components/ScoreMenu/ScoreMenu";
+import { TTeam } from "../modules/Server/types";
 import "../popUpMenu.css";
 import "../TeamSelect.css";
-import ScoreMenu from "../components/ScoreMenu/ScoreMenu";
 
 const GamePage = () => {
+
     const server = useContext(ServerContext);
+    const [tScore, setTScore] = useState<TTeam[] | null>([])
     const [stopMove, setStopMove] = useState({
         isPopupVisible: false,
         isChatClicked: false,
@@ -20,13 +23,28 @@ const GamePage = () => {
     const [team, setTeam] = useState<0 | 1 | null>(null);
 
     const handleTeam = async (teamId: 0 | 1) => {
-        if(teamId == 0 || teamId == 1){
+        if (teamId == 0 || teamId == 1) {
             const STeam = await server.selectTeam(teamId)
-            if(STeam) {
+            if (STeam) {
                 setTeam(teamId)
             }
         }
     }
+
+    const updateTeamScore = async () => {
+        const teamScore = await server.getScene();
+        if (teamScore?.teams) {
+            setTScore(teamScore.teams)
+            console.log(teamScore.teams)
+        }
+    }
+
+    useEffect(() => {
+        const interval = setInterval(updateTeamScore, 2500);
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
 
     const StopMove = () => {
         setStopMove((prevState) => ({
@@ -48,11 +66,33 @@ const GamePage = () => {
 
     return (
         <div>
-            <Chat StopMove={StopMove}/>
+            <Chat StopMove={StopMove} />
+            <div className="teamScore">
+                <div className="firstTeamScore">
+                    {tScore &&
+                        tScore.map((score) =>
+                        (
+                            <div>
+                                {score.team_id == 0 && score.team_score}
+                            </div>
+                        ))
+                    }
+                </div>
+                <div className="secondTeamScore">
+                    {tScore &&
+                        tScore.map((score) =>
+                        (
+                            <div>
+                                {score.team_id == 1 && score.team_score}
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
             {team !== null ? (
                 <>
-                    <Game/>
-                    <ScoreMenu/>
+                    <Game />
+                    <ScoreMenu />
                 </>
             ) : (
                 <>

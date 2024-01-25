@@ -71,6 +71,7 @@ export type TScene = {
     players: TPlayer[] | null;
     bullets: TBullet[] | null;
     objects: TDestructible[] | null;
+    teams: TTeam[] | null;
     match: TMatch | null;
 }
 
@@ -86,8 +87,8 @@ export type THit = {
 }
 
 export type TTeam = {
-    teamId: number;
-    token: string;
+    team_id: number;
+    team_score: number;
 }
 
 export type TTeamUser = {

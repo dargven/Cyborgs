@@ -12,7 +12,7 @@ const GameTimer = ({ match }: TGameTimer) => {
     const time = Date.now();
 
     useEffect(() => {
-        if (match.matchStart && match.matchEnd) {
+        if (match && match.matchStart && match.matchEnd) {
             const maxTime = Math.floor((parseInt(match.matchEnd) - time) / 1000);
 
             if (maxTime > 0 && counter >= 0) {
