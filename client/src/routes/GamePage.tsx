@@ -1,15 +1,18 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {ServerContext} from "../App";
 import Game from "../components/Game/Game";
 import useKeyHandler from "../hooks/useKeyHandler";
 import NavButton from "../components/navButton";
 import Chat from "../components/Chat/Chat";
+import ScoreMenu from "../components/ScoreMenu/ScoreMenu";
+import { TTeam } from "../modules/Server/types";
 import "../popUpMenu.css";
 import "../TeamSelect.css";
-import ScoreMenu from "../components/ScoreMenu/ScoreMenu";
 
 const GamePage = () => {
+
     const server = useContext(ServerContext);
+    const [tScore, setTScore] = useState<TTeam | null>(null)
     const [stopMove, setStopMove] = useState({
         isPopupVisible: false,
         isChatClicked: false,
@@ -27,6 +30,21 @@ const GamePage = () => {
             }
         }
     }
+
+    const updateTeamScore = async () => {
+        const teamScore = await server.getScene();
+        if (teamScore?.teams) {
+            setTScore(teamScore.teams)
+            console.log(teamScore.teams)
+        }
+      }
+
+      useEffect(() => {
+        const interval = setInterval(updateTeamScore, 2500);
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
 
     const StopMove = () => {
         setStopMove((prevState) => ({
@@ -49,6 +67,14 @@ const GamePage = () => {
     return (
         <div>
             <Chat StopMove={StopMove}/>
+            <div className="teamScore">
+                <div className="firstTeam">
+                    {tScore?.team_id == 0 ? tScore.team_score : 0}
+                </div>
+                <div className="secondName">
+                    {tScore?.team_id == 1 ? tScore.team_score : 0}
+                </div>
+            </div>
             {team !== null ? (
                 <>
                     <Game/>

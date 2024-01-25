@@ -37,3 +37,13 @@
     font-size: 5dvh;
     border: 1.5dvw solid rgb(233, 39, 217);
 }
+
+.teamScore {
+    position: absolute;
+    text-align: center;
+    top: 0;
+    left: 45%;
+    z-index: 3;
+    width: 1px;
+    height: 1px;
+}
