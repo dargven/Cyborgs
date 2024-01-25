@@ -100,17 +100,28 @@ class Game
         $bulletsToDelete = [];
         $players = $this->db->getAllInfoPlayers();
         $playersHit = [];
-        $playersHitByBullet = [];
-
+//        $playersHitByBullet = [];
+        $damageCounter = [];
         foreach ($bullets as $bullet) {
             if ($bullet['status'] == 'Shoot') {
                 foreach ($players as $player) {
+                    $id = $player['user_id'];
                     if ((($bullet['x'] - $player['x']) ** 2 + ($bullet['y'] - $player['y']) ** 2) <= 1) {
                         $bulletsToDelete[] = $bullet;
-                        $playersHit[] = $player;
-                        $playersHitByBullet += [
-                            $player['user_id'] => $bullet['user_id']
+                        $damageCounter[$id] = isset($damageCounter[$id]) ? $damageCounter[$id] + 1 : 1;
+                        $playersHit[$id] = [
+                            'playerDB' => $player,
+                            'hitByAll' => [
+                                $id => [
+                                    $bullet['user_id'] => $damageCounter[$id] // Знаем кто попал, сколько урона нанес
+                                ]
+                            ],
+                            'hitByLast' => $bullet['user_id'], //Знаем кто теоретический убийца
+                            'damageCounter' => $damageCounter[$id] // Необходимо для лучшего подсчета смерти
                         ];
+//                        $playersHitByBullet += [
+//                            $id => $bullet['user_id']
+//                        ];
                         continue;
                     }
 //                    if (!(in_array($bullet['id'], $bulletsToDelete))) {
@@ -192,24 +203,25 @@ class Game
         $deathPlayersId = [];
         $sqlStrokeDHp = '';
         $sqlStrokeSetDeath = '';
-        //
+        $sqlStrokeAddDamage = '';
         $killsCounterPlayers = [];
         $sqlSetKillerToVictim = '';
         $sqlAddKillsToKiller = '';
-        //
         $killersId = [];
         foreach ($playersHit as $player) {
-            $pHp = $player['hp'];
-            $id = $player['user_id'];
-            if ($pHp - $dHp > 0) {
-                $sqlStrokeDHp .= "WHEN {$id} THEN hp-20 ";
-                $decreaseHpPlayersId[] = $player['user_id'];
-            } else if ($pHp - $dHp <= 0 || $player['hp'] == 0) {
+            $pHp = $player['playerDB']['hp'];
+            $id = $player['playerDB']['user_id'];
+            $damageCounter = $player['damageCounter'];
+            if ($damageCounter < 4 && $pHp - $dHp > 0) {
+                $decreaseHp = 20 * $damageCounter;
+                $sqlStrokeDHp .= "WHEN {$id} THEN hp - $decreaseHp ";
+                $decreaseHpPlayersId[] = $id;
+            } else {
                 $status = "Death";
                 $sqlStrokeSetDeath .= "WHEN {$id} THEN '$status' ";
                 $deathPlayers[] = $player;
-                $deathPlayersId[] = $player['user_id'];
-                $killerId = $playersHitByBullet[$id];
+                $deathPlayersId[] = $id;
+                $killerId = $player['hitByLast'];
                 $killsCounterPlayers[$killerId] += 1;
 
             }
@@ -220,10 +232,10 @@ class Game
         }
         if ($sqlStrokeSetDeath) {
             $this->setDeath($sqlStrokeSetDeath, $deathPlayersId, $deathPlayers);
-            foreach ($deathPlayersId as $deathPlayerId) {
-                $victimId = array_search($deathPlayerId, $playersHitByBullet); // Victim == user_id;
-                $sqlSetKillerToVictim .= "WHEN $victimId THEN $deathPlayerId";
-                $sqlAddKillsToKiller .= "WHEN {$killerPlayerId} THEN kills '+' {$killsCounterPlayers[$killerPlayerId]}";
+            foreach ($playersHitByBullet as $killerPlayerId) { // HitByBullet: в кого попали - кто попал.
+                $victimId = array_search($killerPlayerId, $playersHitByBullet); // Victim == user_id;
+                $sqlSetKillerToVictim .= "WHEN $victimId THEN $killerPlayerId ";
+                $sqlAddKillsToKiller .= "WHEN {$killerPlayerId} THEN kills '+' 1 ";
                 $killersId[] = $killerPlayerId;
             }
         }
@@ -245,9 +257,9 @@ class Game
         $scoreA = 0;
         $scoreB = 0;
         foreach ($deathPlayers as $player) {
-            if ($player['team_id'] == 0) {
+            if ($player['playerDB']['team_id'] == 0) {
                 $scoreA += 1;
-            } else if ($player['team_id'] == 1) {
+            } else if ($player['playerDB']['team_id'] == 1) {
                 $scoreB += 1;
             }
         }

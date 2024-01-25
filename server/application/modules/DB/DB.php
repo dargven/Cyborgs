@@ -272,8 +272,8 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
 
     public function addUserStats($user_id, $kills, $death, $time_in_game, $points)
     {
-        $this->execute("INSERT INTO stats (user_id, kills, death, time_in_game, points)
-        VALUES (?, 0, 0, 0, 0) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), kills = VALUES(kills), death = VALUES(death), 
+        $this->execute("INSERT INTO stats (user_id, kills, deaths, time_in_game, points)
+        VALUES (?, 0, 0, 0, 0) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), kills = VALUES(kills), deaths = VALUES(deaths), 
       time_in_game = VALUES(time_in_game), points = VALUES(points);
 ", [$user_id, $kills, $death, $time_in_game, $points]);
     }
