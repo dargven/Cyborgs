@@ -114,19 +114,20 @@ class DB
     public function startMatch($timeStart, $timeEnd)
     {
         $this->execute("UPDATE `game` SET match_time_start = ?, match_time_end =?, match_status = ? WHERE id = 1
-", [$timeStart, $timeEnd, "playing"] );
+", [$timeStart, $timeEnd, "playing"]);
     }
 
 
     public function endMatch()
     {
         $this->execute("UPDATE `game` SET match_status =DEFAULT;
-                            UPDATE players SET status='WaitToSpawn', team_id = DEFAULT, skin_id = DEFAULT, 
-                                               x = DEFAULT, y=DEFAULT,vx =DEFAULT, vy =DEFAULT, 
-                                               dx = DEFAULT, dy=DEFAULT, hp = DEFAULT, kills =DEFAULT;
+                            UPDATE players SET status='WaitToSpawn', skin_id = DEFAULT, 
+                                               dx = DEFAULT, dy=DEFAULT, hp = DEFAULT, kills =DEFAULT, deaths = DEFAULT;
                             DELETE FROM bullets;
+                            UPDATE 'teams' SET team_score = 0
+                            
 ",
-              //
+        //
         );
     }
 
@@ -361,24 +362,15 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
         $this->execute($stroke);
     }
 
-    public function addInfoAboutKills($sqlSetKillerToVictim, $sqlAddKillsToKiller, $deathPlayersId, $killersId)
+    public function addInfoAboutKills($sqlSetKillerToVictim, $deathPlayersId)
     {
         $deathPlayersIds = implode(',', $deathPlayersId);
-        $killerIds = implode(',', $killersId);
         $sql = "UPDATE players 
         SET 
             killer_id = CASE user_id
                             $sqlSetKillerToVictim
                         END
-                WHERE user_id IN ($deathPlayersIds);
-                UPDATE players 
-        SET
-                kills = CASE user_id
-                        $sqlAddKillsToKiller 
-                    END
-                    WHERE user_id in($killerIds)
-                    
-                    ";
+                WHERE user_id IN ($deathPlayersIds); ";
         $this->execute($sql);
     }
 
@@ -404,5 +396,25 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
              WHERE user_id = ?", [$userId]);
     }
 
+
+    public function getTeamsInfo()
+    {
+        return $this->queryAll("SELECT * FROM teams");
+
+
+    }
+
+    public function addKillsToKiller($sqlAddKillsToKiller, $killersId)
+    {
+        $ids = implode(',', $killersId);
+        $sql = "UPDATE players 
+        SET 
+            kills = CASE user_id 
+                $sqlAddKillsToKiller
+                        
+                        END
+                WHERE user_id IN ($killersId)";
+        $this->execute($sql);
+    }
 }
 
