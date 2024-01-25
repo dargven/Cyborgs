@@ -71,7 +71,7 @@ export type TScene = {
     players: TPlayer[] | null;
     bullets: TBullet[] | null;
     objects: TDestructible[] | null;
-    teams: TTeam | null;
+    teams: TTeam[] | null;
     match: TMatch | null;
 }
 
