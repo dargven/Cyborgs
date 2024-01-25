@@ -2,12 +2,13 @@ import { Stars } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Texture, TextureLoader, Vector3 } from "three";
+import { Group, Texture, TextureLoader, Vector3 } from "three";
 import { ServerContext, StoreContext } from "../../App";
-import { TBullet, TPlayer } from "../../modules/Server/types";
+import { TBullet, TMatch, TPlayer } from "../../modules/Server/types";
 import Bullet from "./Bullet/Bullet";
 import Map from "./Map/Map";
 import Dummy from "./Player/Dummy";
+import Hud from "./Hud";
 import Player from "./Player/Player";
 
 export interface ITextureObject {
@@ -34,6 +35,7 @@ const Scene = () => {
 
     const timer = useRef<number>(0);
 
+    const match = useRef<TMatch>(null!);
     const player = useRef<TPlayer>(null!);
     const lastPlayerCoord = useRef<TPlayer>();
     const [bullets, setBullets] = useState<TBullet[]>([]);
@@ -60,6 +62,9 @@ const Scene = () => {
         if (result?.objects) {
             // objects.current = result.objects;
         }
+        if (result?.match) {
+            match.current = result.match;
+        }
     }
 
     useEffect(() => {
@@ -80,6 +85,7 @@ const Scene = () => {
     }, []);
 
     const { viewport, camera, pointer } = useThree();
+    const hudRef = useRef<Group>();
 
     const updatePlayer = (updated: TPlayer) => {
         player.current = updated;
@@ -89,7 +95,10 @@ const Scene = () => {
         const cameraPos = new Vector3(x + pointer.x, y + pointer.y, 7);
         camera.position.lerp(cameraPos, 0.05);
         camera.updateProjectionMatrix();
+
+        hudRef.current?.position.set(camera.position.x, camera.position.y, camera.position.z - 5.6)
     }
+
     const getDirection = () => {
         return new Vector3(pointer.x, pointer.y / viewport.aspect, 0).normalize();
     }
@@ -123,7 +132,7 @@ const Scene = () => {
         <group>
             <Physics gravity={[0, 0, 0]} colliders="hull">
 
-                {/* {player.current && <Debug player={player.current} debugRef={debugRef} />} */}
+                {player.current && <Hud hudRef={hudRef} player={player.current} match={match.current}></Hud>}
 
                 {dummies.map(player => {
                     const token = store.getUser().token;
