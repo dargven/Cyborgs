@@ -2,7 +2,7 @@
 
 class Lobby
 {
-    private DB $db;
+    private $db;
 
     public function __construct($db)
     {
@@ -25,16 +25,16 @@ class Lobby
         return $this->db->getTeamsInfo();
     }
 
-    public function getSkins()
-    {
-        return $this->db->getSkinsInLobby();
-    }
-
-    public function setSkin($id, $skinId)
-    {
-        $this->db->setSkinInLobby($id, $skinId);
-        return true;
-    }
+//    public function getSkins()
+//    {
+//        return $this->db->getSkinsInLobby();
+//    }
+//
+//    public function setSkin($id, $skinId)
+//    {
+//        $this->db->setSkinInLobby($id, $skinId);
+//        return true;
+//    }
 
 
 }

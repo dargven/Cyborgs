@@ -15,19 +15,19 @@ class DB
 //        $db = $_ENV['DB_PROD'];
 //----------------------------------------------------------------------------//
 //
-//        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
-//        $port = $_ENV['PORT_LC1'];
-//        $user = $_ENV['USER_LC1'];
-//        $pass = $_ENV['PASS_LC1'];
-//        $db =   $_ENV['DB_LC1'];
+        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
+        $port = $_ENV['PORT_LC1'];
+        $user = $_ENV['USER_LC1'];
+        $pass = $_ENV['PASS_LC1'];
+        $db =   $_ENV['DB_LC1'];
 //
 //----------------------------------------------------------------------------//
 //
-        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
-        $port = $_ENV['PORT_LC2'];
-        $user = $_ENV['USER_LC2'];
-        $pass = $_ENV['PASS_LC2'];
-        $db = $_ENV['DB_LC2'];
+//        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
+//        $port = $_ENV['PORT_LC2'];
+//        $user = $_ENV['USER_LC2'];
+//        $pass = $_ENV['PASS_LC2'];
+//        $db = $_ENV['DB_LC2'];
 
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
@@ -126,9 +126,7 @@ class DB
                             DELETE FROM bullets;
                             UPDATE 'teams' SET team_score = 0
                             
-",
-        //
-        );
+");
     }
 
 

@@ -9,7 +9,7 @@ require __DIR__ . '/../../../vendor/autoload.php';
 
 class Mailer
 {
-    private PHPMailer $mail;
+    private $mail;
 
 
     public function __construct()
