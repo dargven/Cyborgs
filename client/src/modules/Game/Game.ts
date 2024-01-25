@@ -103,7 +103,7 @@ class Game implements IGame {
             // console.log('loop');
         }, 1000))
 
-        console.log(this.intervalID)
+        // console.log(this.intervalID)
         // return this.intervalID
         // return () => {
         //     clearInterval(interval);

@@ -1,0 +1,102 @@
+.pageWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: Zelek;
+    color: aqua;
+    position: absolute;
+    right: 20dvw;
+}
+
+.pageTitle {
+    z-index: 1;
+    /* text-decoration: underline 0.2dvw; */
+    color: white;
+    text-align: center;
+    font-size: 2vw;
+    font-weight: bold;
+    margin-bottom: 10vh;
+}
+
+.container {
+    border: 0.3dvw solid rgba(255, 255, 255, 0.178);
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 35vmax;
+    height: 35vmax;
+    font-size: 1dvw;
+    text-align: center;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+}
+
+.static {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 3dvw;
+}
+
+.static>div {
+    font-size: 1dvw;
+    padding:0 3dvw;
+    border-right: 0.4dvw solid white;
+}
+
+.static>div:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.user {
+    position: absolute;
+    width: 25dvw;
+    bottom: 5dvh;
+    border: 0.3dvw solid aqua;
+    border-left:none;
+    border-right: none;
+}
+
+
+
+.info {
+    margin: 0 2dvw;
+    color: white;
+}
+
+.info-ace {
+    font-size: 1dvw;
+    color: white;
+}
+
+
+
+.Next {
+    color: aqua;
+    font-size: 3dvw;
+    background: none;
+    border-width: 0.6dvh 0.6dvh;
+    border-radius: 0;
+    animation: puls 2s infinite;
+    padding: 1dvh;
+    margin-top: 1dvh;
+    font-family: Zelek;
+}
+
+@keyframes puls {
+
+    0%,
+    100% {
+        border-color: aqua;
+    }
+
+    50% {
+        color: gray;
+        border-color: grey;
+    }
+}
