@@ -8,7 +8,7 @@ import {
     TGetMessages, TGetScene,
     TMessage,
     TMessages,
-    TPlayer, TScene,
+    TPlayer, TPlayerScore, TScene,
     TSceneHashes,
     TTeam,
     TUser
@@ -63,6 +63,7 @@ export default class Server {
         if (result?.token && result?.uuid) 
         {
             setToken(result?.token)
+            sessionStorage.setItem('token', result?.token)
             setUuid(result?.uuid)
             this.token = result.token;
             this.store.setUser(login, result.token);
@@ -202,6 +203,18 @@ export default class Server {
             bulletId: bulletId,
         });
 
+    }
+
+    async getStats(): Promise<TPlayerScore | null>{
+        const result = await this.request<TPlayerScore>('getStats',
+        {
+            token: this.token
+        })
+
+        if (result) {
+            return result;
+        }
+        return null;
     }
 
     async getScene(): Promise<TScene | null> {

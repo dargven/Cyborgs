@@ -42,7 +42,6 @@ const ScoreMenu = () => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code === "Tab") {
         setIsScoreVisible(true);
-        updateScore();
       }
     };
 
