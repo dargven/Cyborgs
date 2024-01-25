@@ -1,7 +1,7 @@
 .chat {
     position: absolute;
     font-size: 1dvw;
-    bottom: 2dvh;
+    bottom: 0dvh;
     right: 2dvw;
     border: 0.2vi solid rgba(0, 0, 0, 0.7);
     border-bottom: none;
@@ -14,10 +14,27 @@
 }
 
 .chatComponent {
-    bottom: 100dvh;
-    right: 4dvw;
+    bottom: 0;
+    right: 0dvw;
+    position: fixed;
+    z-index: 2;
+    transition: transform 0.3s ease-in-out;
 }
 
+.chat-toggle{
+    background-color: #007bff;
+   border: none;
+    color: white;
+    font-size: 0.6dvw;
+    width: 2dvw;
+    padding: 0;
+    height: 4dvh;
+    font-family: Zelek;
+    margin-bottom: 0dvh;
+}
+.chat-toggle:focus{
+    outline: none;
+}
 .chat-messages {
     min-height: 93%;
     max-height: 93%;

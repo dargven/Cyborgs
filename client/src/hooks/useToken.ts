@@ -2,34 +2,34 @@ const TOKEN_KEY = 'token';
 const UUID_KEY = 'uuid'
 
 const setToken = (access_token: string): void => {
-  localStorage.setItem(
+  sessionStorage.setItem(
     TOKEN_KEY,
     access_token
   );
 };
 
 const setUuid = (uuid: string): void => {
-  localStorage.setItem(
+  sessionStorage.setItem(
       UUID_KEY,
       uuid
   )
 }
 
 const removeToken = (): void => {
-  localStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
 };
 
 const removeUuid = (): void => {
-    localStorage.removeItem(UUID_KEY)
+  sessionStorage.removeItem(UUID_KEY)
 }
 
 const getToken = () => {
-  const result = localStorage.getItem(TOKEN_KEY);
+  const result = sessionStorage.getItem(TOKEN_KEY);
   return result;
 };
 
 const getUuid = () => {
-  const result = localStorage.getItem(UUID_KEY);
+  const result = sessionStorage.getItem(UUID_KEY);
   return result
 }
 

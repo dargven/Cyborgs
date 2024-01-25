@@ -1,0 +1,51 @@
+
+.Win, .Loose,.LooseMesage,.WinMessage,.Next{
+  display: flex;
+  font-family: Zelek;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 10dvh;
+}
+
+.Win,.WinMessage {top:5dvh;
+  color:aqua;
+}
+
+.Loose,.LooseMesage{
+  color: red;
+}
+
+.WinMessage, .LooseMesage {
+  margin-top: 2dvh;
+  font-size: 3dvh;
+}
+.Next {
+  position: fixed;
+  left: 50dvw;
+  transform: translateX(-50%);
+  bottom: 8dvh;
+  color: aqua;
+  font-size: 3dvh;
+  background: none;
+  border-width: 0.6dvh 0.6dvh;
+  border-radius: 0;
+  animation: puls 2s  infinite;
+  padding: 1dvh;
+}
+.Overlay {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+@keyframes puls{
+0%,100%{
+  border-color: aqua;
+}
+50%{
+  color: gray;
+  border-color: grey;
+}
+}

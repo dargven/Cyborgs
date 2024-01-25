@@ -1,0 +1,24 @@
+.container_death {
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 32vmax;
+  height: 25vmax;
+  font-size: 1dvw;
+  text-align: center;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.centered {
+  display: flex;
+  position: absolute;
+  bottom: 4dvh;
+}
+
+.block {
+  color: white;
+  margin: 0 3dvw;
+  line-height: 1.5dvw;
+}
+
