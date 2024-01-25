@@ -71,10 +71,17 @@ export type TScene = {
     players: TPlayer[] | null;
     bullets: TBullet[] | null;
     objects: TDestructible[] | null;
+    match: TMatch | null;
+}
+
+export type TMatch = {
+    matchStart : string | null;
+    matchEnd : string | null;
+    matchStatus : 'playing' | 'end' | 'notPlaying';
 }
 
 export type THit = {
-    token:string;
+    token: string;
     bulletId: number;
 }
 
@@ -89,4 +96,16 @@ export type TTeamUser = {
     score: number;
     status: string;
     deaths: number;
+}
+
+export type TPlayerScore = {
+    kills: number;
+    deaths: number;
+    points: number; 
+    games: number;
+    victories: number;
+    loses: number;
+    averageDamage: number;
+    highestDamage: number;
+    allTimeDamage: number;
 }
