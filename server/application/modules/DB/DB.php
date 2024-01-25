@@ -8,11 +8,11 @@ class DB
     {
 //----------------------------------------------------------------------------//
 //
-        $host = $_ENV['HOST_PROD'];
-        $port = $_ENV['PORT_PROD'];
-        $user = $_ENV['USER_PROD'];
-        $pass = $_ENV['PASS_PROD'];
-        $db = $_ENV['DB_PROD'];
+//        $host = $_ENV['HOST_PROD'];
+//        $port = $_ENV['PORT_PROD'];
+//        $user = $_ENV['USER_PROD'];
+//        $pass = $_ENV['PASS_PROD'];
+//        $db = $_ENV['DB_PROD'];
 //----------------------------------------------------------------------------//
 //
 //        $host = $_ENV['HOST_LC1']; // LOCAL Для Трусова
@@ -23,11 +23,11 @@ class DB
 //
 //----------------------------------------------------------------------------//
 //
-//        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
-//        $port = $_ENV['PORT_LC2'];
-//        $user = $_ENV['USER_LC2'];
-//        $pass = $_ENV['PASS_LC2'];
-//        $db = $_ENV['DB_LC2'];
+        $host = $_ENV['HOST_LC2']; // LOCAL на MAMP
+        $port = $_ENV['PORT_LC2'];
+        $user = $_ENV['USER_LC2'];
+        $pass = $_ENV['PASS_LC2'];
+        $db = $_ENV['DB_LC2'];
 
         $connect = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
         $this->pdo = new PDO($connect, $user, $pass);
@@ -108,25 +108,26 @@ class DB
 
     public function getInfoMatch()
     {
-        return $this->query("SELECT match_time_start, match_time_end FROM `game` WHERE id=1");
+        return $this->query("SELECT match_time_start, match_time_end, match_status FROM `game` WHERE id=1");
     }
 
     public function startMatch($timeStart, $timeEnd)
     {
         $this->execute("UPDATE `game` SET match_time_start = ?, match_time_end =?, match_status = ? WHERE id = 1
-", [$timeStart, $timeEnd, "playing"] );
+", [$timeStart, $timeEnd, "playing"]);
     }
 
 
     public function endMatch()
     {
         $this->execute("UPDATE `game` SET match_status =DEFAULT;
-                            UPDATE players SET status='WaitToSpawn', team_id = DEFAULT, skin_id = DEFAULT, 
-                                               x = DEFAULT, y=DEFAULT,vx =DEFAULT, vy =DEFAULT, 
-                                               dx = DEFAULT, dy=DEFAULT, hp = DEFAULT, kills =DEFAULT;
+                            UPDATE players SET status='WaitToSpawn', skin_id = DEFAULT, 
+                                               dx = DEFAULT, dy=DEFAULT, hp = DEFAULT, kills =DEFAULT, deaths = DEFAULT;
                             DELETE FROM bullets;
+                            UPDATE 'teams' SET team_score = 0
+                            
 ",
-              //
+        //
         );
     }
 
@@ -223,8 +224,8 @@ WHERE status =? ", ["Delete"]);
         $status = 'WaitToSpawn';
         $this->execute(
             "INSERT INTO players (user_id, team_id, status)
-                 VALUES (?, ?, ?)
-                 ON DUPLICATE KEY UPDATE user_id = VALUES(user_id)",
+                VALUES (?, ?, ?)
+                ON DUPLICATE KEY UPDATE team_id = VALUES(team_id), status = VALUES(status);",
             [$id, $teamId, $status]);
     }
 
@@ -272,8 +273,8 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
 
     public function addUserStats($user_id, $kills, $death, $time_in_game, $points)
     {
-        $this->execute("INSERT INTO stats (user_id, kills, death, time_in_game, points)
-        VALUES (?, 0, 0, 0, 0) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), kills = VALUES(kills), death = VALUES(death), 
+        $this->execute("INSERT INTO stats (user_id, kills, deaths, time_in_game, points)
+        VALUES (?, 0, 0, 0, 0) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), kills = VALUES(kills), deaths = VALUES(deaths), 
       time_in_game = VALUES(time_in_game), points = VALUES(points);
 ", [$user_id, $kills, $death, $time_in_game, $points]);
     }
@@ -361,24 +362,15 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
         $this->execute($stroke);
     }
 
-    public function addInfoAboutKills($sqlSetKillerToVictim, $sqlAddKillsToKiller, $deathPlayersId, $killersId)
+    public function addInfoAboutKills($sqlSetKillerToVictim, $deathPlayersId)
     {
         $deathPlayersIds = implode(',', $deathPlayersId);
-        $killerIds = implode(',', $killersId);
         $sql = "UPDATE players 
         SET 
             killer_id = CASE user_id
                             $sqlSetKillerToVictim
                         END
-                WHERE user_id IN ($deathPlayersIds);
-                UPDATE players 
-        SET
-                kills = CASE user_id
-                        $sqlAddKillsToKiller 
-                    END
-                    WHERE user_id in($killerIds)
-                    
-                    ";
+                WHERE user_id IN ($deathPlayersIds); ";
         $this->execute($sql);
     }
 
@@ -404,5 +396,25 @@ FROM players as p INNER JOIN users as u on u.id=p.user_id");
              WHERE user_id = ?", [$userId]);
     }
 
+
+    public function getTeamsInfo()
+    {
+        return $this->queryAll("SELECT * FROM teams");
+
+
+    }
+
+    public function addKillsToKiller($sqlAddKillsToKiller, $killersId)
+    {
+        $ids = implode(',', $killersId);
+        $sql = "UPDATE players 
+        SET 
+            kills = CASE user_id 
+                $sqlAddKillsToKiller
+                        
+                        END
+                WHERE user_id IN ($killersId)";
+        $this->execute($sql);
+    }
 }
 
